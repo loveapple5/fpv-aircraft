@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MPV DJI</string>
+    <string name="action_settings">Settings</string>   
+    <string name="disconnected">Disconnected</string>
+    <string name="remotecontrolerror">遥控连接错误</string>
+    <string name="product_information">飞机信息</string>
+    <string name="connection_loose">状态: 无机体连接</string>
+    <string name="sdk_version">Powered by DJI SDK V3.3</string>
+    <string name="setting">设 置</string>
+    <string name="connection">连 接</string>
+    <string name="value0">0</string>
+    <string name="compass">compass</string>
+    <string name="fpv">fpv image</string>
+    <string name="gyro">gyro bar</string>
+    <string name="cross">cross</string>
+    <string name="status">状态: 注册...</string>
+    <string name="pitch">pitch</string>
+
+</resources>
