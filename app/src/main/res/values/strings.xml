@@ -17,5 +17,18 @@
     <string name="cross">cross</string>
     <string name="status">状态: 注册...</string>
     <string name="pitch">pitch</string>
+    <string name="states_list">状态列表</string>
+    <string name="auto_check">状态自检</string>
+    <string name="tx_IMU">IMU</string>
+    <string name="tx_compass">指南针</string>
+    <string name="tx_wifi">无线信道质量</string>
+    <string name="tx_flight_mode">飞行模式</string>
+    <string name="tx_remote_controller_mode">遥控器模式</string>
+    <string name="tx_battery_voltage">飞行器电量</string>
+    <string name="tx_SD_card_remaining_space">SD卡剩余容量</string>
+    <string name="tx_Gimbal_status">云台状态</string>
+
+
+
 
 </resources>
