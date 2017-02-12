@@ -66,7 +66,7 @@
             android:text="@string/tx_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignPaLeft="true"
+            android:layout_alignParentLeft="true"
             android:id="@+id/tv_wifi"/>
         <TextView
             android:layout_width="wrap_content"
@@ -150,14 +150,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_SDcard_remaining_space"
+        android:layout_below="@id/layout_sdcard"
         android:id="@+id/layout_gimbal_status">
         <TextView
             android:text="@string/tx_Gimbal_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_gimbal_status"/>
+            android:id="@+id/tv_gimbal"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
