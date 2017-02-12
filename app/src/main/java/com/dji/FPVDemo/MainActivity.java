@@ -1,6 +1,7 @@
 package com.dji.FPVDemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Sensor;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.TextureView.SurfaceTextureListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
     private static final String TAG = MainActivity.class.getName();
     public boolean viewTPV = true;
     public TextView spd, vspd,alt,dis;
+    public Button btnStatusList;
 
 
 //    public float currentDegree = 0.0f;
@@ -140,6 +143,14 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
         vspd = (TextView)findViewById(R.id.textView6);
         alt = (TextView) findViewById(R.id.textView4);
         dis = (TextView) findViewById(R.id.textView5);
+        btnStatusList = (Button) this.findViewById(R.id.btn_status_list);
+        btnStatusList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, StatusListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 //    private void initAirLink(){
