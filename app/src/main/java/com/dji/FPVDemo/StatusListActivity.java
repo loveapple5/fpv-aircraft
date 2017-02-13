@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dji.common.airlink.DJIWiFiSignalQuality;
 import dji.common.battery.DJIBatteryState;
@@ -21,6 +22,7 @@ import dji.common.error.DJIError;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.flightcontroller.DJIFlightControllerFlightMode;
 import dji.common.flightcontroller.DJIIMUState;
+import dji.common.gimbal.DJIGimbalState;
 import dji.common.remotecontroller.DJIRCControlChannel;
 import dji.common.remotecontroller.DJIRCControlChannelName;
 import dji.common.remotecontroller.DJIRCControlMode;
@@ -28,11 +30,14 @@ import dji.common.remotecontroller.DJIRCControlStyle;
 import dji.common.util.DJICommonCallbacks;
 import dji.sdk.airlink.DJIAirLink;
 import dji.sdk.airlink.DJIWiFiLink;
+import dji.sdk.base.DJIBaseProduct;
+import dji.sdk.base.DJIDiagnostics;
 import dji.sdk.battery.DJIBattery;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.flightcontroller.DJICompass;
 import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
+import dji.sdk.gimbal.DJIGimbal;
 import dji.sdk.missionmanager.DJIMission;
 import dji.sdk.missionmanager.DJIMissionManager;
 import dji.sdk.products.DJIAircraft;
@@ -45,6 +50,9 @@ public class StatusListActivity extends Activity {
     protected static final int GET_RC_MODE = 2;
     protected static final int CHANGE_FLIGHT_STATUS = 3;
     protected static final int CHANGE_SDCard_Space=4;
+    protected static final int GET_GIMBAL_STATES=5;
+    protected static final int VERSION_STATUS = 6;
+    protected static final int IMU_STAUTS = 7;
 
     private DJIAircraft djiAircraft;
     private DJIBattery djiBattery;
@@ -54,6 +62,7 @@ public class StatusListActivity extends Activity {
     private DJIRemoteController djiRemoteController;
     private DJICompass djiCompass;
     private DJICamera djiCamera;
+    private DJIGimbal djiGimbal;
 
     private TextView tvWifiQuality;
     private TextView tvBatteryStatus;
@@ -61,6 +70,9 @@ public class StatusListActivity extends Activity {
     private TextView tvCompassStatus;
     private TextView tvSDCardSpace;
     private Spinner spRCMode;
+    private TextView tvGimbalStatus;
+    private TextView tvSelfCheck;
+    private TextView tvIMUStatus;
 
     private ArrayList RCModeList;
 
@@ -92,6 +104,18 @@ public class StatusListActivity extends Activity {
                     String SDCardSpace=msg.getData().getString("SDCardSpace");
                     tvSDCardSpace.setText(SDCardSpace);
                     break;
+                case GET_GIMBAL_STATES:
+                    String GimbalStates=msg.getData().getString("GimbalStates");
+                    tvGimbalStatus.setText(GimbalStates);
+                    break;
+                case VERSION_STATUS:
+                    String version = msg.getData().getString("version");
+                    tvSelfCheck.setText("有新版本可以升级:" + version);
+                    break;
+                case IMU_STAUTS:
+                    String IMU = msg.getData().getString("IMU");
+                    tvIMUStatus.setText(IMU);
+                    break;
                 default:
                     break;
             }
@@ -114,6 +138,9 @@ public class StatusListActivity extends Activity {
         tvBatteryStatus = (TextView) findViewById(R.id.tv_battery_voltage);
         tvSDCardSpace=(TextView) findViewById(R.id.tv_sdcard_space);
         spRCMode = (Spinner) findViewById(R.id.sp_RemoteControllerMode);
+        tvGimbalStatus=(TextView) findViewById(R.id.tv_gimbal_status);
+        tvIMUStatus = (TextView) findViewById(R.id.tv_IMU_status);
+        tvSelfCheck = (TextView) findViewById(R.id.tv_self_check_status);
 
         //数据
         RCModeList = new ArrayList<String>();
@@ -121,9 +148,9 @@ public class StatusListActivity extends Activity {
         RCModeList.add("美国手");
         RCModeList.add("中国手");
         RCModeList.add("自定义");
-        RCModeList.add("SlaveDefault");
-        RCModeList.add("SlaveCustom");
-        RCModeList.add("未知");
+//        RCModeList.add("SlaveDefault");
+//        RCModeList.add("SlaveCustom");
+//        RCModeList.add("未知");
 
         //适配器
         ArrayAdapter RCModeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, RCModeList);
@@ -131,47 +158,42 @@ public class StatusListActivity extends Activity {
         RCModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
         spRCMode.setAdapter(RCModeAdapter);
-        spRCMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                DJIRCControlStyle style = DJIRCControlStyle.find(i);
-                //DJIRCControlChannel channel[] = new DJIRCControlChannel[4];
+//        spRCMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                DJIRCControlStyle style = DJIRCControlStyle.find(i);
+//                DJIRCControlChannel channel[] = new DJIRCControlChannel[4];
 //                for(int j = 0; j < 4; j++) {
 //                    channel[j] = new DJIRCControlChannel();
 //                    channel[j].channel = DJIRCControlChannelName.find(j);
 //                }
-                DJIRCControlMode mode = new DJIRCControlMode();
-                mode.controlStyle = style;
-                djiRemoteController.setRCControlMode(mode, new SetRCControlModeCallback());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
-
-    private void initDji() {
-
-        //FPVDemoApplication.getProductInstance().setUpdateDiagnosticsListCallback();
-        djiAirLink = FPVDemoApplication.getProductInstance().getAirLink();
-        djiWiFiLink = djiAirLink.getWiFiLink();
-        djiWiFiLink.setDJIWiFiSignalQualityChangedCallback(new WifiQualityCallback());
-
-
-//        djiWiFiLink.setDJIWiFiGetSignalChangedCallback(new DJIWiFiLink.DJIWiFiGetSignalChangedCallback(){
+//                DJIRCControlMode mode = new DJIRCControlMode();
+//                mode.controlStyle = style;
+//                mode.controlChannel = channel;
+//                djiRemoteController.setRCControlMode(mode, new SetRCControlModeCallback());
+//            }
+//
 //            @Override
-//            public void onResult(int i) {
-//                StringBuffer stringBuffer = new StringBuffer();
+//            public void onNothingSelected(AdapterView<?> adapterView) {
 //
 //            }
 //        });
+    }
 
-        djiBattery = FPVDemoApplication.getProductInstance().getBattery();
+    private void initDji() {
+        //启动自检
+        djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+
+        djiAircraft.setUpdateDiagnosticsListCallback(new DiagnosticsListCallback());
+        djiAircraft.getFirmwarePackageVersion();
+        djiAirLink = djiAircraft.getAirLink();
+        djiWiFiLink = djiAirLink.getWiFiLink();
+        djiWiFiLink.setDJIWiFiSignalQualityChangedCallback(new WifiQualityCallback());
+
+        djiBattery = djiAircraft.getBattery();
         djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
 
-        djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+
         djiRemoteController = djiAircraft.getRemoteController();
         djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
 
@@ -179,13 +201,64 @@ public class StatusListActivity extends Activity {
         djiCompass= djiFlightController.getCompass();
         djiFlightController.setUpdateSystemStateCallback(new SystemStateCallback());
 
-        djiCamera=FPVDemoApplication.getProductInstance().getCamera();
+        djiCamera= djiAircraft.getCamera();
         djiCamera.setDJIUpdateCameraSDCardStateCallBack(new SDCardCallback());
         //djiRemoteController.setRCControlMode(new RCControlMode());
 
-        //djiFlightController.setOnIMUStateChangedCallback(new IMUStateChangedCallback());
+        djiFlightController.setOnIMUStateChangedCallback(new IMUStateChangedCallback());
+        djiGimbal = djiAircraft.getGimbal();
+        if(djiGimbal != null) {
+            tvGimbalStatus.setText("正常");
+        } else {
+            tvGimbalStatus.setText("错误");
+        }
 
+        String version = djiAircraft.getFirmwarePackageVersion();
+        tvSelfCheck.setText("当前版本:" + version);
 
+        djiAircraft.setDJIVersionCallback(new VersionChangeCallback());
+        //djiGimbal.startGimbalAutoCalibration();
+        //djiGimbal.startGimbalBalanceTest();
+        //djiGimbal.setGimbalStateUpdateCallback(new GimbalStateCallback());
+    }
+//    class GimbalStateCallback implements DJIGimbal.GimbalStateUpdateCallback{
+//        public void onGimbalStateUpdate(DJIGimbal djiGimbal, DJIGimbalState djiGimbalState){
+//
+//        };
+//    }
+
+    class VersionChangeCallback implements DJIBaseProduct.DJIVersionCallback {
+
+        @Override
+        public void onProductVersionChange(String oldVersion, String newVersion) {
+            Bundle bundle = new Bundle();
+            bundle.putString("version", newVersion);
+            Message msg = Message.obtain();
+            msg.what = VERSION_STATUS;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+        }
+    }
+
+    class DiagnosticsListCallback implements DJIDiagnostics.UpdateDiagnosticsListCallback{
+         public void onDiagnosticsListUpdate(List<DJIDiagnostics> djiDiagnosticsList) {
+             if(djiDiagnosticsList != null) {
+                 StringBuilder sb = new StringBuilder();
+                 for(int i = 0; i< djiDiagnosticsList.size(); i++) {
+                     DJIDiagnostics djiDiagnostics = djiDiagnosticsList.get(i);
+                     sb.append(djiDiagnostics.getCode());
+                     if(djiDiagnostics.getReason() != null) {
+                         sb.append("  " + djiDiagnostics.getReason());
+                     }
+                     if(djiDiagnostics.getSolution() != null) {
+                         sb.append("  " + djiDiagnostics.getSolution() + "\n");
+                     }
+                 }
+                 Toast.makeText(StatusListActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
+             }else {
+                 Toast.makeText(StatusListActivity.this, "自检完成", Toast.LENGTH_SHORT).show();
+             }
+         }
     }
 
     class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
@@ -263,17 +336,33 @@ public class StatusListActivity extends Activity {
             }
 
             Message msg = Message.obtain();
-            msg.what =CHANGE_FLIGHT_STATUS;
+            msg.what = CHANGE_FLIGHT_STATUS;
             msg.setData(bundle);
             handler.sendMessage(msg);
 
         }
     }
 
-    //public interface IMUStateChangedCallback implements DJIFlightControllerDelegate.FlightControllerIMUStateChangedCallback {
+    class IMUStateChangedCallback implements DJIFlightControllerDelegate.FlightControllerIMUStateChangedCallback {
 
-   //     public abstract void onStateChanged(DJIIMUState var1);
-    //}
+        @Override
+        public void onStateChanged(DJIIMUState djiimuState) {
+            boolean connected = djiimuState.isConnected();
+            StringBuilder sb = new StringBuilder();
+            Bundle bundle = new Bundle();
+            if(connected) {
+                sb.append("正常");
+            } else {
+                sb.append("错误");
+            }
+
+            bundle.putString("IMU", sb.toString());
+            Message msg = Message.obtain();
+            msg.what = IMU_STAUTS;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+        }
+    }
 
     class SDCardCallback implements DJICamera.CameraUpdatedSDCardStateCallback{
         @Override
@@ -303,13 +392,14 @@ public class StatusListActivity extends Activity {
                 sb.append("美国手");
             } else if (mode == DJIRCControlStyle.Custom.value()) {
                 sb.append("自定义");
-            } else if (mode == DJIRCControlStyle.SlaveCustom.value()) {
-                sb.append("SlaveCustom");
-            } else if (mode == DJIRCControlStyle.SlaveDefault.value()) {
-                sb.append("SlaveDefault");
-            } else if (mode == DJIRCControlStyle.Unknown.value()) {
-                sb.append("未知");
             }
+//            else if (mode == DJIRCControlStyle.SlaveCustom.value()) {
+//                sb.append("SlaveCustom");
+//            } else if (mode == DJIRCControlStyle.SlaveDefault.value()) {
+//                sb.append("SlaveDefault");
+//            } else if (mode == DJIRCControlStyle.Unknown.value()) {
+//                sb.append("未知");
+//            }
 
             Bundle bundle = new Bundle();
             bundle.putString("RCMode", sb.toString());
