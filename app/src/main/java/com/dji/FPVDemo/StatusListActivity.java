@@ -16,7 +16,11 @@ import java.util.ArrayList;
 
 import dji.common.airlink.DJIWiFiSignalQuality;
 import dji.common.battery.DJIBatteryState;
+import dji.common.camera.CameraSDCardState;
 import dji.common.error.DJIError;
+import dji.common.flightcontroller.DJIFlightControllerCurrentState;
+import dji.common.flightcontroller.DJIFlightControllerFlightMode;
+import dji.common.flightcontroller.DJIIMUState;
 import dji.common.remotecontroller.DJIRCControlChannel;
 import dji.common.remotecontroller.DJIRCControlChannelName;
 import dji.common.remotecontroller.DJIRCControlMode;
@@ -25,6 +29,12 @@ import dji.common.util.DJICommonCallbacks;
 import dji.sdk.airlink.DJIAirLink;
 import dji.sdk.airlink.DJIWiFiLink;
 import dji.sdk.battery.DJIBattery;
+import dji.sdk.camera.DJICamera;
+import dji.sdk.flightcontroller.DJICompass;
+import dji.sdk.flightcontroller.DJIFlightController;
+import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
+import dji.sdk.missionmanager.DJIMission;
+import dji.sdk.missionmanager.DJIMissionManager;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
 
@@ -33,15 +43,23 @@ public class StatusListActivity extends Activity {
     protected static final int CHANGE_BATTERY_STATUS = 0;
     protected static final int CHANGE_WIFI_QUALITY = 1;
     protected static final int GET_RC_MODE = 2;
+    protected static final int CHANGE_FLIGHT_STATUS = 3;
+    protected static final int CHANGE_SDCard_Space=4;
 
+    private DJIAircraft djiAircraft;
     private DJIBattery djiBattery;
     private DJIAirLink djiAirLink;
     private DJIWiFiLink djiWiFiLink;
+    private DJIFlightController djiFlightController;
     private DJIRemoteController djiRemoteController;
+    private DJICompass djiCompass;
+    private DJICamera djiCamera;
 
     private TextView tvWifiQuality;
     private TextView tvBatteryStatus;
-    //0：中国手 1：美国手 2：日本手 etc
+    private TextView tvFlightMode;
+    private TextView tvCompassStatus;
+    private TextView tvSDCardSpace;
     private Spinner spRCMode;
 
     private ArrayList RCModeList;
@@ -64,6 +82,16 @@ public class StatusListActivity extends Activity {
                     int position = RCModeList.indexOf(RCMode);
                     spRCMode.setSelection(position);
                     break;
+                case CHANGE_FLIGHT_STATUS:
+                    String FlightMode = msg.getData().getString("FlightMode");
+                    tvFlightMode.setText(FlightMode);
+                    String CompassStatus = msg.getData().getString("isCompassHasError");
+                    tvCompassStatus.setText(CompassStatus);
+                    break;
+                case CHANGE_SDCard_Space:
+                    String SDCardSpace=msg.getData().getString("SDCardSpace");
+                    tvSDCardSpace.setText(SDCardSpace);
+                    break;
                 default:
                     break;
             }
@@ -81,7 +109,10 @@ public class StatusListActivity extends Activity {
 
     private void initUI() {
         tvWifiQuality = (TextView) findViewById(R.id.tv_wifi_status);
+        tvCompassStatus = (TextView) findViewById(R.id.tv_compass_status);
+        tvFlightMode =  (TextView) findViewById(R.id.tv_FlightMode_status);
         tvBatteryStatus = (TextView) findViewById(R.id.tv_battery_voltage);
+        tvSDCardSpace=(TextView) findViewById(R.id.tv_sdcard_space);
         spRCMode = (Spinner) findViewById(R.id.sp_RemoteControllerMode);
 
         //数据
@@ -122,9 +153,13 @@ public class StatusListActivity extends Activity {
     }
 
     private void initDji() {
+
+        //FPVDemoApplication.getProductInstance().setUpdateDiagnosticsListCallback();
         djiAirLink = FPVDemoApplication.getProductInstance().getAirLink();
         djiWiFiLink = djiAirLink.getWiFiLink();
         djiWiFiLink.setDJIWiFiSignalQualityChangedCallback(new WifiQualityCallback());
+
+
 //        djiWiFiLink.setDJIWiFiGetSignalChangedCallback(new DJIWiFiLink.DJIWiFiGetSignalChangedCallback(){
 //            @Override
 //            public void onResult(int i) {
@@ -136,10 +171,21 @@ public class StatusListActivity extends Activity {
         djiBattery = FPVDemoApplication.getProductInstance().getBattery();
         djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
 
-        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+        djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiRemoteController = djiAircraft.getRemoteController();
         djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
+
+        djiFlightController = djiAircraft.getFlightController();
+        djiCompass= djiFlightController.getCompass();
+        djiFlightController.setUpdateSystemStateCallback(new SystemStateCallback());
+
+        djiCamera=FPVDemoApplication.getProductInstance().getCamera();
+        djiCamera.setDJIUpdateCameraSDCardStateCallBack(new SDCardCallback());
         //djiRemoteController.setRCControlMode(new RCControlMode());
+
+        //djiFlightController.setOnIMUStateChangedCallback(new IMUStateChangedCallback());
+
+
     }
 
     class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
@@ -181,6 +227,63 @@ public class StatusListActivity extends Activity {
             bundle.putString("quality", sb.toString());
             Message msg = Message.obtain();
             msg.what = CHANGE_WIFI_QUALITY;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+        }
+    }
+
+    class SystemStateCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback{
+        @Override
+        public void onResult(DJIFlightControllerCurrentState djiFlightControllerCurrentState) {
+           // mHomeLatitude = state.getHomeLocation().getLatitude();
+            // mHomeLongitude = state.getHomeLocation().getLongitude();
+            StringBuilder sb = new StringBuilder();
+            Bundle bundle = new Bundle();
+            sb.append(djiFlightControllerCurrentState.getFlightMode().name());
+            bundle.putString("FlightMode", sb.toString());
+
+            if (null != djiCompass) {
+                sb.delete(0, sb.length());
+
+                //if (djiCompass.isCalibrating()){
+                 //   sb.append("已校准");
+                //}else {
+                //    sb.append("未校准");
+                //}
+
+               // bundle.putString("isCompassCalibrating", sb.toString());
+
+                if (djiCompass.hasError()){
+                    sb.append("指南针错误");
+                }else {
+                    sb.append("指南针正常");
+                }
+
+                bundle.putString("isCompassHasError", sb.toString());
+            }
+
+            Message msg = Message.obtain();
+            msg.what =CHANGE_FLIGHT_STATUS;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+
+        }
+    }
+
+    //public interface IMUStateChangedCallback implements DJIFlightControllerDelegate.FlightControllerIMUStateChangedCallback {
+
+   //     public abstract void onStateChanged(DJIIMUState var1);
+    //}
+
+    class SDCardCallback implements DJICamera.CameraUpdatedSDCardStateCallback{
+        @Override
+        public void onResult(CameraSDCardState cameraSDCardState) {
+            StringBuilder sb = new StringBuilder();
+            Bundle bundle = new Bundle();
+            sb.append(cameraSDCardState.getRemainingSpaceInMegaBytes()).append("Mb");
+            bundle.putString("SDCardSpace", sb.toString());
+            Message msg = Message.obtain();
+            msg.what =CHANGE_SDCard_Space;
             msg.setData(bundle);
             handler.sendMessage(msg);
         }
