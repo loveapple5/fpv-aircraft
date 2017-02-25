@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:scaleX="-1"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/btn_status_list"
         android:text="@string/setting"
         android:layout_gravity="center_vertical"
         android:id="@+id/btn_setting"/>
