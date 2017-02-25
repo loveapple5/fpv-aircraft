@@ -91,5 +91,13 @@
         android:text="@string/states_list"
         android:layout_gravity="center_vertical"
         android:id="@+id/btn_status_list"/>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="-1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/setting"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/btn_setting"/>
 </RelativeLayout>

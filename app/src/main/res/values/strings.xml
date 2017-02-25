@@ -8,7 +8,6 @@
     <string name="product_information">飞机信息</string>
     <string name="connection_loose">状态: 无机体连接</string>
     <string name="sdk_version">Powered by DJI SDK V3.3</string>
-    <string name="setting">设 置</string>
     <string name="connection">连 接</string>
     <string name="value0">0</string>
     <string name="compass">compass</string>
@@ -18,6 +17,7 @@
     <string name="status">状态: 注册...</string>
     <string name="pitch">pitch</string>
     <string name="states_list">状态列表</string>
+    <string name="setting">设置</string>
     <string name="auto_check">状态自检</string>
     <string name="tx_IMU">IMU</string>
     <string name="tx_compass">指南针</string>
@@ -28,7 +28,7 @@
     <string name="tx_SD_card_remaining_space">SD卡剩余容量</string>
     <string name="tx_Gimbal_status">云台状态</string>
 
-
-
+    <string name="flight_controller">飞控</string>
+    <string name="remote_controller">遥控器</string>
 
 </resources>

@@ -61,6 +61,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
     public boolean viewTPV = true;
     public TextView spd, vspd,alt,dis;
     public Button btnStatusList;
+    public Button btnSetting;
 
 
 //    public float currentDegree = 0.0f;
@@ -144,10 +145,21 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
         alt = (TextView) findViewById(R.id.textView4);
         dis = (TextView) findViewById(R.id.textView5);
         btnStatusList = (Button) this.findViewById(R.id.btn_status_list);
+
         btnStatusList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, StatusListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnSetting = (Button) this.findViewById(R.id.btn_setting);
+
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
             }
         });
