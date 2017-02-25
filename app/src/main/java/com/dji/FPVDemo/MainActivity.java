@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
     public boolean firstCall;
 
     // Camera and textureview-display
-    protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
+    protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBackmReceivedVideoDataCallBack = null;
     protected TextureView mVideoSurface = null;
     // Codec for video live view
     protected DJICodecManager mCodecManager = null;
