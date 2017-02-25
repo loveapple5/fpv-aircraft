@@ -8,10 +8,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <Button
+            android:id="@+id/btn_fcs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/flight_controller"/>
         <Button
+            android:id="@+id/btn_rcs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/remote_controller"/>
