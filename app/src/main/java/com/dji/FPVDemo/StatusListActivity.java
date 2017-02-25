@@ -149,10 +149,7 @@ public class StatusListActivity extends Activity {
         RCModeList.add("日本手");
         RCModeList.add("美国手");
         RCModeList.add("中国手");
-        RCModeList.add("自定义");
-//        RCModeList.add("SlaveDefault");
-//        RCModeList.add("SlaveCustom");
-//        RCModeList.add("未知");
+//        RCModeList.add("自定义");
 
         //适配器
         ArrayAdapter RCModeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, RCModeList);
@@ -160,26 +157,20 @@ public class StatusListActivity extends Activity {
         RCModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
         spRCMode.setAdapter(RCModeAdapter);
-//        spRCMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                DJIRCControlStyle style = DJIRCControlStyle.find(i);
-//                DJIRCControlChannel channel[] = new DJIRCControlChannel[4];
-//                for(int j = 0; j < 4; j++) {
-//                    channel[j] = new DJIRCControlChannel();
-//                    channel[j].channel = DJIRCControlChannelName.find(j);
-//                }
-//                DJIRCControlMode mode = new DJIRCControlMode();
-//                mode.controlStyle = style;
-//                mode.controlChannel = channel;
-//                djiRemoteController.setRCControlMode(mode, new SetRCControlModeCallback());
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
+        spRCMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DJIRCControlStyle style = DJIRCControlStyle.find(i+1);
+                DJIRCControlMode mode = new DJIRCControlMode();
+                mode.controlStyle = style;
+                djiRemoteController.setRCControlMode(mode, new SetRCControlModeCallback());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
     }
@@ -226,57 +217,6 @@ public class StatusListActivity extends Activity {
         //djiGimbal.startGimbalAutoCalibration();
         //djiGimbal.startGimbalBalanceTest();
         //djiGimbal.setGimbalStateUpdateCallback(new GimbalStateCallback());
-
-//        //----------------------------B设置菜单---------------------------------
-//        //---------------------------B1compass校准-------------------------------
-//        djiCompass.startCompassCalibration(new djiCompletionCallback());
-//        //--------------------------B2飞控参数设置
-//        djiFlightControllerCurrentState=djiFlightController.getCurrentState();
-//        djiFlightControllerCurrentState.getHomeLocation();//返航点位置
-//        djiFlightControllerCurrentState.getGoHomeHeight();//返航高度
-//        djiFlightController.getFlightLimitation().getMaxFlightHeight();//最大升限
-//        djiFlightController.getFlightLimitation().getMaxFlightRadius();//最大飞行半径
-//        //最大距离，新手模式
-//        djiFlightControllerCurrentState.getFlightMode();
-//        djiFlightControllerCurrentState.setFlightMode();//切换飞行模式
-//        djiFlightControllerCurrentState.getSmartGoHomeStatus().isAircraftShouldGoHome();//是否需要返航包括低电量返航
-//        djiFlightController.setLEDsEnabled();//lED开关
-//        //启动视觉定位
-//        djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled();
-//        //--------------------------B3遥控器设置--------------------------------------
-//        //遥控器校准校准什么？
-//        djiRemoteController.getRCWheelControlGimbalSpeed();//云台滚轮控制速度X
-//        //摇杆模式
-//        djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
-//        djiRemoteController.setRCControlMode();//设置参数DJIRCControlStyle
-//        //-------------------------B4数据连接设置------------------------------------
-//        djiAirLink.getWiFiLink().setWiFiSSID();
-//        djiAirLink.getWiFiLink().setWiFiPassword();
-//        //--------------------------B5智能电池设置------------------------------------
-//        djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
-//        //getBatteryTemperature温度getCurrentEnergy 当前电量（mAh）getCellVoltages单元格电压
-//        djiFlightController.getCurrentState().getSmartGoHomeStatus().getRemainingFlightTime()//剩余飞行时间
-//        //严重低电量报警
-//        djiFlightControllerCurrentState.getRemainingBattery()//low立即返航verylow立即降落
-//        djiBattery.setLevel1CellVoltageThreshold();
-//        djiBattery.setLevel2CellVoltageThreshold();//不知道是哪一级的阈值
-//        djiBattery.setSelfDischargeDay();//自动放电时间
-//        //电池历史信息
-//        djiBattery.getSerialNumber();//序列号
-//        //getNumberOfDischarge放电次数getLifetimeRemainingPercent()电池寿命
-////--------------------B6云台设置----------------------------------------
-//        djiGimbal.getAdvancedSettingsProfile();
-//        djiGimbal.setGimbalStateUpdateCallback();
-////getControllerSpeedPitch()俯仰灵敏度，getControllerSpeedYaw()航向灵敏度
-//        //IMU
-//       djiFlightController.setOnIMUStateChangedCallback();
-//        djiFlightController.startIMUCalibration();
-//        //失控行为
-//        djiFlightController.getFlightFailsafeOperation();
-
-
-        //读取飞行数据找不到
-
 
 
 
@@ -441,34 +381,26 @@ public class StatusListActivity extends Activity {
 
     class GetRCControlModeCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJIRCControlMode> {
 
-        @Override
-        public void onSuccess(DJIRCControlMode djircControlMode) {
-            int mode = djircControlMode.controlStyle.value();
-            StringBuilder sb = new StringBuilder();
-            if (mode == DJIRCControlStyle.Japanese.value()) {
-                sb.append("日本手");
-            } else if (mode == DJIRCControlStyle.Chinese.value()) {
-                sb.append("中国手");
-            } else if (mode == DJIRCControlStyle.American.value()) {
-                sb.append("美国手");
-            } else if (mode == DJIRCControlStyle.Custom.value()) {
-                sb.append("自定义");
-            }
-//            else if (mode == DJIRCControlStyle.SlaveCustom.value()) {
-//                sb.append("SlaveCustom");
-//            } else if (mode == DJIRCControlStyle.SlaveDefault.value()) {
-//                sb.append("SlaveDefault");
-//            } else if (mode == DJIRCControlStyle.Unknown.value()) {
-//                sb.append("未知");
-//            }
+            @Override
+            public void onSuccess(DJIRCControlMode djircControlMode) {
+                int mode = djircControlMode.controlStyle.value();
+                StringBuilder sb = new StringBuilder();
+                if (mode == DJIRCControlStyle.Japanese.value()) {
+                    sb.append("日本手");
+                } else if (mode == DJIRCControlStyle.Chinese.value()) {
+                    sb.append("中国手");
+                } else if (mode == DJIRCControlStyle.American.value()) {
+                    sb.append("美国手");
+                }
 
-            Bundle bundle = new Bundle();
-            bundle.putString("RCMode", sb.toString());
-            Message msg = Message.obtain();
-            msg.what = GET_RC_MODE;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-        }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("RCMode", sb.toString());
+                Message msg = Message.obtain();
+                msg.what = GET_RC_MODE;
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
 
         @Override
         public void onFailure(DJIError djiError) {
@@ -480,13 +412,12 @@ public class StatusListActivity extends Activity {
 
         @Override
         public void onResult(DJIError djiError) {
-            Toast.makeText(StatusListActivity.this, "设置失败", Toast.LENGTH_SHORT).show();
+            if(djiError == null) {
+                Toast.makeText(StatusListActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(StatusListActivity.this, "设置失败", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-//    class djiCompletionCallback implements DJICommonCallbacks.DJICompletionCallback{
-//        @Override
-//        public void onResult(DJIError djiError) {
-//
-//        }
-//    }
+
 }

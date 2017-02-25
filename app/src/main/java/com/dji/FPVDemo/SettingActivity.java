@@ -9,10 +9,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.dji.FPVDemo.fragment.FlightControllerSettingFragment;
+import com.dji.FPVDemo.fragment.RemoteControllerSettingFragment;
 
 public class SettingActivity extends FragmentActivity {
 
     private FlightControllerSettingFragment mFCSFragment;
+    private RemoteControllerSettingFragment mRCSFragment;
 
     private Button btnFCS;
     private Button btnRCS;
@@ -48,6 +50,11 @@ public class SettingActivity extends FragmentActivity {
         btnRCS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                mRCSFragment=new RemoteControllerSettingFragment();
+                transaction.replace(R.id.container, mRCSFragment);
+                transaction.commit();
 
             }
         });
