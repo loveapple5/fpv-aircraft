@@ -30,5 +30,8 @@
 
     <string name="flight_controller">飞控</string>
     <string name="remote_controller">遥控器</string>
-
+    <string name="hint">提示</string>
+    <string name="compass_calibrate_hint">将进行指南针校验，请确保飞机远离电线、铁磁性物体等，防止电磁干扰</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
 </resources>
