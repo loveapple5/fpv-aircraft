@@ -63,6 +63,8 @@ public class StatusListActivity extends Activity {
     private DJICompass djiCompass;
     private DJICamera djiCamera;
     private DJIGimbal djiGimbal;
+    private DJIFlightControllerCurrentState djiFlightControllerCurrentState;
+    private DJIRCControlMode djircControlMode;
 
     private TextView tvWifiQuality;
     private TextView tvBatteryStatus;
@@ -178,6 +180,8 @@ public class StatusListActivity extends Activity {
 //
 //            }
 //        });
+
+
     }
 
     private void initDji() {
@@ -201,8 +205,10 @@ public class StatusListActivity extends Activity {
         djiCompass= djiFlightController.getCompass();
         djiFlightController.setUpdateSystemStateCallback(new SystemStateCallback());
 
+
         djiCamera= djiAircraft.getCamera();
         djiCamera.setDJIUpdateCameraSDCardStateCallBack(new SDCardCallback());
+
         //djiRemoteController.setRCControlMode(new RCControlMode());
 
         djiFlightController.setOnIMUStateChangedCallback(new IMUStateChangedCallback());
@@ -220,6 +226,61 @@ public class StatusListActivity extends Activity {
         //djiGimbal.startGimbalAutoCalibration();
         //djiGimbal.startGimbalBalanceTest();
         //djiGimbal.setGimbalStateUpdateCallback(new GimbalStateCallback());
+
+//        //----------------------------B设置菜单---------------------------------
+//        //---------------------------B1compass校准-------------------------------
+//        djiCompass.startCompassCalibration(new djiCompletionCallback());
+//        //--------------------------B2飞控参数设置
+//        djiFlightControllerCurrentState=djiFlightController.getCurrentState();
+//        djiFlightControllerCurrentState.getHomeLocation();//返航点位置
+//        djiFlightControllerCurrentState.getGoHomeHeight();//返航高度
+//        djiFlightController.getFlightLimitation().getMaxFlightHeight();//最大升限
+//        djiFlightController.getFlightLimitation().getMaxFlightRadius();//最大飞行半径
+//        //最大距离，新手模式
+//        djiFlightControllerCurrentState.getFlightMode();
+//        djiFlightControllerCurrentState.setFlightMode();//切换飞行模式
+//        djiFlightControllerCurrentState.getSmartGoHomeStatus().isAircraftShouldGoHome();//是否需要返航包括低电量返航
+//        djiFlightController.setLEDsEnabled();//lED开关
+//        //启动视觉定位
+//        djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled();
+//        //--------------------------B3遥控器设置--------------------------------------
+//        //遥控器校准校准什么？
+//        djiRemoteController.getRCWheelControlGimbalSpeed();//云台滚轮控制速度X
+//        //摇杆模式
+//        djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
+//        djiRemoteController.setRCControlMode();//设置参数DJIRCControlStyle
+//        //-------------------------B4数据连接设置------------------------------------
+//        djiAirLink.getWiFiLink().setWiFiSSID();
+//        djiAirLink.getWiFiLink().setWiFiPassword();
+//        //--------------------------B5智能电池设置------------------------------------
+//        djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
+//        //getBatteryTemperature温度getCurrentEnergy 当前电量（mAh）getCellVoltages单元格电压
+//        djiFlightController.getCurrentState().getSmartGoHomeStatus().getRemainingFlightTime()//剩余飞行时间
+//        //严重低电量报警
+//        djiFlightControllerCurrentState.getRemainingBattery()//low立即返航verylow立即降落
+//        djiBattery.setLevel1CellVoltageThreshold();
+//        djiBattery.setLevel2CellVoltageThreshold();//不知道是哪一级的阈值
+//        djiBattery.setSelfDischargeDay();//自动放电时间
+//        //电池历史信息
+//        djiBattery.getSerialNumber();//序列号
+//        //getNumberOfDischarge放电次数getLifetimeRemainingPercent()电池寿命
+////--------------------B6云台设置----------------------------------------
+//        djiGimbal.getAdvancedSettingsProfile();
+//        djiGimbal.setGimbalStateUpdateCallback();
+////getControllerSpeedPitch()俯仰灵敏度，getControllerSpeedYaw()航向灵敏度
+//        //IMU
+//       djiFlightController.setOnIMUStateChangedCallback();
+//        djiFlightController.startIMUCalibration();
+//        //失控行为
+//        djiFlightController.getFlightFailsafeOperation();
+
+
+        //读取飞行数据找不到
+
+
+
+
+
     }
 //    class GimbalStateCallback implements DJIGimbal.GimbalStateUpdateCallback{
 //        public void onGimbalStateUpdate(DJIGimbal djiGimbal, DJIGimbalState djiGimbalState){
@@ -266,7 +327,7 @@ public class StatusListActivity extends Activity {
         public void onResult(DJIBatteryState djiBatteryState) {
             StringBuffer stringBuffer = new StringBuffer();
             //stringBuffer.delete(0, stringBuffer.length());
-
+          //  djiBatteryState.getNumberOfDischarge()
             stringBuffer.append(djiBatteryState.getBatteryEnergyRemainingPercent()).append("%");
 //                stringBuffer.append("CurrentVoltage: ").
 //                        append(djiBatteryState.getCurrentVoltage()).append("mV\n");
@@ -422,4 +483,10 @@ public class StatusListActivity extends Activity {
             Toast.makeText(StatusListActivity.this, "设置失败", Toast.LENGTH_SHORT).show();
         }
     }
+//    class djiCompletionCallback implements DJICommonCallbacks.DJICompletionCallback{
+//        @Override
+//        public void onResult(DJIError djiError) {
+//
+//        }
+//    }
 }
