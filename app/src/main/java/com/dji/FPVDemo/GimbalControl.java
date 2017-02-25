@@ -32,7 +32,7 @@ public class GimbalControl {
         mRollRotation =new DJIGimbalAngleRotation(false,0f,DJIGimbalRotateDirection.Clockwise);
 
 
-        if(gimbal.gimbalCapability().get(DJIGimbalCapabilityKey.AdjustPitch) !=null){
+        if(gimbal != null && gimbal.gimbalCapability() != null && gimbal.gimbalCapability().get(DJIGimbalCapabilityKey.AdjustPitch) !=null){
             mPitchRotation.enable=true;
 //            Log.d("iniGimbal: ","set Gimabal adjustPitch success");
         } else {
