@@ -1,9 +1,12 @@
 package com.dji.FPVDemo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -12,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dji.FPVDemo.fragment.CompassDialogFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +24,7 @@ import dji.common.airlink.DJIWiFiSignalQuality;
 import dji.common.battery.DJIBatteryState;
 import dji.common.camera.CameraSDCardState;
 import dji.common.error.DJIError;
+import dji.common.flightcontroller.DJICompassCalibrationStatus;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.flightcontroller.DJIFlightControllerFlightMode;
 import dji.common.flightcontroller.DJIIMUState;
@@ -43,7 +49,7 @@ import dji.sdk.missionmanager.DJIMissionManager;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
 
-public class StatusListActivity extends Activity {
+public class StatusListActivity extends FragmentActivity {
 
     protected static final int CHANGE_BATTERY_STATUS = 0;
     protected static final int CHANGE_WIFI_QUALITY = 1;
@@ -172,6 +178,25 @@ public class StatusListActivity extends Activity {
             }
         });
 
+        tvCompassStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("djicompass", djiCompass.getCalibrationStatus().toString());
+                if (djiCompass.getCalibrationStatus() == DJICompassCalibrationStatus.Normal) {
+                    CompassDialogFragment compassDialogFragment = new CompassDialogFragment();
+                    compassDialogFragment.setDialogListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
+                                //---------------------------B1compass校准-------------------------------
+                                djiCompass.startCompassCalibration(new DJiCompassCalibrateCallback());
+                            }
+                        }
+                    });
+                    compassDialogFragment.show(getSupportFragmentManager(), "compass");
+                }
+            }
+        });
 
     }
 
@@ -417,6 +442,17 @@ public class StatusListActivity extends Activity {
             } else {
                 Toast.makeText(StatusListActivity.this, "设置失败", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    class DJiCompassCalibrateCallback implements DJICommonCallbacks.DJICompletionCallback {
+        @Override
+        public void onResult(DJIError djiError) {
+            if(djiError != null && djiError.getDescription() != null) {
+                Log.d("djiCompass", djiError.getDescription());
+            }
+
+            Log.d("djiCompass", djiCompass.getCalibrationStatus().toString());
         }
     }
 
