@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dji.FPVDemo.FPVDemoApplication;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import dji.common.error.DJIError;
 import dji.common.remotecontroller.DJIRCControlMode;
 import dji.common.remotecontroller.DJIRCControlStyle;
+import dji.common.remotecontroller.DJIRCGimbalControlSpeed;
 import dji.common.util.DJICommonCallbacks;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
@@ -32,7 +34,8 @@ import dji.sdk.remotecontroller.DJIRemoteController;
 
 public class RemoteControllerSettingFragment extends Fragment {
 
-    protected static final int GET_RC_MODE = 2;
+    protected static final int GET_RC_MODE = 1;
+    protected static final int GET_Gimbal_Speed=2;
 
     private DJIAircraft djiAircraft;
     private DJIRemoteController djiRemoteController;
@@ -40,6 +43,8 @@ public class RemoteControllerSettingFragment extends Fragment {
 
     private Spinner spRCMode;
     private ArrayList RCModeList;
+    private TextView tvGimbalSpeed;
+
 
     protected Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -49,6 +54,10 @@ public class RemoteControllerSettingFragment extends Fragment {
                     String RCMode = msg.getData().getString("RCMode");
                     int position = RCModeList.indexOf(RCMode);
                     spRCMode.setSelection(position);
+                    break;
+                case GET_Gimbal_Speed:
+                    String GimbalSpeed = msg.getData().getString("GimbalSpeed");
+                    tvGimbalSpeed.setText(GimbalSpeed);
                     break;
                 default:
                     break;
@@ -71,6 +80,7 @@ public class RemoteControllerSettingFragment extends Fragment {
     }
     private void InitUI(View view){
         spRCMode = (Spinner)view.findViewById(R.id.sp_RemoteControllerMode);
+        tvGimbalSpeed=(TextView)view.findViewById(R.id.tv_GimbalSpeed);
         RCModeList = new ArrayList<String>();
         RCModeList.add("日本手");
         RCModeList.add("美国手");
@@ -102,10 +112,10 @@ public class RemoteControllerSettingFragment extends Fragment {
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiRemoteController = djiAircraft.getRemoteController();
         //遥控器校准校准什么？
-//        djiRemoteController.getRCWheelControlGimbalSpeed(new GetRCWheelControlGimbalSpeedCallback());//云台滚轮控制速度X
+        djiRemoteController.getRCWheelControlGimbalSpeed(new GetRCWheelControlGimbalSpeedCallback());//云台滚轮控制速度X
+//        djiRemoteController.setRCWheelControlGimbalSpeed(new SetRCWheelControlGimbalSpeedCallback());
         //摇杆模式
         djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
-//        djiRemoteController.setRCControlMode(djircControlMode,new SetRCControlModeCallback());//设置参数DJIRCControlStyle
     }
 
     class GetRCControlModeCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJIRCControlMode> {
@@ -145,6 +155,26 @@ public class RemoteControllerSettingFragment extends Fragment {
             }
         }
     }
-//    class GetRCWheelControlGimbalSpeedCallback implements DJICompletionCallbackWith<>{}
+
+    class GetRCWheelControlGimbalSpeedCallback implements DJICommonCallbacks.DJICompletionCallbackWith<Short>{
+
+        @Override
+        public void onSuccess(Short RCWheelControlGimbalSpeed) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(RCWheelControlGimbalSpeed.toString());
+
+            Bundle bundle = new Bundle();
+            bundle.putString("GimbalSpeed", sb.toString());
+            Message msg = Message.obtain();
+            msg.what = GET_Gimbal_Speed;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+        }
+
+        @Override
+        public void onFailure(DJIError djiError) {
+
+        }
+    }
 }
 
