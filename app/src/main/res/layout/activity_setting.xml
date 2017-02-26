@@ -17,6 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/remote_controller"/>
+        <Button
+            android:id="@+id/btn_wls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_link"/>
+        <Button
+            android:id="@+id/btn_bs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/battery_setting"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/container"
