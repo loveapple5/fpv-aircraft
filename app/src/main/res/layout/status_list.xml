@@ -1,167 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-<!--模块自检-->
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--模块自检-->
     <RelativeLayout
+        android:id="@+id/layout_self_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:id="@+id/layout_self_check">
+        android:layout_alignParentTop="true">
+
         <TextView
-        android:text="@string/auto_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/tv_self_check"/>
+            android:id="@+id/tv_self_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/auto_check" />
+
         <TextView
+            android:id="@+id/tv_self_check_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/tv_self_check_status"
-            android:text="status"/>
-        </RelativeLayout>>
+            android:text="status" />
+    </RelativeLayout>
     <!--指南针-->
     <RelativeLayout
+        android:id="@+id/layout_compass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_self_check"
-        android:id="@+id/layout_compass">
+        android:layout_below="@id/layout_self_check">
+
         <TextView
-            android:text="@string/tx_compass"
+            android:id="@+id/tv_compass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_compass"/>
+            android:text="@string/tx_compass" />
+
         <TextView
+            android:id="@+id/tv_compass_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_compass_status"/>
-    </RelativeLayout>>
-<!--IMU-->
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:id="@+id/tv_compass_calibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_compass_status"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    <!--IMU-->
     <RelativeLayout
+        android:id="@+id/layout_IMU"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_compass"
-        android:id="@+id/layout_IMU">
+        android:layout_below="@id/layout_compass">
+
         <TextView
-            android:text="@string/tx_IMU"
+            android:id="@+id/tv_IMU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_IMU"/>
+            android:text="@string/tx_IMU" />
+
         <TextView
+            android:id="@+id/tv_IMU_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_IMU_status"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--无线信道质量-->
     <RelativeLayout
+        android:id="@+id/layout_wifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_IMU"
-        android:id="@+id/layout_wifi">
+        android:layout_below="@id/layout_IMU">
+
         <TextView
-            android:text="@string/tx_wifi"
+            android:id="@+id/tv_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_wifi"/>
+            android:text="@string/tx_wifi" />
+
         <TextView
+            android:id="@+id/tv_wifi_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_wifi_status"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--飞行模式-->
     <RelativeLayout
+        android:id="@+id/layout_FlightMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_wifi"
-        android:id="@+id/layout_FlightMode">
+        android:layout_below="@id/layout_wifi">
+
         <TextView
-            android:text="@string/tx_flight_mode"
+            android:id="@+id/tv_FlightMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_FlightMode"/>
+            android:text="@string/tx_flight_mode" />
+
         <TextView
+            android:id="@+id/tv_FlightMode_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_FlightMode_status"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--遥控器模式-->
     <RelativeLayout
+        android:id="@+id/layout_RemoteControllerMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_FlightMode"
-        android:id="@+id/layout_RemoteControllerMode">
+        android:layout_below="@id/layout_FlightMode">
+
         <TextView
-            android:text="@string/tx_remote_controller_mode"
+            android:id="@+id/tv_RemoteControllerMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_RemoteControllerMode"/>
+            android:text="@string/tx_remote_controller_mode" />
+
         <Spinner
+            android:id="@+id/sp_RemoteControllerMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/sp_RemoteControllerMode"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--飞行器电量-->
     <RelativeLayout
+        android:id="@+id/layout_battery_voltage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_RemoteControllerMode"
-        android:id="@+id/layout_battery_voltage">
+        android:layout_below="@id/layout_RemoteControllerMode">
+
         <TextView
-            android:text="@string/tx_battery_voltage"
+            android:id="@+id/tv_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_battery"/>
+            android:text="@string/tx_battery_voltage" />
+
         <TextView
+            android:id="@+id/tv_battery_voltage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_battery_voltage"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--SD卡剩余容量-->
     <RelativeLayout
+        android:id="@+id/layout_sdcard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_battery_voltage"
-        android:id="@+id/layout_sdcard">
+        android:layout_below="@id/layout_battery_voltage">
+
         <TextView
-            android:text="@string/tx_SD_card_remaining_space"
+            android:id="@+id/tv_sdcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_sdcard"/>
+            android:text="@string/tx_SD_card_remaining_space" />
+
         <TextView
+            android:id="@+id/tv_sdcard_space"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_sdcard_space"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    >
     <!--云台状态-->
     <RelativeLayout
+        android:id="@+id/layout_gimbal_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_sdcard"
-        android:id="@+id/layout_gimbal_status">
+        android:layout_below="@id/layout_sdcard">
+
         <TextView
-            android:text="@string/tx_Gimbal_status"
+            android:id="@+id/tv_gimbal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/tv_gimbal"/>
+            android:text="@string/tx_Gimbal_status" />
+
         <TextView
+            android:id="@+id/tv_gimbal_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tv_gimbal_status"/>
-    </RelativeLayout>>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 </RelativeLayout>

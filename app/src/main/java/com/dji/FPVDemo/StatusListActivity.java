@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,9 +56,10 @@ public class StatusListActivity extends FragmentActivity {
     protected static final int MSG_IMU_STAUTS = 7;
     protected static final int MSG_COMPASS_CALIBRATE = 8;
 
-    private static final int CALLBACK_FLIGHT_MODE = 1;
-    private static final int CALLBACK_COMPASS_CALIBRATE = 2;
-    private int FCCallbackType = CALLBACK_FLIGHT_MODE;
+    private static final int FC_CALLBACK_FLIGHT_MODE = 1;
+    private static final int FC_CALLBACK_COMPASS_CALIBRATE = 2;
+
+    private int FCCallbackType = FC_CALLBACK_FLIGHT_MODE;
 
     private DJIAircraft djiAircraft;
     private DJIBattery djiBattery;
@@ -74,6 +77,7 @@ public class StatusListActivity extends FragmentActivity {
     private TextView tvBatteryStatus;
     private TextView tvFlightMode;
     private TextView tvCompassStatus;
+    private TextView tvCompassCalibrate;
     private TextView tvSDCardSpace;
     private Spinner spRCMode;
     private TextView tvGimbalStatus;
@@ -123,24 +127,13 @@ public class StatusListActivity extends FragmentActivity {
                     tvIMUStatus.setText(IMU);
                     break;
                 case MSG_COMPASS_CALIBRATE:
-                    int status = msg.getData().getInt("CalibrationStatus");
+                    String status = msg.getData().getString("CalibrationStatus");
                     boolean isCalibrating = msg.getData().getBoolean("isCalibrating");
                     String Heading = msg.getData().getString("Heading");
 
-                    Log.d("fc", isCalibrating + "");
-                    if (status == DJICompassCalibrationStatus.Normal.value()) {
-                        Toast.makeText(StatusListActivity.this, "开始校准", Toast.LENGTH_SHORT).show();
-                    } else if (status == DJICompassCalibrationStatus.Horizontal.value()) {
-                        Toast.makeText(StatusListActivity.this, "水平旋转", Toast.LENGTH_SHORT).show();
-                    } else if (status == DJICompassCalibrationStatus.Vertical.value()) {
-                        Toast.makeText(StatusListActivity.this, "竖直旋转", Toast.LENGTH_SHORT).show();
-                    } else if (status == DJICompassCalibrationStatus.Succeeded.value()) {
-                        Toast.makeText(StatusListActivity.this, "校准完成", Toast.LENGTH_SHORT).show();
-                        djiCompass.stopCompassCalibration(new DJiCompassCalibrateCallback());
-                    } else if(status == DJICompassCalibrationStatus.Failed.value()) {
-                        Toast.makeText(StatusListActivity.this, "校准失败", Toast.LENGTH_SHORT).show();
-                        djiCompass.stopCompassCalibration(new DJiCompassCalibrateCallback());
-                    }
+                    Log.d("fc", "isCalibrating:" + isCalibrating);
+                    Log.d("fc", "status:" + status);
+                    tvCompassCalibrate.setText(status);
 
                     break;
                 default:
@@ -161,6 +154,7 @@ public class StatusListActivity extends FragmentActivity {
     private void initUI() {
         tvWifiQuality = (TextView) findViewById(R.id.tv_wifi_status);
         tvCompassStatus = (TextView) findViewById(R.id.tv_compass_status);
+        tvCompassCalibrate = (TextView) findViewById(R.id.tv_compass_calibrate);
         tvFlightMode = (TextView) findViewById(R.id.tv_FlightMode_status);
         tvBatteryStatus = (TextView) findViewById(R.id.tv_battery_voltage);
         tvSDCardSpace = (TextView) findViewById(R.id.tv_sdcard_space);
@@ -207,7 +201,7 @@ public class StatusListActivity extends FragmentActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //确定按钮的响应事件
                         if (which == DialogInterface.BUTTON_POSITIVE) {
-                            FCCallbackType = CALLBACK_COMPASS_CALIBRATE;
+                            FCCallbackType = FC_CALLBACK_COMPASS_CALIBRATE;
                             //---------------------------B1compass校准-------------------------------
                             djiCompass.startCompassCalibration(new DJiCompassCalibrateCallback());
                         }
@@ -217,6 +211,42 @@ public class StatusListActivity extends FragmentActivity {
             }
         });
 
+        tvCompassCalibrate.addTextChangedListener(new CompassTextWatcher());
+    }
+
+    private class CompassTextWatcher implements TextWatcher {
+
+        private String before;
+        private String after;
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            before = charSequence.toString();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+            after = editable.toString();
+            if (after.compareTo(before) != 0 && DJICompassCalibrationStatus.Normal.toString().compareTo(after) == 0) {
+                Toast.makeText(StatusListActivity.this, "开始校准", Toast.LENGTH_SHORT).show();
+            } else if (after.compareTo(before) != 0 && DJICompassCalibrationStatus.Horizontal.toString().compareTo(after) == 0) {
+                Toast.makeText(StatusListActivity.this, "水平旋转", Toast.LENGTH_SHORT).show();
+            } else if (after.compareTo(before) != 0 && DJICompassCalibrationStatus.Vertical.toString().compareTo(after) == 0) {
+                Toast.makeText(StatusListActivity.this, "竖直旋转", Toast.LENGTH_SHORT).show();
+            } else if (after.compareTo(before) != 0 && DJICompassCalibrationStatus.Succeeded.toString().compareTo(after) == 0) {
+                Toast.makeText(StatusListActivity.this, "校准完成", Toast.LENGTH_SHORT).show();
+                djiCompass.stopCompassCalibration(new DJiCompassCalibrateStopCallback());
+            } else if (after.compareTo(before) != 0 && DJICompassCalibrationStatus.Failed.toString().equals(after)) {
+                Toast.makeText(StatusListActivity.this, "校准失败", Toast.LENGTH_SHORT).show();
+                djiCompass.stopCompassCalibration(new DJiCompassCalibrateStopCallback());
+            }
+        }
     }
 
     private void initDji() {
@@ -351,7 +381,7 @@ public class StatusListActivity extends FragmentActivity {
     class SystemStateCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback {
         @Override
         public void onResult(DJIFlightControllerCurrentState djiFlightControllerCurrentState) {
-            if (FCCallbackType == CALLBACK_FLIGHT_MODE) {
+            if (FCCallbackType == FC_CALLBACK_FLIGHT_MODE) {
                 // mHomeLatitude = state.getHomeLocation().getLatitude();
                 // mHomeLongitude = state.getHomeLocation().getLongitude();
                 StringBuilder sb = new StringBuilder();
@@ -383,13 +413,15 @@ public class StatusListActivity extends FragmentActivity {
                 msg.what = MSG_CHANGE_FLIGHT_STATUS;
                 msg.setData(bundle);
                 handler.sendMessage(msg);
-            } else if (FCCallbackType == CALLBACK_COMPASS_CALIBRATE) {
+            } else if (FCCallbackType == FC_CALLBACK_COMPASS_CALIBRATE) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("CalibrationStatus", djiCompass.getCalibrationStatus().value());
+                bundle.putString("CalibrationStatus", djiCompass.getCalibrationStatus().toString());
                 bundle.putBoolean("isCalibrating", djiCompass.isCalibrating());
                 bundle.putDouble("Heading", djiCompass.getHeading());
-                handler.sendEmptyMessage(MSG_COMPASS_CALIBRATE);
-                Log.d("fc", djiCompass.getCalibrationStatus().toString());
+                Message msg = Message.obtain();
+                msg.what = MSG_COMPASS_CALIBRATE;
+                msg.setData(bundle);
+                handler.sendMessage(msg);
             }
         }
     }
@@ -476,4 +508,10 @@ public class StatusListActivity extends FragmentActivity {
         }
     }
 
+    class DJiCompassCalibrateStopCallback implements DJICommonCallbacks.DJICompletionCallback {
+        @Override
+        public void onResult(DJIError djiError) {
+            FCCallbackType = FC_CALLBACK_FLIGHT_MODE;
+        }
+    }
 }
