@@ -111,12 +111,13 @@ public class RemoteControllerSettingFragment extends Fragment {
         //--------------------------B3遥控器设置--------------------------------------
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiRemoteController = djiAircraft.getRemoteController();
-        //遥控器校准校准什么？
+        //遥控器校准
+        //djiRemoteController.getRCControlGimbalDirection(new GetRCWheelControlGimbalDrectionCallback());//
         djiRemoteController.getRCWheelControlGimbalSpeed(new GetRCWheelControlGimbalSpeedCallback());//云台滚轮控制速度X
 //        djiRemoteController.setRCWheelControlGimbalSpeed(new SetRCWheelControlGimbalSpeedCallback());
         //摇杆模式
         djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
-    }
+    };
 
     class GetRCControlModeCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJIRCControlMode> {
 
@@ -155,7 +156,6 @@ public class RemoteControllerSettingFragment extends Fragment {
             }
         }
     }
-
     class GetRCWheelControlGimbalSpeedCallback implements DJICommonCallbacks.DJICompletionCallbackWith<Short>{
 
         @Override

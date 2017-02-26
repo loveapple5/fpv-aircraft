@@ -8,16 +8,23 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.dji.FPVDemo.fragment.BatterySettingFragment;
 import com.dji.FPVDemo.fragment.FlightControllerSettingFragment;
 import com.dji.FPVDemo.fragment.RemoteControllerSettingFragment;
+import com.dji.FPVDemo.fragment.WiFiLinkSettingFragment;
 
 public class SettingActivity extends FragmentActivity {
 
     private FlightControllerSettingFragment mFCSFragment;
     private RemoteControllerSettingFragment mRCSFragment;
+    private WiFiLinkSettingFragment mWLSFragment;
+    private BatterySettingFragment mBSFragment;
+
 
     private Button btnFCS;
     private Button btnRCS;
+    private Button btnWLS;
+    private Button btnBS;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +61,30 @@ public class SettingActivity extends FragmentActivity {
                 FragmentTransaction transaction = fm.beginTransaction();
                 mRCSFragment=new RemoteControllerSettingFragment();
                 transaction.replace(R.id.container, mRCSFragment);
+                transaction.commit();
+
+            }
+        });
+        btnWLS = (Button) findViewById(R.id.btn_wls);
+        btnWLS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                mWLSFragment=new WiFiLinkSettingFragment();
+                transaction.replace(R.id.container, mWLSFragment);
+                transaction.commit();
+
+            }
+        });
+        btnBS = (Button) findViewById(R.id.btn_bs);
+        btnBS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                mBSFragment=new BatterySettingFragment();
+                transaction.replace(R.id.container, mBSFragment);
                 transaction.commit();
 
             }
