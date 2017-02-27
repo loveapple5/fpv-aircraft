@@ -36,4 +36,7 @@
     <string name="confirm">确定</string>
     <string name="battery_setting">电池</string>
     <string name="wifi_link">WiFi设置</string>
+
+    <string name="home_set">返航点设置</string>
+    <string name="allow_change_flight_mode">允许切换飞行模式</string>
 </resources>
