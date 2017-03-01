@@ -39,4 +39,9 @@
 
     <string name="home_set">返航点设置</string>
     <string name="allow_change_flight_mode">允许切换飞行模式</string>
+    <string name="home_height">返航高度</string>
+    <string name="home_height_toast">返航高度只能设置20到500之间</string>
+    <string name="max_flight_height">最大升限</string>
+    <string name="max_flight_height_toast">最大升限只能设置20到500之间</string>
+    <string name="max_flight_radius">最大距离</string>
 </resources>

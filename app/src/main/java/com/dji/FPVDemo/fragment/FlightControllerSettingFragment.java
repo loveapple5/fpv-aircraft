@@ -9,17 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
+import dji.common.error.DJIError;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.flightcontroller.DJIFlightControllerFlightMode;
 import dji.common.flightcontroller.DJIFlightControlState;
 import dji.common.flightcontroller.DJIFlightControllerSmartGoHomeStatus;
 import dji.common.flightcontroller.DJILocationCoordinate2D;
 import dji.common.flightcontroller.DJILocationCoordinate3D;
+import dji.common.flightcontroller.DJIFlightFailsafeOperation;
+import dji.common.util.DJICommonCallbacks;
 import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightLimitation;
 import dji.sdk.products.DJIAircraft;
@@ -35,6 +40,11 @@ public class FlightControllerSettingFragment extends Fragment {
 
     private Button btnGoHome;
     private SwitchCompat scChangeFlightMode;
+    private EditText etHomeHeight;
+    private Button btnHomeHeight;
+
+    private EditText etMaxFlightHeight;
+    private Button btnMaxFlightHeight;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +54,14 @@ public class FlightControllerSettingFragment extends Fragment {
         btnGoHome.setOnClickListener(new GoHomeBtnClickListener());
         scChangeFlightMode = (SwitchCompat) root.findViewById(R.id.sc_change_mode);
         scChangeFlightMode.setOnCheckedChangeListener(new ChangeFlightModeScListener());
+
+        etHomeHeight = (EditText) root.findViewById(R.id.et_home_height);
+        btnHomeHeight = (Button) root.findViewById(R.id.btn_home_height);
+        btnHomeHeight.setOnClickListener(new GoHomeHeightClickListener());
+
+        etMaxFlightHeight = (EditText) root.findViewById(R.id.et_max_flight_height);
+        btnMaxFlightHeight = (Button) root.findViewById(R.id.btn_max_flight_height);
+        btnMaxFlightHeight.setOnClickListener(new MaxFlightHeightClickListener());
         return root;
     }
 
@@ -60,6 +78,22 @@ public class FlightControllerSettingFragment extends Fragment {
         }
     }
 
+    private class GoHomeHeightClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            String text = etHomeHeight.getText().toString();
+            DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
+            int height = Integer.parseInt(text);
+            if (height >= 20 && height <= 500) {
+                state.setGoHomeHeight(height);//返航高度
+            } else {
+                Toast.makeText(getActivity(), R.string.home_height_toast, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
     private class ChangeFlightModeScListener implements CompoundButton.OnCheckedChangeListener {
 
         @Override
@@ -71,14 +105,27 @@ public class FlightControllerSettingFragment extends Fragment {
         }
     }
 
-    private class ChangeFlightModeBtnBtnClickListener implements View.OnClickListener {
+    private class MaxFlightHeightClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            //TODO:获取当前位置
+            String text = etMaxFlightHeight.getText().toString();
             DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
-            //设置返航点位置
-            //state.setHomepoint();
+            float height = Float.parseFloat(text);
+            if (height >= 20 && height <= 500) {
+                DJIFlightLimitation limitation = djiFlightController.getFlightLimitation();
+                limitation.setMaxFlightHeight(height, new MaxFlightHeightCallback());//最大升限
+            } else {
+                Toast.makeText(getActivity(), R.string.max_flight_height_toast, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class MaxFlightHeightCallback implements DJICommonCallbacks.DJICompletionCallback {
+
+        @Override
+        public void onResult(DJIError djiError) {
+
         }
     }
 
@@ -88,12 +135,13 @@ public class FlightControllerSettingFragment extends Fragment {
         InitDJI();
     }
 
-    private void InitDJI(){
+    private void InitDJI() {
         //----------------------------B设置菜单--------------------------------
         //--------------------------B2飞控参数设置--------------------------------------
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiFlightController = djiAircraft.getFlightController();
         DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
+        djiFlightController.setFlightFailsafeOperation();//通讯中断后措施
         //返航点位置
         //state.setHomepoint();
 //        state.setGoHomeHeight();//返航高度
