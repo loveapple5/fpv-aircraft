@@ -11,12 +11,12 @@
         android:text="@string/auto_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:id="@+id/tv_self_check"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_self_check_status"
             android:text="status"/>
         </RelativeLayout>>
@@ -30,12 +30,12 @@
             android:text="@string/tx_compass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_compass"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_compass_status"/>
     </RelativeLayout>>
 <!--IMU-->
@@ -48,12 +48,12 @@
             android:text="@string/tx_IMU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_IMU"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_IMU_status"/>
     </RelativeLayout>>
     <!--无线信道质量-->
@@ -66,12 +66,12 @@
             android:text="@string/tx_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_wifi"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_wifi_status"/>
     </RelativeLayout>>
     <!--飞行模式-->
@@ -84,12 +84,12 @@
             android:text="@string/tx_flight_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_FlightMode"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_FlightMode_status"/>
     </RelativeLayout>>
     <!--遥控器模式-->
@@ -102,12 +102,12 @@
             android:text="@string/tx_remote_controller_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_RemoteControllerMode"/>
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/sp_RemoteControllerMode"/>
     </RelativeLayout>>
     <!--飞行器电量-->
@@ -120,12 +120,12 @@
             android:text="@string/tx_battery_voltage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_battery"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_battery_voltage"/>
     </RelativeLayout>>
     <!--SD卡剩余容量-->
@@ -138,12 +138,12 @@
             android:text="@string/tx_SD_card_remaining_space"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_sdcard"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_sdcard_space"/>
     </RelativeLayout>>
     <!--云台状态-->
@@ -156,12 +156,12 @@
             android:text="@string/tx_Gimbal_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/tv_gimbal"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/tv_gimbal_status"/>
     </RelativeLayout>>
 </RelativeLayout>
