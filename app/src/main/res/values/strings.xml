@@ -44,4 +44,10 @@
     <string name="max_flight_height">最大升限</string>
     <string name="max_flight_height_toast">最大升限只能设置20到500之间</string>
     <string name="max_flight_radius">最大距离</string>
+    <string name="max_flight_radius_toast">最大距离只能设置20到500之间</string>
+    <string name="novice_mode">新手模式</string>
+    <string name="fail_safe">failsafe模式</string>
+    <string name="smart_go_home">自动返航开关</string>
+    <string name="led_switch">led开关</string>
+    <string name="vision_positioning">视觉定位开关</string>
 </resources>
