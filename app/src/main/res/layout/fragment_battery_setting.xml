@@ -1,53 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/Battery_base_setting"
-        android:layout_weight="0.03">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:text="当前电量"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/CurrentEnergy"
-            android:layout_alignParentStart="true" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_Battery_Energy"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
+            android:text="当前电量" />
 
         <TextView
-            android:text="电池温度"
+            android:id="@+id/tv_Battery_Energy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/BattryTemprature"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_Battery_Temperature"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" />
-
-        <TextView
-            android:text="飞行时间"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/FlightTime"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="电池温度" />
+
+        <TextView
+            android:id="@+id/tv_Battery_Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="飞行时间" />
+
+        <TextView
             android:id="@+id/tv_RemainingFlightTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回电量阈值" />
+
+        <Button
+            android:id="@+id/btn_smart_go_home_threshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true" />
+            android:text="@string/confirm"/>
+        <EditText
+            android:id="@+id/et_smart_go_home_threshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btn_smart_go_home_threshold"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动放电时间（天）" />
+
+        <Button
+            android:id="@+id/btn_discharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/confirm"/>
+        <EditText
+            android:id="@+id/et_discharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btn_discharge"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电池序列号" />
+
+        <TextView
+            android:id="@+id/tv_battery_serial_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="循环次数" />
+
+        <TextView
+            android:id="@+id/tv_discharge_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电池寿命" />
+
+        <TextView
+            android:id="@+id/tv_battery_remaining_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </LinearLayout>
