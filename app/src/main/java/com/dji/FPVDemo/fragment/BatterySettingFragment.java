@@ -14,6 +14,7 @@ import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
 import dji.common.battery.DJIBatteryState;
+import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.sdk.battery.DJIBattery;
 import dji.sdk.products.DJIAircraft;
 
@@ -28,9 +29,12 @@ public class BatterySettingFragment extends Fragment {
 
     private DJIAircraft djiAircraft;
     private DJIBattery djiBattery;
+    private DJIFlightControllerCurrentState djiFlightControllerCurrentState;
+    private int djiRemainingFlightTime;
 
     private TextView tvBatteryCurrentEnergy;
     private TextView tvBatteryTemperature;
+    private TextView tvRemainingFlightTime;
 
     protected Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -57,43 +61,55 @@ public class BatterySettingFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_battery_setting, container, false);
         InitUI(view);
-        InitDJI();
         return view;
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        InitDJI();
     };
 
     private void InitUI(View view){
         tvBatteryCurrentEnergy= (TextView)view.findViewById(R.id.tv_Battery_Energy);
         tvBatteryTemperature= (TextView)view.findViewById(R.id.tv_Battery_Temperature);
+        tvRemainingFlightTime= (TextView)view.findViewById(R.id.tv_RemainingFlightTime);
+        djiRemainingFlightTime=djiFlightControllerCurrentState.getSmartGoHomeStatus().getRemainingFlightTime();//是否剩余飞行时间
+        tvRemainingFlightTime.setText(djiRemainingFlightTime + "秒");
     }
     private void InitDJI(){
 
         //----------------------------B设置菜单--------------------------------
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiBattery=djiAircraft.getBattery();
+        djiFlightControllerCurrentState=djiAircraft.getFlightController().getCurrentState();
         //--------------------------B5智能电池设置------------------------------------
         djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
-//        //getBatteryTemperature温度getCurrentEnergy 当前电量（mAh）getCellVoltages单元格电压
-//        djiFlightController.getCurrentState().getSmartGoHomeStatus().getRemainingFlightTime()//剩余飞行时间
+//        getCellVoltages单元格电压
+
 //        //严重低电量报警
-//        djiFlightControllerCurrentState.getRemainingBattery()//low立即返航verylow立即降落
+//        djiFlightControllerCurrentState.getRemainingBattery();//low立即返航verylow立即降落
 //        djiBattery.setLevel1CellVoltageThreshold();
 //        djiBattery.setLevel2CellVoltageThreshold();//不知道是哪一级的阈值
 //        djiBattery.setSelfDischargeDay();//自动放电时间
 //        //电池历史信息
 //        djiBattery.getSerialNumber();//序列号
 //        //getNumberOfDischarge放电次数getLifetimeRemainingPercent()电池寿命
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(djiRemainingFlightTime);
+        sb.append("mAH");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("BatteryCurrentEnergy", sb.toString());
+        Message msg = Message.obtain();
+        msg.what = GET_BatteryCurrentEnergy;
+        msg.setData(bundle);
+        handler.sendMessage(msg);
     }
 
     class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback{
         @Override
         public void onResult(DJIBatteryState djiBatteryState) {
-
-            ;
 
             StringBuilder sb = new StringBuilder();
             sb.append(djiBatteryState.getCurrentEnergy());
@@ -116,6 +132,8 @@ public class BatterySettingFragment extends Fragment {
             msg1.what = GET_BatteryTemperature;
             msg1.setData(bundle1);
             handler.sendMessage(msg1);
+
+
         }
     }
 };

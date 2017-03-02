@@ -43,5 +43,11 @@
             android:id="@+id/FlightTime"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_RemainingFlightTime"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 </LinearLayout>
