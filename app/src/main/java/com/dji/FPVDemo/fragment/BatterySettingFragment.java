@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class BatterySettingFragment extends Fragment {
                 case MSG_TYPE_BatteryTemperature:
                     String BatteryTemperature = msg.getData().getString("BatteryTemperature");
                     tvBatteryTemperature.setText(BatteryTemperature);
+                    Log.d("BatteryTemperature", BatteryTemperature);
                     break;
                 case MSG_TYPE_BATTERY_STATUS:
                     int dischargeNumber = msg.getData().getInt("dischargeNumber");
