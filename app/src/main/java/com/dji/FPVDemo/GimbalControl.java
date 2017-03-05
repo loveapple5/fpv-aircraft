@@ -41,7 +41,7 @@ public class GimbalControl {
 
 //        enable the Pitch Extension if Possible
 
-        if (gimbal.gimbalCapability().get(DJIGimbalCapabilityKey.PitchRangeExtension)!=null)
+        if (gimbal != null && gimbal.gimbalCapability() != null && gimbal.gimbalCapability().get(DJIGimbalCapabilityKey.PitchRangeExtension)!=null)
         {
             gimbal.setPitchRangeExtensionEnabled(true,
                     new DJICommonCallbacks.DJICompletionCallback() {
@@ -59,19 +59,19 @@ public class GimbalControl {
         }
 
 //        set the gimbal work mode as Yawfllow mode (FPV and Free modes are not supported for drone)
-        gimbal.setGimbalWorkMode(DJIGimbalWorkMode.YawFollowMode, new DJICommonCallbacks.DJICompletionCallback() {
-            //            getGimbalInstance().setGimbalWorkMode(DJIGimbalWorkMode.YawFollowMode, new DJICommonCallbacks.DJICompletionCallback() {
-            @Override
-            public void onResult(DJIError error) {
-                if (error == null) {
-                    Log.d("iniGimbal", "Set Gimbal Work Mode success");
-                } else {
-                    Log.d("iniGimbal", "Set Gimbal Work Mode failed" + error);
+        if(gimbal != null) {
+            gimbal.setGimbalWorkMode(DJIGimbalWorkMode.YawFollowMode, new DJICommonCallbacks.DJICompletionCallback() {
+                //            getGimbalInstance().setGimbalWorkMode(DJIGimbalWorkMode.YawFollowMode, new DJICommonCallbacks.DJICompletionCallback() {
+                @Override
+                public void onResult(DJIError error) {
+                    if (error == null) {
+                        Log.d("iniGimbal", "Set Gimbal Work Mode success");
+                    } else {
+                        Log.d("iniGimbal", "Set Gimbal Work Mode failed" + error);
+                    }
                 }
-            }
-        });
-
-
+            });
+        }
     }
 
 

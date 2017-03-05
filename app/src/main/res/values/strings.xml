@@ -51,5 +51,15 @@
     <string name="led_switch">led开关</string>
     <string name="vision_positioning">视觉定位开关</string>
 
+    <string name="gimbal">云台</string>
     <string name="gimbal_pitch_range">云台俯仰限位</string>
+
+    <string name="video_format">视频格式</string>
+    <string name="video_resolve">视频尺寸</string>
+
+    <string name="photo_format">照片格式</string>
+    <string name="photo_resolve">照片比例</string>
+
+    <string name="video">视频</string>
+    <string name="photo">拍照</string>
 </resources>

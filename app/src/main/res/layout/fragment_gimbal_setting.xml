@@ -10,7 +10,7 @@
             android:layout_height="wrap_content"
             android:text="@string/gimbal_pitch_range"
             android:layout_alignParentStart="true"/>
-        <android.support.v7.widget.SwitchCompat
+        <Switch
             android:id="@+id/rc_gimbal_pitch_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

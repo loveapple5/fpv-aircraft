@@ -42,11 +42,11 @@ public class SettingActivity extends FragmentActivity {
         setContentView(R.layout.activity_setting);
         initUI();
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        mFCSFragment = new FlightControllerSettingFragment();
-        transaction.replace(R.id.container, mFCSFragment);
-        transaction.commit();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction transaction = fm.beginTransaction();
+//        mFCSFragment = new FlightControllerSettingFragment();
+//        transaction.replace(R.id.container, mFCSFragment);
+//        transaction.commit();
     }
 
     private void initUI() {

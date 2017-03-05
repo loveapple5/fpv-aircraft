@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/RC_calibration"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/RC_calibration">
+        android:layout_height="40dp">
 
         <TextView
-            android:text="遥控器校准"
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView11"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:text="遥控器校准" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -23,52 +24,52 @@
         android:layout_height="40dp">
 
         <TextView
-            android:text="云台拨轮控制速度X"
+            android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/textView12" />
+            android:layout_alignParentTop="true"
+            android:text="云台拨轮控制速度X" />
 
         <TextView
+            android:id="@+id/tv_GimbalSpeed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/tv_GimbalSpeed"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:text="50" />
 
         <ProgressBar
+            android:id="@+id/progressBar3"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="95dp"
-            android:id="@+id/progressBar3"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="95dp" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/RC_Mode"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/RC_Mode">
+        android:layout_height="40dp">
 
         <Spinner
+            android:id="@+id/sp_RemoteControllerMode"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="11dp"
-            android:id="@+id/sp_RemoteControllerMode"
-            android:layout_alignParentEnd="true" />
+            android:layout_marginStart="11dp" />
 
         <TextView
-            android:text="遥杆模式"
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView13"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:text="遥杆模式" />
 
     </RelativeLayout>
 
@@ -77,12 +78,12 @@
         android:layout_height="40dp">
 
         <TextView
-            android:text="遥控器自定义按键"
+            android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView15"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:text="遥控器自定义按键" />
     </RelativeLayout>
 
 </LinearLayout>

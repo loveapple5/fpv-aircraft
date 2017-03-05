@@ -3,7 +3,6 @@ package com.dji.FPVDemo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -46,7 +46,7 @@ public class FlightControllerSettingFragment extends Fragment {
     private DJIRemoteController djiRemoteController;
 
     private Button btnGoHome;
-    private SwitchCompat scChangeFlightMode;
+    private Switch scChangeFlightMode;
 
     private EditText etHomeHeight;
     private Button btnHomeHeight;
@@ -57,11 +57,11 @@ public class FlightControllerSettingFragment extends Fragment {
     private EditText etMaxFlightRadius;
     private Button btnMaxFlightRadius;
 
-    private SwitchCompat scNoviceMode;
+    private Switch scNoviceMode;
     private Spinner spFailSafe;
-    private SwitchCompat scSmartGoHome;
-    private SwitchCompat scLED;
-    private SwitchCompat scVisionPositioning;
+    private Switch scSmartGoHome;
+    private Switch scLED;
+    private Switch scVisionPositioning;
 
     private ArrayList failSafeModeList;
 
@@ -71,7 +71,7 @@ public class FlightControllerSettingFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_flight_controller_setting, container, false);
         btnGoHome = (Button) root.findViewById(R.id.btn_gohome);
         btnGoHome.setOnClickListener(new GoHomeBtnClickListener());
-        scChangeFlightMode = (SwitchCompat) root.findViewById(R.id.sc_change_mode);
+        scChangeFlightMode = (Switch) root.findViewById(R.id.sc_change_mode);
         scChangeFlightMode.setOnCheckedChangeListener(new ChangeFlightModeScListener());
 
         etHomeHeight = (EditText) root.findViewById(R.id.et_home_height);
@@ -86,14 +86,14 @@ public class FlightControllerSettingFragment extends Fragment {
         btnMaxFlightRadius = (Button) root.findViewById(R.id.btn_max_flight_radius);
         btnMaxFlightRadius.setOnClickListener(new MaxFlightRadiusClickListener());
 
-        scNoviceMode = (SwitchCompat) root.findViewById(R.id.sc_novice_mode);
+        scNoviceMode = (Switch) root.findViewById(R.id.sc_novice_mode);
         scNoviceMode.setOnCheckedChangeListener(new NoviceModeScListener());
 
-        scSmartGoHome = (SwitchCompat) root.findViewById(R.id.sc_smart_go_home);
+        scSmartGoHome = (Switch) root.findViewById(R.id.sc_smart_go_home);
         scSmartGoHome.setOnCheckedChangeListener(new SmartGoHomeScListener());
-        scLED = (SwitchCompat)root.findViewById(R.id.sc_led);
+        scLED = (Switch)root.findViewById(R.id.sc_led);
         scLED.setOnCheckedChangeListener(new LEDScListener());
-        scVisionPositioning = (SwitchCompat) root.findViewById(R.id.sc_vision_positioning);
+        scVisionPositioning = (Switch) root.findViewById(R.id.sc_vision_positioning);
         scVisionPositioning.setOnCheckedChangeListener(new VisionPositioningScListener());
 
         spFailSafe = (Spinner) root.findViewById(R.id.sc_fail_safe);
@@ -248,7 +248,9 @@ public class FlightControllerSettingFragment extends Fragment {
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-            djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled(checked ,null);//视觉定位
+            if(djiFlightController.getIntelligentFlightAssistant() != null) {
+                djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled(checked ,null);//视觉定位
+            }
         }
     }
 
