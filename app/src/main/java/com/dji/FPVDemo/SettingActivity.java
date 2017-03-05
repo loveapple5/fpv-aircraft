@@ -9,7 +9,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.dji.FPVDemo.fragment.BatterySettingFragment;
+import com.dji.FPVDemo.fragment.CameraPhotoFragment;
+import com.dji.FPVDemo.fragment.CameraVideoFragment;
 import com.dji.FPVDemo.fragment.FlightControllerSettingFragment;
+import com.dji.FPVDemo.fragment.GimbalSettingFragment;
 import com.dji.FPVDemo.fragment.RemoteControllerSettingFragment;
 import com.dji.FPVDemo.fragment.WiFiLinkSettingFragment;
 
@@ -19,12 +22,18 @@ public class SettingActivity extends FragmentActivity {
     private RemoteControllerSettingFragment mRCSFragment;
     private WiFiLinkSettingFragment mWLSFragment;
     private BatterySettingFragment mBSFragment;
+    private GimbalSettingFragment gimbalFragment;
+    private CameraPhotoFragment cameraPhotoFragment;
+    private CameraVideoFragment cameraVideoFragment;
 
 
     private Button btnFCS;
     private Button btnRCS;
     private Button btnWLS;
     private Button btnBS;
+    private Button btnGimbal;
+    private Button btnPhoto;
+    private Button btnVideo;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +68,7 @@ public class SettingActivity extends FragmentActivity {
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                mRCSFragment=new RemoteControllerSettingFragment();
+                mRCSFragment = new RemoteControllerSettingFragment();
                 transaction.replace(R.id.container, mRCSFragment);
                 transaction.commit();
 
@@ -71,7 +80,7 @@ public class SettingActivity extends FragmentActivity {
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                mWLSFragment=new WiFiLinkSettingFragment();
+                mWLSFragment = new WiFiLinkSettingFragment();
                 transaction.replace(R.id.container, mWLSFragment);
                 transaction.commit();
 
@@ -83,8 +92,47 @@ public class SettingActivity extends FragmentActivity {
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                mBSFragment=new BatterySettingFragment();
+                mBSFragment = new BatterySettingFragment();
                 transaction.replace(R.id.container, mBSFragment);
+                transaction.commit();
+
+            }
+        });
+
+        btnGimbal = (Button) findViewById(R.id.btn_gimbal);
+        btnGimbal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                gimbalFragment = new GimbalSettingFragment();
+                transaction.replace(R.id.container, gimbalFragment);
+                transaction.commit();
+
+            }
+        });
+
+        btnPhoto = (Button) findViewById(R.id.btn_camera_photo);
+        btnPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                cameraPhotoFragment = new CameraPhotoFragment();
+                transaction.replace(R.id.container, cameraPhotoFragment);
+                transaction.commit();
+
+            }
+        });
+
+        btnVideo = (Button) findViewById(R.id.btn_camera_video);
+        btnVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                cameraVideoFragment = new CameraVideoFragment();
+                transaction.replace(R.id.container, cameraVideoFragment);
                 transaction.commit();
 
             }

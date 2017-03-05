@@ -18,6 +18,8 @@ public class CameraPhotoFragment extends Fragment {
     private DJIAircraft djiAircraft;
     private DJICamera djiCamera;
 
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //----------------------------B设置菜单--------------------------------
