@@ -108,24 +108,6 @@ public class StatusListActivity extends FragmentActivity {
                     tvFlightMode.setText(FlightMode);
                     String CompassStatus = msg.getData().getString("isCompassHasError");
                     tvCompassStatus.setText(CompassStatus);
-                    break;
-                case MSG_CHANGE_SDCard_Space:
-                    String SDCardSpace = msg.getData().getString("SDCardSpace");
-                    tvSDCardSpace.setText(SDCardSpace);
-                    break;
-                case MSG_GET_GIMBAL_STATES:
-                    String GimbalStates = msg.getData().getString("GimbalStates");
-                    tvGimbalStatus.setText(GimbalStates);
-                    break;
-                case MSG_VERSION_STATUS:
-                    String version = msg.getData().getString("version");
-                    tvSelfCheck.setText("有新版本可以升级:" + version);
-                    break;
-                case MSG_IMU_STAUTS:
-                    String IMU = msg.getData().getString("IMU");
-                    tvIMUStatus.setText(IMU);
-                    break;
-                case MSG_COMPASS_CALIBRATE:
                     String status = msg.getData().getString("CalibrationStatus");
                     boolean isCalibrating = msg.getData().getBoolean("isCalibrating");
                     String Heading = msg.getData().getString("Heading");
@@ -147,7 +129,22 @@ public class StatusListActivity extends FragmentActivity {
 //                    }
                     tvCompassCalibrate.setText(status);
 
-
+                    break;
+                case MSG_CHANGE_SDCard_Space:
+                    String SDCardSpace = msg.getData().getString("SDCardSpace");
+                    tvSDCardSpace.setText(SDCardSpace);
+                    break;
+                case MSG_GET_GIMBAL_STATES:
+                    String GimbalStates = msg.getData().getString("GimbalStates");
+                    tvGimbalStatus.setText(GimbalStates);
+                    break;
+                case MSG_VERSION_STATUS:
+                    String version = msg.getData().getString("version");
+                    tvSelfCheck.setText("有新版本可以升级:" + version);
+                    break;
+                case MSG_IMU_STAUTS:
+                    String IMU = msg.getData().getString("IMU");
+                    tvIMUStatus.setText(IMU);
                     break;
                 default:
                     break;
@@ -180,6 +177,7 @@ public class StatusListActivity extends FragmentActivity {
 
             private String before;
             private String after;
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 before = charSequence.toString();
@@ -206,7 +204,6 @@ public class StatusListActivity extends FragmentActivity {
                     Toast.makeText(StatusListActivity.this, "校准失败", Toast.LENGTH_SHORT).show();
                     djiCompass.stopCompassCalibration(null);
                 }
-
             }
         });
 
@@ -248,7 +245,6 @@ public class StatusListActivity extends FragmentActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //确定按钮的响应事件
                         if (which == DialogInterface.BUTTON_POSITIVE) {
-                            FCCallbackType = CALLBACK_COMPASS_CALIBRATE;
                             //---------------------------B1compass校准-------------------------------
                             djiCompass.startCompassCalibration(new DJiCompassCalibrateCallback());
                         }
@@ -392,46 +388,18 @@ public class StatusListActivity extends FragmentActivity {
     class SystemStateCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback {
         @Override
         public void onResult(DJIFlightControllerCurrentState djiFlightControllerCurrentState) {
-            if (FCCallbackType == CALLBACK_FLIGHT_MODE) {
-                // mHomeLatitude = state.getHomeLocation().getLatitude();
-                // mHomeLongitude = state.getHomeLocation().getLongitude();
-                StringBuilder sb = new StringBuilder();
-                Bundle bundle = new Bundle();
-                sb.append(djiFlightControllerCurrentState.getFlightMode().name());
-                bundle.putString("FlightMode", sb.toString());
-
-                if (null != djiCompass) {
-                    sb.delete(0, sb.length());
-
-                    //if (djiCompass.isCalibrating()){
-                    //   sb.append("已校准");
-                    //}else {
-                    //    sb.append("未校准");
-                    //}
-
-                    // bundle.putString("isCompassCalibrating", sb.toString());
-
-                    if (djiCompass.hasError()) {
-                        sb.append("指南针错误");
-                    } else {
-                        sb.append("指南针正常");
-                    }
-
-                    bundle.putString("isCompassHasError", sb.toString());
-                }
-
-                Message msg = Message.obtain();
-                msg.what = MSG_CHANGE_FLIGHT_STATUS;
-                msg.setData(bundle);
-                handler.sendMessage(msg);
-            } else if (FCCallbackType == CALLBACK_COMPASS_CALIBRATE) {
-                Bundle bundle = new Bundle();
-                bundle.putString("CalibrationStatus", djiCompass.getCalibrationStatus().toString());
-                bundle.putBoolean("isCalibrating", djiCompass.isCalibrating());
-                bundle.putDouble("Heading", djiCompass.getHeading());
-                handler.sendEmptyMessage(MSG_COMPASS_CALIBRATE);
-                //Log.d("fc", djiCompass.getCalibrationStatus().toString());
-            }
+            // mHomeLatitude = state.getHomeLocation().getLatitude();
+            // mHomeLongitude = state.getHomeLocation().getLongitude();
+            Bundle bundle = new Bundle();
+            bundle.putString("FlightMode", djiFlightControllerCurrentState.getFlightMode().name());
+            bundle.putString("isCompassHasError", djiCompass.hasError() ? "指南针错误" : "指南针正常");
+            bundle.putString("CalibrationStatus", djiCompass.getCalibrationStatus().toString());
+            bundle.putBoolean("isCalibrating", djiCompass.isCalibrating());
+            bundle.putDouble("Heading", djiCompass.getHeading());
+            Message msg = Message.obtain();
+            msg.what = MSG_CHANGE_FLIGHT_STATUS;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
         }
     }
 
