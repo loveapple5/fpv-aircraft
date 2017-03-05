@@ -23,6 +23,7 @@ import dji.common.error.DJIError;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.util.DJICommonCallbacks;
 import dji.sdk.battery.DJIBattery;
+import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.products.DJIAircraft;
 
 public class BatterySettingFragment extends Fragment {
@@ -33,6 +34,7 @@ public class BatterySettingFragment extends Fragment {
     protected static final int MSG_TYPE_BATTERY_SERIAL_NUMBER = 4;
 
     private DJIAircraft djiAircraft;
+    private DJIFlightController djiFlightController;
     private DJIBattery djiBattery;
     private DJIFlightControllerCurrentState djiFlightControllerCurrentState;
     private int djiRemainingFlightTime;
@@ -51,6 +53,12 @@ public class BatterySettingFragment extends Fragment {
     private TextView tvDischargeNumber;
     private TextView tvBatteryLifeTime;
     private TextView tvBatteryHistory;
+
+    private EditText etBatteryLowLevel;
+    private Button btnBatteryLowLevel;
+
+    private EditText etBatteryVeryLowLevel;
+    private Button btnBatteryVeryLowLevel;
 
     protected Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -131,12 +139,35 @@ public class BatterySettingFragment extends Fragment {
 
             }
         });
+
+        etBatteryLowLevel = (EditText) view.findViewById(R.id.tv_battery_low_level);
+        btnBatteryLowLevel = (Button) view.findViewById(R.id.btn_battery_low_level);
+        btnBatteryLowLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String strLevel = etBatteryLowLevel.getText().toString();
+                int level = Integer.parseInt(strLevel);
+                djiFlightController.setGoHomeBatteryThreshold(level, null);
+            }
+        });
+
+        etBatteryVeryLowLevel = (EditText) view.findViewById(R.id.tv_battery_very_low_level);
+        btnBatteryVeryLowLevel = (Button) view.findViewById(R.id.btn_battery_very_low_level);
+        btnBatteryVeryLowLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String strLevel = etBatteryVeryLowLevel.getText().toString();
+                int level = Integer.parseInt(strLevel);
+                djiFlightController.setLandImmediatelyBatteryThreshold(level, null);
+            }
+        });
     }
 
     private void InitDJI() {
 
         //----------------------------B设置菜单--------------------------------
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+        djiFlightController = djiAircraft.getFlightController();
         djiBattery = djiAircraft.getBattery();
         djiFlightControllerCurrentState = djiAircraft.getFlightController().getCurrentState();
         //--------------------------B5智能电池设置------------------------------------
@@ -186,6 +217,8 @@ public class BatterySettingFragment extends Fragment {
         }
     }
 
+    private int lastBatteryEnergyPercent = 100;
+
     class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
         @Override
         public void onResult(DJIBatteryState djiBatteryState) {
@@ -232,8 +265,8 @@ public class BatterySettingFragment extends Fragment {
                 @Override
                 public void onSuccess(DJIBatteryWarningInformation[] djiBatteryWarningInformations) {
                     if (djiBatteryWarningInformations != null && djiBatteryWarningInformations.length > 0) {
+                        StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < djiBatteryWarningInformations.length; i++) {
-                            StringBuilder sb = new StringBuilder();
                             DJIBatteryWarningInformation information = djiBatteryWarningInformations[i];
                             if (information.hasError()) {
                                 sb.append("currentOverload:" + information.isCurrentOverload())
@@ -243,10 +276,9 @@ public class BatterySettingFragment extends Fragment {
                                         .append(" customDischargeEnabled:" + information.isCustomDischargeEnabled())
                                         .append(" underVoltageBatteryCellIndex:" + information.getUnderVoltageBatteryCellIndex())
                                         .append(" damagedBatteryCellIndex:" + information.getDamagedBatteryCellIndex()).append("\r\n");
-
                             }
-
                         }
+                        tvBatteryHistory.setText(sb.toString());
                     }
                 }
 
