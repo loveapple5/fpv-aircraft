@@ -222,7 +222,7 @@ public class BatterySettingFragment extends Fragment {
             int batteryLifeTime = djiBatteryState.getLifetimeRemainingPercent();
             bundle2.putInt("batteryLifeTime", batteryLifeTime);
             Message msg2 = Message.obtain();
-            msg2.what = MSG_TYPE_BatteryTemperature;
+            msg2.what = MSG_TYPE_BATTERY_STATUS;
             msg2.setData(bundle2);
             handler.sendMessage(msg2);
 
