@@ -18,15 +18,12 @@ import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
 import dji.common.battery.DJIBatteryState;
+import dji.common.battery.DJIBatteryWarningInformation;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.util.DJICommonCallbacks;
 import dji.sdk.battery.DJIBattery;
 import dji.sdk.products.DJIAircraft;
-
-/**
- * Created by ZXW on 2017/2/26.
- */
 
 public class BatterySettingFragment extends Fragment {
 
@@ -53,7 +50,6 @@ public class BatterySettingFragment extends Fragment {
     private TextView tvBatterySerialNumber;
     private TextView tvDischargeNumber;
     private TextView tvBatteryLifeTime;
-
 
     protected Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -97,8 +93,6 @@ public class BatterySettingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         InitDJI();
     }
-
-    ;
 
     private void InitUI(View view) {
         tvBatteryCurrentEnergy = (TextView) view.findViewById(R.id.tv_Battery_Energy);
@@ -165,6 +159,7 @@ public class BatterySettingFragment extends Fragment {
         msg.what = MSG_TYPE_BatteryCurrentEnergy;
         msg.setData(bundle);
         handler.sendMessage(msg);
+
     }
 
     class SmartGoHomeThresholdListener implements View.OnClickListener {
@@ -230,6 +225,18 @@ public class BatterySettingFragment extends Fragment {
             //低电量警告
             //严重低电量警告
             //int eneryPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
+//            djiBattery.getWarningInformationRecords(new DJICommonCallbacks.DJICompletionCallbackWith<DJIBatteryWarningInformation[]>() {
+//
+//                @Override
+//                public void onSuccess(DJIBatteryWarningInformation[] djiBatteryWarningInformations) {
+//
+//                }
+//
+//                @Override
+//                public void onFailure(DJIError djiError) {
+//
+//                }
+//            });
         }
     }
 };

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import dji.sdk.remotecontroller.DJIRemoteController;
 public class RemoteControllerSettingFragment extends Fragment {
 
     protected static final int GET_RC_MODE = 1;
-    protected static final int GET_Gimbal_Speed=2;
+    protected static final int GET_Gimbal_Speed = 2;
 
     private DJIAircraft djiAircraft;
     private DJIRemoteController djiRemoteController;
@@ -44,6 +45,7 @@ public class RemoteControllerSettingFragment extends Fragment {
     private Spinner spRCMode;
     private ArrayList RCModeList;
     private TextView tvGimbalSpeed;
+    private Button btnGimbalSpeed;
 
 
     protected Handler handler = new Handler(new Handler.Callback() {
@@ -65,10 +67,11 @@ public class RemoteControllerSettingFragment extends Fragment {
             return false;
         }
     });
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_remote_controller_setting, container, false);
+        View view = inflater.inflate(R.layout.fragment_remote_controller_setting, container, false);
         InitUI(view);
         InitDJI();
         return view;
@@ -78,9 +81,10 @@ public class RemoteControllerSettingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-    private void InitUI(View view){
-        spRCMode = (Spinner)view.findViewById(R.id.sp_RemoteControllerMode);
-        tvGimbalSpeed=(TextView)view.findViewById(R.id.tv_GimbalSpeed);
+
+    private void InitUI(View view) {
+        spRCMode = (Spinner) view.findViewById(R.id.sp_RemoteControllerMode);
+        tvGimbalSpeed = (TextView) view.findViewById(R.id.tv_GimbalSpeed);
         RCModeList = new ArrayList<String>();
         RCModeList.add("日本手");
         RCModeList.add("美国手");
@@ -104,8 +108,18 @@ public class RemoteControllerSettingFragment extends Fragment {
             }
         });
 
+        btnGimbalSpeed = (Button) view.findViewById(R.id.btn_gimbal_speed);
+        btnGimbalSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String strSpeed = tvGimbalSpeed.getText().toString();
+                short speed = Short.parseShort(strSpeed);
+                djiRemoteController.setRCWheelControlGimbalSpeed(speed, null);
+            }
+        });
     }
-    private void InitDJI(){
+
+    private void InitDJI() {
 
         //----------------------------B设置菜单--------------------------------
         //--------------------------B3遥控器设置--------------------------------------
@@ -117,7 +131,9 @@ public class RemoteControllerSettingFragment extends Fragment {
 //        djiRemoteController.setRCWheelControlGimbalSpeed(new SetRCWheelControlGimbalSpeedCallback());
         //摇杆模式
         djiRemoteController.getRCControlMode(new GetRCControlModeCallback());
-    };
+    }
+
+    ;
 
     class GetRCControlModeCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJIRCControlMode> {
 
@@ -131,14 +147,14 @@ public class RemoteControllerSettingFragment extends Fragment {
                 sb.append("中国手");
             } else if (mode == DJIRCControlStyle.American.value()) {
                 sb.append("美国手");
-            } 
+            }
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("RCMode", sb.toString());
-                    Message msg = Message.obtain();
-                    msg.what = GET_RC_MODE;
-                    msg.setData(bundle);
-                    handler.sendMessage(msg);
+            Bundle bundle = new Bundle();
+            bundle.putString("RCMode", sb.toString());
+            Message msg = Message.obtain();
+            msg.what = GET_RC_MODE;
+            msg.setData(bundle);
+            handler.sendMessage(msg);
         }
 
         @Override
@@ -146,17 +162,19 @@ public class RemoteControllerSettingFragment extends Fragment {
 
         }
     }
+
     class SetRCControlModeCallback implements DJICommonCallbacks.DJICompletionCallback {
         @Override
         public void onResult(DJIError djiError) {
-            if(djiError == null) {
+            if (djiError == null) {
                 Toast.makeText(getActivity(), "设置成功", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "设置失败", Toast.LENGTH_SHORT).show();
             }
         }
     }
-    class GetRCWheelControlGimbalSpeedCallback implements DJICommonCallbacks.DJICompletionCallbackWith<Short>{
+
+    class GetRCWheelControlGimbalSpeedCallback implements DJICommonCallbacks.DJICompletionCallbackWith<Short> {
 
         @Override
         public void onSuccess(Short RCWheelControlGimbalSpeed) {
