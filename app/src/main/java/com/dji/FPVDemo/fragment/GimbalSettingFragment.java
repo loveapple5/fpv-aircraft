@@ -2,11 +2,13 @@ package com.dji.FPVDemo.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,9 +22,7 @@ import dji.common.remotecontroller.DJIRCControlMode;
 import dji.common.remotecontroller.DJIRCControlStyle;
 import dji.sdk.gimbal.DJIGimbal;
 import dji.sdk.products.DJIAircraft;
-/**
- * Created by ZXW on 2017/3/3.
- */
+
 
 public class GimbalSettingFragment extends Fragment {
 
@@ -30,12 +30,20 @@ public class GimbalSettingFragment extends Fragment {
     private DJIAircraft djiAircraft;
     private DJIGimbal djiGimbal;
 
+    private SwitchCompat wcGimbalPitchRange;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_remote_controller_setting, container, false);
-        InitUI(view);
+        wcGimbalPitchRange = (SwitchCompat) view.findViewById(R.id.rc_gimbal_pitch_range);
+        wcGimbalPitchRange.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                djiGimbal.setPitchRangeExtensionEnabled(checked, null);
+            }
+        });
         InitDJI();
         return view;
     }

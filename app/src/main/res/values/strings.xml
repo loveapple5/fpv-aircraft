@@ -50,4 +50,6 @@
     <string name="smart_go_home">自动返航开关</string>
     <string name="led_switch">led开关</string>
     <string name="vision_positioning">视觉定位开关</string>
+
+    <string name="gimbal_pitch_range">云台俯仰限位</string>
 </resources>
