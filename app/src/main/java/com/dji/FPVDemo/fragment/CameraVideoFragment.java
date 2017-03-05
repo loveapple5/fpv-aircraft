@@ -28,6 +28,7 @@ public class CameraVideoFragment extends Fragment {
     private DJICamera djiCamera;
 
     private Spinner spVideoFormat;
+    private Spinner spVideoResolve;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,52 @@ public class CameraVideoFragment extends Fragment {
 
             }
         });
+
+        spVideoResolve = (Spinner) view.findViewById(R.id.sp_video_resolve);
+        //数据
+        ArrayList<String> resolveList = new ArrayList<String>();
+        resolveList.add("2704×1520/24fps");
+        resolveList.add("2704×1520/30fps");
+        resolveList.add("1920×1080/24fps");
+        resolveList.add("1920×1080/30fps");
+        resolveList.add("1280×720/24fps");
+        resolveList.add("1280×720/24fps");
+        resolveList.add("1280×720/48fps");
+        resolveList.add("1280×720/60fps");
+//        RCModeList.add("自定义");
+
+        //适配器
+        ArrayAdapter resolveAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, resolveList);
+        //设置样式
+        resolveAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        spVideoFormat.setAdapter(resolveAdapter);
+        spVideoFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                DJICameraSettingsDef.CameraVideoResolution resolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_1280x720;
+                if(position >= 0 && position <= 1) {
+                    resolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_2704X1520;
+                } else if(position >= 2 && position <= 3) {
+                    resolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_1920x1080;
+                }
+                DJICameraSettingsDef.CameraVideoFrameRate rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_24fps;
+                if(position == 1 || position == 3) {
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_30fps;
+                } else if(position == 6) {
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_48fps;
+                } else {
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_60fps;
+                }
+                djiCamera.setVideoResolutionAndFrameRate(resolution, rate, null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return view;
     }
 
