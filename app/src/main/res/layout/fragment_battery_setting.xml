@@ -57,6 +57,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,17 +68,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="@string/confirm"/>
+            android:text="@string/confirm" />
+
         <EditText
             android:id="@+id/et_smart_go_home_threshold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/btn_smart_go_home_threshold"/>
+            android:layout_toStartOf="@id/btn_smart_go_home_threshold" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,12 +91,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="@string/confirm"/>
+            android:text="@string/confirm" />
+
         <EditText
             android:id="@+id/et_discharge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/btn_discharge"/>
+            android:layout_toStartOf="@id/btn_discharge" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -172,12 +176,16 @@
         <Button
             android:id="@+id/btn_battery_low_level"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/confirm" />
+
         <EditText
             android:id="@+id/tv_battery_low_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
+            android:layout_toStartOf="@id/btn_battery_low_level"
+            android:inputType="number" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -192,12 +200,16 @@
         <Button
             android:id="@+id/btn_battery_very_low_level"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/confirm" />
+
         <EditText
             android:id="@+id/tv_battery_very_low_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
+            android:layout_toStartOf="@id/btn_battery_very_low_level"
+            android:inputType="number" />
     </RelativeLayout>
 
 </LinearLayout>

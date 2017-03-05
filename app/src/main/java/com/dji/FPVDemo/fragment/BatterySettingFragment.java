@@ -83,6 +83,7 @@ public class BatterySettingFragment extends Fragment {
                 case MSG_TYPE_BATTERY_SERIAL_NUMBER:
                     String batterySerialNumber = msg.getData().getString("batterySerialNumber");
                     tvBatterySerialNumber.setText(batterySerialNumber);
+                    break;
                 case MSG_TYPE_BATTERY_HISTORY:
                     tvBatteryHistory.setText(msg.obj.toString());
                     break;
@@ -150,8 +151,10 @@ public class BatterySettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String strLevel = etBatteryLowLevel.getText().toString();
-                int level = Integer.parseInt(strLevel);
-                djiFlightController.setGoHomeBatteryThreshold(level, null);
+                if(!strLevel.isEmpty()) {
+                    int level = Integer.parseInt(strLevel);
+                    djiFlightController.setGoHomeBatteryThreshold(level, null);
+                }
             }
         });
 
@@ -161,8 +164,11 @@ public class BatterySettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String strLevel = etBatteryVeryLowLevel.getText().toString();
-                int level = Integer.parseInt(strLevel);
-                djiFlightController.setLandImmediatelyBatteryThreshold(level, null);
+                if(!strLevel.isEmpty()) {
+                    int level = Integer.parseInt(strLevel);
+                    djiFlightController.setLandImmediatelyBatteryThreshold(level, null);
+                }
+
             }
         });
     }
