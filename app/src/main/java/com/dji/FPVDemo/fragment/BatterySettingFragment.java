@@ -32,6 +32,7 @@ public class BatterySettingFragment extends Fragment {
     protected static final int MSG_TYPE_BatteryTemperature = 2;
     protected static final int MSG_TYPE_BATTERY_STATUS = 3;
     protected static final int MSG_TYPE_BATTERY_SERIAL_NUMBER = 4;
+    protected static final int MSG_TYPE_BATTERY_HISTORY = 5;
 
     private DJIAircraft djiAircraft;
     private DJIFlightController djiFlightController;
@@ -82,6 +83,9 @@ public class BatterySettingFragment extends Fragment {
                 case MSG_TYPE_BATTERY_SERIAL_NUMBER:
                     String batterySerialNumber = msg.getData().getString("batterySerialNumber");
                     tvBatterySerialNumber.setText(batterySerialNumber);
+                case MSG_TYPE_BATTERY_HISTORY:
+                    tvBatteryHistory.setText(msg.obj.toString());
+                    break;
                 default:
                     break;
             }
@@ -217,8 +221,6 @@ public class BatterySettingFragment extends Fragment {
         }
     }
 
-    private int lastBatteryEnergyPercent = 100;
-
     class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
         @Override
         public void onResult(DJIBatteryState djiBatteryState) {
@@ -264,8 +266,8 @@ public class BatterySettingFragment extends Fragment {
 
                 @Override
                 public void onSuccess(DJIBatteryWarningInformation[] djiBatteryWarningInformations) {
+                    StringBuilder sb = new StringBuilder();
                     if (djiBatteryWarningInformations != null && djiBatteryWarningInformations.length > 0) {
-                        StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < djiBatteryWarningInformations.length; i++) {
                             DJIBatteryWarningInformation information = djiBatteryWarningInformations[i];
                             if (information.hasError()) {
@@ -278,8 +280,13 @@ public class BatterySettingFragment extends Fragment {
                                         .append(" damagedBatteryCellIndex:" + information.getDamagedBatteryCellIndex()).append("\r\n");
                             }
                         }
-                        tvBatteryHistory.setText(sb.toString());
+                    } else {
+                        sb.append("正常");
                     }
+                    Message msg = Message.obtain();
+                    msg.what = MSG_TYPE_BATTERY_HISTORY;
+                    msg.obj = sb.toString();
+                    handler.sendMessage(msg);
                 }
 
                 @Override
