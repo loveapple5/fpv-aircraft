@@ -89,8 +89,8 @@ public class CameraVideoFragment extends Fragment {
         //设置样式
         resolveAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
-        spVideoFormat.setAdapter(resolveAdapter);
-        spVideoFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spVideoResolve.setAdapter(resolveAdapter);
+        spVideoResolve.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 DJICameraSettingsDef.CameraVideoResolution resolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_1280x720;
