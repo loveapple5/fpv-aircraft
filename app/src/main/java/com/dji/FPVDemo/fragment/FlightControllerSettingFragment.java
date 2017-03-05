@@ -3,6 +3,7 @@ package com.dji.FPVDemo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,7 @@ public class FlightControllerSettingFragment extends Fragment {
 
         scSmartGoHome = (Switch) root.findViewById(R.id.sc_smart_go_home);
         scSmartGoHome.setOnCheckedChangeListener(new SmartGoHomeScListener());
-        scLED = (Switch)root.findViewById(R.id.sc_led);
+        scLED = (Switch) root.findViewById(R.id.sc_led);
         scLED.setOnCheckedChangeListener(new LEDScListener());
         scVisionPositioning = (Switch) root.findViewById(R.id.sc_vision_positioning);
         scVisionPositioning.setOnCheckedChangeListener(new VisionPositioningScListener());
@@ -145,6 +146,9 @@ public class FlightControllerSettingFragment extends Fragment {
             String text = etHomeHeight.getText().toString();
             DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
             int height = Integer.parseInt(text);
+            int getHeight = state.getGoHomeHeight();
+            Log.d("fc", "getHeight:" + getHeight);
+            Log.d("fc", "setHeight:" + height);
             if (height >= 20 && height <= 500) {
                 state.setGoHomeHeight(height);//返航高度
             } else {
@@ -248,8 +252,8 @@ public class FlightControllerSettingFragment extends Fragment {
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-            if(djiFlightController.getIntelligentFlightAssistant() != null) {
-                djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled(checked ,null);//视觉定位
+            if (djiFlightController.getIntelligentFlightAssistant() != null) {
+                djiFlightController.getIntelligentFlightAssistant().setVisionPositioningEnabled(checked, null);//视觉定位
             }
         }
     }

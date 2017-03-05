@@ -104,7 +104,8 @@ public class BatterySettingFragment extends Fragment {
         tvBatteryCurrentEnergy = (TextView) view.findViewById(R.id.tv_Battery_Energy);
         tvBatteryTemperature = (TextView) view.findViewById(R.id.tv_Battery_Temperature);
         tvRemainingFlightTime = (TextView) view.findViewById(R.id.tv_RemainingFlightTime);
-        djiRemainingFlightTime = djiFlightControllerCurrentState.getSmartGoHomeStatus().getRemainingFlightTime();//是否剩余飞行时间
+        //是否剩余飞行时间
+        djiRemainingFlightTime = djiFlightControllerCurrentState.getSmartGoHomeStatus().getRemainingFlightTime();
         tvRemainingFlightTime.setText(djiRemainingFlightTime + "秒");
         etSmartGoHomeThreshold = (EditText) view.findViewById(R.id.et_smart_go_home_threshold);
         btnSmartGoHomeThreshold = (Button) view.findViewById(R.id.btn_smart_go_home_threshold);
