@@ -144,19 +144,4 @@
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="低电量" />
-
-        <TextView
-            android:id="@+id/tv_battery_remaining_life"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
 </LinearLayout>
