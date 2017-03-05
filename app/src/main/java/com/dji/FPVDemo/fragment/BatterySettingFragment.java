@@ -50,6 +50,7 @@ public class BatterySettingFragment extends Fragment {
     private TextView tvBatterySerialNumber;
     private TextView tvDischargeNumber;
     private TextView tvBatteryLifeTime;
+    private TextView tvBatteryHistory;
 
     protected Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -110,6 +111,7 @@ public class BatterySettingFragment extends Fragment {
         tvBatterySerialNumber = (TextView) view.findViewById(R.id.tv_battery_serial_number);
         tvDischargeNumber = (TextView) view.findViewById(R.id.tv_discharge_number);
         tvBatteryLifeTime = (TextView) view.findViewById(R.id.tv_battery_remaining_life);
+        tvBatteryHistory = (TextView) view.findViewById(R.id.tv_battery_history);
 
         //序列号
         djiBattery.getSerialNumber(new DJICommonCallbacks.DJICompletionCallbackWith<String>() {
@@ -225,18 +227,34 @@ public class BatterySettingFragment extends Fragment {
             //低电量警告
             //严重低电量警告
             //int eneryPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
-//            djiBattery.getWarningInformationRecords(new DJICommonCallbacks.DJICompletionCallbackWith<DJIBatteryWarningInformation[]>() {
-//
-//                @Override
-//                public void onSuccess(DJIBatteryWarningInformation[] djiBatteryWarningInformations) {
-//
-//                }
-//
-//                @Override
-//                public void onFailure(DJIError djiError) {
-//
-//                }
-//            });
+            djiBattery.getWarningInformationRecords(new DJICommonCallbacks.DJICompletionCallbackWith<DJIBatteryWarningInformation[]>() {
+
+                @Override
+                public void onSuccess(DJIBatteryWarningInformation[] djiBatteryWarningInformations) {
+                    if (djiBatteryWarningInformations != null && djiBatteryWarningInformations.length > 0) {
+                        for (int i = 0; i < djiBatteryWarningInformations.length; i++) {
+                            StringBuilder sb = new StringBuilder();
+                            DJIBatteryWarningInformation information = djiBatteryWarningInformations[i];
+                            if (information.hasError()) {
+                                sb.append("currentOverload:" + information.isCurrentOverload())
+                                        .append(" overHeating:" + information.isOverHeating())
+                                        .append(" lowTemperature:" + information.isLowTemperature())
+                                        .append(" shortCircuit:" + information.isShortCircuit())
+                                        .append(" customDischargeEnabled:" + information.isCustomDischargeEnabled())
+                                        .append(" underVoltageBatteryCellIndex:" + information.getUnderVoltageBatteryCellIndex())
+                                        .append(" damagedBatteryCellIndex:" + information.getDamagedBatteryCellIndex()).append("\r\n");
+
+                            }
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
         }
     }
 };
