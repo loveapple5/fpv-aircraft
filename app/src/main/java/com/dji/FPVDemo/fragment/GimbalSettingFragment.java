@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,6 +33,10 @@ public class GimbalSettingFragment extends Fragment {
 
     private Switch wcGimbalPitchRange;
 
+    private EditText etGimbalTune;
+    private Button btnGimbalTune;
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gimbal_setting, container, false);
         wcGimbalPitchRange = (Switch) view.findViewById(R.id.rc_gimbal_pitch_range);
@@ -40,7 +46,18 @@ public class GimbalSettingFragment extends Fragment {
                 djiGimbal.setPitchRangeExtensionEnabled(checked, null);
             }
         });
-
+        etGimbalTune = (EditText) view.findViewById(R.id.et_gimbal_tune);
+        btnGimbalTune = (Button) view.findViewById(R.id.btn_gimbal_tune);
+        btnGimbalTune.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strDegree = etGimbalTune.getText().toString();
+                if(!strDegree.isEmpty()) {
+                    float degree = Float.parseFloat(strDegree);
+                    djiGimbal.fineTuneGimbalRollInDegrees(degree, null);
+                }
+            }
+        });
         return view;
     }
 
@@ -59,8 +76,8 @@ public class GimbalSettingFragment extends Fragment {
         @Override
         public void onGimbalAdvancedSettingsStateUpdate(DJIGimbal djiGimbal, DJIGimbalAdvancedSettingsState djiGimbalAdvancedSettingsState) {
 //            djiGimbalAdvancedSettingsState.getAdvancedSettingsProfile();
-            djiGimbalAdvancedSettingsState.getControllerSmoothingPitch();
-            djiGimbalAdvancedSettingsState.getSmoothTrackAccelerationPitch();
+            //djiGimbalAdvancedSettingsState.getControllerSmoothingPitch();
+            //djiGimbalAdvancedSettingsState.getSmoothTrackAccelerationPitch();
 //            djiGimbalAdvancedSettingsState.
         }
     }

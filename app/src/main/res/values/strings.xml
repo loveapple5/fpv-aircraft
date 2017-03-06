@@ -54,7 +54,7 @@
     <string name="gimbal">云台</string>
     <string name="gimbal_pitch_range">云台俯仰限位</string>
 
-    <string name="gimbal_tune">云台微调</string>
+    <string name="gimbal_tune">云台滚转轴微调</string>
 
     <string name="camera_mode">相机模式</string>
 
