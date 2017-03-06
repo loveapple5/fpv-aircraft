@@ -66,6 +66,7 @@
 
     <string name="video_format">视频格式</string>
     <string name="video_resolve">视频尺寸</string>
+    <string name="video_standard">视频标准</string>
 
     <string name="photo_format">照片格式</string>
     <string name="photo_resolve">照片比例</string>
