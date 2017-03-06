@@ -26,7 +26,6 @@ public class CameraPhotoFragment extends Fragment {
     private DJIAircraft djiAircraft;
     private DJICamera djiCamera;
 
-    private Spinner spCameraMode;
     private Spinner spPhotoRatio;
     private Spinner spPhotoFormat;
 
@@ -50,36 +49,6 @@ public class CameraPhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_camera_photo, container, false);
-
-        spCameraMode = (Spinner) view.findViewById(R.id.sp_camera_mode);
-
-        //数据
-        ArrayList<String> cameraModeList = new ArrayList<String>();
-        cameraModeList.add("program");
-        cameraModeList.add("manual");
-
-        //适配器
-        ArrayAdapter cameraModeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, cameraModeList);
-        //设置样式
-        cameraModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //加载适配器
-        spCameraMode.setAdapter(cameraModeAdapter);
-        spCameraMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                DJICameraSettingsDef.CameraExposureMode mode = DJICameraSettingsDef.CameraExposureMode.Manual;
-                if (position == 0) {
-                    mode = DJICameraSettingsDef.CameraExposureMode.Program;
-                }
-                djiCamera.setExposureMode(mode, null);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
 
         spPhotoRatio = (Spinner) view.findViewById(R.id.sp_photo_ratio);
 

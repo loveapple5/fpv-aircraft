@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.dji.FPVDemo.fragment.BatterySettingFragment;
+import com.dji.FPVDemo.fragment.CameraFragment;
 import com.dji.FPVDemo.fragment.CameraPhotoFragment;
 import com.dji.FPVDemo.fragment.CameraVideoFragment;
 import com.dji.FPVDemo.fragment.FlightControllerSettingFragment;
@@ -23,6 +24,7 @@ public class SettingActivity extends FragmentActivity {
     private WiFiLinkSettingFragment mWLSFragment;
     private BatterySettingFragment mBSFragment;
     private GimbalSettingFragment gimbalFragment;
+    private CameraFragment cameraFragment;
     private CameraPhotoFragment cameraPhotoFragment;
     private CameraVideoFragment cameraVideoFragment;
 
@@ -32,6 +34,7 @@ public class SettingActivity extends FragmentActivity {
     private Button btnWLS;
     private Button btnBS;
     private Button btnGimbal;
+    private Button btnCamera;
     private Button btnPhoto;
     private Button btnVideo;
 
@@ -107,6 +110,19 @@ public class SettingActivity extends FragmentActivity {
                 FragmentTransaction transaction = fm.beginTransaction();
                 gimbalFragment = new GimbalSettingFragment();
                 transaction.replace(R.id.container, gimbalFragment);
+                transaction.commit();
+
+            }
+        });
+
+        btnCamera = (Button) findViewById(R.id.btn_camera);
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                cameraFragment = new CameraFragment();
+                transaction.replace(R.id.container, cameraFragment);
                 transaction.commit();
 
             }
