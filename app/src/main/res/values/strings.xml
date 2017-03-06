@@ -62,6 +62,7 @@
 
     <string name="iso">ISO</string>
     <string name="shutter_speed">快门</string>
+    <string name="exposure_compensation">曝光补偿</string>
 
     <string name="video_format">视频格式</string>
     <string name="video_resolve">视频尺寸</string>

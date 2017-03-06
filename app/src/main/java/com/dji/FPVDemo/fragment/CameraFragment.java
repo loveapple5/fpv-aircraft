@@ -26,6 +26,7 @@ public class CameraFragment extends Fragment {
     private Spinner spCameraMode;
     private Spinner spISO;
     private Spinner spShutterSpeed;
+    private Spinner spExposreCompensation;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +53,12 @@ public class CameraFragment extends Fragment {
         spCameraMode = (Spinner) view.findViewById(R.id.sp_camera_mode);
         spISO = (Spinner) view.findViewById(R.id.sp_camera_iso);
         spShutterSpeed = (Spinner) view.findViewById(R.id.sp_camera_shutter_speed);
+        spExposreCompensation = (Spinner) view.findViewById(R.id.sp_exposure_compensation);
+
         initCameraMode();
         initCameraISO();
         initCameraShutterSpeed();
+        initCameraExposureCompensation();
         return view;
     }
 
@@ -170,6 +174,45 @@ public class CameraFragment extends Fragment {
                 }
 
                 djiCamera.setShutterSpeed(speed, null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+
+    private void initCameraExposureCompensation() {
+        //数据
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("-0.3");
+        list.add("0.7");
+
+        //适配器
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        //设置样式
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        spExposreCompensation.setAdapter(adapter);
+        spExposreCompensation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                DJICameraSettingsDef.CameraExposureCompensation compensation;
+                switch(position) {
+                    case 0:
+                        compensation = DJICameraSettingsDef.CameraExposureCompensation.N_0_3;
+                        break;
+                    case 1:
+                        compensation = DJICameraSettingsDef.CameraExposureCompensation.P_0_7;
+                        break;
+                    default:
+                        compensation = DJICameraSettingsDef.CameraExposureCompensation.N_0_3;
+                        break;
+                }
+
+                djiCamera.setExposureCompensation(compensation, null);
             }
 
             @Override
