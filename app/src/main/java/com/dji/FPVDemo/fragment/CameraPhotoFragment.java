@@ -28,6 +28,8 @@ public class CameraPhotoFragment extends Fragment {
 
     private Spinner spPhotoRatio;
     private Spinner spPhotoFormat;
+    private Spinner spWhiteBalance;
+    private Spinner spCameraFilter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,17 @@ public class CameraPhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera_photo, container, false);
 
         spPhotoRatio = (Spinner) view.findViewById(R.id.sp_photo_ratio);
+        spPhotoFormat = (Spinner) view.findViewById(R.id.sp_photo_format);
+        spWhiteBalance = (Spinner) view.findViewById(R.id.sp_white_balance);
+        spCameraFilter = (Spinner) view.findViewById(R.id.sp_camera_filter);
+        initPhotoRatio();
+        initPhotoFormat();
+        initWhiteBalance();
+        initCameraFilter();
+        return view;
+    }
 
+    private void initPhotoRatio() {
         //数据
         ArrayList<String> RCRatioList = new ArrayList<String>();
         RCRatioList.add("4:3");
@@ -77,8 +89,9 @@ public class CameraPhotoFragment extends Fragment {
 
             }
         });
+    }
 
-        spPhotoFormat = (Spinner) view.findViewById(R.id.sp_photo_format);
+    private void initPhotoFormat() {
         //数据
         ArrayList<String> RCFormatList = new ArrayList<String>();
         RCFormatList.add("RAW");
@@ -103,6 +116,89 @@ public class CameraPhotoFragment extends Fragment {
 
             }
         });
-        return view;
+    }
+
+    private void initWhiteBalance() {
+        //数据
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("晴天");
+        list.add("阴天");
+        list.add("白炽灯");
+        list.add("荧光灯");
+//        RCModeList.add("自定义");
+
+        //适配器
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        //设置样式
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        spWhiteBalance.setAdapter(adapter);
+        spWhiteBalance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                DJICameraSettingsDef.CameraWhiteBalance whiteBalance;
+                switch(position) {
+                    case 0:
+                        whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.Sunny;
+                        break;
+                    case 1:
+                        whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.Cloudy;
+                        break;
+                    case 2:
+                        whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.IndoorIncandescent;
+                        break;
+                    case 3:
+                        whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.IndoorFluorescent;
+                        break;
+                    default:
+                        whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.Sunny;
+                        break;
+                }
+                djiCamera.setWhiteBalanceAndColorTemperature(whiteBalance, 0, null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void initCameraFilter() {
+        //数据
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("艺术");
+        list.add("黑白");
+//        RCModeList.add("自定义");
+
+        //适配器
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        //设置样式
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        spCameraFilter.setAdapter(adapter);
+        spCameraFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                DJICameraSettingsDef.CameraDigitalFilter filter;
+                switch(position) {
+                    case 0:
+                        filter = DJICameraSettingsDef.CameraDigitalFilter.Art;
+                        break;
+                    case 1:
+                        filter = DJICameraSettingsDef.CameraDigitalFilter.BlackAndWhite;
+                        break;
+                    default:
+                        filter = DJICameraSettingsDef.CameraDigitalFilter.Art;
+                        break;
+                }
+                djiCamera.setDigitalFilter(filter, null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }
