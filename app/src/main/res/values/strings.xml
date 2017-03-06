@@ -68,6 +68,8 @@
 
     <string name="photo_format">照片格式</string>
     <string name="photo_resolve">照片比例</string>
+    <string name="white_balance">白平衡</string>
+    <string name="camera_filter">滤镜</string>
 
     <string name="video">视频</string>
     <string name="photo">拍照</string>

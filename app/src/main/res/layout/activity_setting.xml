@@ -10,42 +10,42 @@
         <Button
             android:id="@+id/btn_fcs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/flight_controller"/>
         <Button
             android:id="@+id/btn_rcs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/remote_controller"/>
         <Button
             android:id="@+id/btn_wls"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/wifi_link"/>
         <Button
             android:id="@+id/btn_bs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/battery_setting"/>
         <Button
             android:id="@+id/btn_gimbal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/gimbal"/>
         <Button
             android:id="@+id/btn_camera"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/camera"/>
         <Button
             android:id="@+id/btn_camera_photo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/photo"/>
         <Button
             android:id="@+id/btn_camera_video"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/video"/>
     </LinearLayout>
     <LinearLayout
