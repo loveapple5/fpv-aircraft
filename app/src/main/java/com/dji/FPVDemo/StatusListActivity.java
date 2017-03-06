@@ -391,7 +391,7 @@ public class StatusListActivity extends FragmentActivity {
             // mHomeLatitude = state.getHomeLocation().getLatitude();
             // mHomeLongitude = state.getHomeLocation().getLongitude();
             Bundle bundle = new Bundle();
-            bundle.putString("FlightMode", djiFlightControllerCurrentState.getFlightMode().name());
+            bundle.putString("FlightMode", djiFlightControllerCurrentState.getFlightModeString());
             bundle.putString("isCompassHasError", djiCompass.hasError() ? "指南针错误" : "指南针正常");
             bundle.putString("CalibrationStatus", djiCompass.getCalibrationStatus().toString());
             bundle.putBoolean("isCalibrating", djiCompass.isCalibrating());
