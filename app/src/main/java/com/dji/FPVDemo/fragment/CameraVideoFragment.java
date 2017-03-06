@@ -140,8 +140,8 @@ public class CameraVideoFragment extends Fragment {
         //设置样式
         RCModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
-        spVideoFormat.setAdapter(RCModeAdapter);
-        spVideoFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spVideoStandard.setAdapter(RCModeAdapter);
+        spVideoStandard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 DJICameraSettingsDef.CameraVideoStandard standard = DJICameraSettingsDef.CameraVideoStandard.find(position);
