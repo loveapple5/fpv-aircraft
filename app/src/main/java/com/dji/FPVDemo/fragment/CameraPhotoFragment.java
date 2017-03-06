@@ -56,7 +56,7 @@ public class CameraPhotoFragment extends Fragment {
         //数据
         ArrayList<String> cameraModeList = new ArrayList<String>();
         cameraModeList.add("program");
-        cameraModeList.add("manul");
+        cameraModeList.add("manual");
 
         //适配器
         ArrayAdapter cameraModeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, cameraModeList);
