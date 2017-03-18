@@ -2,10 +2,22 @@ package com.dji.FPVDemo;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import dji.common.handheld.DJIHandheldButtonStatus;
 import dji.sdk.camera.DJICamera;
@@ -79,6 +91,47 @@ public class FPVDemoApplication extends Application{
         mHandler = new Handler(Looper.getMainLooper());
         //This is used to start SDK services and initiate SDK.
         DJISDKManager.getInstance().initSDKManager(this, mDJISDKManagerCallback);
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                StringBuilder sb = new StringBuilder();
+                try {
+                    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String date = sDateFormat.format(new java.util.Date());
+                    sb.append("\r\n" + date + "\n");
+
+                    Writer writer = new StringWriter();
+                    PrintWriter printWriter = new PrintWriter(writer);
+                    ex.printStackTrace(printWriter);
+                    Throwable cause = ex.getCause();
+                    while (cause != null) {
+                        cause.printStackTrace(printWriter);
+                        cause = cause.getCause();
+                    }
+                    printWriter.flush();
+                    printWriter.close();
+                    String result = writer.toString();
+                    sb.append(result);
+
+
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String time = formatter.format(new Date());
+                    String fileName = "crash-" + time + ".log";
+                    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash" + File.separator;
+                    File dir = new File(path);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    FileOutputStream fos = new FileOutputStream(path + fileName, true);
+                    fos.write(sb.toString().getBytes());
+                    fos.flush();
+                    fos.close();
+
+                } catch (Exception e) {
+
+                }
+            }
+        });
     }
 
     /**
