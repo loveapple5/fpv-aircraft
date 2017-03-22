@@ -264,7 +264,10 @@ public class StatusListActivity extends FragmentActivity {
         djiAircraft.getFirmwarePackageVersion();
         djiAirLink = djiAircraft.getAirLink();
         djiWiFiLink = djiAirLink.getWiFiLink();
-        djiWiFiLink.setDJIWiFiSignalQualityChangedCallback(new WifiQualityCallback());
+        if(djiWiFiLink != null) {
+            djiWiFiLink.setDJIWiFiSignalQualityChangedCallback(new WifiQualityCallback());
+        }
+
 
         djiBattery = djiAircraft.getBattery();
         djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
