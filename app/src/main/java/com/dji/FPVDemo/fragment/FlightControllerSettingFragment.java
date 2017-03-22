@@ -76,6 +76,11 @@ public class FlightControllerSettingFragment extends Fragment {
         scChangeFlightMode.setOnCheckedChangeListener(new ChangeFlightModeScListener());
 
         etHomeHeight = (EditText) root.findViewById(R.id.et_home_height);
+
+        DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
+        int getHeight = state.getGoHomeHeight();
+        etHomeHeight.setText(getHeight + "");
+
         btnHomeHeight = (Button) root.findViewById(R.id.btn_home_height);
         btnHomeHeight.setOnClickListener(new GoHomeHeightClickListener());
 
@@ -147,9 +152,11 @@ public class FlightControllerSettingFragment extends Fragment {
             DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
             int height = Integer.parseInt(text);
             int getHeight = state.getGoHomeHeight();
+
             Log.d("fc", "getHeight:" + getHeight);
             Log.d("fc", "setHeight:" + height);
             if (height >= 20 && height <= 500) {
+                djiFlightController.getCurrentState().setGoHomeHeight(height);
                 state.setGoHomeHeight(height);//返航高度
             } else {
                 Toast.makeText(getActivity(), R.string.home_height_toast, Toast.LENGTH_SHORT).show();
