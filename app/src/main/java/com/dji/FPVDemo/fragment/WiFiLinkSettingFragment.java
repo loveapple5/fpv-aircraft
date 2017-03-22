@@ -90,8 +90,10 @@ public class WiFiLinkSettingFragment extends Fragment {
         //-------------------------B4数据连接设置------------------------------------
         djiAirLink=djiAircraft.getAirLink();
         djiWiFiLink=djiAirLink.getWiFiLink();
-        djiWiFiLink.getWiFiSSID(new getWiFiSSIDcallback());
-        djiWiFiLink.getWiFiPassword(new getWiFiPasswordCallback());
+        if(djiWiFiLink != null) {
+            djiWiFiLink.getWiFiSSID(new getWiFiSSIDcallback());
+            djiWiFiLink.getWiFiPassword(new getWiFiPasswordCallback());
+        }
 
     }
     class getWiFiSSIDcallback implements DJICommonCallbacks.DJICompletionCallbackWith<String>{
