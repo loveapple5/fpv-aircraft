@@ -143,6 +143,6 @@
             android:id="@+id/tv_flight_vertical_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7"/>
+            android:text="7.5"/>
     </RelativeLayout>
 </RelativeLayout>

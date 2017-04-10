@@ -141,7 +141,7 @@ public class TPVFragment extends Fragment {
 
         //left
         RelativeLayout.LayoutParams lpLeft = (RelativeLayout.LayoutParams) rlLeft.getLayoutParams();
-        lpLeft.width = (int) (wWidth * 0.13);
+        lpLeft.width = (int) (wWidth * 0.15);
         lpLeft.height = (int) (wHeight * 0.52);
         lpLeft.leftMargin = (int) (wWidth * 0.06);
         rlLeft.setLayoutParams(lpLeft);
@@ -163,7 +163,7 @@ public class TPVFragment extends Fragment {
         RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) ivPhoneEnergy.getLayoutParams();
         lpPhoneEnergy.width = (int) (wWidth * 0.03);
         lpPhoneEnergy.height = (int) (wHeight * 0.045);
-        lpPhoneEnergy.leftMargin = (int)(wWidth * 0.036);
+        lpPhoneEnergy.leftMargin = (int)(wWidth * 0.0365);
         lpPhoneEnergy.topMargin = (int)(wWidth * 0.015);
         ivPhoneEnergy.setLayoutParams(lpPhoneEnergy);
 
@@ -183,14 +183,14 @@ public class TPVFragment extends Fragment {
 
         //right
         RelativeLayout.LayoutParams lpRight = (RelativeLayout.LayoutParams) rlRight.getLayoutParams();
-        lpRight.width = (int) (wWidth * 0.13);
+        lpRight.width = (int) (wWidth * 0.15);
         lpRight.height = (int) (wHeight * 0.52);
         lpRight.rightMargin = (int) (wWidth * 0.06);
         rlRight.setLayoutParams(lpRight);
 
         RelativeLayout.LayoutParams lpFlightHeight = (RelativeLayout.LayoutParams) tvFlightHeight.getLayoutParams();
         lpFlightHeight.topMargin = (int)(wHeight * 0.03);
-        lpFlightHeight.leftMargin = (int)(wWidth * 0.051);
+        lpFlightHeight.leftMargin = (int)(wWidth * 0.071);
         tvFlightHeight.setLayoutParams(lpFlightHeight);
         tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
         tvFlightHeight.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
@@ -198,7 +198,7 @@ public class TPVFragment extends Fragment {
 
         RelativeLayout.LayoutParams lpFlightDistance = (RelativeLayout.LayoutParams) tvFlightDistance.getLayoutParams();
         lpFlightDistance.topMargin = (int)(wHeight * 0.16);
-        lpFlightDistance.leftMargin = (int)(wWidth * 0.073);
+        lpFlightDistance.leftMargin = (int)(wWidth * 0.093);
         tvFlightDistance.setLayoutParams(lpFlightDistance);
         tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
         tvFlightDistance.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
@@ -206,7 +206,7 @@ public class TPVFragment extends Fragment {
 
         RelativeLayout.LayoutParams lpFlightSpeed = (RelativeLayout.LayoutParams) tvFlightSpeed.getLayoutParams();
         lpFlightSpeed.topMargin = (int)(wHeight * 0.4);
-        lpFlightSpeed.leftMargin = (int)(wWidth * 0.051);
+        lpFlightSpeed.leftMargin = (int)(wWidth * 0.071);
         tvFlightSpeed.setLayoutParams(lpFlightSpeed);
         tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
         tvFlightSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
@@ -214,7 +214,7 @@ public class TPVFragment extends Fragment {
 
         RelativeLayout.LayoutParams lpFlightVerticalSpeed = (RelativeLayout.LayoutParams) tvFlightVerticalSpeed.getLayoutParams();
         lpFlightVerticalSpeed.topMargin = (int)(wHeight * 0.475);
-        lpFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.11);
+        lpFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.12);
         tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
         tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.035));
         tvFlightVerticalSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
@@ -224,7 +224,7 @@ public class TPVFragment extends Fragment {
         lpIvFlightVerticalSpeed.width = (int)(wWidth * 0.01);
         lpIvFlightVerticalSpeed.height = (int)(wHeight * 0.0244);
         lpIvFlightVerticalSpeed.topMargin = (int)(wHeight * 0.488);
-        lpIvFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.097);
+        lpIvFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.11);
         ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
 
         return view;
