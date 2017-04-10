@@ -225,7 +225,7 @@ public class TPVFragment extends Fragment {
         lpIvFlightVerticalSpeed.height = (int)(wHeight * 0.0244);
         lpIvFlightVerticalSpeed.topMargin = (int)(wHeight * 0.488);
         lpIvFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.097);
-        tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
+        ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
 
         return view;
     }
