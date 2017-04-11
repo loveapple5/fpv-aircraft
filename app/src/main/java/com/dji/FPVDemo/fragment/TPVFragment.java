@@ -1,24 +1,41 @@
 package com.dji.FPVDemo.fragment;
 
+import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
+import dji.common.flightcontroller.DJIFlightControllerCurrentState;
+import dji.common.product.Model;
+import dji.sdk.base.DJIBaseProduct;
+import dji.sdk.camera.DJICamera;
+import dji.sdk.codec.DJICodecManager;
+import dji.sdk.flightcontroller.DJIFlightController;
+import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.sdk.products.DJIAircraft;
 
 
 public class TPVFragment extends Fragment {
+
+    final public int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
 
     private DJIAircraft djiAircraft;
 
@@ -47,6 +64,14 @@ public class TPVFragment extends Fragment {
     private TextView tvFlightSpeed;
     private TextView tvFlightVerticalSpeed;
     private ImageView ivFlightVerticalSpeed;
+    private ImageView ivLeftBg;
+
+    private TextureView tvPreview;
+
+    // Camera and textureview-display
+    protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
+    // Codec for video live view
+    protected DJICodecManager mCodecManager = null;
 
 
     private static final int SIGNAL_ICON[] = {
@@ -71,6 +96,44 @@ public class TPVFragment extends Fragment {
             R.drawable.energy_icon_100,
     };
 
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+
+            switch (msg.what) {
+                case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
+                    double speed = bundle.getDouble("speed");
+                    float vSpeed = bundle.getFloat("vSpeed");
+                    int altitude = (int) bundle.getFloat("altitude");
+                    int distance = (int) bundle.getDouble("distance");
+
+                    String strSpeed = String.valueOf(speed);
+                    if (speed < 2.001 && speed > 0.001) {
+                        strSpeed = String.format("%.1f", speed);
+                    }
+
+                    if (vSpeed <= 0.001 && vSpeed >= -0.0001) {
+                        vSpeed = 0;
+                    }
+
+                    int intVSpeed = (int) vSpeed;
+
+                    tvFlightSpeed.setText(strSpeed);
+                    tvFlightVerticalSpeed.setText(intVSpeed + "");
+                    tvFlightHeight.setText(altitude + "");
+                    tvFlightDistance.setText(distance + "");
+                    break;
+            }
+
+            return true;
+
+        }
+
+    });
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
@@ -78,6 +141,22 @@ public class TPVFragment extends Fragment {
         WindowManager wm = getActivity().getWindowManager();
         wWidth = wm.getDefaultDisplay().getWidth();
         wHeight = wm.getDefaultDisplay().getHeight();
+
+        mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
+
+            @Override
+            public void onResult(byte[] videoBuffer, int size) {
+                if (mCodecManager != null) {
+                    // Send the raw H264 video data to codec manager for decoding
+                    mCodecManager.sendDataToDecoder(videoBuffer, size);
+                }
+            }
+        };
+
+        if(djiAircraft != null) {
+            DJIFlightController flightController = djiAircraft.getFlightController();
+            flightController.setUpdateSystemStateCallback(new FlightControllerCallback());
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +179,9 @@ public class TPVFragment extends Fragment {
         tvFlightSpeed = (TextView) view.findViewById(R.id.tv_flight_speed);
         tvFlightVerticalSpeed = (TextView) view.findViewById(R.id.tv_flight_vertical_speed);
         ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_flight_vertical_speed);
+        ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
+        tvPreview = (TextureView) view.findViewById(R.id.tv_preview);
+        tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
 
         int paddingText = (int) (wWidth * 0.013);
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
@@ -146,6 +228,19 @@ public class TPVFragment extends Fragment {
         lpLeft.leftMargin = (int) (wWidth * 0.06);
         rlLeft.setLayoutParams(lpLeft);
 
+        RelativeLayout.LayoutParams lpLeftBg = (RelativeLayout.LayoutParams) ivLeftBg.getLayoutParams();
+        lpLeftBg.width = (int) (wWidth * 0.13);
+        lpLeftBg.height = (int) (wHeight * 0.52);
+        ivLeftBg.setLayoutParams(lpLeftBg);
+
+
+        RelativeLayout.LayoutParams lpPreview = (RelativeLayout.LayoutParams) tvPreview.getLayoutParams();
+        lpPreview.width = (int) (wWidth * 0.1);
+        lpPreview.height = (int) (wHeight * 0.1);
+//        lpPreview.leftMargin = (int)(wWidth * 0.039);
+        lpPreview.topMargin = (int) (wHeight * 0.028);
+        tvPreview.setLayoutParams(lpPreview);
+
         //bottom
         RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams) rlBottom.getLayoutParams();
         lpBottom.width = (int) (wWidth * 0.390);
@@ -156,29 +251,29 @@ public class TPVFragment extends Fragment {
         RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) ivHelmetEnergy.getLayoutParams();
         lpHelmetEnergy.width = (int) (wWidth * 0.032);
         lpHelmetEnergy.height = (int) (wHeight * 0.048);
-        lpHelmetEnergy.leftMargin = (int)(wWidth * 0.039);
-        lpHelmetEnergy.topMargin = (int)(wWidth * 0.015);
+        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.039);
+        lpHelmetEnergy.topMargin = (int) (wHeight * 0.026);
         ivHelmetEnergy.setLayoutParams(lpHelmetEnergy);
 
         RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) ivPhoneEnergy.getLayoutParams();
         lpPhoneEnergy.width = (int) (wWidth * 0.03);
         lpPhoneEnergy.height = (int) (wHeight * 0.045);
-        lpPhoneEnergy.leftMargin = (int)(wWidth * 0.0365);
-        lpPhoneEnergy.topMargin = (int)(wWidth * 0.015);
+        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.0365);
+        lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
         ivPhoneEnergy.setLayoutParams(lpPhoneEnergy);
 
         RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) ivControllerEnergy.getLayoutParams();
         lpControllerEnergy.width = (int) (wWidth * 0.032);
         lpControllerEnergy.height = (int) (wHeight * 0.048);
-        lpControllerEnergy.rightMargin = (int)(wWidth * 0.036);
-        lpControllerEnergy.topMargin = (int)(wWidth * 0.015);
+        lpControllerEnergy.rightMargin = (int) (wWidth * 0.036);
+        lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
         ivControllerEnergy.setLayoutParams(lpControllerEnergy);
 
         RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) ivCraftEnergy.getLayoutParams();
         lpCraftEnergy.width = (int) (wWidth * 0.032);
         lpCraftEnergy.height = (int) (wHeight * 0.048);
-        lpCraftEnergy.rightMargin = (int)(wWidth * 0.037);
-        lpCraftEnergy.topMargin = (int)(wWidth * 0.015);
+        lpCraftEnergy.rightMargin = (int) (wWidth * 0.037);
+        lpCraftEnergy.topMargin = (int) (wHeight * 0.026);
         ivCraftEnergy.setLayoutParams(lpCraftEnergy);
 
         //right
@@ -189,46 +284,168 @@ public class TPVFragment extends Fragment {
         rlRight.setLayoutParams(lpRight);
 
         RelativeLayout.LayoutParams lpFlightHeight = (RelativeLayout.LayoutParams) tvFlightHeight.getLayoutParams();
-        lpFlightHeight.topMargin = (int)(wHeight * 0.03);
-        lpFlightHeight.leftMargin = (int)(wWidth * 0.071);
+        lpFlightHeight.topMargin = (int) (wHeight * 0.03);
+        lpFlightHeight.leftMargin = (int) (wWidth * 0.071);
         tvFlightHeight.setLayoutParams(lpFlightHeight);
-        tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
+        tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
         tvFlightHeight.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
         tvFlightHeight.getPaint().setFakeBoldText(true);//加粗
 
         RelativeLayout.LayoutParams lpFlightDistance = (RelativeLayout.LayoutParams) tvFlightDistance.getLayoutParams();
-        lpFlightDistance.topMargin = (int)(wHeight * 0.16);
-        lpFlightDistance.leftMargin = (int)(wWidth * 0.093);
+        lpFlightDistance.topMargin = (int) (wHeight * 0.16);
+        lpFlightDistance.leftMargin = (int) (wWidth * 0.093);
         tvFlightDistance.setLayoutParams(lpFlightDistance);
-        tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
+        tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
         tvFlightDistance.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
         tvFlightDistance.getPaint().setFakeBoldText(true);//加粗
 
         RelativeLayout.LayoutParams lpFlightSpeed = (RelativeLayout.LayoutParams) tvFlightSpeed.getLayoutParams();
-        lpFlightSpeed.topMargin = (int)(wHeight * 0.4);
-        lpFlightSpeed.leftMargin = (int)(wWidth * 0.071);
+        lpFlightSpeed.topMargin = (int) (wHeight * 0.4);
+        lpFlightSpeed.leftMargin = (int) (wWidth * 0.071);
         tvFlightSpeed.setLayoutParams(lpFlightSpeed);
-        tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.07));
+        tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
         tvFlightSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
         tvFlightSpeed.getPaint().setFakeBoldText(true);//加粗
 
         RelativeLayout.LayoutParams lpFlightVerticalSpeed = (RelativeLayout.LayoutParams) tvFlightVerticalSpeed.getLayoutParams();
-        lpFlightVerticalSpeed.topMargin = (int)(wHeight * 0.475);
-        lpFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.12);
+        lpFlightVerticalSpeed.topMargin = (int) (wHeight * 0.475);
+        lpFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.12);
         tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
-        tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int)(wHeight * 0.035));
+        tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.035));
         tvFlightVerticalSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
         tvFlightVerticalSpeed.getPaint().setFakeBoldText(true);//加粗
 
         RelativeLayout.LayoutParams lpIvFlightVerticalSpeed = (RelativeLayout.LayoutParams) ivFlightVerticalSpeed.getLayoutParams();
-        lpIvFlightVerticalSpeed.width = (int)(wWidth * 0.01);
-        lpIvFlightVerticalSpeed.height = (int)(wHeight * 0.0244);
-        lpIvFlightVerticalSpeed.topMargin = (int)(wHeight * 0.488);
-        lpIvFlightVerticalSpeed.leftMargin = (int)(wWidth * 0.11);
+        lpIvFlightVerticalSpeed.width = (int) (wWidth * 0.01);
+        lpIvFlightVerticalSpeed.height = (int) (wHeight * 0.02);
+        lpIvFlightVerticalSpeed.topMargin = (int) (wHeight * 0.494);
+        lpIvFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.11);
         ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
+
+        tvFlightVerticalSpeed.addTextChangedListener(new VSpeedWatcher());
 
         return view;
     }
 
+    public void onResume() {
+        super.onResume();
+        DJIBaseProduct product = FPVDemoApplication.getProductInstance();
 
+        if (product == null || !product.isConnected()) {
+            Toast.makeText(getActivity(), R.string.disconnected, Toast.LENGTH_SHORT).show();
+        } else {
+            tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+
+            if (!product.getModel().equals(Model.UnknownAircraft)) {
+                DJICamera camera = product.getCamera();
+                if (camera != null) {
+                    // Set the callback
+                    camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
+                }
+            }
+
+        }
+    }
+
+    public void onPause() {
+        super.onPause();
+        DJICamera camera = FPVDemoApplication.getCameraInstance();
+        if (camera != null) {
+            // Reset the callback
+            camera.setDJICameraReceivedVideoDataCallback(null);
+        }
+        if(djiAircraft != null) {
+            djiAircraft.getFlightController().setUpdateSystemStateCallback(null);
+        }
+    }
+
+    class PreviewSurfaceTextureListener implements TextureView.SurfaceTextureListener {
+
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            mCodecManager = new DJICodecManager(getActivity(), surface, width, height);
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            if (mCodecManager != null) {
+                mCodecManager.cleanSurface();
+                mCodecManager = null;
+            }
+            return true;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+
+        }
+    }
+
+    class FlightControllerCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback {
+
+        @Override
+        public void onResult(DJIFlightControllerCurrentState djiFlightControllerCurrentState) {
+            double speed = Math.sqrt(Math.pow(djiFlightControllerCurrentState.getVelocityX(), 2) + Math.pow(djiFlightControllerCurrentState.getVelocityY(), 2));
+            float vSpeed = -1 * djiFlightControllerCurrentState.getVelocityZ();
+            // get aircraft altitude
+            float altitude;
+            if (djiFlightControllerCurrentState.isUltrasonicBeingUsed()) {
+                altitude = djiFlightControllerCurrentState.getUltrasonicHeight();
+            } else {
+                altitude = djiFlightControllerCurrentState.getAircraftLocation().getAltitude();
+            }
+
+            double radLatA = Math.toRadians(djiFlightControllerCurrentState.getAircraftLocation().getCoordinate2D().getLatitude());
+            double radLatH = Math.toRadians(djiFlightControllerCurrentState.getHomeLocation().getLatitude());
+            double a = radLatA - radLatH;
+            double b = Math.toRadians(djiFlightControllerCurrentState.getAircraftLocation().getCoordinate2D().getLongitude())
+                    - Math.toRadians(djiFlightControllerCurrentState.getHomeLocation().getLongitude());
+            double dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+                    Math.cos(radLatA) * Math.cos(radLatH) * Math.pow(Math.sin(b / 2), 2)));
+            dis = dis * 6378.137; //  the earth radius= 6378.137km
+            //  distance into meter
+            dis = Math.round(dis * 10000.0) / 10000.0 * 1000.0;
+
+            Message msg = Message.obtain();
+            Bundle bundle = new Bundle();
+            bundle.putDouble("speed", speed);
+            bundle.putFloat("vSpeed", vSpeed);
+            bundle.putFloat("altitude", altitude);
+            bundle.putDouble("distance", dis);
+            msg.what = MSG_FLIGHT_CONTROLLER_CURRENT_STATE;
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    class VSpeedWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String text = s.toString();
+            float vSpeed = Float.valueOf(text);
+            if (vSpeed <= 0.001 && vSpeed >= -0.0001) {
+                ivFlightVerticalSpeed.setImageResource(0);
+            } else if (vSpeed > 0.001) {
+                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_up);
+            } else {
+                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_down);
+            }
+        }
+    }
 }
