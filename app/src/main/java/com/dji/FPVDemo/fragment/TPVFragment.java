@@ -1,5 +1,9 @@
 package com.dji.FPVDemo.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -67,6 +71,8 @@ public class TPVFragment extends Fragment {
     private ImageView ivLeftBg;
 
     private TextureView tvPreview;
+
+    private BatteryReceiver mReceiver;
 
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
@@ -153,10 +159,12 @@ public class TPVFragment extends Fragment {
             }
         };
 
-        if(djiAircraft != null) {
+        if (djiAircraft != null) {
             DJIFlightController flightController = djiAircraft.getFlightController();
             flightController.setUpdateSystemStateCallback(new FlightControllerCallback());
         }
+
+        mReceiver = new BatteryReceiver();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -343,8 +351,10 @@ public class TPVFragment extends Fragment {
                     camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
                 }
             }
-
         }
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        getActivity().registerReceiver(mReceiver, filter);//注册BroadcastReceiver
     }
 
     public void onPause() {
@@ -354,9 +364,11 @@ public class TPVFragment extends Fragment {
             // Reset the callback
             camera.setDJICameraReceivedVideoDataCallback(null);
         }
-        if(djiAircraft != null) {
+        if (djiAircraft != null) {
             djiAircraft.getFlightController().setUpdateSystemStateCallback(null);
         }
+
+        getActivity().unregisterReceiver(mReceiver);
     }
 
     class PreviewSurfaceTextureListener implements TextureView.SurfaceTextureListener {
@@ -446,6 +458,17 @@ public class TPVFragment extends Fragment {
             } else {
                 ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_down);
             }
+        }
+    }
+
+    private class BatteryReceiver extends BroadcastReceiver {
+
+        public void onReceive(Context context, Intent intent) {
+            int current = intent.getExtras().getInt("level");//获得当前电量
+            int total = intent.getExtras().getInt("scale");//获得总电量
+            int percent = current * 100 / total;
+            int index = percent / 10;
+            ivPhoneEnergy.setImageResource(ENERGY_ICON[index]);
         }
     }
 }
