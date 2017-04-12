@@ -12,7 +12,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.TextureView;
@@ -29,17 +28,20 @@ import com.dji.FPVDemo.R;
 
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.product.Model;
+import dji.common.remotecontroller.DJIRCBatteryInfo;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.sdk.products.DJIAircraft;
+import dji.sdk.remotecontroller.DJIRemoteController;
 
 
 public class TPVFragment extends Fragment {
 
-    final public int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
+    public final int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
+    public final int MSG_REMOTE_CONTROLLER_BATTERY_STATE = 2;
 
     private DJIAircraft djiAircraft;
 
@@ -60,7 +62,7 @@ public class TPVFragment extends Fragment {
 
     private ImageView ivHelmetEnergy;
     private ImageView ivPhoneEnergy;
-    private ImageView ivControllerEnergy;
+    private ImageView ivRCEnergy;
     private ImageView ivCraftEnergy;
 
     private TextView tvFlightHeight;
@@ -115,6 +117,7 @@ public class TPVFragment extends Fragment {
                     float vSpeed = bundle.getFloat("vSpeed");
                     int altitude = (int) bundle.getFloat("altitude");
                     int distance = (int) bundle.getDouble("distance");
+                    int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
 
                     String strSpeed = String.valueOf(speed);
                     if (speed < 2.001 && speed > 0.001) {
@@ -127,10 +130,24 @@ public class TPVFragment extends Fragment {
 
                     int intVSpeed = (int) vSpeed;
 
+                    if (gpsSignalLevel > 5 || gpsSignalLevel < 0) {
+                        gpsSignalLevel = 0;
+                    }
+
                     tvFlightSpeed.setText(strSpeed);
                     tvFlightVerticalSpeed.setText(intVSpeed + "");
                     tvFlightHeight.setText(altitude + "");
                     tvFlightDistance.setText(distance + "");
+
+                    ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
+
+                    break;
+                case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
+                    int remainingPercent = bundle.getInt("remainingPercent");
+                    float percent = (float) remainingPercent * 100;
+                    int index = Math.round(percent / 10);
+
+                    ivRCEnergy.setImageResource(ENERGY_ICON[index]);
                     break;
             }
 
@@ -162,6 +179,8 @@ public class TPVFragment extends Fragment {
         if (djiAircraft != null) {
             DJIFlightController flightController = djiAircraft.getFlightController();
             flightController.setUpdateSystemStateCallback(new FlightControllerCallback());
+            DJIRemoteController remoteController = djiAircraft.getRemoteController();
+            remoteController.setBatteryStateUpdateCallback(new RCBatteryStateCallback());
         }
 
         mReceiver = new BatteryReceiver();
@@ -180,7 +199,7 @@ public class TPVFragment extends Fragment {
         ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
         ivHelmetEnergy = (ImageView) view.findViewById(R.id.iv_helmet_energy);
         ivPhoneEnergy = (ImageView) view.findViewById(R.id.iv_phone_energy);
-        ivControllerEnergy = (ImageView) view.findViewById(R.id.iv_controller_energy);
+        ivRCEnergy = (ImageView) view.findViewById(R.id.iv_controller_energy);
         ivCraftEnergy = (ImageView) view.findViewById(R.id.iv_craft_energy);
         tvFlightHeight = (TextView) view.findViewById(R.id.tv_flight_height);
         tvFlightDistance = (TextView) view.findViewById(R.id.tv_flight_distance);
@@ -189,7 +208,7 @@ public class TPVFragment extends Fragment {
         ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_flight_vertical_speed);
         ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
         tvPreview = (TextureView) view.findViewById(R.id.tv_preview);
-        tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+        //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
 
         int paddingText = (int) (wWidth * 0.013);
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
@@ -270,12 +289,12 @@ public class TPVFragment extends Fragment {
         lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
         ivPhoneEnergy.setLayoutParams(lpPhoneEnergy);
 
-        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) ivControllerEnergy.getLayoutParams();
+        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) ivRCEnergy.getLayoutParams();
         lpControllerEnergy.width = (int) (wWidth * 0.032);
         lpControllerEnergy.height = (int) (wHeight * 0.048);
         lpControllerEnergy.rightMargin = (int) (wWidth * 0.036);
         lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
-        ivControllerEnergy.setLayoutParams(lpControllerEnergy);
+        ivRCEnergy.setLayoutParams(lpControllerEnergy);
 
         RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) ivCraftEnergy.getLayoutParams();
         lpCraftEnergy.width = (int) (wWidth * 0.032);
@@ -401,27 +420,29 @@ public class TPVFragment extends Fragment {
     class FlightControllerCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback {
 
         @Override
-        public void onResult(DJIFlightControllerCurrentState djiFlightControllerCurrentState) {
-            double speed = Math.sqrt(Math.pow(djiFlightControllerCurrentState.getVelocityX(), 2) + Math.pow(djiFlightControllerCurrentState.getVelocityY(), 2));
-            float vSpeed = -1 * djiFlightControllerCurrentState.getVelocityZ();
+        public void onResult(DJIFlightControllerCurrentState FCState) {
+            double speed = Math.sqrt(Math.pow(FCState.getVelocityX(), 2) + Math.pow(FCState.getVelocityY(), 2));
+            float vSpeed = -1 * FCState.getVelocityZ();
             // get aircraft altitude
             float altitude;
-            if (djiFlightControllerCurrentState.isUltrasonicBeingUsed()) {
-                altitude = djiFlightControllerCurrentState.getUltrasonicHeight();
+            if (FCState.isUltrasonicBeingUsed()) {
+                altitude = FCState.getUltrasonicHeight();
             } else {
-                altitude = djiFlightControllerCurrentState.getAircraftLocation().getAltitude();
+                altitude = FCState.getAircraftLocation().getAltitude();
             }
 
-            double radLatA = Math.toRadians(djiFlightControllerCurrentState.getAircraftLocation().getCoordinate2D().getLatitude());
-            double radLatH = Math.toRadians(djiFlightControllerCurrentState.getHomeLocation().getLatitude());
+            double radLatA = Math.toRadians(FCState.getAircraftLocation().getCoordinate2D().getLatitude());
+            double radLatH = Math.toRadians(FCState.getHomeLocation().getLatitude());
             double a = radLatA - radLatH;
-            double b = Math.toRadians(djiFlightControllerCurrentState.getAircraftLocation().getCoordinate2D().getLongitude())
-                    - Math.toRadians(djiFlightControllerCurrentState.getHomeLocation().getLongitude());
+            double b = Math.toRadians(FCState.getAircraftLocation().getCoordinate2D().getLongitude())
+                    - Math.toRadians(FCState.getHomeLocation().getLongitude());
             double dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
                     Math.cos(radLatA) * Math.cos(radLatH) * Math.pow(Math.sin(b / 2), 2)));
             dis = dis * 6378.137; //  the earth radius= 6378.137km
             //  distance into meter
             dis = Math.round(dis * 10000.0) / 10000.0 * 1000.0;
+
+            int gpsSignalLevel = FCState.getGpsSignalStatus().value();
 
             Message msg = Message.obtain();
             Bundle bundle = new Bundle();
@@ -429,6 +450,7 @@ public class TPVFragment extends Fragment {
             bundle.putFloat("vSpeed", vSpeed);
             bundle.putFloat("altitude", altitude);
             bundle.putDouble("distance", dis);
+            bundle.putInt("gpsSignalLevel", gpsSignalLevel);
             msg.what = MSG_FLIGHT_CONTROLLER_CURRENT_STATE;
             msg.setData(bundle);
             mHandler.sendMessage(msg);
@@ -464,11 +486,29 @@ public class TPVFragment extends Fragment {
     private class BatteryReceiver extends BroadcastReceiver {
 
         public void onReceive(Context context, Intent intent) {
-            int current = intent.getExtras().getInt("level");//获得当前电量
-            int total = intent.getExtras().getInt("scale");//获得总电量
-            int percent = current * 100 / total;
-            int index = percent / 10;
+            //获得当前电量
+            int current = intent.getExtras().getInt("level");
+            //获得总电量
+            int total = intent.getExtras().getInt("scale");
+            float percent = (float) current * 100 / total;
+            int index = Math.round(percent / 10);
+
             ivPhoneEnergy.setImageResource(ENERGY_ICON[index]);
+        }
+    }
+
+    class RCBatteryStateCallback implements DJIRemoteController.RCBatteryStateUpdateCallback {
+
+        @Override
+        public void onBatteryStateUpdate(DJIRemoteController djiRemoteController, DJIRCBatteryInfo batteryInfo) {
+            int remainingPercent = batteryInfo.remainingEnergyInPercent;
+
+            Message msg = Message.obtain();
+            Bundle bundle = new Bundle();
+            bundle.putInt("remainingPercent", remainingPercent);
+            msg.what = MSG_REMOTE_CONTROLLER_BATTERY_STATE;
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
         }
     }
 }
