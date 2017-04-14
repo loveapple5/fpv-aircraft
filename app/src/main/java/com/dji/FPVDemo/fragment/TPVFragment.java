@@ -26,10 +26,14 @@ import android.widget.Toast;
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
+import dji.common.battery.DJIBatteryState;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.product.Model;
 import dji.common.remotecontroller.DJIRCBatteryInfo;
+import dji.sdk.airlink.DJIAirLink;
+import dji.sdk.airlink.DJILBAirLink;
 import dji.sdk.base.DJIBaseProduct;
+import dji.sdk.battery.DJIBattery;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.DJIFlightController;
@@ -42,6 +46,7 @@ public class TPVFragment extends Fragment {
 
     public final int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
     public final int MSG_REMOTE_CONTROLLER_BATTERY_STATE = 2;
+    public final int MSG_BATTERY_STATE = 3;
 
     private DJIAircraft djiAircraft;
 
@@ -148,6 +153,11 @@ public class TPVFragment extends Fragment {
 
                     ivRCEnergy.setImageResource(ENERGY_ICON[index]);
                     break;
+                case MSG_BATTERY_STATE:
+                    int aircraftRemainingPercent = bundle.getInt("remainingPercent");
+                    int aircraftIndex = Math.round((float)aircraftRemainingPercent / 10);
+
+                    ivCraftEnergy.setImageResource(ENERGY_ICON[aircraftIndex]);
             }
 
             return true;
@@ -373,6 +383,11 @@ public class TPVFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         getActivity().registerReceiver(mReceiver, filter);//注册BroadcastReceiver
+
+        if(djiAircraft != null) {
+            DJIBattery djiBattery = djiAircraft.getBattery();
+            djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
+        }
     }
 
     public void onPause() {
@@ -383,7 +398,10 @@ public class TPVFragment extends Fragment {
             camera.setDJICameraReceivedVideoDataCallback(null);
         }
         if (djiAircraft != null) {
-            djiAircraft.getFlightController().setUpdateSystemStateCallback(null);
+            DJIFlightController flightController = djiAircraft.getFlightController();
+            flightController.setUpdateSystemStateCallback(null);
+            DJIBattery djiBattery = djiAircraft.getBattery();
+            djiBattery.setBatteryStateUpdateCallback(null);
         }
 
         getActivity().unregisterReceiver(mReceiver);
@@ -506,6 +524,21 @@ public class TPVFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putInt("remainingPercent", remainingPercent);
             msg.what = MSG_REMOTE_CONTROLLER_BATTERY_STATE;
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
+
+        @Override
+        public void onResult(DJIBatteryState djiBatteryState) {
+            int remainingPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
+
+            Message msg = Message.obtain();
+            msg.what = MSG_BATTERY_STATE;
+            Bundle bundle = new Bundle();
+            bundle.putInt("remainingPercent", remainingPercent);
             msg.setData(bundle);
             mHandler.sendMessage(msg);
         }
