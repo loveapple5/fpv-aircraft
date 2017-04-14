@@ -70,6 +70,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".FPVActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape">
+
+        </activity>
+
         <activity android:name=".MainActivity"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
