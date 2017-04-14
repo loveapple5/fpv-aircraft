@@ -144,8 +144,7 @@ public class TPVFragment extends Fragment {
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
-                    float percent = (float) remainingPercent * 100;
-                    int index = Math.round(percent / 10);
+                    int index = Math.round((float)remainingPercent / 10);
 
                     ivRCEnergy.setImageResource(ENERGY_ICON[index]);
                     break;

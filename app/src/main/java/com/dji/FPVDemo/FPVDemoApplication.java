@@ -73,14 +73,14 @@ public class FPVDemoApplication extends Application{
 
         if (getProductInstance() == null) return null;
 
-        DJICamera camera = null;
+        DJICamera camera = getProductInstance().getCamera();
 
-        if (getProductInstance() instanceof DJIAircraft){
-            camera = ((DJIAircraft) getProductInstance()).getCamera();
-
-        } else if (getProductInstance() instanceof DJIHandHeld) {
-            camera = ((DJIHandHeld) getProductInstance()).getCamera();
-        }
+//        if (getProductInstance() instanceof DJIAircraft){
+//            camera = ((DJIAircraft) getProductInstance()).getCamera();
+//
+//        } else if (getProductInstance() instanceof DJIHandHeld) {
+//            camera = ((DJIHandHeld) getProductInstance()).getCamera();
+//        }
 
         return camera;
     }
@@ -91,47 +91,47 @@ public class FPVDemoApplication extends Application{
         mHandler = new Handler(Looper.getMainLooper());
         //This is used to start SDK services and initiate SDK.
         DJISDKManager.getInstance().initSDKManager(this, mDJISDKManagerCallback);
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable ex) {
-                StringBuilder sb = new StringBuilder();
-                try {
-                    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String date = sDateFormat.format(new java.util.Date());
-                    sb.append("\r\n" + date + "\n");
-
-                    Writer writer = new StringWriter();
-                    PrintWriter printWriter = new PrintWriter(writer);
-                    ex.printStackTrace(printWriter);
-                    Throwable cause = ex.getCause();
-                    while (cause != null) {
-                        cause.printStackTrace(printWriter);
-                        cause = cause.getCause();
-                    }
-                    printWriter.flush();
-                    printWriter.close();
-                    String result = writer.toString();
-                    sb.append(result);
-
-
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    String time = formatter.format(new Date());
-                    String fileName = "crash-" + time + ".log";
-                    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash" + File.separator;
-                    File dir = new File(path);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    FileOutputStream fos = new FileOutputStream(path + fileName, true);
-                    fos.write(sb.toString().getBytes());
-                    fos.flush();
-                    fos.close();
-
-                } catch (Exception e) {
-
-                }
-            }
-        });
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            @Override
+//            public void uncaughtException(Thread thread, Throwable ex) {
+//                StringBuilder sb = new StringBuilder();
+//                try {
+//                    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    String date = sDateFormat.format(new java.util.Date());
+//                    sb.append("\r\n" + date + "\n");
+//
+//                    Writer writer = new StringWriter();
+//                    PrintWriter printWriter = new PrintWriter(writer);
+//                    ex.printStackTrace(printWriter);
+//                    Throwable cause = ex.getCause();
+//                    while (cause != null) {
+//                        cause.printStackTrace(printWriter);
+//                        cause = cause.getCause();
+//                    }
+//                    printWriter.flush();
+//                    printWriter.close();
+//                    String result = writer.toString();
+//                    sb.append(result);
+//
+//
+//                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//                    String time = formatter.format(new Date());
+//                    String fileName = "crash-" + time + ".log";
+//                    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash" + File.separator;
+//                    File dir = new File(path);
+//                    if (!dir.exists()) {
+//                        dir.mkdirs();
+//                    }
+//                    FileOutputStream fos = new FileOutputStream(path + fileName, true);
+//                    fos.write(sb.toString().getBytes());
+//                    fos.flush();
+//                    fos.close();
+//
+//                } catch (Exception e) {
+//
+//                }
+//            }
+//        });
     }
 
     /**

@@ -110,13 +110,13 @@ public class CameraVideoFragment extends Fragment {
                 } else if(position >= 2 && position <= 3) {
                     resolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_1920x1080;
                 }
-                DJICameraSettingsDef.CameraVideoFrameRate rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_24fps;
+                DJICameraSettingsDef.CameraVideoFrameRate rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_24FPS;
                 if(position == 1 || position == 3) {
-                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_30fps;
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_30FPS;
                 } else if(position == 6) {
-                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_48fps;
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_48FPS;
                 } else {
-                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_60fps;
+                    rate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_60FPS;
                 }
                 djiCamera.setVideoResolutionAndFrameRate(resolution, rate, null);
             }
