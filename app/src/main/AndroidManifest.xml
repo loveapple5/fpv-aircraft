@@ -43,7 +43,9 @@
         <meta-data
             android:name="com.dji.sdk.API_KEY"
             android:value="52f9794311e7259ab6c49998" />
-
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="ed379eec475c1132c19badfab1b5702b"/>
         <activity
             android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
             android:theme="@android:style/Theme.Translucent" >
@@ -74,7 +76,10 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:configChanges="orientation"
             android:screenOrientation="landscape">
-
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".MainActivity"
