@@ -16,7 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:background="@drawable/bg_sat_signal">
+            android:background="@drawable/bg_info">
+
+            <ImageView
+                android:id="@+id/iv_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_sat" />
 
             <ImageView
                 android:id="@+id/iv_craft_signal"
@@ -47,7 +55,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/bg_rem_signal">
+            android:background="@drawable/bg_info">
+
+            <ImageView
+                android:id="@+id/iv_rc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_rc" />
 
             <ImageView
                 android:id="@+id/iv_controller_signal"
@@ -69,15 +85,20 @@
             android:id="@+id/iv_fpv_left_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg_tpv_left"
             android:layout_alignParentEnd="true"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_tpv_left" />
 
         <TextureView
             android:id="@+id/tv_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite" />
+
+        <com.amap.api.maps2d.MapView
+            android:id="@+id/mv_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
     <!--bottom-->
     <RelativeLayout
@@ -89,36 +110,84 @@
         android:background="@drawable/bg_tpv_bottom">
 
         <ImageView
-            android:id="@+id/iv_helmet_energy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:id="@+id/iv_logo"
+            android:layout_width="50dp"
+            android:layout_height="12dp"
+            android:layout_centerInParent="true"
             android:scaleType="fitXY"
-            android:src="@drawable/energy_icon_0" />
+            android:src="@drawable/icon_logo" />
 
-        <ImageView
-            android:id="@+id/iv_phone_energy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/iv_helmet_energy"
-            android:scaleType="fitXY"
-            android:src="@drawable/energy_icon_0" />
+        <RelativeLayout
+            android:id="@+id/rl_helmet"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:background="@drawable/energy_icon_0"
+            android:layout_alignParentStart="true">
 
-        <ImageView
-            android:id="@+id/iv_craft_energy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/energy_icon_0" />
+            <ImageView
+                android:id="@+id/iv_helmet"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_helmet"
+                android:layout_marginBottom="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_controller_energy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/iv_craft_energy"
-            android:scaleType="fitXY"
-            android:src="@drawable/energy_icon_0" />
+        <RelativeLayout
+            android:id="@+id/rl_phone"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:background="@drawable/energy_icon_0"
+            android:layout_toEndOf="@id/rl_helmet">
+
+            <ImageView
+                android:id="@+id/iv_phone"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_phone"
+                android:layout_marginBottom="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_craft"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:background="@drawable/energy_icon_0"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:id="@+id/iv_craft"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_craft"
+                android:layout_marginBottom="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_controller"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:background="@drawable/energy_icon_0"
+            android:layout_toStartOf="@id/rl_craft">
+
+            <ImageView
+                android:id="@+id/iv_controller"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_controller"
+                android:layout_marginBottom="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
     </RelativeLayout>
     <!--right-->
@@ -152,7 +221,7 @@
         <ImageView
             android:id="@+id/iv_flight_vertical_speed"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_flight_vertical_speed"
@@ -160,4 +229,6 @@
             android:layout_height="wrap_content"
             android:text="0" />
     </RelativeLayout>
+
+
 </RelativeLayout>

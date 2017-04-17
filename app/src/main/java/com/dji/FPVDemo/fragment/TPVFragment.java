@@ -23,15 +23,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
+import java.util.ArrayList;
+
+import dji.common.airlink.DJISignalInformation;
+import dji.common.airlink.SignalQualityUpdatedCallback;
 import dji.common.battery.DJIBatteryState;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.product.Model;
 import dji.common.remotecontroller.DJIRCBatteryInfo;
 import dji.sdk.airlink.DJIAirLink;
+import dji.sdk.airlink.DJIAuxLink;
 import dji.sdk.airlink.DJILBAirLink;
+import dji.sdk.airlink.DJIOcuSyncLink;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.battery.DJIBattery;
 import dji.sdk.camera.DJICamera;
@@ -47,6 +58,7 @@ public class TPVFragment extends Fragment {
     public final int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
     public final int MSG_REMOTE_CONTROLLER_BATTERY_STATE = 2;
     public final int MSG_BATTERY_STATE = 3;
+    public final int MSG_CONTROL_SIGNAL = 4;
 
     private DJIAircraft djiAircraft;
 
@@ -65,10 +77,10 @@ public class TPVFragment extends Fragment {
     private ImageView ivCraftSignal;
     private ImageView ivControllerSignal;
 
-    private ImageView ivHelmetEnergy;
-    private ImageView ivPhoneEnergy;
-    private ImageView ivRCEnergy;
-    private ImageView ivCraftEnergy;
+    private View rlHelmetEnergy;
+    private View rlPhoneEnergy;
+    private View rlRCEnergy;
+    private View rlCraftEnergy;
 
     private TextView tvFlightHeight;
     private TextView tvFlightDistance;
@@ -76,6 +88,8 @@ public class TPVFragment extends Fragment {
     private TextView tvFlightVerticalSpeed;
     private ImageView ivFlightVerticalSpeed;
     private ImageView ivLeftBg;
+    private ImageView ivSatellite;
+    private ImageView ivRc;
 
     private TextureView tvPreview;
 
@@ -85,6 +99,9 @@ public class TPVFragment extends Fragment {
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
     // Codec for video live view
     protected DJICodecManager mCodecManager = null;
+
+    private MapView mapView;
+    private AMap aMap;
 
 
     private static final int SIGNAL_ICON[] = {
@@ -149,15 +166,22 @@ public class TPVFragment extends Fragment {
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
-                    int index = Math.round((float)remainingPercent / 10);
+                    int index = Math.round((float) remainingPercent / 10);
 
-                    ivRCEnergy.setImageResource(ENERGY_ICON[index]);
+                    rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
                     break;
                 case MSG_BATTERY_STATE:
                     int aircraftRemainingPercent = bundle.getInt("remainingPercent");
-                    int aircraftIndex = Math.round((float)aircraftRemainingPercent / 10);
+                    int aircraftIndex = Math.round((float) aircraftRemainingPercent / 10);
 
-                    ivCraftEnergy.setImageResource(ENERGY_ICON[aircraftIndex]);
+                    rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
+                    break;
+                case MSG_CONTROL_SIGNAL:
+                    int strengthPercent = bundle.getInt("strengthPercent");
+                    int index2 = Math.round((float) strengthPercent / 25);
+
+                    ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
+                    break;
             }
 
             return true;
@@ -185,13 +209,6 @@ public class TPVFragment extends Fragment {
             }
         };
 
-        if (djiAircraft != null) {
-            DJIFlightController flightController = djiAircraft.getFlightController();
-            flightController.setUpdateSystemStateCallback(new FlightControllerCallback());
-            DJIRemoteController remoteController = djiAircraft.getRemoteController();
-            remoteController.setBatteryStateUpdateCallback(new RCBatteryStateCallback());
-        }
-
         mReceiver = new BatteryReceiver();
     }
 
@@ -206,10 +223,10 @@ public class TPVFragment extends Fragment {
         tvSafeInfo = (TextView) view.findViewById(R.id.tv_safe_info);
         ivCraftSignal = (ImageView) view.findViewById(R.id.iv_craft_signal);
         ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
-        ivHelmetEnergy = (ImageView) view.findViewById(R.id.iv_helmet_energy);
-        ivPhoneEnergy = (ImageView) view.findViewById(R.id.iv_phone_energy);
-        ivRCEnergy = (ImageView) view.findViewById(R.id.iv_controller_energy);
-        ivCraftEnergy = (ImageView) view.findViewById(R.id.iv_craft_energy);
+        rlHelmetEnergy = view.findViewById(R.id.rl_helmet);
+        rlPhoneEnergy = view.findViewById(R.id.rl_phone);
+        rlRCEnergy = view.findViewById(R.id.rl_controller);
+        rlCraftEnergy = view.findViewById(R.id.rl_craft);
         tvFlightHeight = (TextView) view.findViewById(R.id.tv_flight_height);
         tvFlightDistance = (TextView) view.findViewById(R.id.tv_flight_distance);
         tvFlightSpeed = (TextView) view.findViewById(R.id.tv_flight_speed);
@@ -218,6 +235,10 @@ public class TPVFragment extends Fragment {
         ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
         tvPreview = (TextureView) view.findViewById(R.id.tv_preview);
         //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+        mapView = (MapView)view.findViewById(R.id.mv_map);
+
+        ivSatellite = (ImageView) view.findViewById(R.id.iv_sat);
+        ivRc = (ImageView) view.findViewById(R.id.iv_rc);
 
         int paddingText = (int) (wWidth * 0.013);
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
@@ -238,6 +259,18 @@ public class TPVFragment extends Fragment {
         lpControllerSignal.width = (int) (wWidth * 0.058);
         lpControllerSignal.height = (int) (wHeight * 0.0409);
         rlControllerSignal.setLayoutParams(lpControllerSignal);
+
+        RelativeLayout.LayoutParams lpSatellite = (RelativeLayout.LayoutParams) ivSatellite.getLayoutParams();
+        lpSatellite.width = (int) (wWidth * 0.016);
+        lpSatellite.height = (int) (wHeight * 0.0244);
+        lpSatellite.leftMargin = (int) (wWidth * 0.012);
+        ivSatellite.setLayoutParams(lpSatellite);
+
+        RelativeLayout.LayoutParams lpRc = (RelativeLayout.LayoutParams) ivRc.getLayoutParams();
+        lpRc.width = (int) (wWidth * 0.016);
+        lpRc.height = (int) (wHeight * 0.0244);
+        lpRc.leftMargin = (int) (wWidth * 0.012);
+        ivRc.setLayoutParams(lpRc);
 
         RelativeLayout.LayoutParams lpSafeInfo = (RelativeLayout.LayoutParams) tvSafeInfo.getLayoutParams();
         lpSafeInfo.width = (int) (wWidth * 0.126);
@@ -277,6 +310,13 @@ public class TPVFragment extends Fragment {
         lpPreview.topMargin = (int) (wHeight * 0.028);
         tvPreview.setLayoutParams(lpPreview);
 
+        RelativeLayout.LayoutParams lpMapView = (RelativeLayout.LayoutParams) mapView.getLayoutParams();
+        lpMapView.width = (int) (wWidth * 0.1);
+        lpMapView.height = (int) (wHeight * 0.1);
+//        lpMapView.leftMargin = (int)(wWidth * 0.039);
+        lpMapView.topMargin = (int) (wHeight * 0.375);
+        mapView.setLayoutParams(lpMapView);
+
         //bottom
         RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams) rlBottom.getLayoutParams();
         lpBottom.width = (int) (wWidth * 0.390);
@@ -284,33 +324,27 @@ public class TPVFragment extends Fragment {
         lpBottom.bottomMargin = (int) (wHeight * 0.045);
         rlBottom.setLayoutParams(lpBottom);
 
-        RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) ivHelmetEnergy.getLayoutParams();
-        lpHelmetEnergy.width = (int) (wWidth * 0.032);
-        lpHelmetEnergy.height = (int) (wHeight * 0.048);
-        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.039);
+        RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) rlHelmetEnergy.getLayoutParams();
+//        lpHelmetEnergy.width = (int) (wWidth * 0.032);
+//        lpHelmetEnergy.height = (int) (wHeight * 0.048);
+        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.032);
         lpHelmetEnergy.topMargin = (int) (wHeight * 0.026);
-        ivHelmetEnergy.setLayoutParams(lpHelmetEnergy);
+        rlHelmetEnergy.setLayoutParams(lpHelmetEnergy);
 
-        RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) ivPhoneEnergy.getLayoutParams();
-        lpPhoneEnergy.width = (int) (wWidth * 0.03);
-        lpPhoneEnergy.height = (int) (wHeight * 0.045);
-        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.0365);
+        RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) rlPhoneEnergy.getLayoutParams();
+        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.036);
         lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
-        ivPhoneEnergy.setLayoutParams(lpPhoneEnergy);
+        rlPhoneEnergy.setLayoutParams(lpPhoneEnergy);
 
-        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) ivRCEnergy.getLayoutParams();
-        lpControllerEnergy.width = (int) (wWidth * 0.032);
-        lpControllerEnergy.height = (int) (wHeight * 0.048);
-        lpControllerEnergy.rightMargin = (int) (wWidth * 0.036);
+        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) rlRCEnergy.getLayoutParams();
+        lpControllerEnergy.rightMargin = (int) (wWidth * 0.037);
         lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
-        ivRCEnergy.setLayoutParams(lpControllerEnergy);
+        rlRCEnergy.setLayoutParams(lpControllerEnergy);
 
-        RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) ivCraftEnergy.getLayoutParams();
-        lpCraftEnergy.width = (int) (wWidth * 0.032);
-        lpCraftEnergy.height = (int) (wHeight * 0.048);
-        lpCraftEnergy.rightMargin = (int) (wWidth * 0.037);
+        RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) rlCraftEnergy.getLayoutParams();
+        lpCraftEnergy.rightMargin = (int) (wWidth * 0.036);
         lpCraftEnergy.topMargin = (int) (wHeight * 0.026);
-        ivCraftEnergy.setLayoutParams(lpCraftEnergy);
+        rlCraftEnergy.setLayoutParams(lpCraftEnergy);
 
         //right
         RelativeLayout.LayoutParams lpRight = (RelativeLayout.LayoutParams) rlRight.getLayoutParams();
@@ -358,13 +392,28 @@ public class TPVFragment extends Fragment {
         lpIvFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.11);
         ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
 
+
         tvFlightVerticalSpeed.addTextChangedListener(new VSpeedWatcher());
+
+        mapView.onCreate(savedInstanceState);
+        aMap = mapView.getMap();
+        //aMap.getUiSettings().setZoomControlsEnabled(false);
+        LatLng shenzhen = new LatLng(22.5362, 113.9454);
+        aMap.addMarker(new MarkerOptions().position(shenzhen).title("Marker in Shenzhen"));
+        aMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
 
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
     public void onResume() {
         super.onResume();
+        mapView.onResume();
         DJIBaseProduct product = FPVDemoApplication.getProductInstance();
 
         if (product == null || !product.isConnected()) {
@@ -384,14 +433,35 @@ public class TPVFragment extends Fragment {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         getActivity().registerReceiver(mReceiver, filter);//注册BroadcastReceiver
 
-        if(djiAircraft != null) {
+        if (djiAircraft != null) {
+            //飞机电池电量
             DJIBattery djiBattery = djiAircraft.getBattery();
             djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
+
+            //遥控信号强度
+            DJIAirLink airLink = djiAircraft.getAirLink();
+            Model model = djiAircraft.getModel();
+            if (model == Model.Phantom_3_Standard || model == Model.Phantom_3_4K) {
+                DJIAuxLink auxLink = airLink.getAuxLink();
+                auxLink.setAuxLinkUpdatedRemoteControllerSignalInformationCallback(new AuxRCSignalCallback());
+            } else if (model == Model.MavicPro) {
+                DJIOcuSyncLink ocuSyncLink = airLink.getOcuSyncLink();
+                ocuSyncLink.setUplinkSignalQualityUpdatedCallback(new OcuSignalCallback());
+            } else {
+                DJILBAirLink lbAirLink = airLink.getLBAirLink();
+                lbAirLink.setDJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback(new LBRCSignalCallback());
+            }
+
+            DJIFlightController flightController = djiAircraft.getFlightController();
+            flightController.setUpdateSystemStateCallback(new FlightControllerCallback());
+            DJIRemoteController remoteController = djiAircraft.getRemoteController();
+            remoteController.setBatteryStateUpdateCallback(new RCBatteryStateCallback());
         }
     }
 
     public void onPause() {
         super.onPause();
+        mapView.onPause();
         DJICamera camera = FPVDemoApplication.getCameraInstance();
         if (camera != null) {
             // Reset the callback
@@ -510,7 +580,7 @@ public class TPVFragment extends Fragment {
             float percent = (float) current * 100 / total;
             int index = Math.round(percent / 10);
 
-            ivPhoneEnergy.setImageResource(ENERGY_ICON[index]);
+            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
         }
     }
 
@@ -539,6 +609,67 @@ public class TPVFragment extends Fragment {
             msg.what = MSG_BATTERY_STATE;
             Bundle bundle = new Bundle();
             bundle.putInt("remainingPercent", remainingPercent);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    class AuxRCSignalCallback implements DJIAuxLink.DJIAuxLinkUpdatedRemoteControllerSignalInformationCallback {
+
+        @Override
+        public void onResult(ArrayList<DJISignalInformation> antennas) {
+            int percent = 0;
+            for(DJISignalInformation antenna:antennas){
+                percent += antenna.getPercent();
+            }
+            int length = antennas.size();
+            percent = percent / length;
+
+            //Log.d("rcSignal", "aux" + percent + "");
+
+            Message msg = Message.obtain();
+            msg.what = MSG_CONTROL_SIGNAL;
+            Bundle bundle = new Bundle();
+            bundle.putInt("strengthPercent", percent);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    class LBRCSignalCallback implements DJILBAirLink.DJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback {
+
+        @Override
+        public void onResult(ArrayList<DJISignalInformation> antennas) {
+            int percent = 0;
+            for(DJISignalInformation antenna:antennas){
+                percent += antenna.getPercent();
+            }
+            int length = antennas.size();
+            percent = percent / length;
+
+            //Log.d("rcSignal", "lb" + percent + "");
+
+            Message msg = Message.obtain();
+            msg.what = MSG_CONTROL_SIGNAL;
+            Bundle bundle = new Bundle();
+            bundle.putInt("strengthPercent", percent);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    class OcuSignalCallback implements SignalQualityUpdatedCallback {
+
+        @Override
+        public void onChange(int strength) {
+
+            //Log.d("rcSignal", "ocu" + strength + "");
+
+            //The signal quality in percent with range [0, 100], where 100 is the best quality
+            Message msg = Message.obtain();
+            msg.what = MSG_CONTROL_SIGNAL;
+            Bundle bundle = new Bundle();
+            bundle.putInt("strengthPercent", strength);
             msg.setData(bundle);
             mHandler.sendMessage(msg);
         }
