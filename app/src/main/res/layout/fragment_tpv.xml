@@ -43,20 +43,31 @@
                 android:layout_alignParentEnd="true"/>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_safe_info"
+        <RelativeLayout
             android:layout_width="130dp"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_info_middle"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:maxLength="1"
-            android:text="接近禁飞区，请绕开此区域安全飞行" />
+            android:background="@drawable/bg_info_middle">
+            <TextView
+                android:id="@+id/tv_safe_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TPV-综合信息"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:layout_marginTop="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-ALT-FLIGHT-"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/blue"
+                android:textSize="8sp"
+                android:layout_marginBottom="3dp"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layout_controller_signal"

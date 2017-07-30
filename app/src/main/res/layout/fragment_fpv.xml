@@ -1,8 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextureView
+    <!--top-->
+    <RelativeLayout
+        android:id="@+id/layout_tpv_top"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_craft_signal"
+            android:layout_width="85dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_info_left"
+            android:rotationY="20"
+            android:rotation="8">
+
+            <RatingBar
+                android:id="@+id/rb_craft_signal"
+                style="@style/tenRatingBar"
+                android:layout_width="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_height="10dp"
+                android:numStars="10"
+                android:rating="3"
+                android:layout_centerVertical="true"
+                android:scaleX="-1"
+                android:isIndicator="true"/>
+
+            <ImageView
+                android:id="@+id/iv_sat"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_sat"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_info_middle">
+            <TextView
+                android:id="@+id/tv_safe_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TPV-综合信息"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-ALT-FLIGHT-"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/blue"
+                android:textSize="8sp"
+                android:layout_marginBottom="3dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_controller_signal"
+            android:layout_width="85dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_info_right"
+            android:rotationY="-20"
+            android:rotation="-8">
+
+            <ImageView
+                android:id="@+id/iv_rc"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="14dp"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_rc" />
+            <RatingBar
+                android:id="@+id/rb_controller_signal"
+                style="@style/tenRatingBar"
+                android:layout_width="40dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="12dp"
+                android:numStars="10"
+                android:rating="3"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:isIndicator="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <!--left-->
+    <RelativeLayout
+        android:id="@+id/layout_tpv_left"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:rotationY="20">
+        <!--camera-->
+        <RelativeLayout
+            android:id="@+id/layout_tpv_camera"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/map_bg"
+            android:gravity="center">
+
+            <TextureView
+                android:id="@+id/tv_preview"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:background="@color/colorWhite" />
+        </RelativeLayout>
+        <!--map-->
+        <RelativeLayout
+            android:id="@+id/layout_tpv_map"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/map_bg"
+            android:gravity="center">
+
+            <com.amap.api.maps2d.MapView
+                android:id="@+id/mv_map"
+                android:layout_width="100dp"
+                android:layout_height="55dp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="240dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/layout_tpv_camera"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/bg_tpv_left" />
+    </RelativeLayout>
+
+    <!--bottom-->
+    <RelativeLayout
+        android:id="@+id/layout_tpv_bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="32dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:rotationX="20">
+
+        <RelativeLayout
+            android:id="@+id/rl_helmet"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/energy_icon_1">
+
+            <ImageView
+                android:id="@+id/iv_helmet"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_helmet" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_phone"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_toEndOf="@id/rl_helmet"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/energy_icon_2">
+
+            <ImageView
+                android:id="@+id/iv_phone"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_phone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_controller"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_toEndOf="@id/rl_phone"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/energy_icon_4">
+
+            <ImageView
+                android:id="@+id/iv_controller"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_controller" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_craft"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_toEndOf="@id/rl_controller"
+            android:background="@drawable/energy_icon_3">
+
+            <ImageView
+                android:id="@+id/iv_craft"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_craft" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <!--right-->
+    <RelativeLayout
+        android:id="@+id/layout_tpv_right"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:rotationY="-20">
+
+        <TextView
+            android:id="@+id/tv_flight_height"
+            android:layout_width="70dp"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/alt_card"
+            android:gravity="center"
+            android:text="20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_flight_distance"
+            android:layout_width="70dp"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tv_flight_height"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/dis_card"
+            android:gravity="center"
+            android:text="351" />
+
+        <RelativeLayout
+            android:id="@+id/rl_vertical_speed"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="78dp"
+            android:background="@drawable/vspd_card"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/iv_flight_vertical_speed"
+                android:layout_width="8dp"
+                android:layout_height="12dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/vspd_up" />
+
+            <TextView
+                android:id="@+id/tv_flight_vertical_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="11dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/iv_flight_vertical_speed"
+                android:text="5.0"
+                android:textSize="9dp" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_flight_speed"
+            android:layout_width="70dp"
+            android:layout_height="44dp"
+            android:layout_above="@id/rl_vertical_speed"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/spd_card"
+            android:gravity="center"
+            android:text="626" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="240dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/rl_vertical_speed"
+            android:src="@drawable/bg_tpv_right" />
+    </RelativeLayout>
+
+
 </RelativeLayout>
