@@ -5,14 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.SurfaceTexture;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -113,17 +111,17 @@ public class TPVFragment extends Fragment {
     };
 
     private static final int ENERGY_ICON[] = {
-            R.drawable.energy_icon_0,
+            R.drawable.energy_icon_1,
+            R.drawable.energy_icon_2,
+            R.drawable.energy_icon_3,
+            R.drawable.energy_icon_4,
+            R.drawable.energy_icon_5,
+            R.drawable.energy_icon_6,
+            R.drawable.energy_icon_7,
+            R.drawable.energy_icon_8,
+            R.drawable.energy_icon_9,
             R.drawable.energy_icon_10,
-            R.drawable.energy_icon_20,
-            R.drawable.energy_icon_30,
-            R.drawable.energy_icon_40,
-            R.drawable.energy_icon_50,
-            R.drawable.energy_icon_60,
-            R.drawable.energy_icon_70,
-            R.drawable.energy_icon_80,
-            R.drawable.energy_icon_90,
-            R.drawable.energy_icon_100,
+            R.drawable.energy_icon_11,
     };
 
 
@@ -132,7 +130,6 @@ public class TPVFragment extends Fragment {
         @Override
         public boolean handleMessage(Message msg) {
             Bundle bundle = msg.getData();
-
             switch (msg.what) {
                 case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
                     double speed = bundle.getDouble("speed");
@@ -166,13 +163,13 @@ public class TPVFragment extends Fragment {
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
-                    int index = Math.round((float) remainingPercent / 10);
+                    int index = Math.round((float) remainingPercent / 8);
 
                     rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
                     break;
                 case MSG_BATTERY_STATE:
                     int aircraftRemainingPercent = bundle.getInt("remainingPercent");
-                    int aircraftIndex = Math.round((float) aircraftRemainingPercent / 10);
+                    int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8);
 
                     rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
                     break;
@@ -244,153 +241,153 @@ public class TPVFragment extends Fragment {
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
 
         //top
-        RelativeLayout.LayoutParams lpTop = (RelativeLayout.LayoutParams) rlTop.getLayoutParams();
-        lpTop.width = (int) (wWidth * 0.221);
-        lpTop.height = (int) (wHeight * 0.062);
-        lpTop.topMargin = (int) (wHeight * 0.07);
-        rlTop.setLayoutParams(lpTop);
-
-        RelativeLayout.LayoutParams lpCraftSignal = (RelativeLayout.LayoutParams) rlCraftSignal.getLayoutParams();
-        lpCraftSignal.width = (int) (wWidth * 0.058);
-        lpCraftSignal.height = (int) (wHeight * 0.0409);
-        rlCraftSignal.setLayoutParams(lpCraftSignal);
-
-        RelativeLayout.LayoutParams lpControllerSignal = (RelativeLayout.LayoutParams) rlControllerSignal.getLayoutParams();
-        lpControllerSignal.width = (int) (wWidth * 0.058);
-        lpControllerSignal.height = (int) (wHeight * 0.0409);
-        rlControllerSignal.setLayoutParams(lpControllerSignal);
-
-        RelativeLayout.LayoutParams lpSatellite = (RelativeLayout.LayoutParams) ivSatellite.getLayoutParams();
-        lpSatellite.width = (int) (wWidth * 0.016);
-        lpSatellite.height = (int) (wHeight * 0.0244);
-        lpSatellite.leftMargin = (int) (wWidth * 0.012);
-        ivSatellite.setLayoutParams(lpSatellite);
-
-        RelativeLayout.LayoutParams lpRc = (RelativeLayout.LayoutParams) ivRc.getLayoutParams();
-        lpRc.width = (int) (wWidth * 0.016);
-        lpRc.height = (int) (wHeight * 0.0244);
-        lpRc.leftMargin = (int) (wWidth * 0.012);
-        ivRc.setLayoutParams(lpRc);
-
-        RelativeLayout.LayoutParams lpSafeInfo = (RelativeLayout.LayoutParams) tvSafeInfo.getLayoutParams();
-        lpSafeInfo.width = (int) (wWidth * 0.126);
-        lpSafeInfo.height = (int) (wHeight * 0.0409);
-        tvSafeInfo.setLayoutParams(lpSafeInfo);
-        tvSafeInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (lpSafeInfo.height * 0.7));
-
-        RelativeLayout.LayoutParams lpIvCraftSignal = (RelativeLayout.LayoutParams) ivCraftSignal.getLayoutParams();
-        lpIvCraftSignal.width = (int) (wWidth * 0.0147);
-        lpIvCraftSignal.height = (int) (wHeight * 0.0195);
-        lpIvCraftSignal.leftMargin = lpCraftSignal.width / 2;
-        ivCraftSignal.setLayoutParams(lpIvCraftSignal);
-
-        RelativeLayout.LayoutParams lpIvControllerSignal = (RelativeLayout.LayoutParams) ivControllerSignal.getLayoutParams();
-        lpIvControllerSignal.width = (int) (wWidth * 0.0147);
-        lpIvControllerSignal.height = (int) (wHeight * 0.0195);
-        lpIvControllerSignal.leftMargin = lpControllerSignal.width / 2;
-        ivControllerSignal.setLayoutParams(lpIvCraftSignal);
+//        RelativeLayout.LayoutParams lpTop = (RelativeLayout.LayoutParams) rlTop.getLayoutParams();
+//        lpTop.width = (int) (wWidth * 0.221);
+//        lpTop.height = (int) (wHeight * 0.062);
+//        lpTop.topMargin = (int) (wHeight * 0.07);
+//        rlTop.setLayoutParams(lpTop);
+//
+//        RelativeLayout.LayoutParams lpCraftSignal = (RelativeLayout.LayoutParams) rlCraftSignal.getLayoutParams();
+//        lpCraftSignal.width = (int) (wWidth * 0.058);
+//        lpCraftSignal.height = (int) (wHeight * 0.0409);
+//        rlCraftSignal.setLayoutParams(lpCraftSignal);
+//
+//        RelativeLayout.LayoutParams lpControllerSignal = (RelativeLayout.LayoutParams) rlControllerSignal.getLayoutParams();
+//        lpControllerSignal.width = (int) (wWidth * 0.058);
+//        lpControllerSignal.height = (int) (wHeight * 0.0409);
+//        rlControllerSignal.setLayoutParams(lpControllerSignal);
+//
+//        RelativeLayout.LayoutParams lpSatellite = (RelativeLayout.LayoutParams) ivSatellite.getLayoutParams();
+//        lpSatellite.width = (int) (wWidth * 0.016);
+//        lpSatellite.height = (int) (wHeight * 0.0244);
+//        lpSatellite.leftMargin = (int) (wWidth * 0.012);
+//        ivSatellite.setLayoutParams(lpSatellite);
+//
+//        RelativeLayout.LayoutParams lpRc = (RelativeLayout.LayoutParams) ivRc.getLayoutParams();
+//        lpRc.width = (int) (wWidth * 0.016);
+//        lpRc.height = (int) (wHeight * 0.0244);
+//        lpRc.leftMargin = (int) (wWidth * 0.012);
+//        ivRc.setLayoutParams(lpRc);
+//
+//        RelativeLayout.LayoutParams lpSafeInfo = (RelativeLayout.LayoutParams) tvSafeInfo.getLayoutParams();
+//        lpSafeInfo.width = (int) (wWidth * 0.126);
+//        lpSafeInfo.height = (int) (wHeight * 0.0409);
+//        tvSafeInfo.setLayoutParams(lpSafeInfo);
+//        tvSafeInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (lpSafeInfo.height * 0.7));
+//
+//        RelativeLayout.LayoutParams lpIvCraftSignal = (RelativeLayout.LayoutParams) ivCraftSignal.getLayoutParams();
+//        lpIvCraftSignal.width = (int) (wWidth * 0.0147);
+//        lpIvCraftSignal.height = (int) (wHeight * 0.0195);
+//        lpIvCraftSignal.leftMargin = lpCraftSignal.width / 2;
+//        ivCraftSignal.setLayoutParams(lpIvCraftSignal);
+//
+//        RelativeLayout.LayoutParams lpIvControllerSignal = (RelativeLayout.LayoutParams) ivControllerSignal.getLayoutParams();
+//        lpIvControllerSignal.width = (int) (wWidth * 0.0147);
+//        lpIvControllerSignal.height = (int) (wHeight * 0.0195);
+//        lpIvControllerSignal.leftMargin = lpControllerSignal.width / 2;
+//        ivControllerSignal.setLayoutParams(lpIvCraftSignal);
 
         //left
-        RelativeLayout.LayoutParams lpLeft = (RelativeLayout.LayoutParams) rlLeft.getLayoutParams();
-        lpLeft.width = (int) (wWidth * 0.15);
-        lpLeft.height = (int) (wHeight * 0.52);
-        lpLeft.leftMargin = (int) (wWidth * 0.06);
-        rlLeft.setLayoutParams(lpLeft);
+//        RelativeLayout.LayoutParams lpLeft = (RelativeLayout.LayoutParams) rlLeft.getLayoutParams();
+//        lpLeft.width = (int) (wWidth * 0.15);
+//        lpLeft.height = (int) (wHeight * 0.52);
+//        lpLeft.leftMargin = (int) (wWidth * 0.06);
+//        rlLeft.setLayoutParams(lpLeft);
 
-        RelativeLayout.LayoutParams lpLeftBg = (RelativeLayout.LayoutParams) ivLeftBg.getLayoutParams();
-        lpLeftBg.width = (int) (wWidth * 0.13);
-        lpLeftBg.height = (int) (wHeight * 0.52);
-        ivLeftBg.setLayoutParams(lpLeftBg);
+//        RelativeLayout.LayoutParams lpLeftBg = (RelativeLayout.LayoutParams) ivLeftBg.getLayoutParams();
+//        lpLeftBg.width = (int) (wWidth * 0.13);
+//        lpLeftBg.height = (int) (wHeight * 0.52);
+//        ivLeftBg.setLayoutParams(lpLeftBg);
 
 
-        RelativeLayout.LayoutParams lpPreview = (RelativeLayout.LayoutParams) tvPreview.getLayoutParams();
-        lpPreview.width = (int) (wWidth * 0.1);
-        lpPreview.height = (int) (wHeight * 0.1);
-//        lpPreview.leftMargin = (int)(wWidth * 0.039);
-        lpPreview.topMargin = (int) (wHeight * 0.028);
-        tvPreview.setLayoutParams(lpPreview);
-
-        RelativeLayout.LayoutParams lpMapView = (RelativeLayout.LayoutParams) mapView.getLayoutParams();
-        lpMapView.width = (int) (wWidth * 0.1);
-        lpMapView.height = (int) (wHeight * 0.1);
-//        lpMapView.leftMargin = (int)(wWidth * 0.039);
-        lpMapView.topMargin = (int) (wHeight * 0.375);
-        mapView.setLayoutParams(lpMapView);
+//        RelativeLayout.LayoutParams lpPreview = (RelativeLayout.LayoutParams) tvPreview.getLayoutParams();
+//        lpPreview.width = (int) (wWidth * 0.1);
+//        lpPreview.height = (int) (wHeight * 0.1);
+////        lpPreview.leftMargin = (int)(wWidth * 0.039);
+//        lpPreview.topMargin = (int) (wHeight * 0.028);
+//        tvPreview.setLayoutParams(lpPreview);
+//
+//        RelativeLayout.LayoutParams lpMapView = (RelativeLayout.LayoutParams) mapView.getLayoutParams();
+//        lpMapView.width = (int) (wWidth * 0.1);
+//        lpMapView.height = (int) (wHeight * 0.1);
+////        lpMapView.leftMargin = (int)(wWidth * 0.039);
+//        lpMapView.topMargin = (int) (wHeight * 0.375);
+//        mapView.setLayoutParams(lpMapView);
 
         //bottom
-        RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams) rlBottom.getLayoutParams();
-        lpBottom.width = (int) (wWidth * 0.390);
-        lpBottom.height = (int) (wHeight * 0.107);
-        lpBottom.bottomMargin = (int) (wHeight * 0.045);
-        rlBottom.setLayoutParams(lpBottom);
+//        RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams) rlBottom.getLayoutParams();
+//        lpBottom.width = (int) (wWidth * 0.390);
+//        lpBottom.height = (int) (wHeight * 0.107);
+//        lpBottom.bottomMargin = (int) (wHeight * 0.045);
+//        rlBottom.setLayoutParams(lpBottom);
 
-        RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) rlHelmetEnergy.getLayoutParams();
-//        lpHelmetEnergy.width = (int) (wWidth * 0.032);
-//        lpHelmetEnergy.height = (int) (wHeight * 0.048);
-        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.032);
-        lpHelmetEnergy.topMargin = (int) (wHeight * 0.026);
-        rlHelmetEnergy.setLayoutParams(lpHelmetEnergy);
-
-        RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) rlPhoneEnergy.getLayoutParams();
-        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.036);
-        lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
-        rlPhoneEnergy.setLayoutParams(lpPhoneEnergy);
-
-        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) rlRCEnergy.getLayoutParams();
-        lpControllerEnergy.rightMargin = (int) (wWidth * 0.037);
-        lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
-        rlRCEnergy.setLayoutParams(lpControllerEnergy);
-
-        RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) rlCraftEnergy.getLayoutParams();
-        lpCraftEnergy.rightMargin = (int) (wWidth * 0.036);
-        lpCraftEnergy.topMargin = (int) (wHeight * 0.026);
-        rlCraftEnergy.setLayoutParams(lpCraftEnergy);
+//        RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) rlHelmetEnergy.getLayoutParams();
+////        lpHelmetEnergy.width = (int) (wWidth * 0.032);
+////        lpHelmetEnergy.height = (int) (wHeight * 0.048);
+//        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.032);
+//        lpHelmetEnergy.topMargin = (int) (wHeight * 0.026);
+//        rlHelmetEnergy.setLayoutParams(lpHelmetEnergy);
+//
+//        RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) rlPhoneEnergy.getLayoutParams();
+//        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.036);
+//        lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
+//        rlPhoneEnergy.setLayoutParams(lpPhoneEnergy);
+//
+//        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) rlRCEnergy.getLayoutParams();
+//        lpControllerEnergy.rightMargin = (int) (wWidth * 0.037);
+//        lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
+//        rlRCEnergy.setLayoutParams(lpControllerEnergy);
+//
+//        RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) rlCraftEnergy.getLayoutParams();
+//        lpCraftEnergy.rightMargin = (int) (wWidth * 0.036);
+//        lpCraftEnergy.topMargin = (int) (wHeight * 0.026);
+//        rlCraftEnergy.setLayoutParams(lpCraftEnergy);
 
         //right
-        RelativeLayout.LayoutParams lpRight = (RelativeLayout.LayoutParams) rlRight.getLayoutParams();
-        lpRight.width = (int) (wWidth * 0.15);
-        lpRight.height = (int) (wHeight * 0.52);
-        lpRight.rightMargin = (int) (wWidth * 0.06);
-        rlRight.setLayoutParams(lpRight);
+//        RelativeLayout.LayoutParams lpRight = (RelativeLayout.LayoutParams) rlRight.getLayoutParams();
+//        lpRight.width = (int) (wWidth * 0.15);
+//        lpRight.height = (int) (wHeight * 0.52);
+//        lpRight.rightMargin = (int) (wWidth * 0.06);
+//        rlRight.setLayoutParams(lpRight);
 
-        RelativeLayout.LayoutParams lpFlightHeight = (RelativeLayout.LayoutParams) tvFlightHeight.getLayoutParams();
-        lpFlightHeight.topMargin = (int) (wHeight * 0.03);
-        lpFlightHeight.leftMargin = (int) (wWidth * 0.071);
-        tvFlightHeight.setLayoutParams(lpFlightHeight);
-        tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-        tvFlightHeight.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-        tvFlightHeight.getPaint().setFakeBoldText(true);//加粗
-
-        RelativeLayout.LayoutParams lpFlightDistance = (RelativeLayout.LayoutParams) tvFlightDistance.getLayoutParams();
-        lpFlightDistance.topMargin = (int) (wHeight * 0.16);
-        lpFlightDistance.leftMargin = (int) (wWidth * 0.093);
-        tvFlightDistance.setLayoutParams(lpFlightDistance);
-        tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-        tvFlightDistance.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-        tvFlightDistance.getPaint().setFakeBoldText(true);//加粗
-
-        RelativeLayout.LayoutParams lpFlightSpeed = (RelativeLayout.LayoutParams) tvFlightSpeed.getLayoutParams();
-        lpFlightSpeed.topMargin = (int) (wHeight * 0.4);
-        lpFlightSpeed.leftMargin = (int) (wWidth * 0.071);
-        tvFlightSpeed.setLayoutParams(lpFlightSpeed);
-        tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-        tvFlightSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-        tvFlightSpeed.getPaint().setFakeBoldText(true);//加粗
-
-        RelativeLayout.LayoutParams lpFlightVerticalSpeed = (RelativeLayout.LayoutParams) tvFlightVerticalSpeed.getLayoutParams();
-        lpFlightVerticalSpeed.topMargin = (int) (wHeight * 0.475);
-        lpFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.12);
-        tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
-        tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.035));
-        tvFlightVerticalSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-        tvFlightVerticalSpeed.getPaint().setFakeBoldText(true);//加粗
-
-        RelativeLayout.LayoutParams lpIvFlightVerticalSpeed = (RelativeLayout.LayoutParams) ivFlightVerticalSpeed.getLayoutParams();
-        lpIvFlightVerticalSpeed.width = (int) (wWidth * 0.01);
-        lpIvFlightVerticalSpeed.height = (int) (wHeight * 0.02);
-        lpIvFlightVerticalSpeed.topMargin = (int) (wHeight * 0.494);
-        lpIvFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.11);
-        ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
+//        RelativeLayout.LayoutParams lpFlightHeight = (RelativeLayout.LayoutParams) tvFlightHeight.getLayoutParams();
+//        lpFlightHeight.topMargin = (int) (wHeight * 0.03);
+//        lpFlightHeight.leftMargin = (int) (wWidth * 0.071);
+//        tvFlightHeight.setLayoutParams(lpFlightHeight);
+//        tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
+//        tvFlightHeight.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
+//        tvFlightHeight.getPaint().setFakeBoldText(true);//加粗
+//
+//        RelativeLayout.LayoutParams lpFlightDistance = (RelativeLayout.LayoutParams) tvFlightDistance.getLayoutParams();
+//        lpFlightDistance.topMargin = (int) (wHeight * 0.16);
+//        lpFlightDistance.leftMargin = (int) (wWidth * 0.093);
+//        tvFlightDistance.setLayoutParams(lpFlightDistance);
+//        tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
+//        tvFlightDistance.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
+//        tvFlightDistance.getPaint().setFakeBoldText(true);//加粗
+//
+//        RelativeLayout.LayoutParams lpFlightSpeed = (RelativeLayout.LayoutParams) tvFlightSpeed.getLayoutParams();
+//        lpFlightSpeed.topMargin = (int) (wHeight * 0.4);
+//        lpFlightSpeed.leftMargin = (int) (wWidth * 0.071);
+//        tvFlightSpeed.setLayoutParams(lpFlightSpeed);
+//        tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
+//        tvFlightSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
+//        tvFlightSpeed.getPaint().setFakeBoldText(true);//加粗
+//
+//        RelativeLayout.LayoutParams lpFlightVerticalSpeed = (RelativeLayout.LayoutParams) tvFlightVerticalSpeed.getLayoutParams();
+//        lpFlightVerticalSpeed.topMargin = (int) (wHeight * 0.475);
+//        lpFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.12);
+//        tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
+//        tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.035));
+//        tvFlightVerticalSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
+//        tvFlightVerticalSpeed.getPaint().setFakeBoldText(true);//加粗
+//
+//        RelativeLayout.LayoutParams lpIvFlightVerticalSpeed = (RelativeLayout.LayoutParams) ivFlightVerticalSpeed.getLayoutParams();
+//        lpIvFlightVerticalSpeed.width = (int) (wWidth * 0.01);
+//        lpIvFlightVerticalSpeed.height = (int) (wHeight * 0.02);
+//        lpIvFlightVerticalSpeed.topMargin = (int) (wHeight * 0.494);
+//        lpIvFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.11);
+//        ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
 
 
         tvFlightVerticalSpeed.addTextChangedListener(new VSpeedWatcher());
@@ -432,6 +429,8 @@ public class TPVFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         getActivity().registerReceiver(mReceiver, filter);//注册BroadcastReceiver
+
+        //Log.d("djiAircraft", djiAircraft.toString());
 
         if (djiAircraft != null) {
             //飞机电池电量
@@ -580,7 +579,7 @@ public class TPVFragment extends Fragment {
             float percent = (float) current * 100 / total;
             int index = Math.round(percent / 10);
 
-            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
+//            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
         }
     }
 
@@ -596,6 +595,7 @@ public class TPVFragment extends Fragment {
             msg.what = MSG_REMOTE_CONTROLLER_BATTERY_STATE;
             msg.setData(bundle);
             mHandler.sendMessage(msg);
+
         }
     }
 
