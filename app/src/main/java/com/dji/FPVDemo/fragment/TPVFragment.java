@@ -158,7 +158,7 @@ public class TPVFragment extends Fragment {
                     tvFlightHeight.setText(altitude + "");
                     tvFlightDistance.setText(distance + "");
 
-                    ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
+                    //ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
 
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
@@ -177,7 +177,7 @@ public class TPVFragment extends Fragment {
                     int strengthPercent = bundle.getInt("strengthPercent");
                     int index2 = Math.round((float) strengthPercent / 25);
 
-                    ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
+                    //ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
                     break;
             }
 
@@ -218,8 +218,8 @@ public class TPVFragment extends Fragment {
         rlCraftSignal = (RelativeLayout) view.findViewById(R.id.layout_craft_signal);
         rlControllerSignal = (RelativeLayout) view.findViewById(R.id.layout_controller_signal);
         tvSafeInfo = (TextView) view.findViewById(R.id.tv_safe_info);
-        ivCraftSignal = (ImageView) view.findViewById(R.id.iv_craft_signal);
-        ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
+//        ivCraftSignal = (ImageView) view.findViewById(R.id.iv_craft_signal);
+//        ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
         rlHelmetEnergy = view.findViewById(R.id.rl_helmet);
         rlPhoneEnergy = view.findViewById(R.id.rl_phone);
         rlRCEnergy = view.findViewById(R.id.rl_controller);
@@ -229,7 +229,7 @@ public class TPVFragment extends Fragment {
         tvFlightSpeed = (TextView) view.findViewById(R.id.tv_flight_speed);
         tvFlightVerticalSpeed = (TextView) view.findViewById(R.id.tv_flight_vertical_speed);
         ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_flight_vertical_speed);
-        ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
+        //ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
         tvPreview = (TextureView) view.findViewById(R.id.tv_preview);
         //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
         mapView = (MapView)view.findViewById(R.id.mv_map);
