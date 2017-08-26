@@ -33,6 +33,7 @@ public class CameraFragment extends Fragment {
         //----------------------------B设置菜单--------------------------------
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiCamera = djiAircraft.getCamera();
+
         //djiCamera.setCameraMode();
         //开始拍照
         //djiCamera.startShootPhoto();

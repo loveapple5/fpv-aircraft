@@ -122,6 +122,7 @@ public class TPVFragment extends Fragment {
             R.drawable.energy_icon_9,
             R.drawable.energy_icon_10,
             R.drawable.energy_icon_11,
+            R.drawable.energy_icon_12,
     };
 
 
@@ -163,14 +164,14 @@ public class TPVFragment extends Fragment {
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
-                    int index = Math.round((float) remainingPercent / 8);
-
+                    int index = Math.round((float) remainingPercent / 8) - 1;
+                    index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
                     rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
                     break;
                 case MSG_BATTERY_STATE:
                     int aircraftRemainingPercent = bundle.getInt("remainingPercent");
-                    int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8);
-
+                    int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8) - 1;
+                    aircraftIndex = aircraftIndex < 0 ? 0 :(aircraftIndex > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : aircraftIndex);
                     rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
                     break;
                 case MSG_CONTROL_SIGNAL:
@@ -207,6 +208,12 @@ public class TPVFragment extends Fragment {
         };
 
         mReceiver = new BatteryReceiver();
+    }
+
+    public void setHelmetEnergy(int percent) {
+        int index = Math.round((float) percent / 8);
+        index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
+        rlHelmetEnergy.setBackgroundResource(ENERGY_ICON[index]);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -578,8 +585,8 @@ public class TPVFragment extends Fragment {
             int total = intent.getExtras().getInt("scale");
             float percent = (float) current * 100 / total;
             int index = Math.round(percent / 10);
-
-//            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
+            index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
+            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
         }
     }
 

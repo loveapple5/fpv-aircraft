@@ -72,7 +72,7 @@ public class AircraftModel {
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     float color[] = { 1f, 1f, 1f, 0.7f };
-    float color2[] = { 0f, 171/255f, 210/255f, 1.0f };
+    float color2[] = { 0f, 255/255f, 245/255f, 1.0f };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.

@@ -1,10 +1,12 @@
 package com.dji.FPVDemo;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,7 +34,7 @@ import dji.sdk.base.DJIBaseProduct.DJIComponentKey;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
 
-public class FPVDemoApplication extends Application{
+public class FPVDemoApplication extends Application {
 
     public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
 
@@ -135,7 +137,7 @@ public class FPVDemoApplication extends Application{
     }
 
     /**
-     * When starting SDK services, an instance of interface DJISDKManager.DJISDKManagerCallback will be used to listen to 
+     * When starting SDK services, an instance of interface DJISDKManager.DJISDKManagerCallback will be used to listen to
      * the SDK Registration result and the product changing.
      */
     private DJISDKManager.DJISDKManagerCallback mDJISDKManagerCallback = new DJISDKManager.DJISDKManagerCallback() {
@@ -144,7 +146,7 @@ public class FPVDemoApplication extends Application{
         @Override
         public void onGetRegisteredResult(DJIError error) {
 
-            if(error == DJISDKError.REGISTRATION_SUCCESS) {
+            if (error == DJISDKError.REGISTRATION_SUCCESS) {
 
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
@@ -179,7 +181,7 @@ public class FPVDemoApplication extends Application{
         public void onProductChanged(DJIBaseProduct oldProduct, DJIBaseProduct newProduct) {
 
             mProduct = newProduct;
-            if(mProduct != null) {
+            if (mProduct != null) {
                 mProduct.setDJIBaseProductListener(mDJIBaseProductListener);
             }
 
@@ -192,7 +194,7 @@ public class FPVDemoApplication extends Application{
         @Override
         public void onComponentChange(DJIComponentKey key, DJIBaseComponent oldComponent, DJIBaseComponent newComponent) {
 
-            if(newComponent != null) {
+            if (newComponent != null) {
                 newComponent.setDJIComponentListener(mDJIComponentListener);
             }
             notifyStatusChange();
@@ -229,4 +231,8 @@ public class FPVDemoApplication extends Application{
         }
     };
 
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }

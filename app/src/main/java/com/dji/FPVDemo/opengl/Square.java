@@ -168,7 +168,7 @@ public class Square {
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
 
 ///////////////////////   loadTexture here  !!!  ///////////////////////////
-        mTextureDataHandle0 = loadTexture(R.drawable.compa_base);
+        //mTextureDataHandle0 = loadTexture(R.drawable.compa_base);
 
     }
 

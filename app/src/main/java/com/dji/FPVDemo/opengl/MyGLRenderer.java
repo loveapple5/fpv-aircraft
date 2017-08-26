@@ -40,6 +40,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private AircraftModel mAircraftModel;
 //    private Square2   mSquare;
 
+    private LeftBand leftBand;
+    private RightBand rightBand;
+    private OuterRing outerRing;
+    private InnerRing innerRing;
+
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
@@ -68,6 +73,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mSquare   = new Square();
         mAircraftModel = new AircraftModel();
 
+        leftBand = new LeftBand();
+        rightBand = new RightBand();
+        outerRing = new OuterRing();
+        innerRing = new InnerRing();
+
 //        mSquare   = new Square2();
 //        mSquare2 = new Square();
     }
@@ -77,6 +87,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float[] scratch = new float[16];
         float [] scratch2 = new float[16];
         float [] scratch3 = new float[16];
+        float [] matrixZ = new float [16];
+        float [] scratch4 = new float[16];
+        float[] plusMatrix = {1, 0, 0, 0,
+                0,  1, 0, 0,
+                0,  0, 1, 0,
+                0,  3f, 0, 1};
         // clear buffer
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -105,8 +121,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //       mSquare.draw(mMVPMatrix);
 
         Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
-
-
         Matrix.setRotateM(mRollMatrix,0,mRoll,0,1.0f,0);
         Matrix.setRotateM(mPitchMatrix,0,mPitch,1.0f,0,0);
         Matrix.multiplyMM(scratch2, 0, mRollMatrix, 0, mPitchMatrix, 0);
@@ -114,15 +128,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
 
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+       // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 //        Matrix.multiplyMM(scratch2, 0, mMVPMatrix, 0, mPitchMatrix, 0);
         Matrix.multiplyMM(scratch3, 0, mMVPMatrix, 0, scratch2, 0);
 
+        Matrix.setRotateM(matrixZ,0,0,0f,0f,1f);
+        Matrix.rotateM(matrixZ,0,0,1f,0,0);
+        Matrix.rotateM(matrixZ,0,0,0f,1f,0);
+        Matrix.multiplyMM(matrixZ,0,plusMatrix,0, matrixZ,0);
+        Matrix.multiplyMM(scratch4, 0, mMVPMatrix, 0, matrixZ, 0);
 
-
-        mSquare.draw(scratch);
-        mTriangle.draw(mMVPMatrix);
+        //mSquare.draw(scratch);
+        //mTriangle.draw(mMVPMatrix);
         mAircraftModel.draw(scratch3);
+
+        leftBand.draw(scratch4);
+        rightBand.draw(scratch4);
+        outerRing.draw(scratch4);
+        innerRing.draw(scratch4);
 
 //        mSquare.draw(mMVPMatrix);
 //        mTriangle.draw(scratch);
