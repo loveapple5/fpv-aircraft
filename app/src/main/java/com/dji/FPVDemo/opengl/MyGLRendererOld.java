@@ -15,53 +15,45 @@
  */
 package com.dji.FPVDemo.opengl;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
-
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class
  * must override the OpenGL ES drawing lifecycle methods:
  * <ul>
- *   <li>{@link android.opengl.GLSurfaceView.Renderer#onSurfaceCreated}</li>
- *   <li>{@link android.opengl.GLSurfaceView.Renderer#onDrawFrame}</li>
- *   <li>{@link android.opengl.GLSurfaceView.Renderer#onSurfaceChanged}</li>
+ *   <li>{@link GLSurfaceView.Renderer#onSurfaceCreated}</li>
+ *   <li>{@link GLSurfaceView.Renderer#onDrawFrame}</li>
+ *   <li>{@link GLSurfaceView.Renderer#onSurfaceChanged}</li>
  * </ul>
  */
-public class MyGLRenderer implements GLSurfaceView.Renderer {
+public class MyGLRendererOld implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
+    private Triangle mTriangle;
+    private Square   mSquare;
+    private AircraftModel mAircraftModel;
+//    private Square2   mSquare;
 
-    private Square mSquare;
-    private AircraftModel mAircraftmodel;
-
-    private band1 mBand1;
-    private band2 mBand2;
-    private ring10 mring10;
-    private ring20 mring20;
-
-    private ring11 mring11;
-    private ring22 mring22;
-
-    private AircraftModel2 mAircraftModel2;
-
+    private LeftBand leftBand;
+    private RightBand rightBand;
+    private OuterRing outerRing;
+    private InnerRing innerRing;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
-
-
-    private float[] mRotationMatrixZ = new float[16];
+    private final float[] mPitchMatrix = new float[16];
+    private final float[] mRollMatrix = new float[16];
 
     private float mAngle;
-
     private float mPitch;
     private float mRoll;
 
@@ -73,123 +65,90 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         // set graphic transparency
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GL10.GL_BLEND);
         GLES20.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
+        mTriangle = new Triangle();
         mSquare   = new Square();
-        mAircraftmodel = new AircraftModel();
+        mAircraftModel = new AircraftModel();
 
-//        mRing1 = new ring1();
+        leftBand = new LeftBand();
+        rightBand = new RightBand();
+        outerRing = new OuterRing();
+        innerRing = new InnerRing();
 
-        mBand1 = new band1();
-        mBand2 = new band2();
-
-        mring10 = new ring10();
-        mring20 = new ring20();
-
-        mring11 = new ring11();
-        mring22 = new ring22();
-
-        mAircraftModel2 = new AircraftModel2();
+//        mSquare   = new Square2();
+//        mSquare2 = new Square();
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16];
-        float[] scratch2 = new float[16];
-        float[] plusmatrix = {1, 0, 0, 0,
+        float [] scratch2 = new float[16];
+        float [] scratch3 = new float[16];
+        float [] matrixZ = new float [16];
+        float [] scratch4 = new float[16];
+        float[] plusMatrix = {1, 0, 0, 0,
                 0,  1, 0, 0,
                 0,  0, 1, 0,
-                0,  15f, 240, 1}; //135+190
-
-        float[] Aircraftmatrix = {1, 0, 0, 0,
-                0,  1, 0, 0,
-                0,  0, 1, 0,
-                0,  -1.15f, 3, 1}; //135+190
-
-
+                0,  3f, 0, 1};
         // clear buffer
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         // Set the camera position (View matrix)
-
+//        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         // camera position
-//        Float ex =0.0f;
-//        Float ey = -2.5f;
-//        Float ez = 2.5f;
         Float ex =0.0f;
-        Float ey = 0.0f;
-        Float ez = 0.0f;
+        Float ey =-2.5f;
+        Float ez = 2.5f;
         // focus
         Float x =0.0f;
-        Float y =0.0f;     //2.0f
-        Float z =35f;
+        Float y =2.0f;
+        Float z =0.0f;
         
         Float upx =0.0f;
-        Float upy =1.0f;    // 1.0f
-        Float upz =0.0f;    // 0.0f
+        Float upy =1.0f;
+        Float upz =0.0f;
 
         Matrix.setLookAtM(mViewMatrix,0,ex,ey,ez,x,y,z,upx,upy,upz);
 
-/* matrix for aircraft postion*/
+
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw static square
-        Matrix.setRotateM(mRotationMatrix, 0, 0, 0, 1.0f, 0f);
-        Matrix.rotateM(mRotationMatrix,0,-mPitch,1f,0,0);
-        Matrix.rotateM(mRotationMatrix,0,mRoll,0f,0f,1f);
+//       mSquare.draw(mMVPMatrix);
 
-        Matrix.multiplyMM(mRotationMatrix,0,Aircraftmatrix,0, mRotationMatrix,0);
-
-
-
-/* matrix for grahpic postion*/
-        Matrix.setRotateM(mRotationMatrixZ,0,mAngle,0f,1f,0f);
-//
-        Matrix.rotateM(mRotationMatrixZ,0,mPitch,1f,0,0);
-        Matrix.rotateM(mRotationMatrixZ,0,mRoll,0f,0f,1f);
-
-        Matrix.multiplyMM(mRotationMatrixZ,0,plusmatrix,0, mRotationMatrixZ,0);
-//        Matrix.translateM(mRotationMatrixZ,0,0,0f,-190f); // 移回原位，绕设定轴转
-
-
-
-        // zoom in and zoom out effect
-//        Matrix.translateM(mRotationMatrixZ,0,0,-1.0f,0);
-
+        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
+        Matrix.setRotateM(mRollMatrix,0,mRoll,0,1.0f,0);
+        Matrix.setRotateM(mPitchMatrix,0,mPitch,1.0f,0,0);
+        Matrix.multiplyMM(scratch2, 0, mRollMatrix, 0, mPitchMatrix, 0);
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-        Matrix.multiplyMM(scratch2, 0, mMVPMatrix, 0, mRotationMatrixZ, 0);
 
+       // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+//        Matrix.multiplyMM(scratch2, 0, mMVPMatrix, 0, mPitchMatrix, 0);
+        Matrix.multiplyMM(scratch3, 0, mMVPMatrix, 0, scratch2, 0);
 
-        // Draw triangle
+        Matrix.setRotateM(matrixZ,0,0,0f,0f,1f);
+        Matrix.rotateM(matrixZ,0,0,1f,0,0);
+        Matrix.rotateM(matrixZ,0,0,0f,1f,0);
+        Matrix.multiplyMM(matrixZ,0,plusMatrix,0, matrixZ,0);
+        Matrix.multiplyMM(scratch4, 0, mMVPMatrix, 0, matrixZ, 0);
 
-//        mSquare.draw(scratch);
-//        mAircraftmodel.draw(mMVPMatrix);
-//        mTriangle.draw(mMVPMatrix);
+        //mSquare.draw(scratch);
+        //mTriangle.draw(mMVPMatrix);
+        mAircraftModel.draw(scratch3);
 
+        leftBand.draw(scratch4);
+        rightBand.draw(scratch4);
+        outerRing.draw(scratch4);
+        innerRing.draw(scratch4);
 
-
-        mBand1.draw(scratch2);
-        mBand2.draw(scratch2);
-        mring10.draw(scratch2);
-        mring20.draw(scratch2);
-        mring11.draw(scratch2);
-        mring22.draw(scratch2);
-
-        mAircraftModel2.draw(scratch);
-
-//        mBand1.draw(scratch);
-//        mBand2.draw(scratch);
-//        mring10.draw(scratch);
-//        mring20.draw(scratch);
-
-//        mAircraftmodel.draw(scratch);
-
+//        mSquare.draw(mMVPMatrix);
+//        mTriangle.draw(scratch);
 
     }
 
@@ -203,11 +162,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 1.94f, 10000);  // n=1.94 : FOV =54.43 , n=h/(2tan(FOV))
-
-//        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 2, 7);
-
-
+//        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+        Matrix.frustumM(mProjectionMatrix,0,-ratio,ratio,-1,1,2,7);
 
     }
 
@@ -277,8 +233,5 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void setRoll(float roll){
         mRoll = roll;
     }
-
-
-
 
 }
