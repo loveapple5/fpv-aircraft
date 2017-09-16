@@ -28,16 +28,16 @@ import android.view.MotionEvent;
  */
 public class MyGLSurfaceView extends GLSurfaceView {
 
-//    protected final MyGLRenderer mRenderer;
+    //    protected final MyGLRenderer mRenderer;
     public final MyGLRenderer mRenderer;
     public static Resources res;
     Double headingangle;
 
     public MyGLSurfaceView(Context context) {
         super(context);
-        res =context.getResources();
+        res = context.getResources();
 
-        super.setEGLConfigChooser(8,8,8,8,16,0);
+        super.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
@@ -47,16 +47,16 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data
-       setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
     }
 
     private float mPreviousAngle;
 
-    public void setHeadingAngle (Float headingangle){
+    public void setHeadingAngle(Float headingangle) {
 //        float x = mPreviousAngle;
-        if (headingangle!=mPreviousAngle){
-            mPreviousAngle=headingangle;
+        if (headingangle != mPreviousAngle) {
+            mPreviousAngle = headingangle;
             mRenderer.setAngle(headingangle);
             requestRender();
         }
@@ -65,8 +65,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     private float mPreviousPitch;
     private float mPreviousRoll;
-    public void setAttitude (Float pitch, Float roll){
-        if(pitch!=mPreviousPitch||roll!=mPreviousRoll){
+
+    public void setAttitude(Float pitch, Float roll) {
+        if (pitch != mPreviousPitch || roll != mPreviousRoll) {
             mPreviousPitch = pitch;
             mPreviousRoll = roll;
             mRenderer.setPitch(pitch);
