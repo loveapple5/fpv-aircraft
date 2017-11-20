@@ -37,16 +37,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
 
-    private Square mSquare;
-    private AircraftModel mAircraftmodel;
+//    private Square mSquare;
+//    private AircraftModel mAircraftmodel;
 
-    private band1 mBand1;
-    private band2 mBand2;
-    private ring10 mring10;
-    private ring20 mring20;
-
-    private ring11 mring11;
-    private ring22 mring22;
+//    private band1 mBand1;
+//    private band2 mBand2;
+//    private ring10 mring10;
+//    private ring20 mring20;
+//
+//    private ring11 mring11;
+//    private ring22 mring22;
 
     private AircraftModel2 mAircraftModel2;
 
@@ -76,19 +76,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GL10.GL_BLEND);
         GLES20.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
-        mSquare   = new Square();
-        mAircraftmodel = new AircraftModel();
+//        mSquare   = new Square();
+//        mAircraftmodel = new AircraftModel();
 
 //        mRing1 = new ring1();
 
-        mBand1 = new band1();
-        mBand2 = new band2();
-
-        mring10 = new ring10();
-        mring20 = new ring20();
-
-        mring11 = new ring11();
-        mring22 = new ring22();
+//        mBand1 = new band1();
+//        mBand2 = new band2();
+//
+//        mring10 = new ring10();
+//        mring20 = new ring20();
+//
+//        mring11 = new ring11();
+//        mring22 = new ring22();
 
         mAircraftModel2 = new AircraftModel2();
     }
@@ -174,12 +174,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
 
-        mBand1.draw(scratch2);
-        mBand2.draw(scratch2);
-        mring10.draw(scratch2);
-        mring20.draw(scratch2);
-        mring11.draw(scratch2);
-        mring22.draw(scratch2);
+//        mBand1.draw(scratch2);
+//        mBand2.draw(scratch2);
+//        mring10.draw(scratch2);
+//        mring20.draw(scratch2);
+//        mring11.draw(scratch2);
+//        mring22.draw(scratch2);
 
         mAircraftModel2.draw(scratch);
 
@@ -187,9 +187,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        mBand2.draw(scratch);
 //        mring10.draw(scratch);
 //        mring20.draw(scratch);
-
-//        mAircraftmodel.draw(scratch);
-
 
     }
 

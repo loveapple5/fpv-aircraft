@@ -4,13 +4,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -28,6 +40,8 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
+import com.dji.FPVDemo.opengl.MyGLSurfaceView;
+import com.dji.FPVDemo.opengl.TPVGLSurfaceView;
 
 import java.util.ArrayList;
 
@@ -52,6 +66,8 @@ import dji.sdk.remotecontroller.DJIRemoteController;
 
 
 public class TPVFragment extends Fragment {
+
+    private static final String TAG = TPVFragment.class.getName();
 
     public final int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
     public final int MSG_REMOTE_CONTROLLER_BATTERY_STATE = 2;
@@ -101,6 +117,21 @@ public class TPVFragment extends Fragment {
     private MapView mapView;
     private AMap aMap;
 
+    // OpenGL componets
+    private TPVGLSurfaceView mGLView;
+
+    private LocationManager locationManager;
+
+    private MyLocationListener locationListener;
+
+    private SensorManager mSensorManager;
+    private Sensor accelerometer; // 加速度传感器
+    private Sensor magnetic; // 地磁场传感器
+
+    private float[] accelerometerValues = new float[3];
+    private float[] magneticFieldValues = new float[3];
+
+    private MySensorEventListener sensorEventListener;
 
     private static final int SIGNAL_ICON[] = {
             R.drawable.signal_icon_0,
@@ -125,6 +156,7 @@ public class TPVFragment extends Fragment {
             R.drawable.energy_icon_12,
     };
 
+    private int visibilityIndex = 0;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
 
@@ -159,7 +191,16 @@ public class TPVFragment extends Fragment {
                     tvFlightHeight.setText(altitude + "");
                     tvFlightDistance.setText(distance + "");
 
-                    //ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
+
+//                    Double AircraftPitch = bundle.getDouble("AircraftPitch");
+//                    Double AircraftRoll = bundle.getDouble("AircraftRoll");
+//                    Double AircraftYaw = bundle.getDouble("AircraftYaw");
+//                    Double Heading = bundle.getDouble("Head"); // aircraft compass heading
+//                    String Fheading = String.format("%.0f", Heading);
+//                    String Sptich = String.format("%.0f", AircraftPitch);
+//                    String Sroll = String.format("%.0f", AircraftRoll);
+//                    mGLView.setHeadingAngle(Float.parseFloat(Fheading));
+//                    mGLView.setAttitude(Float.parseFloat(Sptich), Float.parseFloat(Sroll));
 
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
@@ -190,6 +231,7 @@ public class TPVFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
 
         WindowManager wm = getActivity().getWindowManager();
@@ -208,6 +250,39 @@ public class TPVFragment extends Fragment {
         };
 
         mReceiver = new BatteryReceiver();
+
+        // 实例化传感器管理者
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        // 初始化加速度传感器
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // 初始化地磁场传感器
+        magnetic = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        sensorEventListener = new MySensorEventListener();
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        // criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
+        // criteria.setAltitudeRequired(false);//不要求海拔信息
+        if(locationManager != null) {
+            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationListener = new MyLocationListener();
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                String provider = locationManager.getBestProvider(criteria, true);
+                locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
+                boolean netWork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                Log.w(TAG, "netWork:" + netWork);
+                boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                Log.w(TAG, "gps:" + gps);
+            } else {
+                Log.w(TAG, "checkSelfPermission failed");
+            }
+        } else {
+            Log.w(TAG, "locationManager null");
+        }
+
+        mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
     }
 
     public void setHelmetEnergy(int percent) {
@@ -247,154 +322,12 @@ public class TPVFragment extends Fragment {
         int paddingText = (int) (wWidth * 0.013);
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
 
-        //top
-//        RelativeLayout.LayoutParams lpTop = (RelativeLayout.LayoutParams) rlTop.getLayoutParams();
-//        lpTop.width = (int) (wWidth * 0.221);
-//        lpTop.height = (int) (wHeight * 0.062);
-//        lpTop.topMargin = (int) (wHeight * 0.07);
-//        rlTop.setLayoutParams(lpTop);
-//
-//        RelativeLayout.LayoutParams lpCraftSignal = (RelativeLayout.LayoutParams) rlCraftSignal.getLayoutParams();
-//        lpCraftSignal.width = (int) (wWidth * 0.058);
-//        lpCraftSignal.height = (int) (wHeight * 0.0409);
-//        rlCraftSignal.setLayoutParams(lpCraftSignal);
-//
-//        RelativeLayout.LayoutParams lpControllerSignal = (RelativeLayout.LayoutParams) rlControllerSignal.getLayoutParams();
-//        lpControllerSignal.width = (int) (wWidth * 0.058);
-//        lpControllerSignal.height = (int) (wHeight * 0.0409);
-//        rlControllerSignal.setLayoutParams(lpControllerSignal);
-//
-//        RelativeLayout.LayoutParams lpSatellite = (RelativeLayout.LayoutParams) ivSatellite.getLayoutParams();
-//        lpSatellite.width = (int) (wWidth * 0.016);
-//        lpSatellite.height = (int) (wHeight * 0.0244);
-//        lpSatellite.leftMargin = (int) (wWidth * 0.012);
-//        ivSatellite.setLayoutParams(lpSatellite);
-//
-//        RelativeLayout.LayoutParams lpRc = (RelativeLayout.LayoutParams) ivRc.getLayoutParams();
-//        lpRc.width = (int) (wWidth * 0.016);
-//        lpRc.height = (int) (wHeight * 0.0244);
-//        lpRc.leftMargin = (int) (wWidth * 0.012);
-//        ivRc.setLayoutParams(lpRc);
-//
-//        RelativeLayout.LayoutParams lpSafeInfo = (RelativeLayout.LayoutParams) tvSafeInfo.getLayoutParams();
-//        lpSafeInfo.width = (int) (wWidth * 0.126);
-//        lpSafeInfo.height = (int) (wHeight * 0.0409);
-//        tvSafeInfo.setLayoutParams(lpSafeInfo);
-//        tvSafeInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (lpSafeInfo.height * 0.7));
-//
-//        RelativeLayout.LayoutParams lpIvCraftSignal = (RelativeLayout.LayoutParams) ivCraftSignal.getLayoutParams();
-//        lpIvCraftSignal.width = (int) (wWidth * 0.0147);
-//        lpIvCraftSignal.height = (int) (wHeight * 0.0195);
-//        lpIvCraftSignal.leftMargin = lpCraftSignal.width / 2;
-//        ivCraftSignal.setLayoutParams(lpIvCraftSignal);
-//
-//        RelativeLayout.LayoutParams lpIvControllerSignal = (RelativeLayout.LayoutParams) ivControllerSignal.getLayoutParams();
-//        lpIvControllerSignal.width = (int) (wWidth * 0.0147);
-//        lpIvControllerSignal.height = (int) (wHeight * 0.0195);
-//        lpIvControllerSignal.leftMargin = lpControllerSignal.width / 2;
-//        ivControllerSignal.setLayoutParams(lpIvCraftSignal);
-
-        //left
-//        RelativeLayout.LayoutParams lpLeft = (RelativeLayout.LayoutParams) rlLeft.getLayoutParams();
-//        lpLeft.width = (int) (wWidth * 0.15);
-//        lpLeft.height = (int) (wHeight * 0.52);
-//        lpLeft.leftMargin = (int) (wWidth * 0.06);
-//        rlLeft.setLayoutParams(lpLeft);
-
-//        RelativeLayout.LayoutParams lpLeftBg = (RelativeLayout.LayoutParams) ivLeftBg.getLayoutParams();
-//        lpLeftBg.width = (int) (wWidth * 0.13);
-//        lpLeftBg.height = (int) (wHeight * 0.52);
-//        ivLeftBg.setLayoutParams(lpLeftBg);
-
-
-//        RelativeLayout.LayoutParams lpPreview = (RelativeLayout.LayoutParams) tvPreview.getLayoutParams();
-//        lpPreview.width = (int) (wWidth * 0.1);
-//        lpPreview.height = (int) (wHeight * 0.1);
-////        lpPreview.leftMargin = (int)(wWidth * 0.039);
-//        lpPreview.topMargin = (int) (wHeight * 0.028);
-//        tvPreview.setLayoutParams(lpPreview);
-//
-//        RelativeLayout.LayoutParams lpMapView = (RelativeLayout.LayoutParams) mapView.getLayoutParams();
-//        lpMapView.width = (int) (wWidth * 0.1);
-//        lpMapView.height = (int) (wHeight * 0.1);
-////        lpMapView.leftMargin = (int)(wWidth * 0.039);
-//        lpMapView.topMargin = (int) (wHeight * 0.375);
-//        mapView.setLayoutParams(lpMapView);
-
-        //bottom
-//        RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams) rlBottom.getLayoutParams();
-//        lpBottom.width = (int) (wWidth * 0.390);
-//        lpBottom.height = (int) (wHeight * 0.107);
-//        lpBottom.bottomMargin = (int) (wHeight * 0.045);
-//        rlBottom.setLayoutParams(lpBottom);
-
-//        RelativeLayout.LayoutParams lpHelmetEnergy = (RelativeLayout.LayoutParams) rlHelmetEnergy.getLayoutParams();
-////        lpHelmetEnergy.width = (int) (wWidth * 0.032);
-////        lpHelmetEnergy.height = (int) (wHeight * 0.048);
-//        lpHelmetEnergy.leftMargin = (int) (wWidth * 0.032);
-//        lpHelmetEnergy.topMargin = (int) (wHeight * 0.026);
-//        rlHelmetEnergy.setLayoutParams(lpHelmetEnergy);
-//
-//        RelativeLayout.LayoutParams lpPhoneEnergy = (RelativeLayout.LayoutParams) rlPhoneEnergy.getLayoutParams();
-//        lpPhoneEnergy.leftMargin = (int) (wWidth * 0.036);
-//        lpPhoneEnergy.topMargin = (int) (wHeight * 0.026);
-//        rlPhoneEnergy.setLayoutParams(lpPhoneEnergy);
-//
-//        RelativeLayout.LayoutParams lpControllerEnergy = (RelativeLayout.LayoutParams) rlRCEnergy.getLayoutParams();
-//        lpControllerEnergy.rightMargin = (int) (wWidth * 0.037);
-//        lpControllerEnergy.topMargin = (int) (wHeight * 0.026);
-//        rlRCEnergy.setLayoutParams(lpControllerEnergy);
-//
-//        RelativeLayout.LayoutParams lpCraftEnergy = (RelativeLayout.LayoutParams) rlCraftEnergy.getLayoutParams();
-//        lpCraftEnergy.rightMargin = (int) (wWidth * 0.036);
-//        lpCraftEnergy.topMargin = (int) (wHeight * 0.026);
-//        rlCraftEnergy.setLayoutParams(lpCraftEnergy);
-
-        //right
-//        RelativeLayout.LayoutParams lpRight = (RelativeLayout.LayoutParams) rlRight.getLayoutParams();
-//        lpRight.width = (int) (wWidth * 0.15);
-//        lpRight.height = (int) (wHeight * 0.52);
-//        lpRight.rightMargin = (int) (wWidth * 0.06);
-//        rlRight.setLayoutParams(lpRight);
-
-//        RelativeLayout.LayoutParams lpFlightHeight = (RelativeLayout.LayoutParams) tvFlightHeight.getLayoutParams();
-//        lpFlightHeight.topMargin = (int) (wHeight * 0.03);
-//        lpFlightHeight.leftMargin = (int) (wWidth * 0.071);
-//        tvFlightHeight.setLayoutParams(lpFlightHeight);
-//        tvFlightHeight.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-//        tvFlightHeight.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-//        tvFlightHeight.getPaint().setFakeBoldText(true);//加粗
-//
-//        RelativeLayout.LayoutParams lpFlightDistance = (RelativeLayout.LayoutParams) tvFlightDistance.getLayoutParams();
-//        lpFlightDistance.topMargin = (int) (wHeight * 0.16);
-//        lpFlightDistance.leftMargin = (int) (wWidth * 0.093);
-//        tvFlightDistance.setLayoutParams(lpFlightDistance);
-//        tvFlightDistance.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-//        tvFlightDistance.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-//        tvFlightDistance.getPaint().setFakeBoldText(true);//加粗
-//
-//        RelativeLayout.LayoutParams lpFlightSpeed = (RelativeLayout.LayoutParams) tvFlightSpeed.getLayoutParams();
-//        lpFlightSpeed.topMargin = (int) (wHeight * 0.4);
-//        lpFlightSpeed.leftMargin = (int) (wWidth * 0.071);
-//        tvFlightSpeed.setLayoutParams(lpFlightSpeed);
-//        tvFlightSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.07));
-//        tvFlightSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-//        tvFlightSpeed.getPaint().setFakeBoldText(true);//加粗
-//
-//        RelativeLayout.LayoutParams lpFlightVerticalSpeed = (RelativeLayout.LayoutParams) tvFlightVerticalSpeed.getLayoutParams();
-//        lpFlightVerticalSpeed.topMargin = (int) (wHeight * 0.475);
-//        lpFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.12);
-//        tvFlightVerticalSpeed.setLayoutParams(lpFlightVerticalSpeed);
-//        tvFlightVerticalSpeed.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (wHeight * 0.035));
-//        tvFlightVerticalSpeed.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));//加粗
-//        tvFlightVerticalSpeed.getPaint().setFakeBoldText(true);//加粗
-//
-//        RelativeLayout.LayoutParams lpIvFlightVerticalSpeed = (RelativeLayout.LayoutParams) ivFlightVerticalSpeed.getLayoutParams();
-//        lpIvFlightVerticalSpeed.width = (int) (wWidth * 0.01);
-//        lpIvFlightVerticalSpeed.height = (int) (wHeight * 0.02);
-//        lpIvFlightVerticalSpeed.topMargin = (int) (wHeight * 0.494);
-//        lpIvFlightVerticalSpeed.leftMargin = (int) (wWidth * 0.11);
-//        ivFlightVerticalSpeed.setLayoutParams(lpIvFlightVerticalSpeed);
+        mGLView = new TPVGLSurfaceView(getActivity());
+        mGLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        mGLView.setZOrderOnTop(true);
+        mGLView.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        ((RelativeLayout) view).addView(mGLView, params);
 
 
         tvFlightVerticalSpeed.addTextChangedListener(new VSpeedWatcher());
@@ -413,11 +346,20 @@ public class TPVFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+
+        if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            if(locationManager != null) {
+                locationManager.removeUpdates(locationListener);
+                locationManager = null;
+            }
+        }
+        mSensorManager.unregisterListener(sensorEventListener);
     }
 
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        mGLView.onResume();
         DJIBaseProduct product = FPVDemoApplication.getProductInstance();
 
         if (product == null || !product.isConnected()) {
@@ -463,11 +405,17 @@ public class TPVFragment extends Fragment {
             DJIRemoteController remoteController = djiAircraft.getRemoteController();
             remoteController.setBatteryStateUpdateCallback(new RCBatteryStateCallback());
         }
+
+        visibilityIndex++;
+        if(visibilityIndex > 1) {
+            mGLView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        mGLView.onPause();
         DJICamera camera = FPVDemoApplication.getCameraInstance();
         if (camera != null) {
             // Reset the callback
@@ -544,6 +492,20 @@ public class TPVFragment extends Fragment {
             bundle.putFloat("altitude", altitude);
             bundle.putDouble("distance", dis);
             bundle.putInt("gpsSignalLevel", gpsSignalLevel);
+
+            if(djiAircraft != null) {
+                DJIFlightController flightController = djiAircraft.getFlightController();
+                Double heading = flightController.getCompass().getHeading();
+                Double AircraftPitch = FCState.getAttitude().pitch;
+                Double AircraftRoll = FCState.getAttitude().roll;
+                Double AircraftYaw = FCState.getAttitude().yaw;
+
+                bundle.putDouble("AircraftPitch", AircraftPitch);
+                bundle.putDouble("AircraftRoll", AircraftRoll);
+                bundle.putDouble("AircraftYaw", AircraftYaw);
+                bundle.putDouble("Head", heading);
+            }
+
             msg.what = MSG_FLIGHT_CONTROLLER_CURRENT_STATE;
             msg.setData(bundle);
             mHandler.sendMessage(msg);
@@ -680,5 +642,96 @@ public class TPVFragment extends Fragment {
             msg.setData(bundle);
             mHandler.sendMessage(msg);
         }
+    }
+
+    class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            //经度
+            double longitude = location.getLongitude();
+            //纬度
+            double latitude = location.getLatitude();
+            //海拔
+            double altitude = location.getAltitude();
+
+            Log.i(TAG, "longitude" + longitude) ;
+            Log.i(TAG, "latitude" + latitude) ;
+            Log.i(TAG, "altitude" + altitude) ;
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    }
+
+
+    class MySensorEventListener implements SensorEventListener {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            // TODO Auto-generated method stub
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                accelerometerValues = event.values;
+            }
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                magneticFieldValues = event.values;
+            }
+            calculateOrientation();
+        }
+
+        // 计算方向
+        private void calculateOrientation() {
+            float[] values = new float[3];
+            float[] R = new float[9];
+            SensorManager.getRotationMatrix(R, null, accelerometerValues,
+                    magneticFieldValues);
+            SensorManager.getOrientation(R, values);
+            float ORIENTATION = (float) Math.toDegrees(values[0]);
+
+            float PITCH = (float)Math.toDegrees(values[1]);
+            float ROLL = (float)Math.toDegrees(values[2]);
+
+            Log.i(TAG, "ORIENTATION:" + ORIENTATION);
+            Log.i(TAG, "PITCH" + PITCH);
+            Log.i(TAG, "ROLL" + ROLL);
+
+
+//            if (values[0] >= -5 && values[0] < 5) {
+//                Log.i(TAG, "正北");
+//            } else if (values[0] >= 5 && values[0] < 85) {
+//                Log.i(TAG, "东北");
+//            } else if (values[0] >= 85 && values[0] <= 95) {
+//                Log.i(TAG, "正东");
+//            } else if (values[0] >= 95 && values[0] < 175) {
+//                 Log.i(TAG, "东南");
+//            } else if ((values[0] >= 175 && values[0] <= 180)
+//                    || (values[0]) >= -180 && values[0] < -175) {
+//                Log.i(TAG, "正南");
+//            } else if (values[0] >= -175 && values[0] < -95) {
+//                 Log.i(TAG, "西南");
+//            } else if (values[0] >= -95 && values[0] < -85) {
+//                 Log.i(TAG, "正西");
+//            } else if (values[0] >= -85 && values[0] < -5) {
+//                Log.i(TAG, "西北");
+//            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // TODO Auto-generated method stub
+
+        }
+
     }
 }

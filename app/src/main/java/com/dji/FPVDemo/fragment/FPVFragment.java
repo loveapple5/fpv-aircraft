@@ -119,10 +119,6 @@ public class FPVFragment extends Fragment {
 
     private BatteryReceiver mReceiver;
 
-    private LocationManager locationManager;
-
-    private MyLocationListener locationListener;
-
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
     // Codec for video live view
@@ -133,15 +129,6 @@ public class FPVFragment extends Fragment {
 
     // OpenGL componets
     private MyGLSurfaceView mGLView;
-
-    private SensorManager mSensorManager;
-    private Sensor accelerometer; // 加速度传感器
-    private Sensor magnetic; // 地磁场传感器
-
-    private float[] accelerometerValues = new float[3];
-    private float[] magneticFieldValues = new float[3];
-
-    private MySensorEventListener sensorEventListener;
 
     private static final int SIGNAL_ICON[] = {
             R.drawable.signal_icon_0,
@@ -277,15 +264,6 @@ public class FPVFragment extends Fragment {
         };
 
         mReceiver = new BatteryReceiver();
-
-        // 实例化传感器管理者
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        // 初始化加速度传感器
-        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        // 初始化地磁场传感器
-        magnetic = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-        sensorEventListener = new MySensorEventListener();
     }
 
     public void setHelmetEnergy(int percent) {
@@ -451,30 +429,6 @@ public class FPVFragment extends Fragment {
                 }
             });
 
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            // criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-            // criteria.setAltitudeRequired(false);//不要求海拔信息
-            if(locationManager != null) {
-                if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationListener = new MyLocationListener();
-                    Criteria criteria = new Criteria();
-                    criteria.setAccuracy(Criteria.ACCURACY_FINE);
-                    String provider = locationManager.getBestProvider(criteria, true);
-                    locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
-                    boolean netWork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                    Log.w(TAG, "netWork:" + netWork);
-                    boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                    Log.w(TAG, "gps:" + gps);
-                } else {
-                    Log.w(TAG, "checkSelfPermission failed");
-                }
-            } else {
-                Log.w(TAG, "locationManager null");
-            }
-
-            mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
-
         }
     }
 
@@ -495,11 +449,6 @@ public class FPVFragment extends Fragment {
         }
 
         getActivity().unregisterReceiver(mReceiver);
-        if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
-            locationManager.removeUpdates(locationListener);
-            locationManager = null;
-        }
-        mSensorManager.unregisterListener(sensorEventListener);
     }
 
     class PreviewSurfaceTextureListener implements TextureView.SurfaceTextureListener {
@@ -715,94 +664,5 @@ public class FPVFragment extends Fragment {
         }
     }
 
-    class MyLocationListener implements LocationListener {
 
-        @Override
-        public void onLocationChanged(Location location) {
-            //经度
-            double longitude = location.getLongitude();
-            //纬度
-            double latitude = location.getLatitude();
-            //海拔
-            double altitude = location.getAltitude();
-
-            Log.i(TAG, "longitude" + longitude) ;
-            Log.i(TAG, "latitude" + latitude) ;
-            Log.i(TAG, "altitude" + altitude) ;
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    }
-
-
-    class MySensorEventListener implements SensorEventListener {
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            // TODO Auto-generated method stub
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                accelerometerValues = event.values;
-            }
-            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-                magneticFieldValues = event.values;
-            }
-            calculateOrientation();
-        }
-
-        // 计算方向
-        private void calculateOrientation() {
-            float[] values = new float[3];
-            float[] R = new float[9];
-            SensorManager.getRotationMatrix(R, null, accelerometerValues,
-                    magneticFieldValues);
-            SensorManager.getOrientation(R, values);
-            float ORIENTATION = (float) Math.toDegrees(values[0]);
-
-            float PITCH = (float)Math.toDegrees(values[1]);
-            float ROLL = (float)Math.toDegrees(values[2]);
-
-//            Log.i(TAG, "ORIENTATION:" + ORIENTATION);
-//            Log.i(TAG, "PITCH" + PITCH);
-//            Log.i(TAG, "ROLL" + ROLL);
-
-
-//            if (values[0] >= -5 && values[0] < 5) {
-//                Log.i(TAG, "正北");
-//            } else if (values[0] >= 5 && values[0] < 85) {
-//                Log.i(TAG, "东北");
-//            } else if (values[0] >= 85 && values[0] <= 95) {
-//                Log.i(TAG, "正东");
-//            } else if (values[0] >= 95 && values[0] < 175) {
-//                 Log.i(TAG, "东南");
-//            } else if ((values[0] >= 175 && values[0] <= 180)
-//                    || (values[0]) >= -180 && values[0] < -175) {
-//                Log.i(TAG, "正南");
-//            } else if (values[0] >= -175 && values[0] < -95) {
-//                 Log.i(TAG, "西南");
-//            } else if (values[0] >= -95 && values[0] < -85) {
-//                 Log.i(TAG, "正西");
-//            } else if (values[0] >= -85 && values[0] < -5) {
-//                Log.i(TAG, "西北");
-//            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
-
-        }
-
-    }
 }
