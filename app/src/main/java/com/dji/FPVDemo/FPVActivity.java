@@ -82,7 +82,7 @@ public class FPVActivity extends FragmentActivity {
         }
     }
 
-    private static IntentFilter makeGattUpdateIntentFilter() {                        //ע����յ��¼�
+    private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
