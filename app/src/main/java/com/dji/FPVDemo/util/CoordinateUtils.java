@@ -13,6 +13,11 @@ public class CoordinateUtils {
     //椭圆矫正参数
     public static final double E = (Re * Re - Rp * Rp) / Re * Re;
 
+    /***
+     * 根据纬度校正后的地球半径
+     * @param latitude
+     * @return
+     */
     public static double getRadiusByLatitude(double latitude) {
         double sinLa = Math.sin(latitude);
         double W = Math.sqrt(1 - E * E * sinLa * sinLa);
@@ -61,6 +66,12 @@ public class CoordinateUtils {
     }
 
 
+    /**
+     * 计算PRY和LBH两向量之间在地心坐标系下的夹角
+     * @param PRY
+     * @param LBH
+     * @return
+     */
     public static Vector<Double> getAngleByPRYAndLBH(Vector<Double> PRY, Vector<Double> LBH) {
         double pitch = PRY.get(0);
         double roll = PRY.get(1);
@@ -72,7 +83,9 @@ public class CoordinateUtils {
 
         // x = cosL * cosP + sinL * (sinB * cosR + cosB * cosY)
         double X = Math.cos(longitude) * Math.cos(pitch) + Math.sin(longitude) * (Math.sin(latitude) * Math.cos(roll) +  Math.cos(latitude) * Math.cos(yaw));
+        // y = cosL * cosR - sinB * cosY
         double Y = Math.cos(latitude) * Math.cos(roll) - Math.sin(latitude) * Math.cos(yaw);
+        // z = -sinL * cosP + cosL * (sinB * cosR + cosL * cosY)
         double Z = -Math.sin(longitude) * Math.cos(pitch) + Math.cos(longitude) * (Math.sin(latitude) * Math.cos(roll) + Math.cos(latitude) * Math.cos(yaw));
         Vector<Double> vector = new Vector<>();
         vector.add(X);
