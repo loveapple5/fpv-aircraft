@@ -45,7 +45,7 @@ public class CoordinateUtils {
 
 
     /**
-     * 获取向量在地心坐标系中的方向角
+     * 获取向量AB在坐标系中的方向角
      * @param A
      * @param B
      * @return
@@ -91,6 +91,36 @@ public class CoordinateUtils {
         vector.add(X);
         vector.add(Y);
         vector.add(Z);
+
+        Vector<Double> core = new Vector<>();
+        core.add(0d);
+        core.add(0d);
+        core.add(0d);
+        Vector angle = getAngleByVector(core, vector);
+        return angle;
+    }
+
+    public static Vector<Double> getSurfaceAngleByCoreAngle(Vector<Double> LBH, Vector<Double> cAngle) {
+        double aX = cAngle.get(0);
+        double aY = cAngle.get(1);
+        double aZ = cAngle.get(2);
+
+        double longitude = LBH.get(0);
+        double latitude = LBH.get(1);
+        double height = LBH.get(2);
+
+        //通过经纬度海拔数据和地心方向角计算地表单位向量
+        // x = cosL * cos(aX) - sinL * cos(aZ)
+        double vX = Math.cos(longitude) * Math.cos(aX) - Math.sin(longitude) * Math.cos(aZ);
+        // y = sinL * sinB * cos(aX) + cosB * cos(aY) + cosL * sinB * cos(aZ)
+        double vY = Math.sin(longitude) * Math.sin(latitude) * Math.cos(aX) + Math.cos(latitude) * Math.cos(aY) + Math.cos(longitude) * Math.sin(latitude) * Math.cos(aZ);
+        // z = sinL * cosB * cos(aX) - sinB * cos(aY) + cosL * cosB * cos(aZ)
+        double vZ = Math.sin(longitude) * Math.cos(latitude) * Math.cos(aX) - Math.sin(latitude) * Math.cos(aY) + Math.cos(longitude) * Math.cos(latitude) * Math.cos(aZ);
+
+        Vector<Double> vector = new Vector<>();
+        vector.add(vX);
+        vector.add(vY);
+        vector.add(vZ);
 
         Vector<Double> core = new Vector<>();
         core.add(0d);
