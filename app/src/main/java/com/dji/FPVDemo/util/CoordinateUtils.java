@@ -1,5 +1,7 @@
 package com.dji.FPVDemo.util;
 
+import android.util.Log;
+
 import java.util.Vector;
 
 public class CoordinateUtils {
@@ -10,8 +12,10 @@ public class CoordinateUtils {
     //地球极地半径（单位：米）
     public static final double Rp = 6356752;
 
+
+
     //椭圆矫正参数
-    public static final double E = (Re * Re - Rp * Rp) / Re * Re;
+    public static final double E = (Re * Re - Rp * Rp) / (Re * Re);
 
     /***
      * 根据纬度校正后的地球半径
@@ -21,7 +25,13 @@ public class CoordinateUtils {
     public static double getRadiusByLatitude(double latitude) {
         double sinLa = Math.sin(latitude);
         double W = Math.sqrt(1 - E * E * sinLa * sinLa);
-        return Re / W;
+
+        Log.d("CoordinateUtils", "sinLa"+ sinLa);
+        Log.d("CoordinateUtils", "W"+ W);
+
+        double result = Re / W;
+        Log.d("CoordinateUtils", "result"+ result);
+        return result;
     }
 
     /***
@@ -33,9 +43,16 @@ public class CoordinateUtils {
         double height = LBH.get(2);
         double N = getRadiusByLatitude(latitude);
 
+        Log.d("CoordinateUtils", "N"+ N);
+
         double X = (N + height) * Math.cos(latitude) * Math.sin(longitude);
         double Y = (N * (1 - E * E) + height) * Math.sin(latitude);
         double Z = (N + height) * Math.cos(latitude) * Math.cos(longitude);
+
+        Log.d("CoordinateUtils", "X"+ X);
+        Log.d("CoordinateUtils", "Y"+ Y);
+        Log.d("CoordinateUtils", "Z"+ Z);
+
         Vector<Double> geoCoordinate = new Vector<>();
         geoCoordinate.add(X);
         geoCoordinate.add(Y);
@@ -67,7 +84,7 @@ public class CoordinateUtils {
 
 
     /**
-     * 计算PRY和LBH两向量之间在地心坐标系下的夹角
+     * 将手机的PRY转换到地心坐标系下的方向角
      * @param PRY
      * @param LBH
      * @return
@@ -116,6 +133,10 @@ public class CoordinateUtils {
         double vY = Math.sin(longitude) * Math.sin(latitude) * Math.cos(aX) + Math.cos(latitude) * Math.cos(aY) + Math.cos(longitude) * Math.sin(latitude) * Math.cos(aZ);
         // z = sinL * cosB * cos(aX) - sinB * cos(aY) + cosL * cosB * cos(aZ)
         double vZ = Math.sin(longitude) * Math.cos(latitude) * Math.cos(aX) - Math.sin(latitude) * Math.cos(aY) + Math.cos(longitude) * Math.cos(latitude) * Math.cos(aZ);
+
+        Log.d("CoordinateUtils", "vX:" + vX);
+        Log.d("CoordinateUtils", "vY:" + vY);
+        Log.d("CoordinateUtils", "vZ:" + vZ);
 
         Vector<Double> vector = new Vector<>();
         vector.add(vX);

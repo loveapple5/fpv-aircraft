@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import com.dji.FPVDemo.opengl.MyGLSurfaceView;
 import com.dji.FPVDemo.opengl.TPVGLSurfaceView;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import dji.common.airlink.DJISignalInformation;
 import dji.common.airlink.SignalQualityUpdatedCallback;
@@ -74,6 +76,8 @@ public class TPVFragment extends Fragment {
     public final int MSG_BATTERY_STATE = 3;
     public final int MSG_CONTROL_SIGNAL = 4;
 
+    public final int MSG_COMPASS_ERROR = 5;
+
     private DJIAircraft djiAircraft;
 
     private int wWidth;
@@ -88,8 +92,8 @@ public class TPVFragment extends Fragment {
     private RelativeLayout rlControllerSignal;
     private TextView tvSafeInfo;
 
-    private ImageView ivCraftSignal;
-    private ImageView ivControllerSignal;
+    private RatingBar rbCraftSignal;
+    private RatingBar rbControllerSignal;
 
     private View rlHelmetEnergy;
     private View rlPhoneEnergy;
@@ -167,9 +171,14 @@ public class TPVFragment extends Fragment {
                 case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
                     double speed = bundle.getDouble("speed");
                     float vSpeed = bundle.getFloat("vSpeed");
-                    int altitude = (int) bundle.getFloat("altitude");
+                    float altitude =  bundle.getFloat("altitude");
                     int distance = (int) bundle.getDouble("distance");
                     int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
+
+                    double longA = bundle.getDouble("longA");
+                    double longH = bundle.getDouble("longH");
+                    double latA = bundle.getDouble("latA");
+                    double latH =  bundle.getDouble("latH");
 
                     String strSpeed = String.valueOf(speed);
                     if (speed < 2.001 && speed > 0.001) {
@@ -185,23 +194,29 @@ public class TPVFragment extends Fragment {
                     if (gpsSignalLevel > 5 || gpsSignalLevel < 0) {
                         gpsSignalLevel = 0;
                     }
+                    rbCraftSignal.setRating(gpsSignalLevel * 20);
 
-                    tvFlightSpeed.setText(strSpeed);
-                    tvFlightVerticalSpeed.setText(intVSpeed + "");
-                    tvFlightHeight.setText(altitude + "");
-                    tvFlightDistance.setText(distance + "");
+//                    tvFlightSpeed.setText(strSpeed);
+//                    tvFlightVerticalSpeed.setText(intVSpeed + "");
+//                    tvFlightHeight.setText(Math.round(altitude) + "");
+//                    tvFlightDistance.setText(distance + "");
+
+                    tvFlightSpeed.setText(longA + "");
+                    tvFlightVerticalSpeed.setText(latA + "");
+                    tvFlightHeight.setText(longH + "");
+                    tvFlightDistance.setText(latH + "");
 
 
-//                    Double AircraftPitch = bundle.getDouble("AircraftPitch");
-//                    Double AircraftRoll = bundle.getDouble("AircraftRoll");
-//                    Double AircraftYaw = bundle.getDouble("AircraftYaw");
-//                    Double Heading = bundle.getDouble("Head"); // aircraft compass heading
-//                    String Fheading = String.format("%.0f", Heading);
-//                    String Sptich = String.format("%.0f", AircraftPitch);
-//                    String Sroll = String.format("%.0f", AircraftRoll);
-//                    mGLView.setHeadingAngle(Float.parseFloat(Fheading));
-//                    mGLView.setAttitude(Float.parseFloat(Sptich), Float.parseFloat(Sroll));
-
+                    Vector<Double> vPhone = new Vector<>();
+                    vPhone.add(longH);
+                    vPhone.add(latH);
+                    vPhone.add(0d);
+                    mGLView.setvPhoneLBH(vPhone);
+                    Vector<Double> vAircraft = new Vector<>();
+                    vAircraft.add(longA);
+                    vAircraft.add(latA);
+                    vAircraft.add((double)altitude);
+                    mGLView.setvAircraftLBH(vAircraft);
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
@@ -217,9 +232,13 @@ public class TPVFragment extends Fragment {
                     break;
                 case MSG_CONTROL_SIGNAL:
                     int strengthPercent = bundle.getInt("strengthPercent");
-                    int index2 = Math.round((float) strengthPercent / 25);
+                    int index2 = Math.round((float) strengthPercent / 10);
 
+                    rbControllerSignal.setRating(index2);
                     //ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
+                    break;
+                case MSG_COMPASS_ERROR:
+                    tvSafeInfo.setText("指南针异常，请移动飞机或校准指南针");
                     break;
             }
 
@@ -300,8 +319,8 @@ public class TPVFragment extends Fragment {
         rlCraftSignal = (RelativeLayout) view.findViewById(R.id.layout_craft_signal);
         rlControllerSignal = (RelativeLayout) view.findViewById(R.id.layout_controller_signal);
         tvSafeInfo = (TextView) view.findViewById(R.id.tv_safe_info);
-//        ivCraftSignal = (ImageView) view.findViewById(R.id.iv_craft_signal);
-//        ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
+        rbCraftSignal = (RatingBar) view.findViewById(R.id.rb_craft_signal);
+        rbControllerSignal = (RatingBar) view.findViewById(R.id.rb_controller_signal);
         rlHelmetEnergy = view.findViewById(R.id.rl_helmet);
         rlPhoneEnergy = view.findViewById(R.id.rl_phone);
         rlRCEnergy = view.findViewById(R.id.rl_controller);
@@ -472,6 +491,11 @@ public class TPVFragment extends Fragment {
                 altitude = FCState.getAircraftLocation().getAltitude();
             }
 
+            double longA = FCState.getAircraftLocation().getCoordinate2D().getLongitude();
+            double longH = FCState.getHomeLocation().getLongitude();
+            double latA = FCState.getAircraftLocation().getCoordinate2D().getLatitude();
+            double latH = FCState.getHomeLocation().getLatitude();
+
             double radLatA = Math.toRadians(FCState.getAircraftLocation().getCoordinate2D().getLatitude());
             double radLatH = Math.toRadians(FCState.getHomeLocation().getLatitude());
             double a = radLatA - radLatH;
@@ -493,6 +517,11 @@ public class TPVFragment extends Fragment {
             bundle.putDouble("distance", dis);
             bundle.putInt("gpsSignalLevel", gpsSignalLevel);
 
+            bundle.putDouble("longA", longA);
+            bundle.putDouble("longH", longH);
+            bundle.putDouble("latA", latA);
+            bundle.putDouble("latH", latH);
+
             if(djiAircraft != null) {
                 DJIFlightController flightController = djiAircraft.getFlightController();
                 Double heading = flightController.getCompass().getHeading();
@@ -504,6 +533,13 @@ public class TPVFragment extends Fragment {
                 bundle.putDouble("AircraftRoll", AircraftRoll);
                 bundle.putDouble("AircraftYaw", AircraftYaw);
                 bundle.putDouble("Head", heading);
+
+                boolean comPassError = flightController.getCompass().hasError();
+                if(comPassError) {
+                    Message msg2 = Message.obtain();
+                    msg2.what = MSG_COMPASS_ERROR;
+                    mHandler.sendMessage(msg2);
+                }
             }
 
             msg.what = MSG_FLIGHT_CONTROLLER_CURRENT_STATE;
@@ -658,6 +694,12 @@ public class TPVFragment extends Fragment {
             Log.i(TAG, "longitude" + longitude) ;
             Log.i(TAG, "latitude" + latitude) ;
             Log.i(TAG, "altitude" + altitude) ;
+
+            Vector<Double> vPhone = new Vector<Double>();
+            vPhone.add(longitude * Math.PI / 180);
+            vPhone.add(latitude * Math.PI / 180);
+            vPhone.add(altitude);
+//            mGLView.setvPhoneLBH(vPhone);
         }
 
         @Override
@@ -690,6 +732,10 @@ public class TPVFragment extends Fragment {
             calculateOrientation();
         }
 
+        private double lastOrientation = 0;
+        private double lastPitch = 0;
+        private double lastRoll = 0;
+
         // 计算方向
         private void calculateOrientation() {
             float[] values = new float[3];
@@ -697,34 +743,24 @@ public class TPVFragment extends Fragment {
             SensorManager.getRotationMatrix(R, null, accelerometerValues,
                     magneticFieldValues);
             SensorManager.getOrientation(R, values);
-            float ORIENTATION = (float) Math.toDegrees(values[0]);
-
-            float PITCH = (float)Math.toDegrees(values[1]);
-            float ROLL = (float)Math.toDegrees(values[2]);
+            double ORIENTATION =  Math.toDegrees(values[0]);
+            double PITCH = Math.toDegrees(values[1]);
+            double ROLL = Math.toDegrees(values[2]);
 
             Log.i(TAG, "ORIENTATION:" + ORIENTATION);
             Log.i(TAG, "PITCH" + PITCH);
             Log.i(TAG, "ROLL" + ROLL);
+            if(Math.abs(ORIENTATION - lastOrientation) >= 3 || Math.abs(PITCH - lastPitch) >= 3 || Math.abs(ROLL - lastRoll) >= 3) {
+                lastOrientation = ORIENTATION;
+                lastPitch = PITCH;
+                lastRoll = ROLL;
+                Vector<Double> aPhone = new Vector<Double>();
+                aPhone.add(PITCH * Math.PI / 180);
+                aPhone.add(ROLL * Math.PI / 180);
+                aPhone.add(ORIENTATION * Math.PI / 180);
+                mGLView.setaPhonePRY(aPhone);
+            }
 
-
-//            if (values[0] >= -5 && values[0] < 5) {
-//                Log.i(TAG, "正北");
-//            } else if (values[0] >= 5 && values[0] < 85) {
-//                Log.i(TAG, "东北");
-//            } else if (values[0] >= 85 && values[0] <= 95) {
-//                Log.i(TAG, "正东");
-//            } else if (values[0] >= 95 && values[0] < 175) {
-//                 Log.i(TAG, "东南");
-//            } else if ((values[0] >= 175 && values[0] <= 180)
-//                    || (values[0]) >= -180 && values[0] < -175) {
-//                Log.i(TAG, "正南");
-//            } else if (values[0] >= -175 && values[0] < -95) {
-//                 Log.i(TAG, "西南");
-//            } else if (values[0] >= -95 && values[0] < -85) {
-//                 Log.i(TAG, "正西");
-//            } else if (values[0] >= -85 && values[0] < -5) {
-//                Log.i(TAG, "西北");
-//            }
         }
 
         @Override

@@ -20,6 +20,8 @@ import android.content.res.Resources;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
+import java.util.Vector;
+
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -115,4 +117,18 @@ public class TPVGLSurfaceView extends GLSurfaceView {
 //        return true;
 //    }
 
+    public void setvPhoneLBH(Vector<Double> vPhoneLBH) {
+        mRenderer.setvPhoneLBH(vPhoneLBH);
+        requestRender();
+    }
+
+    public void setvAircraftLBH(Vector<Double> vAircraftLBH) {
+        mRenderer.setvAircraftLBH(vAircraftLBH);
+        requestRender();
+    }
+
+    public void setaPhonePRY(Vector<Double> aPhonePRY) {
+        mRenderer.setaPhonePRY(aPhonePRY);
+        requestRender();
+    }
 }

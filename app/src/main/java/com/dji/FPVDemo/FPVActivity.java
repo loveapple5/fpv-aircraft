@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.dji.FPVDemo.bluetooth.BluetoothLeService;
 import com.dji.FPVDemo.fragment.FPVFragment;
@@ -80,7 +81,19 @@ public class FPVActivity extends FragmentActivity {
             djiRemoteController = djiAircraft.getRemoteController();
             djiRemoteController.setHardwareStateUpdateCallback(new HardwareStateCallback());
         }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
+        registerReceiver(mReceiver, filter);
     }
+
+    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(FPVActivity.this, "设备无连接，请检测并重启飞机", Toast.LENGTH_LONG).show();
+        }
+    };
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
