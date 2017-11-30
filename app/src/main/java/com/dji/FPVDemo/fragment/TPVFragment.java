@@ -171,7 +171,7 @@ public class TPVFragment extends Fragment {
                 case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
                     double speed = bundle.getDouble("speed");
                     float vSpeed = bundle.getFloat("vSpeed");
-                    float altitude =  bundle.getFloat("altitude");
+                    double altitude =  bundle.getDouble("altitude");
                     int distance = (int) bundle.getDouble("distance");
                     int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
 
@@ -196,26 +196,26 @@ public class TPVFragment extends Fragment {
                     }
                     rbCraftSignal.setRating(gpsSignalLevel * 20);
 
-//                    tvFlightSpeed.setText(strSpeed);
-//                    tvFlightVerticalSpeed.setText(intVSpeed + "");
-//                    tvFlightHeight.setText(Math.round(altitude) + "");
-//                    tvFlightDistance.setText(distance + "");
+                    tvFlightSpeed.setText(strSpeed);
+                    tvFlightVerticalSpeed.setText(intVSpeed + "");
+                    tvFlightHeight.setText(Math.round(altitude) + "");
+                    tvFlightDistance.setText(distance + "");
 
-                    tvFlightSpeed.setText(longA + "");
-                    tvFlightVerticalSpeed.setText(latA + "");
-                    tvFlightHeight.setText(longH + "");
-                    tvFlightDistance.setText(latH + "");
+//                    tvFlightSpeed.setText(longA + "");
+//                    tvFlightVerticalSpeed.setText(latA + "");
+//                    tvFlightHeight.setText(longH + "");
+//                    tvFlightDistance.setText(latH + "");
 
 
                     Vector<Double> vPhone = new Vector<>();
-                    vPhone.add(longH);
-                    vPhone.add(latH);
+                    vPhone.add(longH * Math.PI / 180);
+                    vPhone.add(latH * Math.PI / 180);
                     vPhone.add(0d);
                     mGLView.setvPhoneLBH(vPhone);
                     Vector<Double> vAircraft = new Vector<>();
-                    vAircraft.add(longA);
-                    vAircraft.add(latA);
-                    vAircraft.add((double)altitude);
+                    vAircraft.add(longA * Math.PI / 180);
+                    vAircraft.add(latA * Math.PI / 180);
+                    vAircraft.add(altitude);
                     mGLView.setvAircraftLBH(vAircraft);
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
@@ -429,6 +429,7 @@ public class TPVFragment extends Fragment {
         if(visibilityIndex > 1) {
             mGLView.setVisibility(View.VISIBLE);
         }
+        // mGLView.setVisibility(View.VISIBLE);
     }
 
     public void onPause() {
@@ -484,12 +485,14 @@ public class TPVFragment extends Fragment {
             double speed = Math.sqrt(Math.pow(FCState.getVelocityX(), 2) + Math.pow(FCState.getVelocityY(), 2));
             float vSpeed = -1 * FCState.getVelocityZ();
             // get aircraft altitude
-            float altitude;
-            if (FCState.isUltrasonicBeingUsed()) {
-                altitude = FCState.getUltrasonicHeight();
-            } else {
-                altitude = FCState.getAircraftLocation().getAltitude();
-            }
+            double altitude;
+//            if (FCState.isUltrasonicBeingUsed()) {
+//                altitude = FCState.getUltrasonicHeight();
+//            } else {
+//                altitude = FCState.getAircraftLocation().getAltitude();
+//            }
+
+            altitude = FCState.getAircraftLocation().getAltitude();
 
             double longA = FCState.getAircraftLocation().getCoordinate2D().getLongitude();
             double longH = FCState.getHomeLocation().getLongitude();
@@ -513,7 +516,7 @@ public class TPVFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putDouble("speed", speed);
             bundle.putFloat("vSpeed", vSpeed);
-            bundle.putFloat("altitude", altitude);
+            bundle.putDouble("altitude", altitude);
             bundle.putDouble("distance", dis);
             bundle.putInt("gpsSignalLevel", gpsSignalLevel);
 

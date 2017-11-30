@@ -67,14 +67,14 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
         mring22 = new ring22();
 
         vPhoneLBH = new Vector<Double>();
-        vPhoneLBH.add(116.276236 * Math.PI / 180);
-        vPhoneLBH.add(39.96694 * Math.PI / 180);
+        vPhoneLBH.add(116.21426328 * Math.PI / 180);
+        vPhoneLBH.add(39.6073601 * Math.PI / 180);
         vPhoneLBH.add(0.0);
         vAircraftLBH = new Vector<Double>();
-        vAircraftLBH.add(116.276236 * Math.PI / 180);
-        vAircraftLBH.add(39.96794 * Math.PI / 180);
+        vAircraftLBH.add(116.21426328 * Math.PI / 180);
+        vAircraftLBH.add(39.6068601 * Math.PI / 180);
 //        vAircraftLBH.add(39.982224 * Math.PI / 180);
-        vAircraftLBH.add(0.0);
+        vAircraftLBH.add(20.0);
         aPhonePRY = new Vector<Double>();
         aPhonePRY.add(0.0);
         aPhonePRY.add(0.0);
@@ -394,6 +394,7 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
         double vNorth = CoordinateUtils.Re * (vAircraftLBH.get(1) - vPhoneLBH.get(1));
         double vEast = CoordinateUtils.Re * Math.cos(vAircraftLBH.get(1)) * (vAircraftLBH.get(0) - vPhoneLBH.get(0));
         double vCore = vAircraftLBH.get(2) - vPhoneLBH.get(2);
+//        double vCore = 200;
         //得到PA向量
         Vector<Double> vPA = new Vector<>();
         vPA.add(vEast);
@@ -411,7 +412,7 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
         } else {
             Fa = (Math.PI / 2) + Math.acos(vEast /  Math.sqrt(vNorth * vNorth + vEast * vEast));
         }
-        Fa = -Fa;
+//        Fa = -Fa;
         double Si = -Math.asin(vCore / Math.sqrt(vNorth * vNorth + vEast * vEast + vCore * vCore));
 
         Log.d(TAG, "Fa:" + Fa * 180 / Math.PI);
