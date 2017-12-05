@@ -221,7 +221,6 @@ public class TPVFragment extends Fragment {
                     int index2 = Math.round((float) strengthPercent / 10);
 
                     rbControllerSignal.setRating(index2);
-                    //ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
                     break;
                 case MSG_COMPASS_ERROR:
                     tvSafeInfo.setText("指南针异常，请移动飞机或校准指南针");
