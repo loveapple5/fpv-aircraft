@@ -137,14 +137,6 @@ public class TPVFragment extends Fragment {
 
     private MySensorEventListener sensorEventListener;
 
-    private static final int SIGNAL_ICON[] = {
-            R.drawable.signal_icon_0,
-            R.drawable.signal_icon_1,
-            R.drawable.signal_icon_2,
-            R.drawable.signal_icon_3,
-            R.drawable.signal_icon_4
-    };
-
     private static final int ENERGY_ICON[] = {
             R.drawable.energy_icon_1,
             R.drawable.energy_icon_2,
@@ -200,12 +192,6 @@ public class TPVFragment extends Fragment {
                     tvFlightVerticalSpeed.setText(intVSpeed + "");
                     tvFlightHeight.setText(Math.round(altitude) + "");
                     tvFlightDistance.setText(distance + "");
-
-//                    tvFlightSpeed.setText(longA + "");
-//                    tvFlightVerticalSpeed.setText(latA + "");
-//                    tvFlightHeight.setText(longH + "");
-//                    tvFlightDistance.setText(latH + "");
-
 
                     Vector<Double> vPhone = new Vector<>();
                     vPhone.add(longH * Math.PI / 180);
@@ -768,7 +754,6 @@ public class TPVFragment extends Fragment {
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
 
         }
 
