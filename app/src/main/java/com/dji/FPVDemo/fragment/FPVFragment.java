@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,9 +42,12 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 import com.dji.FPVDemo.opengl.MyGLSurfaceView;
+import com.dji.FPVDemo.util.DensityUtil;
 import com.dji.FPVDemo.util.StringUtils;
+import com.dji.FPVDemo.view.CircleMenuLayout;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import dji.common.airlink.DJISignalInformation;
 import dji.common.airlink.SignalQualityUpdatedCallback;
@@ -86,7 +90,7 @@ public class FPVFragment extends Fragment {
 
     private RelativeLayout rlTop;
     private RelativeLayout rlLeft;
-    private RelativeLayout rlBottom;
+    private LinearLayout llBottom;
     private RelativeLayout rlRight;
 
     private RelativeLayout rlCraftSignal;
@@ -114,8 +118,11 @@ public class FPVFragment extends Fragment {
     private ImageView ivSatellite;
     private ImageView ivRc;
     private ImageView ivDirection;
+    private LinearLayout llFpvCamera;
+    private RelativeLayout rlTpvCamera;
 
     private TextureView tvPreview;
+    private TextureView tvTpvPreview;
 
     private BatteryReceiver mReceiver;
 
@@ -130,12 +137,23 @@ public class FPVFragment extends Fragment {
     // OpenGL componets
     private MyGLSurfaceView mGLView;
 
-    private static final int SIGNAL_ICON[] = {
-            R.drawable.signal_icon_0,
-            R.drawable.signal_icon_1,
-            R.drawable.signal_icon_2,
-            R.drawable.signal_icon_3,
-            R.drawable.signal_icon_4
+    private CircleMenuLayout menuLayout;
+
+    public static final int MODE_TPV = 1;
+    public static final int MODE_FPV = 2;
+    private int mode = MODE_TPV;
+
+//    private static final int SIGNAL_ICON[] = {
+//            R.drawable.signal_icon_0,
+//            R.drawable.signal_icon_1,
+//            R.drawable.signal_icon_2,
+//            R.drawable.signal_icon_3,
+//            R.drawable.signal_icon_4
+//    };
+
+    private int[] mItemImgs = new int[]{
+            R.drawable.menu_map, R.drawable.menu_luminance, R.drawable.menu_helmet,
+            R.drawable.menu_camera, R.drawable.menu_video, R.drawable.menu_pan, R.drawable.menu_setting
     };
 
     private static final int ENERGY_ICON[] = {
@@ -152,6 +170,18 @@ public class FPVFragment extends Fragment {
             R.drawable.energy_icon_11,
     };
 
+    private LocationManager locationManager;
+
+    private MyLocationListener locationListener;
+
+    private SensorManager mSensorManager;
+    private Sensor accelerometer; // 加速度传感器
+    private Sensor magnetic; // 地磁场传感器
+
+    private float[] accelerometerValues = new float[3];
+    private float[] magneticFieldValues = new float[3];
+
+    private MySensorEventListener sensorEventListener;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
 
@@ -162,9 +192,14 @@ public class FPVFragment extends Fragment {
                 case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
                     double speed = bundle.getDouble("speed");
                     float vSpeed = bundle.getFloat("vSpeed");
-                    int altitude = (int) bundle.getFloat("altitude");
+                    double altitude =  bundle.getDouble("altitude");
                     int distance = (int) bundle.getDouble("distance");
                     int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
+
+                    double longA = bundle.getDouble("longA");
+                    double longH = bundle.getDouble("longH");
+                    double latA = bundle.getDouble("latA");
+                    double latH =  bundle.getDouble("latH");
 
                     String strSpeed = String.valueOf(speed);
                     if (speed < 2.001 && speed > 0.001) {
@@ -183,7 +218,7 @@ public class FPVFragment extends Fragment {
 
                     tvFlightSpeed.setText(strSpeed);
                     tvFlightVerticalSpeed.setText(intVSpeed + "");
-                    tvFlightHeight.setText(altitude + "");
+                    tvFlightHeight.setText(Math.round(altitude) + "");
                     tvFlightDistance.setText(distance + "");
 
                     Double AircraftPitch = bundle.getDouble("AircraftPitch");
@@ -199,6 +234,16 @@ public class FPVFragment extends Fragment {
                     ivDirection.setRotation(-Heading.floatValue());
                     //ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
 
+                    Vector<Double> vPhone = new Vector<>();
+                    vPhone.add(longH * Math.PI / 180);
+                    vPhone.add(latH * Math.PI / 180);
+                    vPhone.add(0d);
+                    //mGLView.setvPhoneLBH(vPhone);
+                    Vector<Double> vAircraft = new Vector<>();
+                    vAircraft.add(longA * Math.PI / 180);
+                    vAircraft.add(latA * Math.PI / 180);
+                    vAircraft.add(altitude);
+                   //mGLView.setvAircraftLBH(vAircraft);
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
@@ -244,6 +289,58 @@ public class FPVFragment extends Fragment {
 
     });
 
+    public void setMode(int mode) {
+        this.mode = mode;
+        if(this.mode == MODE_FPV) {
+            this.rlCraftSignal.setRotation(8);
+            this.rlCraftSignal.setRotationY(20);
+            RelativeLayout.LayoutParams paramsCraft = (RelativeLayout.LayoutParams) this.rlCraftSignal.getLayoutParams();
+            int marginTopCraft = DensityUtil.dip2px(getContext(), 8);
+            paramsCraft.setMargins(0, marginTopCraft, 0, 0);
+            this.rlCraftSignal.setLayoutParams(paramsCraft);
+            this.rlControllerSignal.setRotation(-8);
+            this.rlControllerSignal.setRotationY(-20);
+            RelativeLayout.LayoutParams paramsController = (RelativeLayout.LayoutParams) this.rlControllerSignal.getLayoutParams();
+            int marginTopController = DensityUtil.dip2px(getContext(), 8);
+            paramsController.setMargins(0, marginTopController, 0, 0);
+            this.rlControllerSignal.setLayoutParams(paramsController);
+            this.rlLeft.setRotationY(20);
+            this.rlRight.setRotationY(-20);
+            this.llFpvCamera.setVisibility(View.VISIBLE);
+            this.rlTpvCamera.setVisibility(View.GONE);
+            this.ivDirection.setVisibility(View.VISIBLE);
+            this.menuLayout.setVisibility(View.GONE);
+            mGLView.setMode(MODE_FPV);
+            tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+        } else {
+            this.rlCraftSignal.setRotation(0);
+            this.rlCraftSignal.setRotationY(0);
+            RelativeLayout.LayoutParams paramsCraft = (RelativeLayout.LayoutParams) this.rlCraftSignal.getLayoutParams();
+            int marginTopCraft = DensityUtil.dip2px(getContext(), 15);
+            paramsCraft.setMargins(0, marginTopCraft, 0, 0);
+            this.rlCraftSignal.setLayoutParams(paramsCraft);
+            this.rlControllerSignal.setRotation(0);
+            this.rlControllerSignal.setRotationY(0);
+            RelativeLayout.LayoutParams paramsController = (RelativeLayout.LayoutParams) this.rlControllerSignal.getLayoutParams();
+            int marginTopController = DensityUtil.dip2px(getContext(), 15);
+            paramsController.setMargins(0, marginTopController, 0, 0);
+            this.rlControllerSignal.setLayoutParams(paramsController);
+            this.rlLeft.setRotationY(0);
+            this.rlRight.setRotationY(0);
+            this.llFpvCamera.setVisibility(View.GONE);
+            this.rlTpvCamera.setVisibility(View.VISIBLE);
+            this.ivDirection.setVisibility(View.GONE);
+            this.menuLayout.setVisibility(View.VISIBLE);
+            mGLView.setMode(MODE_TPV);
+            tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+        }
+
+    }
+
+    public int getMode() {
+        return this.mode;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
@@ -264,6 +361,39 @@ public class FPVFragment extends Fragment {
         };
 
         mReceiver = new BatteryReceiver();
+
+        // 实例化传感器管理者
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        // 初始化加速度传感器
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // 初始化地磁场传感器
+        magnetic = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        sensorEventListener = new MySensorEventListener();
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        // criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
+        // criteria.setAltitudeRequired(false);//不要求海拔信息
+        if(locationManager != null) {
+            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationListener = new MyLocationListener();
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                String provider = locationManager.getBestProvider(criteria, true);
+                locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
+                boolean netWork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                Log.w(TAG, "netWork:" + netWork);
+                boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                Log.w(TAG, "gps:" + gps);
+            } else {
+                Log.w(TAG, "checkSelfPermission failed");
+            }
+        } else {
+            Log.w(TAG, "locationManager null");
+        }
+
+        mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
     }
 
     public void setHelmetEnergy(int percent) {
@@ -276,7 +406,7 @@ public class FPVFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fpv, container, false);
         rlTop = (RelativeLayout) view.findViewById(R.id.layout_fpv_top);
         rlLeft = (RelativeLayout) view.findViewById(R.id.layout_fpv_left);
-        rlBottom = (RelativeLayout) view.findViewById(R.id.layout_fpv_bottom);
+        llBottom = (LinearLayout) view.findViewById(R.id.layout_fpv_bottom);
         rlRight = (RelativeLayout) view.findViewById(R.id.layout_fpv_right);
         rlCraftSignal = (RelativeLayout) view.findViewById(R.id.layout_fpv_craft_signal);
         rlControllerSignal = (RelativeLayout) view.findViewById(R.id.layout_fpv_controller_signal);
@@ -294,6 +424,8 @@ public class FPVFragment extends Fragment {
         ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_fpv_flight_vertical_speed);
         //ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
         tvPreview = (TextureView) view.findViewById(R.id.tv_fpv_preview);
+
+        tvTpvPreview = (TextureView) view.findViewById(R.id.tv_tpv_preview);
         //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
         mapView = (MapView) view.findViewById(R.id.mv_fpv_map);
 
@@ -310,6 +442,24 @@ public class FPVFragment extends Fragment {
 
         ivDirection = (ImageView) view.findViewById(R.id.iv_fpv_direction);
 
+        llFpvCamera = (LinearLayout) view.findViewById(R.id.layout_fpv_camera);
+        rlTpvCamera = (RelativeLayout) view.findViewById(R.id.layout_tpv_camera);
+
+        menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
+        menuLayout.setMenuItemCount(18);
+        menuLayout.setMenuItemIcons(mItemImgs);
+        menuLayout.setOnMenuItemClickListener(new CircleMenuLayout.OnMenuItemClickListener() {
+            @Override
+            public void itemClick(int pos) {
+
+            }
+
+            @Override
+            public void itemCenterClick(View view) {
+
+            }
+        });
+
         mGLView = new MyGLSurfaceView(getActivity());
         mGLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         mGLView.setZOrderOnTop(true);
@@ -325,6 +475,7 @@ public class FPVFragment extends Fragment {
         aMap.addMarker(new MarkerOptions().position(shenzhen).title("Marker in Shenzhen"));
         aMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
 
+        setMode(MODE_TPV);
         return view;
     }
 
@@ -343,7 +494,12 @@ public class FPVFragment extends Fragment {
         if (product == null || !product.isConnected()) {
             Toast.makeText(getActivity(), R.string.disconnected, Toast.LENGTH_SHORT).show();
         } else {
-            tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            if(this.mode == MODE_FPV) {
+                tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            } else {
+                tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            }
+
 
             if (!product.getModel().equals(Model.UnknownAircraft)) {
                 DJICamera camera = product.getCamera();
@@ -485,12 +641,17 @@ public class FPVFragment extends Fragment {
             double speed = Math.sqrt(Math.pow(FCState.getVelocityX(), 2) + Math.pow(FCState.getVelocityY(), 2));
             float vSpeed = -1 * FCState.getVelocityZ();
             // get aircraft altitude
-            float altitude;
+            double altitude;
             if (FCState.isUltrasonicBeingUsed()) {
                 altitude = FCState.getUltrasonicHeight();
             } else {
                 altitude = FCState.getAircraftLocation().getAltitude();
             }
+
+            double longA = FCState.getAircraftLocation().getCoordinate2D().getLongitude();
+            double longH = FCState.getHomeLocation().getLongitude();
+            double latA = FCState.getAircraftLocation().getCoordinate2D().getLatitude();
+            double latH = FCState.getHomeLocation().getLatitude();
 
             FCState.getAircraftLocation().getLongitude();
             FCState.getAircraftLocation().getLatitude();
@@ -517,9 +678,14 @@ public class FPVFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putDouble("speed", speed);
             bundle.putFloat("vSpeed", vSpeed);
-            bundle.putFloat("altitude", altitude);
+            bundle.putDouble("altitude", altitude);
             bundle.putDouble("distance", dis);
             bundle.putInt("gpsSignalLevel", gpsSignalLevel);
+
+            bundle.putDouble("longA", longA);
+            bundle.putDouble("longH", longH);
+            bundle.putDouble("latA", latA);
+            bundle.putDouble("latH", latH);
 
             bundle.putDouble("AircraftPitch", AircraftPitch);
             bundle.putDouble("AircraftRoll", AircraftRoll);
@@ -664,5 +830,94 @@ public class FPVFragment extends Fragment {
         }
     }
 
+    class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            //经度
+            double longitude = location.getLongitude();
+            //纬度
+            double latitude = location.getLatitude();
+            //海拔
+            double altitude = location.getAltitude();
+
+            Log.i(TAG, "longitude" + longitude) ;
+            Log.i(TAG, "latitude" + latitude) ;
+            Log.i(TAG, "altitude" + altitude) ;
+
+            Vector<Double> vPhone = new Vector<Double>();
+            vPhone.add(longitude * Math.PI / 180);
+            vPhone.add(latitude * Math.PI / 180);
+            vPhone.add(altitude);
+//            mGLView.setvPhoneLBH(vPhone);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    }
+
+
+    class MySensorEventListener implements SensorEventListener {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            // TODO Auto-generated method stub
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                accelerometerValues = event.values;
+            }
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                magneticFieldValues = event.values;
+            }
+            calculateOrientation();
+        }
+
+        private double lastOrientation = 0;
+        private double lastPitch = 0;
+        private double lastRoll = 0;
+
+        // 计算方向
+        private void calculateOrientation() {
+            float[] values = new float[3];
+            float[] R = new float[9];
+            SensorManager.getRotationMatrix(R, null, accelerometerValues,
+                    magneticFieldValues);
+            SensorManager.getOrientation(R, values);
+            double ORIENTATION =  Math.toDegrees(values[0]);
+            double PITCH = Math.toDegrees(values[1]);
+            double ROLL = Math.toDegrees(values[2]);
+
+            Log.i(TAG, "ORIENTATION:" + ORIENTATION);
+            Log.i(TAG, "PITCH" + PITCH);
+            Log.i(TAG, "ROLL" + ROLL);
+            if(Math.abs(ORIENTATION - lastOrientation) >= 3 || Math.abs(PITCH - lastPitch) >= 3 || Math.abs(ROLL - lastRoll) >= 3) {
+                lastOrientation = ORIENTATION;
+                lastPitch = PITCH;
+                lastRoll = ROLL;
+                Vector<Double> aPhone = new Vector<Double>();
+                aPhone.add(PITCH * Math.PI / 180);
+                aPhone.add(ROLL * Math.PI / 180);
+                aPhone.add(ORIENTATION * Math.PI / 180);
+                mGLView.setaPhonePRY(aPhone);
+            }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+
+    }
 
 }

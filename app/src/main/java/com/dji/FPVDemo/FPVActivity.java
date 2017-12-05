@@ -34,11 +34,14 @@ import dji.common.remotecontroller.DJIRCHardwareState;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
 
+import static com.dji.FPVDemo.fragment.FPVFragment.MODE_FPV;
+import static com.dji.FPVDemo.fragment.FPVFragment.MODE_TPV;
+
 public class FPVActivity extends FragmentActivity {
 
     private static final String TAG = FPVActivity.class.getName();
 
-    private TPVFragment mTPVFragment;
+//    private TPVFragment mTPVFragment;
     private FPVFragment mFPVFragment;
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
@@ -60,11 +63,11 @@ public class FPVActivity extends FragmentActivity {
         setContentView(R.layout.activity_fpv);
 
         mFPVFragment = new FPVFragment();
-        mTPVFragment = new TPVFragment();
+        //mTPVFragment = new TPVFragment();
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.layout_fpv_root, mTPVFragment);
+        transaction.replace(R.id.layout_fpv_root, mFPVFragment);
         transaction.commit();
 
         final Intent intent = getIntent();
@@ -116,30 +119,14 @@ public class FPVActivity extends FragmentActivity {
                 if (data != null) {
                     Log.i(TAG, "EXTRA_DATA:" + data);
                     if (data.contains("FLAG-TPV")) {
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction transaction = fm.beginTransaction();
-                        Log.i(TAG, "TPV:" + data);
-                        transaction.replace(R.id.layout_fpv_root, mTPVFragment);
-                        transaction.commit();
+                        mFPVFragment.setMode(MODE_TPV);
                     } else if (data.contains("FLAG-FPV")) {
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction transaction = fm.beginTransaction();
-                        Log.i(TAG, "FPV:" + data);
-                        transaction.replace(R.id.layout_fpv_root, mFPVFragment);
-                        transaction.commit();
+                        mFPVFragment.setMode(MODE_FPV);
                     } else if (data.contains("SOC")) {
                         Log.i(TAG, "SOC:" + data);
                         String helmetEnergy = data.substring(3);
                         int energy = Integer.parseInt(helmetEnergy);
-                        FragmentManager fm = getSupportFragmentManager();
-                        List<Fragment> fragments = fm.getFragments();
-                        if (fragments != null) {
-                            if (fragments.contains(mTPVFragment)) {
-                                mTPVFragment.setHelmetEnergy(energy);
-                            } else if(fragments.contains(mFPVFragment)) {
-                                mFPVFragment.setHelmetEnergy(energy);
-                            }
-                        }
+                        mFPVFragment.setHelmetEnergy(energy);
                     }
                 }
             }
@@ -183,12 +170,10 @@ public class FPVActivity extends FragmentActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         switch (item.getItemId()) {
             case R.id.menu_fpv:
-                transaction.replace(R.id.layout_fpv_root, mFPVFragment);
-                transaction.commit();
+                mFPVFragment.setMode(MODE_FPV);
                 break;
             case R.id.menu_tpv:
-                transaction.replace(R.id.layout_fpv_root, mTPVFragment);
-                transaction.commit();
+                mFPVFragment.setMode(MODE_TPV);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -212,20 +197,11 @@ public class FPVActivity extends FragmentActivity {
                     buttonUpTime = System.currentTimeMillis();
                     if (buttonUpTime - buttonDownTime >= C2BUTTON_PRESS_DURATION  && buttonDownTime > 0) {
                         buttonDownTime = 0;
-                        FragmentManager fm = getSupportFragmentManager();
-                        List<Fragment> fragments = fm.getFragments();
-
-                        FragmentTransaction transaction = fm.beginTransaction();
-                        if (fragments != null) {
-                            if (fragments.contains(mTPVFragment)) {
-                                transaction.replace(R.id.layout_fpv_root, mFPVFragment);
-                                transaction.commit();
-                                mBluetoothLeService.writeValue("FLAG-FPV");
-                            } else {
-                                transaction.replace(R.id.layout_fpv_root, mTPVFragment);
-                                transaction.commit();
-                                mBluetoothLeService.writeValue("FLAG-TPV");
-                            }
+                        int mode = mFPVFragment.getMode();
+                        if(mode == MODE_FPV) {
+                            mBluetoothLeService.writeValue("FLAG-FPV");
+                        } else  {
+                            mBluetoothLeService.writeValue("FLAG-TPV");
                         }
                     }
                 }

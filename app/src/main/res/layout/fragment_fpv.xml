@@ -137,8 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/fpv_camera_aperture"
@@ -146,8 +146,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/fpv_camera_iso"
@@ -155,8 +155,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/fpv_camera_ev"
@@ -164,9 +164,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
         </LinearLayout>
+        <!--camera-->
+        <RelativeLayout
+            android:id="@+id/layout_tpv_camera"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/map_bg"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextureView
+                android:id="@+id/tv_tpv_preview"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:background="@color/colorWhite" />
+        </RelativeLayout>
         <!--map-->
         <RelativeLayout
             android:id="@+id/layout_fpv_map"
@@ -190,34 +208,24 @@
             android:layout_height="240dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/layout_fpv_camera"
+            android:layout_toEndOf="@id/layout_fpv_map"
             android:src="@drawable/bg_tpv_left" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/iv_fpv_direction"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-10dp"
-        android:background="@drawable/direction"
-        android:rotationX="60"></ImageView>
-
     <!--bottom-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_fpv_bottom"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp">
+        android:gravity="center_horizontal|bottom">
 
         <RelativeLayout
             android:id="@+id/rl_fpv_helmet"
             android:layout_width="40dp"
             android:layout_height="32dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="120dp"
             android:background="@drawable/energy_icon_1">
 
             <ImageView
@@ -235,8 +243,8 @@
             android:id="@+id/rl_fpv_phone"
             android:layout_width="40dp"
             android:layout_height="32dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:layout_toEndOf="@id/rl_fpv_helmet"
             android:background="@drawable/energy_icon_2">
 
             <ImageView
@@ -250,12 +258,29 @@
                 android:src="@drawable/icon_phone" />
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/iv_fpv_direction"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/direction"
+            android:rotationX="60" />
+
+        <com.dji.FPVDemo.view.CircleMenuLayout
+            android:id="@+id/menu_tpv"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="-125dp"
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
         <RelativeLayout
             android:id="@+id/rl_fpv_craft"
             android:layout_width="40dp"
             android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="120dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/energy_icon_3">
 
             <ImageView
@@ -273,8 +298,7 @@
             android:id="@+id/rl_fpv_controller"
             android:layout_width="40dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@id/rl_fpv_craft"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/energy_icon_4">
 
             <ImageView
@@ -288,7 +312,7 @@
                 android:src="@drawable/icon_controller" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
     <!--right-->
     <RelativeLayout
         android:id="@+id/layout_fpv_right"
