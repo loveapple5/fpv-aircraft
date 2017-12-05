@@ -1,6 +1,7 @@
 package com.dji.FPVDemo.opengl;
 
 
+import android.hardware.GeomagneticField;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -83,6 +84,8 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
 
     private long time = 0;
     private int index = 0;
+
+    private float declination = 0;
 
     @Override
     public void onDrawFrame(GL10 unused) {
@@ -275,6 +278,11 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
 
     public synchronized void setvPhoneLBH(Vector<Double> vPhoneLBH) {
         this.vPhoneLBH = vPhoneLBH;
+        long curTime = System.currentTimeMillis();
+        float lat = (float)(this.vPhoneLBH.get(1) * 180 / Math.PI);
+        float lon = (float)(this.vPhoneLBH.get(0) * 180 / Math.PI);
+        GeomagneticField geoField = new GeomagneticField(lat,lon, 0f, curTime);
+        declination = geoField.getDeclination();
     }
 
     public synchronized void setvAircraftLBH(Vector<Double> vAircraftLBH) {
@@ -283,6 +291,7 @@ public class TPVGLRenderer implements GLSurfaceView.Renderer {
 
     public synchronized void setaPhonePRY(Vector<Double> aPhonePRY) {
         this.aPhonePRY = aPhonePRY;
+        this.aPhonePRY.set(2, this.aPhonePRY.get(2) + declination);
     }
 
 //    public synchronized Vector<Double> getaAPR() {
