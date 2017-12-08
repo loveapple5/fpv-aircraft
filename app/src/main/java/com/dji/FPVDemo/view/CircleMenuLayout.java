@@ -203,10 +203,10 @@ public class CircleMenuLayout extends ViewGroup {
                 int lastImgPosition = (imgPosition - i + mItemImgs.length * 10) % mItemImgs.length;
                 itemImgMap.put(lastPosition, lastImgPosition);
                 //Log.d("test", lastPosition + ":" + lastImgPosition);
-
+                updateMenuItems();
             }
 
-            updateMenuItems();
+
         }
     }
 
@@ -258,12 +258,14 @@ public class CircleMenuLayout extends ViewGroup {
             final View child = getChildAt(i);
             //根据孩子遍历，设置中间顶部那个的大小以及其他图片大小。
             if (mStartAngle > 269 && mStartAngle < 271 && isTouchUp) {
-                mOnMenuItemClickListener.itemClick(i);              //设置监听回调。
+                mOnMenuItemClickListener.itemClick((int)child.getTag());              //设置监听回调。
                 cWidth = DensityUtil.dip2px(getContext(), RADIO_TOP_CHILD_DIMENSION);
                 child.setSelected(true);
             } else {
+                child.setTag(null);
                 cWidth = DensityUtil.dip2px(getContext(), RADIO_DEFAULT_CHILD_DIMENSION);
                 child.setSelected(false);
+
             }
             if (child.getVisibility() == GONE) {
                 continue;
@@ -294,7 +296,8 @@ public class CircleMenuLayout extends ViewGroup {
         }
     }
 
-    private void backOrPre() {     //缓冲的角度。即我们将要固定几个位置，而不是任意位置。我们要设计一个可能的角度去自动帮他选择。
+    //缓冲的角度。即我们将要固定几个位置，而不是任意位置。我们要设计一个可能的角度去自动帮他选择。
+    private void backOrPre() {
         isTouchUp = true;
         float angleDelay = 360 / mMenuItemCount;              //这个是每个图形相隔的角度
         if ((mStartAngle - angleDelay / 2) % angleDelay == 0) {
@@ -444,6 +447,7 @@ public class CircleMenuLayout extends ViewGroup {
             if (iv != null) {
                 iv.setVisibility(View.VISIBLE);
                 iv.setImageResource(mItemImgs[itemImgMap.get(i)]);
+                iv.setTag(itemImgMap.get(i));
             }
         }
     }
@@ -458,16 +462,19 @@ public class CircleMenuLayout extends ViewGroup {
          */
         for (int i = 0; i < mMenuItemCount; i++) {
             ImageView iv = new ImageView(getContext());
-            if (iv != null) {
-                iv.setVisibility(View.VISIBLE);
-                iv.setImageResource(mItemImgs[itemImgMap.get(i)]);
-                iv.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            iv.setVisibility(View.VISIBLE);
+            iv.setImageResource(mItemImgs[itemImgMap.get(i)]);
+            iv.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
 //                        isTouchUp = true;
+                    Object tag = v.getTag();
+                    if(tag != null) {
+                        mOnMenuItemClickListener.itemCenterClick(v);
                     }
-                });
-            }
+                }
+            });
+
 
             // 添加view到容器中
             addView(iv);
