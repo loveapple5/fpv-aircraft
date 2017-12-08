@@ -75,4 +75,14 @@
 
     <string name="video">视频</string>
     <string name="photo">拍照</string>
+
+    <string name="ratio43">4:3</string>
+    <string name="ratio169">16:9</string>
+
+    <string name="auto">自动</string>
+    <string name="manual">手动</string>
+
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+
 </resources>
