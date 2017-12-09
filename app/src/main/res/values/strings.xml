@@ -11,7 +11,7 @@
     <string name="connection">连 接</string>
     <string name="value0">0</string>
     <string name="compass">compass</string>
-    <string name="fpv">fpv image</string>
+
     <string name="gyro">gyro bar</string>
     <string name="cross">cross</string>
     <string name="status">状态: 注册...</string>
@@ -82,7 +82,14 @@
     <string name="auto">自动</string>
     <string name="manual">手动</string>
 
-    <string name="open">打开</string>
-    <string name="close">关闭</string>
+    <string name="open">开</string>
+    <string name="close">关</string>
 
+    <string name="back">返回</string>
+
+    <string name="show_path">显示航线</string>
+
+    <string name="fpv">第一人称视角</string>
+    <string name="tpv">第三人称视角</string>
+    <string name="menu">菜单</string>
 </resources>
