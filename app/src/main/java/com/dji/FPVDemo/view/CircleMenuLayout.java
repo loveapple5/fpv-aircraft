@@ -22,7 +22,7 @@ public class CircleMenuLayout extends ViewGroup {
     private int mRadius;
 
     public static final float DEFAULT_BANNER_WIDTH = 750.0f;        //中间显示的图标大小
-    public static final float DEFAULT_BANNER_HEIGTH = 420.0f;       //其余图标大小
+    public static final float DEFAULT_BANNER_HEIGHT = 420.0f;       //其余图标大小
 
     /**
      * 该容器内child item的默认尺寸
@@ -100,11 +100,17 @@ public class CircleMenuLayout extends ViewGroup {
      */
     private boolean isTouchUp = true;
 
-
     /**
-     * 当前中间顶部的那个
+     * 当前中间顶部的那个从起始角度计算的位置
      */
     private int mCurrentPosition = 0;
+
+    private int mCurrentIndex = 0;
+
+    private Paint mLinePaint = new Paint();
+    private Paint mTextPaint = new Paint();
+
+    public static final float DEFAULT_TEXT_SIZE = 12;
 
     private HashMap<Integer, Integer> itemImgMap = new HashMap();
 
@@ -112,6 +118,17 @@ public class CircleMenuLayout extends ViewGroup {
         super(context, attrs);
         // 无视padding
         setPadding(0, 0, 0, 0);
+        mLinePaint.setStrokeWidth(2); // 设置圆环的宽度，这个应该是内边距
+        mLinePaint.setAntiAlias(true); // 消除锯齿
+        mLinePaint.setStyle(Paint.Style.STROKE); // 设置空心
+//        mPaint.setColor(Color.MAGENTA); // 设置圆环的颜色
+        mLinePaint.setARGB(0xff, 0, 0xff, 0xf5);
+
+        mTextPaint.setStrokeWidth(1); // 设置圆环的宽度，这个应该是内边距
+        mTextPaint.setAntiAlias(true); // 消除锯齿
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setARGB(0xff, 0, 0xff, 0xf5);
+        mTextPaint.setTextSize(DensityUtil.dip2px(context, DEFAULT_TEXT_SIZE));
     }
 
     /**
@@ -142,7 +159,7 @@ public class CircleMenuLayout extends ViewGroup {
 
             resWidth = getDefaultWidth();
 
-            resHeight = (int) (resWidth * DEFAULT_BANNER_HEIGTH /
+            resHeight = (int) (resWidth * DEFAULT_BANNER_HEIGHT /
                     DEFAULT_BANNER_WIDTH);
 
         } else {
@@ -170,7 +187,7 @@ public class CircleMenuLayout extends ViewGroup {
             final View child = getChildAt(i);
             startAngle = startAngle % 360;
             if (startAngle > 269 && startAngle < 271 && isTouchUp) {
-                if(mCurrentPosition != i) {
+                if (mCurrentPosition != i) {
                     positionChanged = true;
                 }
                 mCurrentPosition = i;                       //本次使用mCurrentPosition，只是把他作为一个temp变量。可以有更多的使用，比如动态设置每个孩子相隔的角度
@@ -192,8 +209,8 @@ public class CircleMenuLayout extends ViewGroup {
         //item容器内边距
         mPadding = DensityUtil.dip2px(getContext(), RADIO_MARGIN_LAYOUT);
 
-        if(positionChanged) {
-            for(int i = 1;i < mMenuItemCount / 2; i++) {
+        if (positionChanged) {
+            for (int i = 1; i < mMenuItemCount / 2; i++) {
                 int imgPosition = itemImgMap.get(mCurrentPosition);
                 int nextPosition = (mCurrentPosition + i) % mMenuItemCount;
                 int nextImgPosition = (imgPosition + i) % mItemImgs.length;
@@ -258,7 +275,11 @@ public class CircleMenuLayout extends ViewGroup {
             final View child = getChildAt(i);
             //根据孩子遍历，设置中间顶部那个的大小以及其他图片大小。
             if (mStartAngle > 269 && mStartAngle < 271 && isTouchUp) {
-                mOnMenuItemClickListener.itemClick((int)child.getTag());              //设置监听回调。
+                if (child.getTag() != null) {
+                    int index = (int) child.getTag();
+                    mOnMenuItemClickListener.itemClick(index);              //设置监听回调。
+                    mCurrentIndex = index;
+                }
                 cWidth = DensityUtil.dip2px(getContext(), RADIO_TOP_CHILD_DIMENSION);
                 child.setSelected(true);
             } else {
@@ -441,6 +462,10 @@ public class CircleMenuLayout extends ViewGroup {
         addMenuItems();
     }
 
+    public void setMenuItemTexts(String[] resIds) {
+        this.mItemTexts = resIds;
+    }
+
     private void updateMenuItems() {
         for (int i = 0; i < mMenuItemCount; i++) {
             ImageView iv = (ImageView) getChildAt(i);
@@ -469,7 +494,7 @@ public class CircleMenuLayout extends ViewGroup {
                 public void onClick(View v) {
 //                        isTouchUp = true;
                     Object tag = v.getTag();
-                    if(tag != null) {
+                    if (tag != null) {
                         mOnMenuItemClickListener.itemCenterClick(v);
                     }
                 }
@@ -512,9 +537,6 @@ public class CircleMenuLayout extends ViewGroup {
         return Math.min(outMetrics.widthPixels, outMetrics.heightPixels);
     }
 
-    Paint mPaint = new Paint();
-
-
     protected void onDraw(Canvas canvas) {
         int center = getWidth() / 2; // 获取大半径
 
@@ -530,13 +552,17 @@ public class CircleMenuLayout extends ViewGroup {
 
         int radius = center - innerMargin * 2 + childSize / 2 + internalSize;// 大半径减去小半径的一半才是半径。
         int radius2 = center - innerMargin * 2 - childSize / 2 - internalSize;
-        mPaint.setStrokeWidth(2); // 设置圆环的宽度，这个应该是内边距
-        mPaint.setAntiAlias(true); // 消除锯齿
-        mPaint.setStyle(Paint.Style.STROKE); // 设置空心
-//        mPaint.setColor(Color.MAGENTA); // 设置圆环的颜色
-        mPaint.setARGB(0xff, 0, 0xff, 0xf5);
-        canvas.drawCircle(center, center, radius, mPaint); // 画出圆环
-        canvas.drawCircle(center, center, radius2, mPaint); // 画出圆环
+
+        canvas.drawCircle(center, center, radius, mLinePaint); // 画出圆环
+        canvas.drawCircle(center, center, radius2, mLinePaint); // 画出圆环
+
+        if(mItemTexts != null && mItemTexts.length > mCurrentIndex) {
+            int strLen = mItemTexts[mCurrentIndex].length();
+            canvas.drawText(mItemTexts[mCurrentIndex], center - DensityUtil.dip2px(getContext(), DEFAULT_TEXT_SIZE) * strLen / 2,
+                    center - DensityUtil.dip2px(getContext(), 20) - DensityUtil.dip2px(getContext(), DEFAULT_TEXT_SIZE), mTextPaint);
+        }
+
     }
+
 
 }
