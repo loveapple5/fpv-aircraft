@@ -39,6 +39,7 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.dji.FPVDemo.FPVActivity;
 import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 import com.dji.FPVDemo.opengl.MyGLSurfaceView;
@@ -138,9 +139,11 @@ public class FPVFragment extends Fragment {
     private MyGLSurfaceView mGLView;
 
     private CircleMenuLayout menuLayout;
+    //private TextView tvMenuLabel;
 
     public static final int MODE_TPV = 1;
     public static final int MODE_FPV = 2;
+    public static final int MODE_MENU = 3;
     private int mode = MODE_TPV;
 
 //    private static final int SIGNAL_ICON[] = {
@@ -154,6 +157,11 @@ public class FPVFragment extends Fragment {
     private int[] mItemImgs = new int[]{
             R.drawable.menu_map, R.drawable.menu_luminance, R.drawable.menu_helmet,
             R.drawable.menu_camera, R.drawable.menu_video, R.drawable.menu_pan, R.drawable.menu_setting
+    };
+
+    private int[] mItemsText = new int[] {
+            R.string.map, R.string.brightness, R.string.helmet, R.string.photo, R.string.video, R.string.gimbal,
+            R.string.fc
     };
 
     private static final int ENERGY_ICON[] = {
@@ -312,7 +320,8 @@ public class FPVFragment extends Fragment {
             this.menuLayout.setVisibility(View.GONE);
             mGLView.setMode(MODE_FPV);
             tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
-        } else {
+            menuLayout.setVisibility(View.GONE);
+        } else if(this.mode == MODE_TPV){
             this.rlCraftSignal.setRotation(0);
             this.rlCraftSignal.setRotationY(0);
             RelativeLayout.LayoutParams paramsCraft = (RelativeLayout.LayoutParams) this.rlCraftSignal.getLayoutParams();
@@ -333,6 +342,11 @@ public class FPVFragment extends Fragment {
             this.menuLayout.setVisibility(View.VISIBLE);
             mGLView.setMode(MODE_TPV);
             tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            menuLayout.setVisibility(View.GONE);
+        } else if(this.mode == MODE_MENU) {
+            this.ivDirection.setVisibility(View.GONE);
+            menuLayout.setVisibility(View.VISIBLE);
+            mGLView.setMode(MODE_MENU);
         }
 
     }
@@ -448,17 +462,30 @@ public class FPVFragment extends Fragment {
         menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
         menuLayout.setMenuItemCount(18);
         menuLayout.setMenuItemIcons(mItemImgs);
+        String[] itemTexts = new String[mItemsText.length];
+        for(int i = 0; i < mItemsText.length; i++) {
+            itemTexts[i] = getString(mItemsText[i]);
+        }
+        menuLayout.setMenuItemTexts(itemTexts);
         menuLayout.setOnMenuItemClickListener(new CircleMenuLayout.OnMenuItemClickListener() {
             @Override
-            public void itemClick(int pos) {
-
+            public void itemClick(int index) {
+               //Toast.makeText(getContext(), pos + "", Toast.LENGTH_SHORT).show();
+                FPVActivity activity = (FPVActivity) getActivity();
+                activity.switchMenu(index);
             }
 
             @Override
             public void itemCenterClick(View view) {
-
+                //int index = (int) view.getTag();
+                FPVActivity activity = (FPVActivity) getActivity();
+                activity.showMenu();
+                //tvMenuLabel.setVisibility(View.VISIBLE);
+                //Toast.makeText(getContext(), view.getTag().toString() + "", Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
         mGLView = new MyGLSurfaceView(getActivity());
         mGLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);

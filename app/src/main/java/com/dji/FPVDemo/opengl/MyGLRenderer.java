@@ -215,7 +215,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mring20.draw(scratch2);
             mring11.draw(scratch2);
             mring22.draw(scratch2);
-        }else {
+        }else if(this.mode == 2){
             mAircraftModel2.draw(scratch);
         }
 

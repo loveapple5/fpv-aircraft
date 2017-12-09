@@ -96,6 +96,5 @@
     <string name="map">地图</string>
     <string name="brightness">亮度</string>
     <string name="helmet">头盔</string>
-    <string name="pan">云台</string>
     <string name="fc">飞控</string>
 </resources>
