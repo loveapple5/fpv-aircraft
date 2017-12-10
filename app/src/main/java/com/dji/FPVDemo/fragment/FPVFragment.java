@@ -131,6 +131,8 @@ public class FPVFragment extends Fragment {
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
     // Codec for video live view
     protected DJICodecManager mCodecManager = null;
+    private PreviewSurfaceTextureListener fpvTextureListener = new PreviewSurfaceTextureListener();
+    private PreviewSurfaceTextureListener tpvTextureListener = new PreviewSurfaceTextureListener();
 
     private MapView mapView;
     private AMap aMap;
@@ -161,7 +163,7 @@ public class FPVFragment extends Fragment {
             R.drawable.menu_camera, R.drawable.menu_video, R.drawable.menu_pan, R.drawable.menu_setting
     };
 
-    private int[] mItemsText = new int[] {
+    private int[] mItemsText = new int[]{
             R.string.map, R.string.brightness, R.string.helmet, R.string.photo, R.string.video, R.string.gimbal,
             R.string.fc
     };
@@ -202,14 +204,14 @@ public class FPVFragment extends Fragment {
                 case MSG_FLIGHT_CONTROLLER_CURRENT_STATE:
                     double speed = bundle.getDouble("speed");
                     float vSpeed = bundle.getFloat("vSpeed");
-                    double altitude =  bundle.getDouble("altitude");
+                    double altitude = bundle.getDouble("altitude");
                     int distance = (int) bundle.getDouble("distance");
                     int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
 
                     double longA = bundle.getDouble("longA");
                     double longH = bundle.getDouble("longH");
                     double latA = bundle.getDouble("latA");
-                    double latH =  bundle.getDouble("latH");
+                    double latH = bundle.getDouble("latH");
 
                     String strSpeed = String.valueOf(speed);
                     if (speed < 2.001 && speed > 0.001) {
@@ -253,18 +255,18 @@ public class FPVFragment extends Fragment {
                     vAircraft.add(longA * Math.PI / 180);
                     vAircraft.add(latA * Math.PI / 180);
                     vAircraft.add(altitude);
-                   //mGLView.setvAircraftLBH(vAircraft);
+                    //mGLView.setvAircraftLBH(vAircraft);
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
                     int index = Math.round((float) remainingPercent / 8) - 1;
-                    index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
+                    index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
                     rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
                     break;
                 case MSG_BATTERY_STATE:
                     int aircraftRemainingPercent = bundle.getInt("remainingPercent");
                     int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8) - 1;
-                    aircraftIndex = aircraftIndex < 0 ? 0 :(aircraftIndex > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : aircraftIndex);
+                    aircraftIndex = aircraftIndex < 0 ? 0 : (aircraftIndex > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : aircraftIndex);
                     rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
                     break;
                 case MSG_CONTROL_SIGNAL:
@@ -300,9 +302,9 @@ public class FPVFragment extends Fragment {
     });
 
     public void setMode(int mode) {
-        this.lastMode =  this.mode;
+        this.lastMode = this.mode;
         this.mode = mode;
-        if(this.mode == MODE_FPV) {
+        if (this.mode == MODE_FPV) {
             this.rlCraftSignal.setRotation(8);
             this.rlCraftSignal.setRotationY(20);
             RelativeLayout.LayoutParams paramsCraft = (RelativeLayout.LayoutParams) this.rlCraftSignal.getLayoutParams();
@@ -322,9 +324,10 @@ public class FPVFragment extends Fragment {
             this.ivDirection.setVisibility(View.VISIBLE);
             this.menuLayout.setVisibility(View.GONE);
             mGLView.setMode(MODE_FPV);
-            tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            tvPreview.setVisibility(View.VISIBLE);
             menuLayout.setVisibility(View.GONE);
-        } else if(this.mode == MODE_TPV){
+        } else if (this.mode == MODE_TPV) {
             this.rlCraftSignal.setRotation(0);
             this.rlCraftSignal.setRotationY(0);
             RelativeLayout.LayoutParams paramsCraft = (RelativeLayout.LayoutParams) this.rlCraftSignal.getLayoutParams();
@@ -344,9 +347,10 @@ public class FPVFragment extends Fragment {
             this.ivDirection.setVisibility(View.GONE);
             this.menuLayout.setVisibility(View.VISIBLE);
             mGLView.setMode(MODE_TPV);
-            tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+            tvPreview.setVisibility(View.GONE);
+            //tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
             menuLayout.setVisibility(View.GONE);
-        } else if(this.mode == MODE_MENU) {
+        } else if (this.mode == MODE_MENU) {
             this.ivDirection.setVisibility(View.GONE);
             menuLayout.setVisibility(View.VISIBLE);
             mGLView.setMode(MODE_MENU);
@@ -374,9 +378,16 @@ public class FPVFragment extends Fragment {
 
             @Override
             public void onResult(byte[] videoBuffer, int size) {
-                if (mCodecManager != null) {
-                    // Send the raw H264 video data to codec manager for decoding
-                    mCodecManager.sendDataToDecoder(videoBuffer, size);
+                if (mode == MODE_FPV) {
+                    fpvTextureListener.sendDataToDecoder(videoBuffer, size);
+                } else if (mode == MODE_TPV) {
+                    tpvTextureListener.sendDataToDecoder(videoBuffer, size);
+                } else if (mode == MODE_MENU) {
+                    if (lastMode == MODE_FPV) {
+                        fpvTextureListener.sendDataToDecoder(videoBuffer, size);
+                    } else if (lastMode == MODE_TPV) {
+                        tpvTextureListener.sendDataToDecoder(videoBuffer, size);
+                    }
                 }
             }
         };
@@ -395,7 +406,7 @@ public class FPVFragment extends Fragment {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         // criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
         // criteria.setAltitudeRequired(false);//不要求海拔信息
-        if(locationManager != null) {
+        if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationListener = new MyLocationListener();
                 Criteria criteria = new Criteria();
@@ -419,7 +430,7 @@ public class FPVFragment extends Fragment {
 
     public void setHelmetEnergy(int percent) {
         int index = Math.round((float) percent / 8) - 1;
-        index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
+        index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
         rlHelmetEnergy.setBackgroundResource(ENERGY_ICON[index]);
     }
 
@@ -470,14 +481,14 @@ public class FPVFragment extends Fragment {
         menuLayout.setMenuItemCount(18);
         menuLayout.setMenuItemIcons(mItemImgs);
         String[] itemTexts = new String[mItemsText.length];
-        for(int i = 0; i < mItemsText.length; i++) {
+        for (int i = 0; i < mItemsText.length; i++) {
             itemTexts[i] = getString(mItemsText[i]);
         }
         menuLayout.setMenuItemTexts(itemTexts);
         menuLayout.setOnMenuItemClickListener(new CircleMenuLayout.OnMenuItemClickListener() {
             @Override
             public void itemClick(int index) {
-               //Toast.makeText(getContext(), pos + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), pos + "", Toast.LENGTH_SHORT).show();
                 FPVActivity activity = (FPVActivity) getActivity();
                 activity.switchMenu(index);
             }
@@ -491,7 +502,6 @@ public class FPVFragment extends Fragment {
                 //Toast.makeText(getContext(), view.getTag().toString() + "", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         mGLView = new MyGLSurfaceView(getActivity());
@@ -528,18 +538,13 @@ public class FPVFragment extends Fragment {
         if (product == null || !product.isConnected()) {
             Toast.makeText(getActivity(), R.string.disconnected, Toast.LENGTH_SHORT).show();
         } else {
-            if(this.mode == MODE_FPV) {
-                tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
-            } else {
-                tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
-            }
-
-
             if (!product.getModel().equals(Model.UnknownAircraft)) {
                 DJICamera camera = product.getCamera();
                 if (camera != null) {
                     // Set the callback
                     camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
+                    tvPreview.setSurfaceTextureListener(fpvTextureListener);
+                    tvTpvPreview.setSurfaceTextureListener(tpvTextureListener);
                 }
             }
         }
@@ -583,7 +588,7 @@ public class FPVFragment extends Fragment {
                     DJICameraSettingsDef.CameraISO ISO = exposure.getISO();
                     DJICameraSettingsDef.CameraExposureCompensation compensation = exposure.getExposureCompensation();
 
-                    if(aperture == null || speed == null || ISO == null || compensation == null) {
+                    if (aperture == null || speed == null || ISO == null || compensation == null) {
                         return;
                     }
 
@@ -598,8 +603,8 @@ public class FPVFragment extends Fragment {
                         strSpeed = sb.append("1/").append(String.format("%.2f", denominator)).toString();
                     }
 
-                    Log.d("aperture", aperture.value() + "");
-                    Log.d("ISO", ISO.value() + "");
+                    //Log.d("aperture", aperture.value() + "");
+                    //Log.d("ISO", ISO.value() + "");
 
                     float flAperture = (float) aperture.value() / 100;
                     String strAperture = String.format("%.1f", flAperture);
@@ -643,18 +648,26 @@ public class FPVFragment extends Fragment {
 
     class PreviewSurfaceTextureListener implements TextureView.SurfaceTextureListener {
 
+        private DJICodecManager mCodecManager = null;
+
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            Log.d("surface", "onSurfaceTextureAvailable");
+            if (mCodecManager != null) {
+                mCodecManager.cleanSurface();
+                mCodecManager = null;
+            }
             mCodecManager = new DJICodecManager(getActivity(), surface, width, height);
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+            Log.d("surface", "onSurfaceTextureSizeChanged");
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            Log.d("surface", "onSurfaceTextureDestroyed");
             if (mCodecManager != null) {
                 mCodecManager.cleanSurface();
                 mCodecManager = null;
@@ -664,7 +677,13 @@ public class FPVFragment extends Fragment {
 
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+            Log.d("surface", "onSurfaceTextureUpdated");
+        }
 
+        public void sendDataToDecoder(byte[] videoBuffer, int size) {
+            if (mCodecManager != null) {
+                mCodecManager.sendDataToDecoder(videoBuffer, size);
+            }
         }
     }
 
@@ -767,7 +786,7 @@ public class FPVFragment extends Fragment {
             int total = intent.getExtras().getInt("scale");
             float percent = (float) current * 100 / total;
             int index = Math.round(percent / 10);
-            index = index < 0 ? 0 :(index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
+            index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
             rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
         }
     }
@@ -875,9 +894,9 @@ public class FPVFragment extends Fragment {
             //海拔
             double altitude = location.getAltitude();
 
-            Log.i(TAG, "longitude" + longitude) ;
-            Log.i(TAG, "latitude" + latitude) ;
-            Log.i(TAG, "altitude" + altitude) ;
+            Log.i(TAG, "longitude" + longitude);
+            Log.i(TAG, "latitude" + latitude);
+            Log.i(TAG, "altitude" + altitude);
 
             Vector<Double> vPhone = new Vector<Double>();
             vPhone.add(longitude * Math.PI / 180);
@@ -927,14 +946,14 @@ public class FPVFragment extends Fragment {
             SensorManager.getRotationMatrix(R, null, accelerometerValues,
                     magneticFieldValues);
             SensorManager.getOrientation(R, values);
-            double ORIENTATION =  Math.toDegrees(values[0]);
+            double ORIENTATION = Math.toDegrees(values[0]);
             double PITCH = Math.toDegrees(values[1]);
             double ROLL = Math.toDegrees(values[2]);
 
             Log.i(TAG, "ORIENTATION:" + ORIENTATION);
             Log.i(TAG, "PITCH" + PITCH);
             Log.i(TAG, "ROLL" + ROLL);
-            if(Math.abs(ORIENTATION - lastOrientation) >= 3 || Math.abs(PITCH - lastPitch) >= 3 || Math.abs(ROLL - lastRoll) >= 3) {
+            if (Math.abs(ORIENTATION - lastOrientation) >= 3 || Math.abs(PITCH - lastPitch) >= 3 || Math.abs(ROLL - lastRoll) >= 3) {
                 lastOrientation = ORIENTATION;
                 lastPitch = PITCH;
                 lastRoll = ROLL;
