@@ -56,7 +56,6 @@ public class FPVActivity extends FragmentActivity {
     private DJIAircraft djiAircraft;
     private DJIRemoteController djiRemoteController;
 
-    private Vector<MenuData> menuData = new Vector<>();
     private Vector<MenuFragment> mMenuFragments = new Vector<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -418,7 +417,6 @@ public class FPVActivity extends FragmentActivity {
             transaction.hide(mCurMenuFragment).commit();
         }
         mCurMenuFragment = targetFragment;
-
     }
 
     public void showMenu() {
@@ -427,27 +425,30 @@ public class FPVActivity extends FragmentActivity {
     }
 
     public void onBackPressed() {
-        hideMenu();
+        if(hideMenu()) {
+            return;
+        }
         super.onBackPressed();
     }
 
-    private void hideMenu() {
+    private boolean hideMenu() {
         //收起二级菜单
         boolean result = mCurMenuFragment.onBackPressed();
         if(result) {
-            return;
+            return true;
         }
         //收起一级菜单
         if(!mCurMenuFragment.isHidden()) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.hide(mCurMenuFragment).commit();
-            return;
+            return true;
         }
         //收起滑动菜单
         if(mFPVFragment.getMode() == MODE_MENU) {
             mFPVFragment.setMode(mFPVFragment.getLastMode());
-            return;
+            return true;
         }
+        return false;
     }
 
     @Override

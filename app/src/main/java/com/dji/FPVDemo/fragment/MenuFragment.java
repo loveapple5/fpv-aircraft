@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -179,7 +178,7 @@ public class MenuFragment extends Fragment {
                     ((TextView) subMenuView).setText(sb);
                     break;
                 case MenuItemData.TYPE_PROGRESS:
-
+                    ((SeekBar) subMenuView).setProgress(Integer.parseInt(data.curValue));
                     break;
             }
         }
@@ -234,10 +233,17 @@ public class MenuFragment extends Fragment {
         if(llSubMenu == null || llSubMenu.getChildCount() == 0) {
             return;
         }
-        if (llSubMenu.getChildAt(mCurrentMenuIndex).getVisibility() == View.GONE) {
-            llSubMenu.getChildAt(mCurrentMenuIndex).setVisibility(View.VISIBLE);
-        } else {
-
+        View subView = llSubMenu.getChildAt(mCurrentMenuIndex);
+        //没展示二级菜单则展示
+        if (subView.getVisibility() == View.GONE) {
+            MenuItemData data = (MenuItemData)subView.getTag();
+            data.fetchCurValue();
+            subView.setVisibility(View.VISIBLE);
+        }
+        //展示了二级菜单则提交当前值
+        else {
+            MenuItemData data = (MenuItemData)subView.getTag();
+            data.submitCurValue();
         }
     }
 

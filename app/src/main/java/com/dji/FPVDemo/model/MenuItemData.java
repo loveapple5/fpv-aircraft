@@ -29,6 +29,13 @@ public class MenuItemData {
     public void up() {
         switch (type) {
             case TYPE_TEXT:
+                try {
+                    int progress = Integer.valueOf(curValue);
+                    progress--;
+                    curValue = String.valueOf(progress);
+                } catch (Exception e) {
+
+                }
                 break;
             case TYPE_SWITCH:
                 if ("true".equals(curValue)) {
@@ -52,12 +59,30 @@ public class MenuItemData {
                     }
                 }
                 break;
+            case TYPE_PROGRESS:
+                try {
+                    int progress = Integer.valueOf(curValue);
+                    if (progress > 0 && progress < 100) {
+                        progress--;
+                        curValue = String.valueOf(progress);
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
         }
     }
 
     public void down() {
         switch (type) {
             case TYPE_TEXT:
+                try {
+                    int progress = Integer.valueOf(curValue);
+                    progress++;
+                    curValue = String.valueOf(progress);
+                } catch (Exception e) {
+
+                }
                 break;
             case TYPE_SWITCH:
                 if ("true".equals(curValue)) {
@@ -81,6 +106,25 @@ public class MenuItemData {
                     }
                 }
                 break;
+            case TYPE_PROGRESS:
+                try {
+                    int progress = Integer.valueOf(curValue);
+                    if (progress > 0 && progress < 100) {
+                        progress++;
+                        curValue = String.valueOf(progress);
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
         }
+    }
+
+    public void submitCurValue() {
+
+    }
+
+    public void fetchCurValue() {
+
     }
 }
