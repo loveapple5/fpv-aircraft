@@ -424,13 +424,19 @@ public class CircleMenuLayout extends ViewGroup {
     }
 
 
-    public void setAngle(int position) {
+//    public void setAngle(int position) {
+//        float angleDelay = 360 / mMenuItemCount;
+//        if (position > mCurrentPosition) {
+//            mStartAngle += (mCurrentPosition - position) * angleDelay;
+//        } else {
+//            mStartAngle -= (position - mCurrentPosition) * angleDelay;
+//        }
+//        requestLayout();
+//    }
+
+    public void setAngle(int positionDif) {
         float angleDelay = 360 / mMenuItemCount;
-        if (position > mCurrentPosition) {
-            mStartAngle += (mCurrentPosition - position) * angleDelay;
-        } else {
-            mStartAngle -= (position - mCurrentPosition) * angleDelay;
-        }
+        mStartAngle += positionDif * angleDelay;
         requestLayout();
     }
 
