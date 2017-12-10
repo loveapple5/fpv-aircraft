@@ -89,6 +89,7 @@
     <string name="back">返回</string>
 
     <string name="show_path">显示航线</string>
+    <string name="clear_path">清除航线</string>
 
     <string name="fpv">第一人称视角</string>
     <string name="tpv">第三人称视角</string>
