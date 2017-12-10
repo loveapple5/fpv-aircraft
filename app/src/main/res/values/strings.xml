@@ -113,4 +113,20 @@
 
     <string name="sunny">晴天</string>
     <string name="cloudy">阴天</string>
+
+    <string name="volume">音量</string>
+    <string name="fan">散热通风</string>
+
+    <string name="force_open">强制打开</string>
+    <string name="force_close">强制关闭</string>
+
+    <string name="find_back">找回</string>
+
+    <string name="style">风格</string>
+    <string name="style_1">风格1</string>
+    <string name="style_2">风格2</string>
+    <string name="style_3">风格3</string>
+
+    <string name="frame_rate">帧率</string>
+
 </resources>
