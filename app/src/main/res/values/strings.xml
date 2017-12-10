@@ -68,6 +68,7 @@
     <string name="video_resolve">视频尺寸</string>
     <string name="video_standard">视频标准</string>
 
+    <string name="photo_mode">拍照模式</string>
     <string name="photo_format">照片格式</string>
     <string name="photo_resolve">照片比例</string>
     <string name="white_balance">白平衡</string>
@@ -97,4 +98,19 @@
     <string name="brightness">亮度</string>
     <string name="helmet">头盔</string>
     <string name="fc">飞控</string>
+
+    <string name="head_follow">头部跟踪</string>
+    <string name="course_follow">航向跟踪</string>
+
+    <string name="single_photo">单拍</string>
+    <string name="hdr">HDR</string>
+    <string name="series_photo">连拍</string>
+    <string name="aeb_series_photo">AEB连拍</string>
+    <string name="internal_photo">间隔拍</string>
+
+    <string name="jpeg">JPEG</string>
+    <string name="raw">RAW</string>
+
+    <string name="sunny">晴天</string>
+    <string name="cloudy">阴天</string>
 </resources>
