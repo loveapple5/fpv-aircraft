@@ -16,8 +16,6 @@ import com.dji.FPVDemo.FPVDemoApplication;
 import com.dji.FPVDemo.R;
 
 import java.util.ArrayList;
-
-import dji.common.camera.DJICameraSettingsDef;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.products.DJIAircraft;
 
@@ -82,6 +80,7 @@ public class CameraPhotoFragment extends Fragment {
 
                 DJICameraSettingsDef.CameraPhotoAspectRatio ratio = DJICameraSettingsDef.CameraPhotoAspectRatio.find(i);
                 djiCamera.setPhotoRatio(ratio, null);
+
             }
 
             @Override

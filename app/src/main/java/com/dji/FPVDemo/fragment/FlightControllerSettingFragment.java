@@ -158,6 +158,7 @@ public class FlightControllerSettingFragment extends Fragment {
             if (height >= 20 && height <= 500) {
                 djiFlightController.getCurrentState().setGoHomeHeight(height);
                 state.setGoHomeHeight(height);//返航高度
+
             } else {
                 Toast.makeText(getActivity(), R.string.home_height_toast, Toast.LENGTH_SHORT).show();
             }

@@ -21,8 +21,21 @@ import android.widget.Toast;
 import com.dji.FPVDemo.bluetooth.BluetoothLeService;
 import com.dji.FPVDemo.fragment.FPVFragment;
 import com.dji.FPVDemo.fragment.MenuFragment;
+import com.dji.FPVDemo.model.FlightHeightMenuItem;
+import com.dji.FPVDemo.model.FlightRadiusMenuItem;
+import com.dji.FPVDemo.model.GoHomeHeightMenuItem;
+import com.dji.FPVDemo.model.LEDMenuItem;
 import com.dji.FPVDemo.model.Menu;
 import com.dji.FPVDemo.model.MenuItem;
+import com.dji.FPVDemo.model.PhotoFormatMenuItem;
+import com.dji.FPVDemo.model.PhotoRatioMenuItem;
+import com.dji.FPVDemo.model.ScreenMenuItem;
+import com.dji.FPVDemo.model.ShutterMenuItem;
+import com.dji.FPVDemo.model.VideoFormatMenuItem;
+import com.dji.FPVDemo.model.VideoFrameRateMenuItem;
+import com.dji.FPVDemo.model.VideoRatioMenuItem;
+import com.dji.FPVDemo.model.VolumeMenuItem;
+import com.dji.FPVDemo.model.WhiteBalanceMenuItem;
 
 import java.util.Vector;
 
@@ -281,7 +294,8 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(mapMenuFragment);
         //屏幕菜单
         //亮度
-        MenuItem lightSubMenu = new MenuItem(100, MenuItem.TYPE_PROGRESS, "30", null, null);
+        ScreenMenuItem lightSubMenu = new ScreenMenuItem(100, MenuItem.TYPE_PROGRESS, "30", null, null);
+        lightSubMenu.setActivity(this);
         MenuItem lightMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.brightness), null, lightSubMenu);
         Menu screenMenu = new Menu();
         screenMenu.items.add(lightMenu);
@@ -290,7 +304,8 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(screenMenuFragment);
         //头盔菜单
         //音量
-        MenuItem volumeSubMenu = new MenuItem(100, MenuItem.TYPE_PROGRESS, "50", null,  null);
+        VolumeMenuItem volumeSubMenu = new VolumeMenuItem(100, MenuItem.TYPE_PROGRESS, "50", null,  null);
+        volumeSubMenu.setActivity(this);
         MenuItem volumeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.volume), null, volumeSubMenu);
         //通风
         MenuItem fanSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, getString(R.string.auto),
@@ -314,7 +329,7 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(helmetMenuFragment);
         //拍照菜单
         //快门
-        MenuItem shutterSubMenu = new MenuItem(100, MenuItem.TYPE_SELECT, getString(R.string.auto),
+        ShutterMenuItem shutterSubMenu = new ShutterMenuItem(100, MenuItem.TYPE_SELECT, getString(R.string.auto),
                 new String[]{getString(R.string.auto), getString(R.string.manual)}, null);
         MenuItem shutterMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.shutter_speed), null, shutterSubMenu);
         //拍照模式
@@ -322,15 +337,15 @@ public class FPVActivity extends FragmentActivity {
                 new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo),getString(R.string.internal_photo)}, null);
         MenuItem photoMode = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.photo_mode), null, photoModeSubMenu);
         //照片比例
-        MenuItem ratioSubMenu = new MenuItem(102, MenuItem.TYPE_SELECT, getString(R.string.ratio43),
+        PhotoRatioMenuItem ratioSubMenu = new PhotoRatioMenuItem(102, MenuItem.TYPE_SELECT, getString(R.string.ratio43),
                 new String[]{getString(R.string.ratio43), getString(R.string.ratio169)}, null);
         MenuItem ratioMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.photo_resolve), null, ratioSubMenu);
         //照片格式
-        MenuItem photoFormatSubMenu = new MenuItem(103, MenuItem.TYPE_SELECT, getString(R.string.jpeg),
+        PhotoFormatMenuItem photoFormatSubMenu = new PhotoFormatMenuItem(103, MenuItem.TYPE_SELECT, getString(R.string.jpeg),
                 new String[]{getString(R.string.jpeg), getString(R.string.raw)}, null);
         MenuItem photoFormatMenu = new MenuItem(3, MenuItem.TYPE_TEXT, getString(R.string.photo_format), null, photoFormatSubMenu);
         //白平衡
-        MenuItem whiteBalanceSubMenu = new MenuItem(104, MenuItem.TYPE_SELECT, getString(R.string.cloudy),
+        WhiteBalanceMenuItem whiteBalanceSubMenu = new WhiteBalanceMenuItem(104, MenuItem.TYPE_SELECT, getString(R.string.cloudy),
                 new String[]{getString(R.string.auto), getString(R.string.sunny), getString(R.string.cloudy)}, null);
         MenuItem whiteBalanceMenu = new MenuItem(4, MenuItem.TYPE_TEXT, getString(R.string.white_balance), null, whiteBalanceSubMenu);
         Menu photoMenu = new Menu();
@@ -344,13 +359,13 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(photoMenuFragment);
         //录像菜单
         //尺寸
-        MenuItem sizeSubMenu = new MenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[] {"4K", "1080P", "720P"}, null);
+        VideoRatioMenuItem sizeSubMenu = new VideoRatioMenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[] {"4K", "1080P", "720P"}, null);
         MenuItem sizeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.video_resolve), null, sizeSubMenu);
         //帧率
-        MenuItem frameRateSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, "24", new String[] {"24", "30", "60"}, null);
+        VideoFrameRateMenuItem frameRateSubMenu = new VideoFrameRateMenuItem(101, MenuItem.TYPE_SELECT, "24", new String[] {"24", "30", "60"}, null);
         MenuItem frameRateMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.frame_rate), null, frameRateSubMenu);
         //视频格式
-        MenuItem formatSubMenu = new MenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[] {"MOV", "MP4"}, null);
+        VideoFormatMenuItem formatSubMenu = new VideoFormatMenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[] {"MOV", "MP4"}, null);
         MenuItem formatMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.video_format), null, formatSubMenu);
         Menu videoMenu = new Menu();
         videoMenu.items.add(sizeMenu);
@@ -374,16 +389,16 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(panMenuFragment);
         //飞控菜单
         //led开关
-        MenuItem LEDSubMenu = new MenuItem(100, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        LEDMenuItem LEDSubMenu = new LEDMenuItem(100, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
         MenuItem LEDMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.led_switch), null, LEDSubMenu);
         //返航高度
-        MenuItem homeHeightSubMenu = new MenuItem(101, MenuItem.TYPE_TEXT, "300", null, null);
+        GoHomeHeightMenuItem homeHeightSubMenu = new GoHomeHeightMenuItem(101, MenuItem.TYPE_TEXT, "300", null, null);
         MenuItem homeHeightMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.home_height), null, homeHeightSubMenu);
         //最大升距
-        MenuItem maxHeightSubMenu = new MenuItem(102, MenuItem.TYPE_TEXT, "300", null, null);
+        FlightHeightMenuItem maxHeightSubMenu = new FlightHeightMenuItem(102, MenuItem.TYPE_TEXT, "300", null, null);
         MenuItem maxHeightMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.max_flight_height), null, maxHeightSubMenu);
         //最大距离
-        MenuItem maxRadiusSubMenu = new MenuItem(103, MenuItem.TYPE_TEXT, "300", null, null);
+        FlightRadiusMenuItem maxRadiusSubMenu = new FlightRadiusMenuItem(103, MenuItem.TYPE_TEXT, "300", null, null);
         MenuItem maxRadiusMenu = new MenuItem(3, MenuItem.TYPE_TEXT, getString(R.string.max_flight_radius), null, maxRadiusSubMenu);
 
         Menu RCMenu = new Menu();

@@ -141,7 +141,7 @@ public class MenuFragment extends Fragment {
                 break;
         }
         LinearLayout.LayoutParams menuParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(getContext(), 25));
-        if(menu instanceof  SeekBar) {
+        if (menu instanceof SeekBar) {
             menuParams.height = DensityUtil.dip2px(getContext(), 2);
         }
         menuParams.setMargins(0, 0, 0, DensityUtil.dip2px(getContext(), 5));
@@ -152,7 +152,7 @@ public class MenuFragment extends Fragment {
         return menu;
     }
 
-    private void updateSubMenu(View subMenuView) {
+    private void refreshSubMenu(View subMenuView) {
         Object tag = subMenuView.getTag();
         if (tag != null && tag instanceof MenuItem) {
             MenuItem data = (MenuItem) tag;
@@ -216,7 +216,7 @@ public class MenuFragment extends Fragment {
     //响应back键
     public boolean onBackPressed() {
         //尚未初始化
-        if(llSubMenu == null || llSubMenu.getChildCount() == 0) {
+        if (llSubMenu == null || llSubMenu.getChildCount() == 0) {
             return false;
         }
         if (llSubMenu.getChildAt(mCurrentMenuIndex).getVisibility() == View.VISIBLE) {
@@ -230,19 +230,31 @@ public class MenuFragment extends Fragment {
     //响应confirm键
     public void onConfirmPressed() {
         //尚未初始化
-        if(llSubMenu == null || llSubMenu.getChildCount() == 0) {
+        if (llSubMenu == null || llSubMenu.getChildCount() == 0) {
             return;
         }
-        View subView = llSubMenu.getChildAt(mCurrentMenuIndex);
+        final View subMenu = llSubMenu.getChildAt(mCurrentMenuIndex);
         //没展示二级菜单则展示
-        if (subView.getVisibility() == View.GONE) {
-            MenuItem data = (MenuItem)subView.getTag();
+        if (subMenu.getVisibility() == View.GONE) {
+            MenuItem data = (MenuItem) subMenu.getTag();
+            data.setFetchCallback(new MenuItem.FetchCallback() {
+                @Override
+                public void onFetch(MenuItem menuItem) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshSubMenu(subMenu);
+                            subMenu.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            });
             data.fetchCurValue();
-            subView.setVisibility(View.VISIBLE);
+
         }
         //展示了二级菜单则提交当前值
         else {
-            MenuItem data = (MenuItem)subView.getTag();
+            MenuItem data = (MenuItem) subMenu.getTag();
             data.submitCurValue();
         }
     }
@@ -250,7 +262,7 @@ public class MenuFragment extends Fragment {
     //响应+键
     public void onUpPressed() {
         //尚未初始化
-        if(llSubMenu == null || llSubMenu.getChildCount() == 0) {
+        if (llSubMenu == null || llSubMenu.getChildCount() == 0) {
             return;
         }
         View subMenu = llSubMenu.getChildAt(mCurrentMenuIndex);
@@ -268,14 +280,14 @@ public class MenuFragment extends Fragment {
         } else {
             MenuItem menuData = ((MenuItem) subMenu.getTag());
             menuData.up();
-            updateSubMenu(subMenu);
+            refreshSubMenu(subMenu);
         }
     }
 
     //响应-键
     public void onDownPressed() {
         //尚未初始化
-        if(llSubMenu == null || llSubMenu.getChildCount() == 0) {
+        if (llSubMenu == null || llSubMenu.getChildCount() == 0) {
             return;
         }
         View subMenu = llSubMenu.getChildAt(mCurrentMenuIndex);
@@ -293,7 +305,7 @@ public class MenuFragment extends Fragment {
         } else {
             MenuItem menuData = ((MenuItem) subMenu.getTag());
             menuData.down();
-            updateSubMenu(subMenu);
+            refreshSubMenu(subMenu);
         }
     }
 

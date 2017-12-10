@@ -18,6 +18,8 @@ public class MenuItem {
 
     public MenuItem subMenu;
 
+    protected FetchCallback fetchCallback;
+
     public MenuItem(int key, int type, String curValue, String[] values, MenuItem subMenu) {
         this.key = key;
         this.type = type;
@@ -32,7 +34,7 @@ public class MenuItem {
                 try {
                     int progress = Integer.valueOf(curValue);
                     progress--;
-                    if(progress > 0) {
+                    if (progress > 0) {
                         curValue = String.valueOf(progress);
                     }
 
@@ -41,7 +43,7 @@ public class MenuItem {
                 }
                 break;
             case TYPE_SWITCH:
-                if ("true".equals(curValue)) {
+                if ("true".equalsIgnoreCase(curValue)) {
                     curValue = "false";
                 } else {
                     curValue = "true";
@@ -88,7 +90,7 @@ public class MenuItem {
                 }
                 break;
             case TYPE_SWITCH:
-                if ("true".equals(curValue)) {
+                if ("true".equalsIgnoreCase(curValue)) {
                     curValue = "false";
                 } else {
                     curValue = "true";
@@ -130,4 +132,13 @@ public class MenuItem {
     public void fetchCurValue() {
 
     }
+
+    public void setFetchCallback(FetchCallback callback) {
+        this.fetchCallback = callback;
+    }
+
+    public interface FetchCallback {
+        void onFetch(MenuItem menuItem);
+    }
+
 }
