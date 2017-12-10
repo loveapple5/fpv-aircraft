@@ -20,14 +20,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dji.FPVDemo.R;
-import com.dji.FPVDemo.model.MenuData;
-import com.dji.FPVDemo.model.MenuItemData;
+import com.dji.FPVDemo.model.Menu;
+import com.dji.FPVDemo.model.MenuItem;
 import com.dji.FPVDemo.util.DensityUtil;
 import com.dji.FPVDemo.view.SwitchButton;
 
 public class MenuFragment extends Fragment {
 
-    private MenuData menuData = new MenuData();
+    private Menu menuData = new Menu();
 
     private LinearLayout llMenu;
     private LinearLayout llSubMenu;
@@ -38,7 +38,7 @@ public class MenuFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void setMenuData(MenuData menuData) {
+    public void setMenuData(Menu menuData) {
         this.menuData = menuData;
     }
 
@@ -50,7 +50,7 @@ public class MenuFragment extends Fragment {
 
         int size = menuData.items.size();
         for (int i = 0; i < size; i++) {
-            MenuItemData data = menuData.items.get(i);
+            MenuItem data = menuData.items.get(i);
             if (data.subMenu != null) {
                 View menu = createMenuView(data);
                 menu.setOnClickListener(menuClickListener);
@@ -81,11 +81,11 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private View createMenuView(MenuItemData data) {
+    private View createMenuView(MenuItem data) {
         View menu = null;
         int type = data.type;
         switch (type) {
-            case MenuItemData.TYPE_TEXT:
+            case MenuItem.TYPE_TEXT:
                 TextView tvMenu = new TextView(getContext());
                 tvMenu.setGravity(Gravity.CENTER);
                 tvMenu.setText(data.curValue);
@@ -94,7 +94,7 @@ public class MenuFragment extends Fragment {
                 tvMenu.setTextSize(TypedValue.COMPLEX_UNIT_PX, DensityUtil.dip2px(getContext(), 12));
                 menu = tvMenu;
                 break;
-            case MenuItemData.TYPE_SWITCH:
+            case MenuItem.TYPE_SWITCH:
                 SwitchButton sbMenu = new SwitchButton(getContext());
                 sbMenu.setText(data.values[0], data.values[1]);
                 sbMenu.setChecked("true".equalsIgnoreCase(data.curValue));
@@ -111,7 +111,7 @@ public class MenuFragment extends Fragment {
                 sbMenu.setThumbMargin(new RectF(margin, margin, margin, margin));
                 menu = sbMenu;
                 break;
-            case MenuItemData.TYPE_SELECT:
+            case MenuItem.TYPE_SELECT:
                 TextView tvSelectMenu = new TextView(getContext());
                 tvSelectMenu.setGravity(Gravity.CENTER);
 //                ColorStateList selectCsl = getResources().getColorStateList(R.color.menu_tv);
@@ -132,7 +132,7 @@ public class MenuFragment extends Fragment {
                 tvSelectMenu.setTextSize(TypedValue.COMPLEX_UNIT_PX, DensityUtil.dip2px(getContext(), 12));
                 menu = tvSelectMenu;
                 break;
-            case MenuItemData.TYPE_PROGRESS:
+            case MenuItem.TYPE_PROGRESS:
                 SeekBar sbarMenu = new SeekBar(getContext());
                 sbarMenu.setThumb(null);
                 sbarMenu.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar));
@@ -154,17 +154,17 @@ public class MenuFragment extends Fragment {
 
     private void updateSubMenu(View subMenuView) {
         Object tag = subMenuView.getTag();
-        if (tag != null && tag instanceof MenuItemData) {
-            MenuItemData data = (MenuItemData) tag;
+        if (tag != null && tag instanceof MenuItem) {
+            MenuItem data = (MenuItem) tag;
             int type = data.type;
             switch (type) {
-                case MenuItemData.TYPE_TEXT:
+                case MenuItem.TYPE_TEXT:
                     ((TextView) subMenuView).setText(data.curValue);
                     break;
-                case MenuItemData.TYPE_SWITCH:
+                case MenuItem.TYPE_SWITCH:
                     ((SwitchButton) subMenuView).setChecked("true".equalsIgnoreCase(data.curValue));
                     break;
-                case MenuItemData.TYPE_SELECT:
+                case MenuItem.TYPE_SELECT:
                     SpannableStringBuilder sb = new SpannableStringBuilder();
                     for (int i = 0; i < data.values.length; i++) {
                         sb.append(data.values[i]);
@@ -177,7 +177,7 @@ public class MenuFragment extends Fragment {
                     sb.setSpan(span, start, start + data.curValue.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     ((TextView) subMenuView).setText(sb);
                     break;
-                case MenuItemData.TYPE_PROGRESS:
+                case MenuItem.TYPE_PROGRESS:
                     ((SeekBar) subMenuView).setProgress(Integer.parseInt(data.curValue));
                     break;
             }
@@ -191,7 +191,7 @@ public class MenuFragment extends Fragment {
             Object tag = v.getTag();
             //当前菜单就是选中菜单则切换子菜单可见性
             if (v.isSelected()) {
-                MenuItemData menuData = ((MenuItemData) tag);
+                MenuItem menuData = ((MenuItem) tag);
                 View subMenu = llSubMenu.getChildAt(menuData.key);
                 if (subMenu.getVisibility() == View.GONE) {
                     subMenu.setVisibility(View.VISIBLE);
@@ -236,13 +236,13 @@ public class MenuFragment extends Fragment {
         View subView = llSubMenu.getChildAt(mCurrentMenuIndex);
         //没展示二级菜单则展示
         if (subView.getVisibility() == View.GONE) {
-            MenuItemData data = (MenuItemData)subView.getTag();
+            MenuItem data = (MenuItem)subView.getTag();
             data.fetchCurValue();
             subView.setVisibility(View.VISIBLE);
         }
         //展示了二级菜单则提交当前值
         else {
-            MenuItemData data = (MenuItemData)subView.getTag();
+            MenuItem data = (MenuItem)subView.getTag();
             data.submitCurValue();
         }
     }
@@ -266,7 +266,7 @@ public class MenuFragment extends Fragment {
                 }
             }
         } else {
-            MenuItemData menuData = ((MenuItemData) subMenu.getTag());
+            MenuItem menuData = ((MenuItem) subMenu.getTag());
             menuData.up();
             updateSubMenu(subMenu);
         }
@@ -291,7 +291,7 @@ public class MenuFragment extends Fragment {
                 }
             }
         } else {
-            MenuItemData menuData = ((MenuItemData) subMenu.getTag());
+            MenuItem menuData = ((MenuItem) subMenu.getTag());
             menuData.down();
             updateSubMenu(subMenu);
         }
