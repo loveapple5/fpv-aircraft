@@ -10,11 +10,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -24,7 +24,7 @@ import com.dji.FPVDemo.bluetooth.BluetoothLeService;
 import com.dji.FPVDemo.fragment.FPVFragment;
 import com.dji.FPVDemo.fragment.MenuFragment;
 import com.dji.FPVDemo.model.MenuData;
-//import com.dji.FPVDemo.model.MenuItemData;
+import com.dji.FPVDemo.model.MenuItemData;
 
 import java.util.Vector;
 
@@ -43,7 +43,7 @@ public class FPVActivity extends FragmentActivity {
     //    private TPVFragment mTPVFragment;
     private FPVFragment mFPVFragment;
 
-    private Fragment mCurMenuFragment;
+    private MenuFragment mCurMenuFragment;
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -126,14 +126,57 @@ public class FPVActivity extends FragmentActivity {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
                     Log.i(TAG, "EXTRA_DATA:" + data);
-                    if (data.contains("FLAG-TPV")) {
+                    if (data.equals("FLAG-TPV")) {
                         mFPVFragment.setMode(MODE_TPV);
-                    } else if (data.contains("FLAG-FPV")) {
+                    }
+                    else if (data.equals("FLAG-FPV")) {
                         mFPVFragment.setMode(MODE_FPV);
-                    } else if (data.contains("SOC")) {
+                    }
+                    //确认键
+                    else if(data.equals("ET")) {
+                        //切换到菜单模式
+                        if(mFPVFragment.getMode() != MODE_MENU) {
+                            mFPVFragment.setMode(MODE_MENU);
+                        }
+                        //展示菜单
+                        else if(mCurMenuFragment.isHidden()) {
+                            showMenu();
+                        }
+                        //展示子菜单或者进行操作
+                        else {
+                            mCurMenuFragment.onConfirmPressed();
+                        }
+                    }
+                    //返回键
+                    else if(data.equals("RT")) {
+                        hideMenu();
+                    }
+                    //逆时针
+                    else if(data.equals("CC")) {
+                        if(!mCurMenuFragment.isHidden()) {
+                            mCurMenuFragment.onUpPressed();
+                        } else {
+                            mFPVFragment.onUpPressed();
+                        }
+                    }
+                    //顺时针
+                    else if(data.equals("CW")) {
+                        if(!mCurMenuFragment.isHidden()) {
+                            mCurMenuFragment.onDownPressed();
+                        } else {
+                            mFPVFragment.onDownPressed();
+                        }
+                    }
+                    //头盔电量
+                    else if (data.contains("SOC")) {
                         Log.i(TAG, "SOC:" + data);
                         String helmetEnergy = data.substring(3);
-                        int energy = Integer.parseInt(helmetEnergy);
+                        int energy = 0;
+                        try {
+                            energy = Integer.parseInt(helmetEnergy);
+                        }catch(Exception e) {
+
+                        }
                         mFPVFragment.setHelmetEnergy(energy);
                     }
                 }
@@ -223,96 +266,210 @@ public class FPVActivity extends FragmentActivity {
     private void initMenuData() {
         //地图菜单
         //返航
-//        MenuItemData backMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.back), new String[]{getString(R.string.back)}, null);
-//        //显示航线
-//        MenuItemData showPathSubMenu = new MenuItemData(100, MenuItemData.TYPE_SWITCH, getString(R.string.open),
-//                new String[]{getString(R.string.open), getString(R.string.close)}, null);
-//        MenuItemData showPathMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.show_path), null, showPathSubMenu);
-//        MenuData mapMenu = new MenuData();
-//        mapMenu.items.add(backMenu);
-//        mapMenu.items.add(showPathMenu);
-//        MenuFragment mapMenuFragment = new MenuFragment();
-//        mapMenuFragment.setMenuData(mapMenu);
-//        mMenuFragments.add(mapMenuFragment);
-//        //屏幕菜单
-//        //亮度
-//        MenuItemData lightMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, "30", null, null);
-//        MenuData screenMenu = new MenuData();
-//        screenMenu.items.add(lightMenu);
-//        MenuFragment screenMenuFragment = new MenuFragment();
-//        screenMenuFragment.setMenuData(screenMenu);
-//        mMenuFragments.add(screenMenuFragment);
-//        //头盔菜单
-//        //音量
-//        MenuItemData volumeMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, "50", null, null);
-//        MenuData helmetMenu = new MenuData();
-//        helmetMenu.items.add(volumeMenu);
-//        MenuFragment helmetMenuFragment = new MenuFragment();
-//        helmetMenuFragment.setMenuData(helmetMenu);
-//        mMenuFragments.add(helmetMenuFragment);
-//        //拍照菜单
-//        MenuItemData shutterSubMenu = new MenuItemData(100, MenuItemData.TYPE_SELECT, getString(R.string.auto),
-//                new String[]{getString(R.string.auto), getString(R.string.manual)}, null);
-//        MenuItemData shutterMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.shutter_speed), null, shutterSubMenu);
-//
-//        MenuItemData ratioSubMenu = new MenuItemData(101, MenuItemData.TYPE_SELECT, getString(R.string.ratio43),
-//                new String[]{getString(R.string.ratio43), getString(R.string.ratio169)}, null);
-//        MenuItemData ratioMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.camera_mode), null, ratioSubMenu);
-//        MenuData photoMenu = new MenuData();
-//        photoMenu.items.add(shutterMenu);
-//        photoMenu.items.add(ratioMenu);
-//        MenuFragment photoMenuFragment = new MenuFragment();
-//        photoMenuFragment.setMenuData(photoMenu);
-//        mMenuFragments.add(photoMenuFragment);
-//        //录像菜单
-//        //尺寸
-//        MenuItemData sizeMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, "4K", null, null);
-//        MenuData videoMenu = new MenuData();
-//        videoMenu.items.add(sizeMenu);
-//        MenuFragment videoMenuFragment = new MenuFragment();
-//        videoMenuFragment.setMenuData(videoMenu);
-//        mMenuFragments.add(videoMenuFragment);
-//        //云台菜单
-//        //头部跟踪
-//        MenuItemData headMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, "打开", null, null);
-//        MenuData panMenu = new MenuData();
-//        panMenu.items.add(headMenu);
-//        MenuFragment panMenuFragment = new MenuFragment();
-//        panMenuFragment.setMenuData(panMenu);
-//        mMenuFragments.add(panMenuFragment);
-//        //飞控菜单
-//        MenuItemData LEDMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, "关闭", null, null);
-//        MenuData RCMenu = new MenuData();
-//        RCMenu.items.add(LEDMenu);
-//        MenuFragment RCMenuFragment = new MenuFragment();
-//        RCMenuFragment.setMenuData(RCMenu);
-//        mMenuFragments.add(RCMenuFragment);
-//        //设置初始菜单
-//        mCurMenuFragment = mMenuFragments.get(3);
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(R.id.layout_fpv_menu, mCurMenuFragment).hide(mCurMenuFragment).commit();
+        //MenuItemData backMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.back), new String[]{getString(R.string.back)}, null);
+        //显示航线
+        MenuItemData showPathSubMenu = new MenuItemData(100, MenuItemData.TYPE_SWITCH, getString(R.string.open),
+                new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        MenuItemData showPathMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.show_path), null, showPathSubMenu);
+        //清除航线
+        MenuItemData clearPathSubMenu = new MenuItemData(101, MenuItemData.TYPE_SWITCH, getString(R.string.open),
+                new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        MenuItemData clearPathMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.clear_path), null, clearPathSubMenu);
+        MenuData mapMenu = new MenuData();
+        //mapMenu.items.add(backMenu);
+        mapMenu.items.add(showPathMenu);
+        mapMenu.items.add(clearPathMenu);
+        MenuFragment mapMenuFragment = new MenuFragment();
+        mapMenuFragment.setMenuData(mapMenu);
+        mMenuFragments.add(mapMenuFragment);
+        //屏幕菜单
+        //亮度
+        MenuItemData lightSubMenu = new MenuItemData(100, MenuItemData.TYPE_PROGRESS, "30", null, null);
+        MenuItemData lightMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.brightness), null, lightSubMenu);
+        MenuData screenMenu = new MenuData();
+        screenMenu.items.add(lightMenu);
+        MenuFragment screenMenuFragment = new MenuFragment();
+        screenMenuFragment.setMenuData(screenMenu);
+        mMenuFragments.add(screenMenuFragment);
+        //头盔菜单
+        //音量
+        MenuItemData volumeSubMenu = new MenuItemData(100, MenuItemData.TYPE_PROGRESS, "50", null,  null);
+        MenuItemData volumeMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.volume), null, volumeSubMenu);
+        //通风
+        MenuItemData fanSubMenu = new MenuItemData(101, MenuItemData.TYPE_SELECT, getString(R.string.auto),
+                new String[]{getString(R.string.auto), getString(R.string.force_open), getString(R.string.force_close)}, null);
+        MenuItemData fanMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.fan), null, fanSubMenu);
+        //找回
+        MenuItemData findBackSubMenu = new MenuItemData(102, MenuItemData.TYPE_SWITCH, getString(R.string.auto),
+                new String[]{getString(R.string.open), getString(R.string.close) }, null);
+        MenuItemData findBackMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.find_back), null, findBackSubMenu);
+        //风格
+        MenuItemData styleSubMenu = new MenuItemData(103, MenuItemData.TYPE_SELECT, getString(R.string.style_1),
+                new String[]{getString(R.string.style_1), getString(R.string.style_2), getString(R.string.style_3) }, null);
+        MenuItemData styleMenu = new MenuItemData(3, MenuItemData.TYPE_TEXT, getString(R.string.style), null, styleSubMenu);
+        MenuData helmetMenu = new MenuData();
+        helmetMenu.items.add(volumeMenu);
+        helmetMenu.items.add(fanMenu);
+        helmetMenu.items.add(findBackMenu);
+        helmetMenu.items.add(styleMenu);
+        MenuFragment helmetMenuFragment = new MenuFragment();
+        helmetMenuFragment.setMenuData(helmetMenu);
+        mMenuFragments.add(helmetMenuFragment);
+        //拍照菜单
+        //快门
+        MenuItemData shutterSubMenu = new MenuItemData(100, MenuItemData.TYPE_SELECT, getString(R.string.auto),
+                new String[]{getString(R.string.auto), getString(R.string.manual)}, null);
+        MenuItemData shutterMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.shutter_speed), null, shutterSubMenu);
+        //拍照模式
+        MenuItemData photoModeSubMenu = new MenuItemData(101, MenuItemData.TYPE_SELECT, getString(R.string.single_photo),
+                new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo),getString(R.string.internal_photo)}, null);
+        MenuItemData photoMode = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.photo_mode), null, photoModeSubMenu);
+        //照片比例
+        MenuItemData ratioSubMenu = new MenuItemData(102, MenuItemData.TYPE_SELECT, getString(R.string.ratio43),
+                new String[]{getString(R.string.ratio43), getString(R.string.ratio169)}, null);
+        MenuItemData ratioMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.photo_resolve), null, ratioSubMenu);
+        //照片格式
+        MenuItemData photoFormatSubMenu = new MenuItemData(103, MenuItemData.TYPE_SELECT, getString(R.string.jpeg),
+                new String[]{getString(R.string.jpeg), getString(R.string.raw)}, null);
+        MenuItemData photoFormatMenu = new MenuItemData(3, MenuItemData.TYPE_TEXT, getString(R.string.photo_format), null, photoFormatSubMenu);
+        //白平衡
+        MenuItemData whiteBalanceSubMenu = new MenuItemData(104, MenuItemData.TYPE_SELECT, getString(R.string.cloudy),
+                new String[]{getString(R.string.auto), getString(R.string.sunny), getString(R.string.cloudy)}, null);
+        MenuItemData whiteBalanceMenu = new MenuItemData(4, MenuItemData.TYPE_TEXT, getString(R.string.white_balance), null, whiteBalanceSubMenu);
+        MenuData photoMenu = new MenuData();
+        photoMenu.items.add(shutterMenu);
+        photoMenu.items.add(photoMode);
+        photoMenu.items.add(ratioMenu);
+        photoMenu.items.add(photoFormatMenu);
+        photoMenu.items.add(whiteBalanceMenu);
+        MenuFragment photoMenuFragment = new MenuFragment();
+        photoMenuFragment.setMenuData(photoMenu);
+        mMenuFragments.add(photoMenuFragment);
+        //录像菜单
+        //尺寸
+        MenuItemData sizeSubMenu = new MenuItemData(100, MenuItemData.TYPE_SELECT, "4K", new String[] {"4K", "1080P", "720P"}, null);
+        MenuItemData sizeMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.video_resolve), null, sizeSubMenu);
+        //帧率
+        MenuItemData frameRateSubMenu = new MenuItemData(101, MenuItemData.TYPE_SELECT, "24", new String[] {"24", "30", "60"}, null);
+        MenuItemData frameRateMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.frame_rate), null, frameRateSubMenu);
+        //视频格式
+        MenuItemData formatSubMenu = new MenuItemData(102, MenuItemData.TYPE_SELECT, "MOV", new String[] {"MOV", "MP4"}, null);
+        MenuItemData formatMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.video_format), null, formatSubMenu);
+        MenuData videoMenu = new MenuData();
+        videoMenu.items.add(sizeMenu);
+        videoMenu.items.add(frameRateMenu);
+        videoMenu.items.add(formatMenu);
+        MenuFragment videoMenuFragment = new MenuFragment();
+        videoMenuFragment.setMenuData(videoMenu);
+        mMenuFragments.add(videoMenuFragment);
+        //云台菜单
+        //头部跟踪
+        MenuItemData headSubMenu = new MenuItemData(100, MenuItemData.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        MenuItemData headMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.head_follow), null, headSubMenu);
+        //航向跟踪
+        MenuItemData courseSubMenu = new MenuItemData(101, MenuItemData.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        MenuItemData courseMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.course_follow), null, courseSubMenu);
+        MenuData panMenu = new MenuData();
+        panMenu.items.add(headMenu);
+        panMenu.items.add(courseMenu);
+        MenuFragment panMenuFragment = new MenuFragment();
+        panMenuFragment.setMenuData(panMenu);
+        mMenuFragments.add(panMenuFragment);
+        //飞控菜单
+        //led开关
+        MenuItemData LEDSubMenu = new MenuItemData(100, MenuItemData.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+        MenuItemData LEDMenu = new MenuItemData(0, MenuItemData.TYPE_TEXT, getString(R.string.led_switch), null, LEDSubMenu);
+        //返航高度
+        MenuItemData homeHeightSubMenu = new MenuItemData(101, MenuItemData.TYPE_TEXT, "300", null, null);
+        MenuItemData homeHeightMenu = new MenuItemData(1, MenuItemData.TYPE_TEXT, getString(R.string.home_height), null, homeHeightSubMenu);
+        //最大升距
+        MenuItemData maxHeightSubMenu = new MenuItemData(102, MenuItemData.TYPE_TEXT, "300", null, null);
+        MenuItemData maxHeightMenu = new MenuItemData(2, MenuItemData.TYPE_TEXT, getString(R.string.max_flight_height), null, maxHeightSubMenu);
+        //最大距离
+        MenuItemData maxRadiusSubMenu = new MenuItemData(103, MenuItemData.TYPE_TEXT, "300", null, null);
+        MenuItemData maxRadiusMenu = new MenuItemData(3, MenuItemData.TYPE_TEXT, getString(R.string.max_flight_radius), null, maxRadiusSubMenu);
+
+        MenuData RCMenu = new MenuData();
+        RCMenu.items.add(LEDMenu);
+        RCMenu.items.add(homeHeightMenu);
+        RCMenu.items.add(maxHeightMenu);
+        RCMenu.items.add(maxRadiusMenu);
+        MenuFragment RCMenuFragment = new MenuFragment();
+        RCMenuFragment.setMenuData(RCMenu);
+        mMenuFragments.add(RCMenuFragment);
+
+        //设置初始菜单
+        mCurMenuFragment = mMenuFragments.get(3);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.layout_fpv_menu, mCurMenuFragment).hide(mCurMenuFragment).commit();
 
     }
 
     public void switchMenu(int index) {
-//        Fragment targetFragment = mMenuFragments.get(index);
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        if (mCurMenuFragment != targetFragment) {
-//            if (!targetFragment.isAdded()) {
-//                transaction.hide(mCurMenuFragment).add(R.id.layout_fpv_menu, targetFragment).hide(targetFragment).commit();
-//            } else {
-//                transaction.hide(mCurMenuFragment).commit();
-//            }
-//        } else {
-//            transaction.hide(mCurMenuFragment).commit();
-//        }
-//        mCurMenuFragment = targetFragment;
+        MenuFragment targetFragment = mMenuFragments.get(index);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (mCurMenuFragment != targetFragment) {
+            if (!targetFragment.isAdded()) {
+                transaction.hide(mCurMenuFragment).add(R.id.layout_fpv_menu, targetFragment).hide(targetFragment).commit();
+            } else {
+                transaction.hide(mCurMenuFragment).commit();
+            }
+        } else {
+            transaction.hide(mCurMenuFragment).commit();
+        }
+        mCurMenuFragment = targetFragment;
 
     }
 
     public void showMenu() {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.show(mCurMenuFragment).commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.show(mCurMenuFragment).commit();
     }
+
+    public void onBackPressed() {
+        hideMenu();
+        super.onBackPressed();
+    }
+
+    private void hideMenu() {
+        //收起二级菜单
+        boolean result = mCurMenuFragment.onBackPressed();
+        if(result) {
+            return;
+        }
+        //收起一级菜单
+        if(!mCurMenuFragment.isHidden()) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.hide(mCurMenuFragment).commit();
+            return;
+        }
+        //收起滑动菜单
+        if(mFPVFragment.getMode() == MODE_MENU) {
+            mFPVFragment.setMode(mFPVFragment.getLastMode());
+            return;
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if(!mCurMenuFragment.isHidden()) {
+                    mCurMenuFragment.onDownPressed();
+                } else {
+                    mFPVFragment.onDownPressed();
+                }
+                break;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if(!mCurMenuFragment.isHidden()) {
+                    mCurMenuFragment.onUpPressed();
+                } else {
+                    mFPVFragment.onUpPressed();
+                }
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 }
