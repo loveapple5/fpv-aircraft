@@ -144,7 +144,9 @@ public class FPVFragment extends Fragment {
     public static final int MODE_TPV = 1;
     public static final int MODE_FPV = 2;
     public static final int MODE_MENU = 3;
+
     private int mode = MODE_TPV;
+    private int lastMode = MODE_TPV;
 
 //    private static final int SIGNAL_ICON[] = {
 //            R.drawable.signal_icon_0,
@@ -298,6 +300,7 @@ public class FPVFragment extends Fragment {
     });
 
     public void setMode(int mode) {
+        this.lastMode =  this.mode;
         this.mode = mode;
         if(this.mode == MODE_FPV) {
             this.rlCraftSignal.setRotation(8);
@@ -353,6 +356,10 @@ public class FPVFragment extends Fragment {
 
     public int getMode() {
         return this.mode;
+    }
+
+    public int getLastMode() {
+        return this.lastMode;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -947,4 +954,11 @@ public class FPVFragment extends Fragment {
 
     }
 
+    public void onUpPressed() {
+        menuLayout.setAngle(+1);
+    }
+
+    public void onDownPressed() {
+        menuLayout.setAngle(-1);
+    }
 }
