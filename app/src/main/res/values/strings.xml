@@ -34,7 +34,7 @@
     <string name="compass_calibrate_hint">将进行指南针校验，请确保飞机远离电线、铁磁性物体等，防止电磁干扰</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
-    <string name="battery_setting">电池</string>
+    <string name="battery">电池</string>
     <string name="wifi_link">WiFi设置</string>
 
     <string name="home_set">返航点设置</string>
@@ -133,4 +133,19 @@
     <string name="connect_controller">连接飞机遥控器</string>
     <string name="prepare_flight">准备飞行</string>
 
+    <string name="connecting">正在连接</string>
+
+    <string name="left_arrow">&lt;</string>
+    <string name="right_arrow">&gt;</string>
+
+    <string name="compass_calibration">指南针校准流程</string>
+    <string name="fc_param_setting">飞控参数设置</string>
+    <string name="compass_correct">指南针正常</string>
+    <string name="rc_setting">遥控器设置</string>
+    <string name="data_connect_setting">数据连接设置</string>
+    <string name="battery_setting">智能电池设置</string>
+    <string name="gimbal_setting">云台设置</string>
+    <string name="camera_setting">相机设置</string>
+    <string name="ui_setting">UI设置</string>
+    <string name="common_setting">通用设置</string>
 </resources>

@@ -19,5 +19,9 @@
     <color name="darkBlue">#1BC9DE</color>
     <color name="lightBlue2">#0DE5DC</color>
 
+    <color name="lightWhite">#E3E5E6</color>
+    <color name="lightWhite2">#F4F4F4</color>
+
+
 
 </resources>
