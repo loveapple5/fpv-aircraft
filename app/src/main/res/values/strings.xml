@@ -130,4 +130,7 @@
 
     <string name="frame_rate">帧率</string>
 
+    <string name="connect_controller">连接飞机遥控器</string>
+    <string name="prepare_flight">准备飞行</string>
+
 </resources>

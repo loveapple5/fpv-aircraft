@@ -11,7 +11,13 @@
     <color name="progressColorGreen">#66FF33</color>
 
     <color name="blue">#00fff5</color>
-
     <color name="transBlue">#6106fff4</color>
+    <color name="lightBlue">#34E9E2</color>
+    <color name="gray">#767682</color>
+    <color name="lightGray">#88909F</color>
+
+    <color name="darkBlue">#1BC9DE</color>
+    <color name="lightBlue2">#0DE5DC</color>
+
 
 </resources>
