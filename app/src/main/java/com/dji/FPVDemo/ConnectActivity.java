@@ -3,29 +3,47 @@ package com.dji.FPVDemo;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.dji.FPVDemo.view.WaveView;
 
 public class ConnectActivity extends FragmentActivity {
 
-    private WaveView wave;
+    private static final String TAG = ConnectActivity.class.getName();
+
+    private WaveView wcConnect;
+    private ImageView ivLauncher;
+
+    private Handler handler = new Handler();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
         setContentView(R.layout.activity_connect);
-        wave = (WaveView) findViewById(R.id.wv_connect);
-        wave.setInitialRadius(150);
-        wave.setMaxRadiusRate(1);
-        wave.setDuration(5000);
-        wave.setStyle(Paint.Style.FILL);
-        wave.setColor(getResources().getColor(R.color.blue));
-        wave.setInterpolator(new LinearOutSlowInInterpolator());
-        wave.start();
+        ivLauncher = (ImageView) findViewById(R.id.iv_launcher);
+        wcConnect = (WaveView) findViewById(R.id.wv_connect);
+        wcConnect.setInitialRadius(150);
+        wcConnect.setMaxRadiusRate(1);
+        wcConnect.setDuration(5000);
+        wcConnect.setStyle(Paint.Style.FILL);
+        wcConnect.setColor(getResources().getColor(R.color.blue));
+        wcConnect.setInterpolator(new LinearOutSlowInInterpolator());
+        wcConnect.start();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ivLauncher.setVisibility(View.GONE);
+            }
+        }, 3000);
     }
-    
+
+
+
 }
