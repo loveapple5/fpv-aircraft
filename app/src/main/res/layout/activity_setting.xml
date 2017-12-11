@@ -1,59 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/setting_tab"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/btn_fcs"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/flight_controller"/>
-        <Button
-            android:id="@+id/btn_rcs"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/remote_controller"/>
-        <Button
-            android:id="@+id/btn_wls"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/wifi_link"/>
-        <Button
-            android:id="@+id/btn_bs"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/battery_setting"/>
-        <Button
-            android:id="@+id/btn_gimbal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/gimbal"/>
-        <Button
-            android:id="@+id/btn_camera"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/camera"/>
-        <Button
-            android:id="@+id/btn_camera_photo"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/photo"/>
-        <Button
-            android:id="@+id/btn_camera_video"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/video"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@id/setting_tab"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider"
+    android:orientation="vertical"
+    android:showDividers="middle|end">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="9dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/left_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting"
+            android:textColor="@color/gray" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_compass" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/compass_calibration" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_fc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fc_param_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_rc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rc_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@drawable/divider2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_connect_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_battery" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/battery_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_gimbal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gimbal_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_camera" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/camera_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@drawable/divider2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_ui" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ui_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/setting_common" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/common_setting" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
