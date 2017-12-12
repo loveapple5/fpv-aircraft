@@ -148,4 +148,10 @@
     <string name="camera_setting">相机设置</string>
     <string name="ui_setting">UI设置</string>
     <string name="common_setting">通用设置</string>
+
+    <string name="flight_limit">飞行限制</string>
+    <string name="allow_flight_mode">允许切换飞行模式</string>
+    <string name="failure_safety_behavior">失效安全行为</string>
+    <string name="low_power_autopilot">低电量自动返航</string>
+    <string name="open_vision_positioning">启动视觉定位</string>
 </resources>
