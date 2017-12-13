@@ -12,6 +12,7 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
     private View btnFc;
     private View btnWifi;
     private View btnBattery;
+    private View btnUI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,9 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
         btnWifi.setOnClickListener(this);
         btnBattery = findViewById(R.id.ll_battery);
         btnBattery.setOnClickListener(this);
+
+        btnUI = findViewById(R.id.ll_ui);
+        btnUI.setOnClickListener(this);
     }
 
     @Override
@@ -46,6 +50,10 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
             case R.id.ll_battery:
                 Intent batteryIntent = new Intent(this, BatteryActivity.class);
                 startActivity(batteryIntent);
+                break;
+            case R.id.ll_ui:
+                Intent uiIntent = new Intent(this, HelmetActivity.class);
+                startActivity(uiIntent);
                 break;
         }
     }
