@@ -2,12 +2,9 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fpv="http://schemas.android.com/apk/res-auto"
+    style="@style/SettingRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:divider="@drawable/divider"
-    android:orientation="vertical"
-    android:showDividers="middle|end">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,13 +34,10 @@
         android:orientation="vertical">
 
         <LinearLayout
+            style="@style/SettingRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider"
-            android:orientation="vertical"
-            android:paddingBottom="50dp"
-            android:scrollbars="vertical"
-            android:showDividers="middle|end">
+            android:paddingBottom="50dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,15 +60,8 @@
                     android:gravity="end|center_vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bg_setting_value"
-                        android:gravity="center"
-                        android:paddingLeft="9dp"
-                        android:paddingRight="9dp"
-                        android:text="116.1,23.123"
-                        android:textColor="@color/lightGray2" />
+                        style="@style/SettingValue"
+                        android:text="116.1,23.123" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -104,15 +91,8 @@
                         android:gravity="end|center_vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="22dp"
-                            android:layout_marginEnd="20dp"
-                            android:background="@drawable/bg_setting_value"
-                            android:gravity="center"
-                            android:paddingLeft="9dp"
-                            android:paddingRight="9dp"
-                            android:text="500m"
-                            android:textColor="@color/lightGray2" />
+                            style="@style/SettingValue"
+                            android:text="500m" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -224,15 +204,8 @@
                     android:gravity="end|center_vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bg_setting_value"
-                        android:gravity="center"
-                        android:paddingLeft="9dp"
-                        android:paddingRight="9dp"
-                        android:text="悬停"
-                        android:textColor="@color/lightGray2" />
+                        style="@style/SettingValue"
+                        android:text="悬停" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -257,15 +230,8 @@
                     android:gravity="end|center_vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bg_setting_value"
-                        android:gravity="center"
-                        android:paddingLeft="9dp"
-                        android:paddingRight="9dp"
-                        android:text="名称"
-                        android:textColor="@color/lightGray2" />
+                        style="@style/SettingValue"
+                        android:text="名称" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -339,15 +305,8 @@
                     android:gravity="end|center_vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bg_setting_value"
-                        android:gravity="center"
-                        android:paddingLeft="9dp"
-                        android:paddingRight="9dp"
-                        android:text="名称"
-                        android:textColor="@color/lightGray2" />
+                        style="@style/SettingValue"
+                        android:text="名称" />
                 </LinearLayout>
             </LinearLayout>
 

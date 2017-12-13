@@ -17,4 +17,22 @@
 
     </style>
 
+    <style name="SettingRoot">
+        <item name="android:divider">@drawable/divider</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:showDividers">middle|end</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
+    <style name="SettingValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:background">@drawable/bg_setting_value</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">9dp</item>
+        <item name="android:paddingRight">9dp</item>
+        <item name="android:textColor">@color/lightGray2</item>
+    </style>
+
 </resources>
