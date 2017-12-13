@@ -12,11 +12,7 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:src="@drawable/left_arrow" />
+            style="@style/SettingBackBtn" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -125,12 +121,7 @@
                     android:layout_weight="1"
                     android:gravity="end|center_vertical">
 
-                    <ImageView
-                        android:layout_width="8dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/right_arrow" />
+                    <ImageView style="@style/SettingArrow" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -276,7 +267,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="105dp"
+                    android:layout_width="143dp"
                     android:layout_height="52dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginStart="20dp"

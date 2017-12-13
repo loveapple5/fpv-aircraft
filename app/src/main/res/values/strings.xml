@@ -156,4 +156,8 @@
 
     <string name="wifi_name">WIFI名称</string>
     <string name="wifi_password">WIFI密码</string>
+
+    <string name="current_power">当前电量</string>
+    <string name="current_temperature">当前温度</string>
+    <string name="flight_time">飞行时间</string>
 </resources>
