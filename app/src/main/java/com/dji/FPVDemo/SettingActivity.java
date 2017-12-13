@@ -13,6 +13,7 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
     private View btnWifi;
     private View btnBattery;
     private View btnUI;
+    private View btnCommon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +23,21 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
 
         btnBack = findViewById(R.id.iv_back);
         btnBack.setOnClickListener(this);
+
         btnFc = findViewById(R.id.ll_fc);
         btnFc.setOnClickListener(this);
+
         btnWifi = findViewById(R.id.ll_wifi);
         btnWifi.setOnClickListener(this);
+
         btnBattery = findViewById(R.id.ll_battery);
         btnBattery.setOnClickListener(this);
 
         btnUI = findViewById(R.id.ll_ui);
         btnUI.setOnClickListener(this);
+
+        btnCommon = findViewById(R.id.ll_common);
+        btnCommon.setOnClickListener(this);
     }
 
     @Override
@@ -54,6 +61,10 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
             case R.id.ll_ui:
                 Intent uiIntent = new Intent(this, HelmetActivity.class);
                 startActivity(uiIntent);
+                break;
+            case R.id.ll_common:
+                Intent commonIntent = new Intent(this, CommonSettingActivity.class);
+                startActivity(commonIntent);
                 break;
         }
     }

@@ -12,6 +12,10 @@
     <string name="value0">0</string>
     <string name="compass">compass</string>
 
+    <string name="language">语言</string>
+    <string name="formatting_sd_card">格式化SD卡</string>
+    <string name="unit">单位</string>
+    <string name="clear_cache">清除缓存</string>
     <string name="gyro">gyro bar</string>
     <string name="cross">cross</string>
     <string name="status">状态: 注册...</string>
