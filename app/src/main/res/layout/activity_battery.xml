@@ -234,7 +234,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_flight_limit"
+        android:id="@+id/ll_battery_history"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"

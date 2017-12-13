@@ -166,4 +166,9 @@
     <string name="home_power_threshold">返回电量阈值</string>
     <string name="discharge_time">开始自动放电时间</string>
     <string name="battery_history_info">电池历史信息</string>
+
+    <string name="battery_series_no">电池序列号</string>
+    <string name="circus_number">循环次数</string>
+    <string name="battery_life">电池寿命</string>
+    <string name="battery_history_record">电池历史记录信息</string>
 </resources>
