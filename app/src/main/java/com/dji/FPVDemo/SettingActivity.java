@@ -10,6 +10,7 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
 
     private View btnBack;
     private View btnFc;
+    private View btnWifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +22,23 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
         btnBack.setOnClickListener(this);
         btnFc = findViewById(R.id.ll_fc);
         btnFc.setOnClickListener(this);
+        btnWifi = findViewById(R.id.ll_wifi);
+        btnWifi.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.ll_fc:
                 Intent fcIntent = new Intent(this, FCActivity.class);
                 startActivity(fcIntent);
+                break;
+            case R.id.ll_wifi:
+                Intent wifiIntent = new Intent(this, WifiActivity.class);
+                startActivity(wifiIntent);
                 break;
         }
     }

@@ -1,27 +1,23 @@
 package com.dji.FPVDemo;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.WindowManager;
 
-
-public class FCActivity extends FragmentActivity implements View.OnClickListener {
+public class WifiActivity extends FragmentActivity implements View.OnClickListener {
 
     private View btnBack;
-    private View btnFlightLimit;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
-        setContentView(R.layout.activity_fc);
+        setContentView(R.layout.activity_wifi);
 
         btnBack = findViewById(R.id.iv_back);
         btnBack.setOnClickListener(this);
-
-        btnFlightLimit = findViewById(R.id.ll_flight_limit);
-        btnFlightLimit.setOnClickListener(this);
     }
 
     @Override
@@ -29,10 +25,6 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
-                break;
-            case R.id.ll_flight_limit:
-                Intent flIntent = new Intent(this, FLActivity.class);
-                startActivity(flIntent);
                 break;
         }
     }

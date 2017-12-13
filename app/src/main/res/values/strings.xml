@@ -153,4 +153,7 @@
     <string name="failure_safety_behavior">失效安全行为</string>
     <string name="low_power_home">低电量自动返航</string>
     <string name="open_vision_positioning">启动视觉定位</string>
+
+    <string name="wifi_name">WIFI名称</string>
+    <string name="wifi_password">WIFI密码</string>
 </resources>
