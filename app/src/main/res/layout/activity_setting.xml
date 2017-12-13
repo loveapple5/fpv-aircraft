@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -104,7 +104,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -139,7 +139,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -169,7 +169,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -198,7 +198,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -227,7 +227,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 
@@ -261,7 +261,7 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow"  />
+            <ImageView style="@style/SettingArrow" />
         </LinearLayout>
     </LinearLayout>
 

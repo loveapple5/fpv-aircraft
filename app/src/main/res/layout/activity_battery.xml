@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fpv="http://schemas.android.com/apk/res-auto"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,32 +18,35 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/battery_setting"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="30dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:text="@string/current_power"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="@string/current_power" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="0mAH"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp"/>
+                android:textSize="33sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -51,17 +55,19 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:text="@string/current_temperature"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="@string/current_temperature" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="0c"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp"/>
+                android:textSize="33sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -70,17 +76,185 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:text="@string/flight_time"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="@string/flight_time" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="00:00"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp"/>
+                android:textSize="33sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@drawable/divider2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/too_low_power_warning"
+            android:textColor="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <com.dji.FPVDemo.view.SwitchButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/lightGray2"
+                fpv:kswBackRadius="4dp"
+                fpv:kswTextOff="@string/close"
+                fpv:kswTextOn="@string/open"
+                fpv:kswThumbMargin="2dp"
+                fpv:kswThumbRadius="3dp"
+                fpv:kswThumbRangeRatio="2"
+                fpv:kswThumbWidth="40dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/low_power_warning"
+            android:textColor="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <com.dji.FPVDemo.view.SwitchButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/lightGray2"
+                fpv:kswBackRadius="4dp"
+                fpv:kswTextOff="@string/close"
+                fpv:kswTextOn="@string/open"
+                fpv:kswThumbMargin="2dp"
+                fpv:kswThumbRadius="3dp"
+                fpv:kswThumbRangeRatio="2"
+                fpv:kswThumbWidth="40dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/home_power_threshold"
+                android:textColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical">
+
+                <TextView
+                    style="@style/SettingValue"
+                    android:text="名称" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/discharge_time"
+                android:textColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical">
+
+                <TextView
+                    style="@style/SettingValue"
+                    android:text="名称" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_flight_limit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/battery_history_info"
+            android:textColor="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <ImageView style="@style/SettingArrow" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

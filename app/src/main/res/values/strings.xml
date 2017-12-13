@@ -160,4 +160,10 @@
     <string name="current_power">当前电量</string>
     <string name="current_temperature">当前温度</string>
     <string name="flight_time">飞行时间</string>
+
+    <string name="too_low_power_warning">严重低电量报警</string>
+    <string name="low_power_warning">低电量报警</string>
+    <string name="home_power_threshold">返回电量阈值</string>
+    <string name="discharge_time">开始自动放电时间</string>
+    <string name="battery_history_info">电池历史信息</string>
 </resources>
