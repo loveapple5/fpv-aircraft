@@ -13,10 +13,10 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="9dp"
-            android:layout_height="16dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:src="@drawable/left_arrow" />
 
         <TextView
@@ -43,7 +43,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/compass_calibration" />
+            android:text="@string/compass_calibration"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -61,6 +62,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_fc"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -76,7 +78,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fc_param_setting" />
+            android:text="@string/fc_param_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -109,7 +112,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rc_setting" />
+            android:text="@string/rc_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -147,7 +151,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/data_connect_setting" />
+            android:text="@string/data_connect_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -180,7 +185,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/battery_setting" />
+            android:text="@string/battery_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -213,7 +219,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gimbal_setting" />
+            android:text="@string/gimbal_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -246,7 +253,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/camera_setting" />
+            android:text="@string/camera_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -284,7 +292,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ui_setting" />
+            android:text="@string/ui_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -317,7 +326,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/common_setting" />
+            android:text="@string/common_setting"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
