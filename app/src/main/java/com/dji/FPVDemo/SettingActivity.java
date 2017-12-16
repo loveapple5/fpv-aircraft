@@ -15,6 +15,7 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
     private View btnUI;
     private View btnCommon;
     private View btnCamera;
+    private View btnCompass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,9 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
 
         btnCamera = findViewById(R.id.ll_camera);
         btnCamera.setOnClickListener(this);
+
+        btnCompass = findViewById(R.id.ll_compass);
+        btnCompass.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +77,10 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
             case R.id.ll_camera:
                 Intent cameraIntent = new Intent(this, CameraActivity.class);
                 startActivity(cameraIntent);
+                break;
+            case R.id.ll_compass:
+                Intent compassIntent = new Intent(this, CompassActivity.class);
+                startActivity(compassIntent);
                 break;
         }
     }
