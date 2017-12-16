@@ -217,7 +217,7 @@ public class FPVDemoApplication extends Application {
 
     };
 
-    private void notifyStatusChange() {
+    public void notifyStatusChange() {
         mHandler.removeCallbacks(updateRunnable);
         mHandler.postDelayed(updateRunnable, 500);
     }
