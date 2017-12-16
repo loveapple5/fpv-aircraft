@@ -86,7 +86,7 @@
                         android:layout_weight="1"
                         android:gravity="end|center_vertical">
 
-                        <TextView
+                        <EditText
                             style="@style/SettingValue"
                             android:text="500m" />
                     </LinearLayout>

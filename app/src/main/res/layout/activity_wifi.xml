@@ -46,8 +46,10 @@
                 android:layout_weight="1"
                 android:gravity="end|center_vertical">
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_wifi_name"
                     style="@style/SettingValue"
+                    android:imeOptions="actionDone"
                     android:text="名称" />
             </LinearLayout>
         </LinearLayout>
@@ -79,8 +81,10 @@
                 android:layout_weight="1"
                 android:gravity="end|center_vertical">
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_wifi_password"
                     style="@style/SettingValue"
+                    android:imeOptions="actionDone"
                     android:text="名称" />
             </LinearLayout>
         </LinearLayout>

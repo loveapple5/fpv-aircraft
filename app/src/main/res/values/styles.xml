@@ -32,7 +32,9 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingLeft">9dp</item>
         <item name="android:paddingRight">9dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/lightGray2</item>
+        <item name="android:minWidth">46dp</item>
     </style>
 
     <style name="SettingBackBtn">

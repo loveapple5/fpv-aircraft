@@ -136,6 +136,12 @@ public class FPVDemoApplication extends Application {
 //        });
     }
 
+    public void onTerminate() {
+        super.onTerminate();
+        mProduct.destroy();
+        DJISDKManager.getInstance().stopConnectionToProduct();
+
+    }
     /**
      * When starting SDK services, an instance of interface DJISDKManager.DJISDKManagerCallback will be used to listen to
      * the SDK Registration result and the product changing.

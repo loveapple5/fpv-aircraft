@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import dji.common.error.DJIError;
+import dji.common.util.DJICommonCallbacks;
+import dji.sdk.flightcontroller.DJIFlightController;
+import dji.sdk.products.DJIAircraft;
+
 
 public class FCActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -22,6 +27,26 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
 
         btnFlightLimit = findViewById(R.id.ll_flight_limit);
         btnFlightLimit.setOnClickListener(this);
+
+    }
+
+    private void fetchDJIValue() {
+        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+        if (djiAircraft != null) {
+            DJIFlightController flightController = djiAircraft.getFlightController();
+            flightController.getGoHomeAltitude(new DJICommonCallbacks.DJICompletionCallbackWith<Float>() {
+
+                @Override
+                public void onSuccess(Float aFloat) {
+                    String curValue = String.valueOf(aFloat.intValue());
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fpv="http://schemas.android.com/apk/res-auto"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -41,9 +42,19 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <TextView
-                style="@style/SettingValue"
-                android:text="名称" />
+            <com.dji.FPVDemo.view.SwitchButton
+                android:id="@+id/sb_novice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/lightGray2"
+                fpv:kswBackRadius="4dp"
+                fpv:kswTextOff="@string/close"
+                fpv:kswTextOn="@string/open"
+                fpv:kswThumbMargin="2dp"
+                fpv:kswThumbRadius="3dp"
+                fpv:kswThumbRangeRatio="2"
+                fpv:kswThumbWidth="40dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -67,8 +78,11 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <TextView
+            <EditText
+                android:id="@+id/et_max_flight_height"
                 style="@style/SettingValue"
+                android:imeOptions="actionDone"
+                android:inputType="number"
                 android:text="80m" />
         </LinearLayout>
     </LinearLayout>
@@ -98,16 +112,12 @@
                 android:layout_weight="1"
                 android:gravity="end|center_vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/bg_setting_value"
-                    android:gravity="center"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="500m"
-                    android:textColor="@color/lightGray2" />
+                <EditText
+                    android:id="@+id/et_max_flight_radius"
+                    style="@style/SettingValue"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:text="500m" />
             </LinearLayout>
         </LinearLayout>
 

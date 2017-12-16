@@ -108,6 +108,8 @@ public class FPVActivity extends FragmentActivity {
         initMenuData();
     }
 
+
+
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
@@ -223,6 +225,8 @@ public class FPVActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
+        unregisterReceiver(mReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
