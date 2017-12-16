@@ -201,4 +201,6 @@
     <string name="compass_calibrate_vertical_hint">进入指南针校准模式\r\n请竖直旋转飞行器360°</string>
 
     <string name="no_wifi_hint">该型号飞机没有wifi</string>
+
+    <string name="day">天</string>
 </resources>

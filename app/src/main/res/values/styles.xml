@@ -35,6 +35,8 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/lightGray2</item>
         <item name="android:minWidth">46dp</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">number</item>
     </style>
 
     <style name="SettingBackBtn">
