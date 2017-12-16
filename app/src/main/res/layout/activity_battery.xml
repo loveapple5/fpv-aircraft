@@ -42,11 +42,12 @@
                 android:text="@string/current_power" />
 
             <TextView
+                android:id="@+id/tv_battery_energy"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="0mAH"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,11 +64,12 @@
                 android:text="@string/current_temperature" />
 
             <TextView
+                android:id="@+id/tv_battery_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="0c"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,11 +86,12 @@
                 android:text="@string/flight_time" />
 
             <TextView
+                android:id="@+id/tv_flight_time"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:text="00:00"
                 android:textColor="@color/lightBlue3"
-                android:textSize="33sp" />
+                android:textSize="23sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -226,7 +229,8 @@
                 android:layout_weight="1"
                 android:gravity="end|center_vertical">
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_discharge_time"
                     style="@style/SettingValue"
                     android:text="名称" />
             </LinearLayout>
