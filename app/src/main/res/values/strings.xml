@@ -179,4 +179,9 @@
     <string name="helmet_setting">飞行头盔设置</string>
     <string name="ui_style">显示风格</string>
     <string name="find_back_function">找回功能</string>
+
+    <string name="color">色彩</string>
+    <string name="video2">录像</string>
+
+    <string name="video_select">制式选择</string>
 </resources>
