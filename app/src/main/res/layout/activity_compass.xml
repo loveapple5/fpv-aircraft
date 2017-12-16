@@ -38,8 +38,9 @@
         android:layout_marginEnd="62dp"
         android:layout_marginStart="62dp"
         android:gravity="center"
-        android:textColor="@color/darkGray"
-        android:text="@string/compass_correct" />
+        android:singleLine="false"
+        android:text="@string/compass_correct"
+        android:textColor="@color/darkGray" />
 
     <Button
         android:id="@+id/btn_compass_calibrate"
@@ -49,7 +50,7 @@
         android:layout_marginStart="30dp"
         android:background="@drawable/bg_btn"
         android:gravity="center"
-        android:text="@string/start"
+        android:text="@string/start_calibrate"
         android:textColor="@color/text_btn" />
 
 </LinearLayout>

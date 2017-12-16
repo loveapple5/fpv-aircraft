@@ -145,6 +145,7 @@
     <string name="compass_calibration">指南针校准流程</string>
     <string name="fc_param_setting">飞控参数设置</string>
     <string name="compass_correct">指南针正常</string>
+    <string name="compass_incorrect">指南针异常</string>
     <string name="rc_setting">遥控器设置</string>
     <string name="data_connect_setting">数据连接设置</string>
     <string name="battery_setting">智能电池设置</string>
@@ -185,7 +186,17 @@
 
     <string name="video_select">制式选择</string>
     <string name="compass_calibrate">指南针校准</string>
+    <string name="start_calibrate">开始校准</string>
+    <string name="cancel_calibrate">取消校准</string>
 
     <string name="start">开始</string>
     <string name="finish">完成</string>
+
+    <string name="open_helmet_power">请打开头盔电源</string>
+    <string name="searching_bluetooth">正在搜索蓝牙设备</string>
+
+    <string name="manual_search">手动搜索</string>
+
+    <string name="compass_calibrate_horizontal_hint">进入指南针校准模式\r\n请水平旋转飞行器360°</string>
+    <string name="compass_calibrate_vertical_hint">进入指南针校准模式\r\n请竖直旋转飞行器360°</string>
 </resources>
