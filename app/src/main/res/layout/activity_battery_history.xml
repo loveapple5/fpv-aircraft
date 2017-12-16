@@ -47,6 +47,7 @@
                 android:gravity="end|center_vertical">
 
                 <TextView
+                    android:id="@+id/tv_battery_no"
                     style="@style/SettingValue"
                     android:text="名称" />
             </LinearLayout>
@@ -80,6 +81,7 @@
                 android:gravity="end|center_vertical">
 
                 <TextView
+                    android:id="@+id/tv_circle_no"
                     style="@style/SettingValue"
                     android:text="名称" />
             </LinearLayout>
@@ -113,6 +115,7 @@
                 android:gravity="end|center_vertical">
 
                 <TextView
+                    android:id="@+id/tv_battery_life_time"
                     style="@style/SettingValue"
                     android:text="名称" />
             </LinearLayout>
