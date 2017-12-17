@@ -218,4 +218,10 @@
     <string name="frame_rate_30">30</string>
     <string name="frame_rate_60">60</string>
 
+    <string name="refresh">刷新</string>
+    <string name="home_location_updated">返航点更新成功</string>
+
+    <string name="hover">悬停</string>
+    <string name="landing">降落</string>
+    <string name="go_home">返航</string>
 </resources>

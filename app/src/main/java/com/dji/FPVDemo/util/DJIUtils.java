@@ -5,6 +5,7 @@ import com.dji.FPVDemo.R;
 import java.util.HashMap;
 
 import dji.common.camera.DJICameraSettingsDef;
+import dji.common.flightcontroller.DJIFlightFailsafeOperation;
 
 public class DJIUtils {
 
@@ -21,6 +22,8 @@ public class DJIUtils {
     public static HashMap videoFormatMap = new HashMap();
 
     public static HashMap videoStandardMap = new HashMap();
+
+    public static HashMap failSafeOperationMap = new HashMap();
 
     static {
         photoResolutionMap.put(DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_4_3, R.string.ratio43);
@@ -46,6 +49,10 @@ public class DJIUtils {
 
         videoStandardMap.put(DJICameraSettingsDef.CameraVideoStandard.PAL, R.string.pal);
         videoStandardMap.put(DJICameraSettingsDef.CameraVideoStandard.NTSC, R.string.ntsc);
+
+        failSafeOperationMap.put(DJIFlightFailsafeOperation.Hover, R.string.hover);
+        failSafeOperationMap.put(DJIFlightFailsafeOperation.Landing, R.string.landing);
+        failSafeOperationMap.put(DJIFlightFailsafeOperation.GoHome, R.string.go_home);
     }
 
     public static int getMapValue(HashMap map, Object key) {
