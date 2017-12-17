@@ -60,6 +60,8 @@
 
     <string name="gimbal_tune">云台滚转轴微调</string>
 
+    <string name="gimbal_wheel_speed">云台拨轮控制速度</string>
+
     <string name="camera">相机</string>
 
     <string name="camera_mode">相机模式</string>
@@ -228,4 +230,9 @@
     <string name="number_between_a_and_b">数值范围%1$s-%2$s</string>
 
     <string name="no_vision_position_hint">此机型不支持视觉定位</string>
+
+    <string name="rc_mode">摇杆模式</string>
+    <string name="cn_mode">中国手</string>
+    <string name="us_mode">美国手</string>
+    <string name="jp_mode">日本手</string>
 </resources>

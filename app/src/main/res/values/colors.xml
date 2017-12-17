@@ -12,6 +12,7 @@
 
     <color name="blue">#00fff5</color>
     <color name="transBlue">#6106fff4</color>
+    <color name="transBlue2">#800CD7DA</color>
     <color name="lightBlue">#34E9E2</color>
     <color name="gray">#767682</color>
     <color name="lightGray">#88909F</color>
@@ -29,6 +30,7 @@
     <color name="lightGray3">#F5F5F5</color>
 
     <color name="darkGray">#767682</color>
+    <color name="darkWhite">#DDDDDD</color>
 
     <color name="lightBlack">#333333</color>
 
