@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import dji.common.camera.DJICameraSettingsDef;
 import dji.common.flightcontroller.DJIFlightFailsafeOperation;
+import dji.common.remotecontroller.DJIRCControlStyle;
 
 public class DJIUtils {
 
@@ -24,6 +25,10 @@ public class DJIUtils {
     public static HashMap videoStandardMap = new HashMap();
 
     public static HashMap failSafeOperationMap = new HashMap();
+
+    public static HashMap rcStyleMap1 = new HashMap();
+    public static HashMap rcStyleMap2 = new HashMap();
+    public static HashMap rcStyleMap3 = new HashMap();
 
     static {
         photoResolutionMap.put(DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_4_3, R.string.ratio43);
@@ -53,6 +58,19 @@ public class DJIUtils {
         failSafeOperationMap.put(DJIFlightFailsafeOperation.Hover, R.string.hover);
         failSafeOperationMap.put(DJIFlightFailsafeOperation.Landing, R.string.landing);
         failSafeOperationMap.put(DJIFlightFailsafeOperation.GoHome, R.string.go_home);
+
+        rcStyleMap1.put(DJIRCControlStyle.Chinese, R.string.cn_mode);
+        rcStyleMap1.put(DJIRCControlStyle.American, R.string.us_mode);
+        rcStyleMap1.put(DJIRCControlStyle.Japanese, R.string.jp_mode);
+
+        rcStyleMap2.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_1);
+        rcStyleMap2.put(DJIRCControlStyle.American, R.drawable.us_mode_1);
+        rcStyleMap2.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_1);
+
+        rcStyleMap3.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_2);
+        rcStyleMap3.put(DJIRCControlStyle.American, R.drawable.us_mode_2);
+        rcStyleMap3.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_2);
+
     }
 
     public static int getMapValue(HashMap map, Object key) {
