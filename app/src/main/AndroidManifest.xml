@@ -84,7 +84,12 @@
 
         <activity
             android:name=".CompassActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
 
         <activity
             android:name=".PrepareActivity"
@@ -118,7 +123,12 @@
         <activity
             android:name=".RCActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
 
         <activity
             android:name=".WifiActivity"
@@ -150,8 +160,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
