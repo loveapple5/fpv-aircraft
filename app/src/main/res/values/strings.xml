@@ -224,4 +224,8 @@
     <string name="hover">悬停</string>
     <string name="landing">降落</string>
     <string name="go_home">返航</string>
+
+    <string name="number_between_a_and_b">数值范围%1$s-%2$s</string>
+
+    <string name="no_vision_position_hint">此机型不支持视觉定位</string>
 </resources>
