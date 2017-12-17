@@ -47,7 +47,7 @@
                 android:layout_height="46dp"
                 android:text="0mAH"
                 android:textColor="@color/lightBlue3"
-                android:textSize="23sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +69,7 @@
                 android:layout_height="46dp"
                 android:text="0c"
                 android:textColor="@color/lightBlue3"
-                android:textSize="23sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +91,7 @@
                 android:layout_height="46dp"
                 android:text="00:00"
                 android:textColor="@color/lightBlue3"
-                android:textSize="23sp" />
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
