@@ -22,6 +22,11 @@
             android:textColor="@color/gray" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider"></View>
+
     <ImageView
         android:id="@+id/iv_aircraft_compass"
         android:layout_width="272dp"
