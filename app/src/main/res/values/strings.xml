@@ -203,4 +203,19 @@
     <string name="no_wifi_hint">该型号飞机没有wifi</string>
 
     <string name="day">天</string>
+
+    <string name="pal">PAL</string>
+    <string name="ntsc">NTSC</string>
+
+    <string name="mov">MOV</string>
+    <string name="mp4">MP4</string>
+
+    <string name="resolution_4k">4K</string>
+    <string name="resolution_1080p">1080P</string>
+    <string name="resolution_720p">720P</string>
+
+    <string name="frame_rate_24">24</string>
+    <string name="frame_rate_30">30</string>
+    <string name="frame_rate_60">60</string>
+
 </resources>

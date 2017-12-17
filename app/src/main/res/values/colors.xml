@@ -30,4 +30,6 @@
 
     <color name="darkGray">#767682</color>
 
+    <color name="lightBlack">#333333</color>
+
 </resources>
