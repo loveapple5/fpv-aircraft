@@ -176,9 +176,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
         @Override
         public void onFailure(DJIError djiError) {
-            Message msg = Message.obtain();
-            msg.what = MSG_WHITE_BALANCE;
-            handler.sendMessage(msg);
+
         }
     }
 
@@ -200,9 +198,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
         @Override
         public void onFailure(DJIError djiError) {
-            Message msg = Message.obtain();
-            msg.what = MSG_VIDEO_RESOLVE_FRAME_RATE;
-            handler.sendMessage(msg);
+
         }
     }
 
@@ -238,9 +234,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
         @Override
         public void onFailure(DJIError djiError) {
-            Message msg = Message.obtain();
-            msg.what = MSG_VIDEO_STANDARD;
-            handler.sendMessage(msg);
+
         }
     }
 
