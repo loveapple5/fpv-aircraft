@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dji.FPVDemo.dji.MessageType;
 import com.dji.FPVDemo.util.DJIUtils;
 import com.dji.FPVDemo.view.ActionSheetDialog;
 import com.dji.FPVDemo.view.SwitchButton;
@@ -25,7 +27,7 @@ import dji.sdk.flightcontroller.DJIIntelligentFlightAssistant;
 import dji.sdk.products.DJIAircraft;
 
 
-public class FCActivity extends FragmentActivity implements View.OnClickListener {
+public class FCActivity extends DJIActivity implements View.OnClickListener {
 
     protected static final int MSG_FLIGHT_CONTROLLER_STATUS = 1;
 
@@ -61,6 +63,30 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
             }
         }
     };
+
+    private Handler dJIHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what == MessageType.MSG_GET_GO_HOME_ALTITUDE_RESPONSE) {
+                Bundle data = msg.getData();
+                goHomeAltitude = data.getFloat("goHomeAltitude", goHomeAltitude);
+                String strAltitude = String.valueOf((int) (goHomeAltitude));
+                etGoHomeAltitude.setText(strAltitude);
+            } else if (msg.what == MessageType.MSG_SET_GO_HOME_ALTITUDE_RESPONSE) {
+                Bundle data = msg.getData();
+                String strDesc = data.getString("DJI_DESC", "");
+                if (!strDesc.isEmpty()) {
+                    Toast.makeText(FCActivity.this, strDesc, Toast.LENGTH_SHORT).show();
+                } else {
+                    goHomeAltitude = data.getFloat("goHomeAltitude", goHomeAltitude);
+                    String strAltitude = String.valueOf((int) (goHomeAltitude));
+                    etGoHomeAltitude.setText(strAltitude);
+                }
+
+            }
+        }
+    };
+
+    private Messenger messenger = new Messenger(dJIHandler);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +137,9 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
                 }
             }
         });
+
+        registerDJIMessenger(MessageType.MSG_GET_GO_HOME_ALTITUDE_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_SET_GO_HOME_ALTITUDE_RESPONSE, messenger);
 
         fetchDJIValue();
     }
@@ -191,6 +220,12 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
                 });
             }
         }
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterDJIMessenger(MessageType.MSG_GET_GO_HOME_ALTITUDE_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_SET_GO_HOME_ALTITUDE_RESPONSE, messenger);
     }
 
     @Override

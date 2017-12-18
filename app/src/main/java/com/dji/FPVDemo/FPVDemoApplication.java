@@ -38,7 +38,6 @@ public class FPVDemoApplication extends Application {
 
     public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
 
-
     private static DJIBaseProduct mProduct;
 
     private Handler mHandler;
@@ -93,6 +92,7 @@ public class FPVDemoApplication extends Application {
         mHandler = new Handler(Looper.getMainLooper());
         //This is used to start SDK services and initiate SDK.
         DJISDKManager.getInstance().initSDKManager(this, mDJISDKManagerCallback);
+        DJISDKManager.getInstance().registerApp();
 //        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 //            @Override
 //            public void uncaughtException(Thread thread, Throwable ex) {

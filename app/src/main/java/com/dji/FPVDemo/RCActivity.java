@@ -84,7 +84,7 @@ public class RCActivity extends FragmentActivity implements View.OnClickListener
 
                 @Override
                 public void onFailure(DJIError djiError) {
-
+                    handler.sendEmptyMessage(MSG_REMOTE_CONTROLLER_STATUS);
                 }
             });
             remoteController.getRCControlMode(new DJICommonCallbacks.DJICompletionCallbackWith<DJIRCControlMode>() {
@@ -99,7 +99,7 @@ public class RCActivity extends FragmentActivity implements View.OnClickListener
 
                 @Override
                 public void onFailure(DJIError djiError) {
-
+                    handler.sendEmptyMessage(MSG_REMOTE_CONTROLLER_STATUS);
                 }
             });
 

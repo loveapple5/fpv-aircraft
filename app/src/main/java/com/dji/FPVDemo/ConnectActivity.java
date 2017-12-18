@@ -8,7 +8,8 @@ import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.Log;
 import android.view.View;
@@ -16,23 +17,57 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dji.FPVDemo.dji.MessageType;
 import com.dji.FPVDemo.view.WaveView;
 
-import dji.sdk.base.DJIBaseProduct;
-import dji.sdk.products.DJIAircraft;
-
-public class ConnectActivity extends FragmentActivity implements View.OnClickListener {
+public class ConnectActivity extends DJIActivity implements View.OnClickListener {
 
     private static final String TAG = ConnectActivity.class.getName();
 
     private WaveView wcConnect;
     private ImageView ivLauncher;
     private View btnSetting;
-    private View btnPrepareFilght;
+    private View btnPrepareFlight;
     private TextView tvModel;
 
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            int what = msg.what;
+            //识别出当前产品
+            if (what == MessageType.MSG_PRODUCT_CHANGED) {
+                Bundle bundle = msg.getData();
+                boolean hasProduct = bundle.getBoolean("hasProduct", false);
+                String productName = bundle.getString("productName", "");
+                if (!hasProduct) {
+                    btnSetting.setEnabled(false);
+                    btnPrepareFlight.setEnabled(false);
+                    tvModel.setText(R.string.connecting);
+                } else {
+                    btnSetting.setEnabled(true);
+                    btnPrepareFlight.setEnabled(true);
+                    tvModel.setText(productName);
+                }
+            }
+            //产品连接状态改变
+            else if (what == MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED) {
+                Bundle bundle = msg.getData();
+                String productName = bundle.getString("productName", "");
+                boolean isConnected = bundle.getBoolean("isConnected");
+                if (!isConnected) {
+                    btnSetting.setEnabled(false);
+                    btnPrepareFlight.setEnabled(false);
+                    tvModel.setText(R.string.connecting);
+                } else {
+                    btnSetting.setEnabled(true);
+                    btnPrepareFlight.setEnabled(true);
+                    tvModel.setText(productName);
+                }
+            }
 
-    private Handler handler = new Handler();
+        }
+    };
+
+    private Messenger messenger = new Messenger(handler);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +88,8 @@ public class ConnectActivity extends FragmentActivity implements View.OnClickLis
         btnSetting = findViewById(R.id.tv_setting);
         btnSetting.setOnClickListener(this);
 
-        btnPrepareFilght = findViewById(R.id.tv_prepare_flight);
-        btnPrepareFilght.setOnClickListener(this);
+        btnPrepareFlight = findViewById(R.id.tv_prepare_flight);
+        btnPrepareFlight.setOnClickListener(this);
 
         tvModel = (TextView) findViewById(R.id.tv_craft_model);
 
@@ -62,29 +97,29 @@ public class ConnectActivity extends FragmentActivity implements View.OnClickLis
 
         // Register the broadcast receiver for receiving the device connection's changes.
         IntentFilter filter = new IntentFilter();
-        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
+        filter.addAction(FPVApplication.DJI_SERVICE_CONNECTED);
         registerReceiver(mReceiver, filter);
-        ((FPVDemoApplication) getApplication()).notifyStatusChange();
+        //((FPVDemoApplication) getApplication()).notifyStatusChange();
+
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        //unregisterReceiver(mReceiver);
+        unregisterDJIMessenger(MessageType.MSG_PRODUCT_CHANGED, messenger);
+        unregisterDJIMessenger(MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED, messenger);
     }
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            DJIBaseProduct mProduct = FPVDemoApplication.getProductInstance();
+            registerDJIMessenger(MessageType.MSG_PRODUCT_CHANGED, messenger);
+            registerDJIMessenger(MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED, messenger);
 
-            if (null != mProduct && mProduct.isConnected()) {
-                btnSetting.setEnabled(true);
-                btnPrepareFilght.setEnabled(true);
-
-                if (null != mProduct.getModel()) {
-                    tvModel.setText(mProduct.getModel().getDisplayName());
-                }
-
-            } else {
-                btnSetting.setEnabled(false);
-                btnPrepareFilght.setEnabled(false);
-            }
+            Message message = Message.obtain();
+            message.what = MessageType.MSG_REGISTER_SDK;
+            sendDJIMessage(message);
         }
     };
 
@@ -103,7 +138,8 @@ public class ConnectActivity extends FragmentActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.tv_prepare_flight:
-
+                Intent prepareIntent = new Intent(this, BluetoothActivity.class);
+                startActivity(prepareIntent);
                 break;
         }
     }

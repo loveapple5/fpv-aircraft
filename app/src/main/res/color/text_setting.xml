@@ -2,6 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--<item android:color="@color/colorWhite" android:state_focused="true"/>-->
     <!--<item android:color="@color/colorWhite" android:state_selected="true"/>-->
-    <item android:color="@color/lightBlue" android:state_pressed="true"/>
+    <item android:color="@color/darkWhite2" android:state_enabled="false"/>
+    <item android:color="@color/darkBlue2" android:state_pressed="true"/>
     <item android:color="@color/lightBlue" />
 </selector>

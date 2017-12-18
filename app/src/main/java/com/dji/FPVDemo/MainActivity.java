@@ -8,7 +8,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,30 +26,17 @@ import android.widget.Toast;
 import com.dji.FPVDemo.opengl.MyGLSurfaceView;
 
 
-import java.util.ArrayList;
-
-import dji.common.airlink.DJISignalInformation;
-import dji.common.camera.DJICameraSettingsDef;
 import dji.common.error.DJIError;
 import dji.common.product.Model;
-import dji.common.remotecontroller.DJIRCBatteryInfo;
 import dji.common.remotecontroller.DJIRCHardwareState;
 import dji.common.util.DJICommonCallbacks;
-import dji.common.util.DJIParamCapability;
-import dji.common.util.DJIParamMinMaxCapability;
-import dji.midware.data.model.P3.DataFlycUploadWayPointMissionMsg;
-import dji.sdk.airlink.DJIAirLink;
-import dji.sdk.airlink.DJIAuxLink;
-import dji.sdk.battery.DJIBattery;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.camera.DJICamera.CameraReceivedVideoDataCallback;
-import dji.sdk.camera.DJIMediaManager;
 import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.base.DJIBaseProduct;
-import dji.sdk.missionmanager.DJIMissionManager;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
 
@@ -159,7 +145,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingOldActivity.class);
                 startActivity(intent);
             }
         });
@@ -502,7 +488,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
                     Double  AircraftPitch = bundle.getDouble("AircraftPitch");
                     Double  AircraftRoll = bundle.getDouble("AircraftRoll");
                     Double  AircraftYaw = bundle.getDouble("AircraftYaw");
-                    Double Heading = bundle.getDouble("Head"); // aircraft compass heading
+                    Double Heading = bundle.getDouble("Head"); // aircraft setting_compass heading
                     Boolean CompassError = bundle.getBoolean("CompassError");
                     Double GPSCount = bundle.getDouble("GPSCount");
                     Integer GPSLevel = bundle.getInt("GPSLevel");

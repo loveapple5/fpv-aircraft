@@ -60,6 +60,7 @@
                 android:layout_marginStart="30dp"
                 android:background="@drawable/bg_setting"
                 android:gravity="center"
+                android:enabled="false"
                 android:text="@string/setting"
                 android:textColor="@color/text_setting" />
 
@@ -73,6 +74,7 @@
                 android:background="@drawable/bg_btn"
                 android:gravity="center"
                 android:text="@string/prepare_flight"
+                android:enabled="false"
                 android:textColor="@color/text_btn" />
         </LinearLayout>
     </LinearLayout>
