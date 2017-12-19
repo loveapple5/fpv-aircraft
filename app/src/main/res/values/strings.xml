@@ -235,4 +235,7 @@
     <string name="cn_mode">中国手</string>
     <string name="us_mode">美国手</string>
     <string name="jp_mode">日本手</string>
+
+    <string name="gimbal_pitch_smooth">云台俯仰平滑</string>
+
 </resources>
