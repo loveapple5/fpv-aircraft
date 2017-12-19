@@ -78,9 +78,9 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         }
 
         // Register the broadcast receiver for receiving the device connection's changes.
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
-        registerReceiver(mReceiver, filter);
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
+//        registerReceiver(mReceiver, filter);
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback =

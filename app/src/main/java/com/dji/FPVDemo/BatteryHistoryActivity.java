@@ -14,6 +14,7 @@ import dji.common.error.DJIError;
 import dji.common.util.DJICommonCallbacks;
 import dji.sdk.battery.DJIBattery;
 import dji.sdk.products.DJIAircraft;
+import dji.sdk.sdkmanager.DJISDKManager;
 
 public class BatteryHistoryActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -60,7 +61,7 @@ public class BatteryHistoryActivity extends FragmentActivity implements View.OnC
         tvBatteryDischargeNum = (TextView) findViewById(R.id.tv_circle_no);
         tvBatteryLiftTime = (TextView) findViewById(R.id.tv_battery_life_time);
 
-        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+        DJIAircraft djiAircraft = (DJIAircraft) DJISDKManager.getInstance().getDJIProduct();
         if (djiAircraft != null) {
             djiBattery = djiAircraft.getBattery();
             djiBattery.getSerialNumber(batterySeriesNoCallback);

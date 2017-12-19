@@ -618,12 +618,12 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
     }
 
     private void uninitPreviewer() {
-        DJICamera camera = FPVDemoApplication.getCameraInstance();
-        if (camera != null){
-            // Reset the callback
-            FPVDemoApplication.getCameraInstance().setDJICameraReceivedVideoDataCallback(null);
-            FPVDemoApplication.getAircraftInstance().getFlightController().setUpdateSystemStateCallback(null);
-        }
+//        DJICamera camera = FPVDemoApplication.getCameraInstance();
+//        if (camera != null){
+//            // Reset the callback
+//            FPVDemoApplication.getCameraInstance().setDJICameraReceivedVideoDataCallback(null);
+//            FPVDemoApplication.getAircraftInstance().getFlightController().setUpdateSystemStateCallback(null);
+//        }
     }
 
 

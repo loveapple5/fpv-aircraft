@@ -13,16 +13,6 @@ import dji.sdk.products.DJIAircraft;
 
 public class SettingActivity extends FragmentActivity implements View.OnClickListener {
 
-    private View btnBack;
-    private View btnFc;
-    private View btnWifi;
-    private View btnBattery;
-    private View btnUI;
-    private View btnCommon;
-    private View btnCamera;
-    private View btnCompass;
-    private View btnRc;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,33 +20,16 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
 
         setContentView(R.layout.activity_setting);
 
-        btnBack = findViewById(R.id.iv_back);
-        btnBack.setOnClickListener(this);
-
-        btnFc = findViewById(R.id.ll_fc);
-        btnFc.setOnClickListener(this);
-
-        btnWifi = findViewById(R.id.ll_wifi);
-        btnWifi.setOnClickListener(this);
-
-        btnBattery = findViewById(R.id.ll_battery);
-        btnBattery.setOnClickListener(this);
-
-        btnUI = findViewById(R.id.ll_ui);
-        btnUI.setOnClickListener(this);
-
-        btnCommon = findViewById(R.id.ll_common);
-        btnCommon.setOnClickListener(this);
-
-        btnCamera = findViewById(R.id.ll_camera);
-        btnCamera.setOnClickListener(this);
-
-        btnCompass = findViewById(R.id.ll_compass);
-        btnCompass.setOnClickListener(this);
-
-        btnRc = findViewById(R.id.ll_rc);
-        btnRc.setOnClickListener(this);
-
+        findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.ll_fc).setOnClickListener(this);
+        findViewById(R.id.ll_wifi).setOnClickListener(this);
+        findViewById(R.id.ll_battery).setOnClickListener(this);
+        findViewById(R.id.ll_ui).setOnClickListener(this);
+        findViewById(R.id.ll_common).setOnClickListener(this);
+        findViewById(R.id.ll_camera).setOnClickListener(this);
+        findViewById(R.id.ll_compass).setOnClickListener(this);
+        findViewById(R.id.ll_rc).setOnClickListener(this);
+        findViewById(R.id.ll_gimbal).setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +77,10 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
             case R.id.ll_rc:
                 Intent rcIntent = new Intent(this, RCActivity.class);
                 startActivity(rcIntent);
+                break;
+            case R.id.ll_gimbal:
+                Intent gimbalIntent = new Intent(this, GimbalActivity.class);
+                startActivity(gimbalIntent);
                 break;
         }
     }
