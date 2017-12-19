@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fpv="http://schemas.android.com/apk/res-auto"
+    style="@style/SettingRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            style="@style/SettingBackBtn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/gimbal_setting"
+            android:textColor="@color/gray" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/gimbal_pitch_range"
+                android:textColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical">
+
+                <com.dji.FPVDemo.view.SwitchButton
+                    android:id="@+id/sb_gimbal_pitch_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/lightGray2"
+                    fpv:kswBackRadius="4dp"
+                    fpv:kswTextOff="@string/close"
+                    fpv:kswTextOn="@string/open"
+                    fpv:kswThumbMargin="2dp"
+                    fpv:kswThumbRadius="3dp"
+                    fpv:kswThumbRangeRatio="2"
+                    fpv:kswThumbWidth="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_rc_mode_1"
+                android:layout_width="115dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/cn_mode_1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/gimbal_pitch_smooth"
+                android:textColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_gimbal_pitch_smooth"
+                    style="@style/SettingValue"
+                    android:text="15" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sb_gimbal_pitch_smooth"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:max="30"
+            android:maxHeight="6dp"
+            android:progress="15"
+            android:progressDrawable="@drawable/bg_seekbar"
+            android:thumb="@drawable/thumb_seekbar"
+            android:thumbOffset="0dp" />
+    </LinearLayout>
+
+</LinearLayout>
