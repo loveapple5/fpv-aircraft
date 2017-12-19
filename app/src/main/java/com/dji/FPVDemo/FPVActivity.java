@@ -101,9 +101,9 @@ public class FPVActivity extends FragmentActivity {
             djiRemoteController.setHardwareStateUpdateCallback(new HardwareStateCallback());
         }
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
-        registerReceiver(mReceiver, filter);
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
+//        registerReceiver(mReceiver, filter);
 
         initMenuData();
     }

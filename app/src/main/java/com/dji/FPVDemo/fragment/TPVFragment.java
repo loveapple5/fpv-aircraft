@@ -421,19 +421,19 @@ public class TPVFragment extends Fragment {
         super.onPause();
         mapView.onPause();
         mGLView.onPause();
-        DJICamera camera = FPVDemoApplication.getCameraInstance();
-        if (camera != null) {
-            // Reset the callback
-            camera.setDJICameraReceivedVideoDataCallback(null);
-        }
-        if (djiAircraft != null) {
-            DJIFlightController flightController = djiAircraft.getFlightController();
-            flightController.setUpdateSystemStateCallback(null);
-            DJIBattery djiBattery = djiAircraft.getBattery();
-            djiBattery.setBatteryStateUpdateCallback(null);
-        }
-
-        getActivity().unregisterReceiver(mReceiver);
+//        DJICamera camera = FPVDemoApplication.getCameraInstance();
+//        if (camera != null) {
+//            // Reset the callback
+//            camera.setDJICameraReceivedVideoDataCallback(null);
+//        }
+//        if (djiAircraft != null) {
+//            DJIFlightController flightController = djiAircraft.getFlightController();
+//            flightController.setUpdateSystemStateCallback(null);
+//            DJIBattery djiBattery = djiAircraft.getBattery();
+//            djiBattery.setBatteryStateUpdateCallback(null);
+//        }
+//
+//        getActivity().unregisterReceiver(mReceiver);
     }
 
     class PreviewSurfaceTextureListener implements TextureView.SurfaceTextureListener {

@@ -70,6 +70,7 @@ import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
+import dji.sdk.sdkmanager.DJISDKManager;
 
 
 public class FPVFragment extends Fragment {
@@ -631,16 +632,18 @@ public class FPVFragment extends Fragment {
         super.onPause();
         mapView.onPause();
         mGLView.onPause();
-        DJICamera camera = FPVDemoApplication.getCameraInstance();
-        if (camera != null) {
-            // Reset the callback
-            camera.setDJICameraReceivedVideoDataCallback(null);
-        }
+
         if (djiAircraft != null) {
             DJIFlightController flightController = djiAircraft.getFlightController();
             flightController.setUpdateSystemStateCallback(null);
             DJIBattery djiBattery = djiAircraft.getBattery();
             djiBattery.setBatteryStateUpdateCallback(null);
+
+            DJICamera camera = djiAircraft.getCamera();
+            if (camera != null) {
+                // Reset the callback
+                camera.setDJICameraReceivedVideoDataCallback(null);
+            }
         }
 
         getActivity().unregisterReceiver(mReceiver);
