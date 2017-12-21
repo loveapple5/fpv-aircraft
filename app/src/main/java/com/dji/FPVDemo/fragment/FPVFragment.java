@@ -251,12 +251,12 @@ public class FPVFragment extends Fragment {
                     vPhone.add(longH * Math.PI / 180);
                     vPhone.add(latH * Math.PI / 180);
                     vPhone.add(0d);
-                    //mGLView.setvPhoneLBH(vPhone);
+                    mGLView.setvPhoneLBH(vPhone);
                     Vector<Double> vAircraft = new Vector<>();
                     vAircraft.add(longA * Math.PI / 180);
                     vAircraft.add(latA * Math.PI / 180);
                     vAircraft.add(altitude);
-                    //mGLView.setvAircraftLBH(vAircraft);
+                    mGLView.setvAircraftLBH(vAircraft);
                     break;
                 case MSG_REMOTE_CONTROLLER_BATTERY_STATE:
                     int remainingPercent = bundle.getInt("remainingPercent");
