@@ -150,7 +150,8 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.tv_prepare_flight:
-
+                Intent fpvIntent = new Intent(this, PrepareActivity.class);
+                startActivity(fpvIntent);
                 break;
         }
     }
