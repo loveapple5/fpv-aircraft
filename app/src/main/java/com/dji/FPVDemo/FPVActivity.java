@@ -110,13 +110,13 @@ public class FPVActivity extends FragmentActivity {
 
 
 
-    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(FPVActivity.this, "设备无连接，请检测并重启飞机", Toast.LENGTH_LONG).show();
-        }
-    };
+//    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Toast.makeText(FPVActivity.this, "设备无连接，请检测并重启飞机", Toast.LENGTH_LONG).show();
+//        }
+//    };
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -225,7 +225,7 @@ public class FPVActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        unregisterReceiver(mReceiver);
+//        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
     }
 
@@ -268,8 +268,10 @@ public class FPVActivity extends FragmentActivity {
                         int mode = mFPVFragment.getMode();
                         if (mode == MODE_FPV) {
                             mBluetoothLeService.writeValue("FLAG-FPV");
+                            mFPVFragment.setMode(MODE_FPV);
                         } else {
                             mBluetoothLeService.writeValue("FLAG-TPV");
+                            mFPVFragment.setMode(MODE_TPV);
                         }
                     }
                 }
