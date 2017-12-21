@@ -122,18 +122,18 @@ public class FPVFragment extends Fragment {
     private ImageView ivDirection;
     private LinearLayout llFpvCamera;
     private RelativeLayout rlTpvCamera;
+    private LinearLayout llPreview;
+
 
     private TextureView tvPreview;
-    private TextureView tvTpvPreview;
+    //private TextureView tvTpvPreview;
 
     private BatteryReceiver mReceiver;
 
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = null;
     // Codec for video live view
-    protected DJICodecManager mCodecManager = null;
     private PreviewSurfaceTextureListener fpvTextureListener = new PreviewSurfaceTextureListener();
-    private PreviewSurfaceTextureListener tpvTextureListener = new PreviewSurfaceTextureListener();
 
     private MapView mapView;
     private AMap aMap;
@@ -325,8 +325,14 @@ public class FPVFragment extends Fragment {
             this.ivDirection.setVisibility(View.VISIBLE);
             this.menuLayout.setVisibility(View.GONE);
             mGLView.setMode(MODE_FPV);
-            //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
-            tvPreview.setVisibility(View.VISIBLE);
+
+            rlTpvCamera.removeAllViews();
+            tvPreview = new TextureView(getContext());
+            fpvTextureListener = new PreviewSurfaceTextureListener();
+            tvPreview.setSurfaceTextureListener(fpvTextureListener);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            llPreview.addView(tvPreview, param);
+
             menuLayout.setVisibility(View.GONE);
         } else if (this.mode == MODE_TPV) {
             this.rlCraftSignal.setRotation(0);
@@ -348,8 +354,14 @@ public class FPVFragment extends Fragment {
             this.ivDirection.setVisibility(View.GONE);
             this.menuLayout.setVisibility(View.VISIBLE);
             mGLView.setMode(MODE_TPV);
-            tvPreview.setVisibility(View.GONE);
-            //tvTpvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
+
+            llPreview.removeAllViews();
+            tvPreview = new TextureView(getContext());
+            fpvTextureListener = new PreviewSurfaceTextureListener();
+            tvPreview.setSurfaceTextureListener(fpvTextureListener);
+
+            RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(DensityUtil.dip2px(getContext(), 100), DensityUtil.dip2px(getContext(), 55));
+            rlTpvCamera.addView(tvPreview, param);
             menuLayout.setVisibility(View.GONE);
         } else if (this.mode == MODE_MENU) {
             this.ivDirection.setVisibility(View.GONE);
@@ -379,17 +391,19 @@ public class FPVFragment extends Fragment {
 
             @Override
             public void onResult(byte[] videoBuffer, int size) {
-                if (mode == MODE_FPV) {
-                    fpvTextureListener.sendDataToDecoder(videoBuffer, size);
-                } else if (mode == MODE_TPV) {
-                    tpvTextureListener.sendDataToDecoder(videoBuffer, size);
-                } else if (mode == MODE_MENU) {
-                    if (lastMode == MODE_FPV) {
-                        fpvTextureListener.sendDataToDecoder(videoBuffer, size);
-                    } else if (lastMode == MODE_TPV) {
-                        tpvTextureListener.sendDataToDecoder(videoBuffer, size);
-                    }
-                }
+                fpvTextureListener.sendDataToDecoder(videoBuffer, size);
+                //tpvTextureListener.sendDataToDecoder(videoBuffer, size);
+//                if (mode == MODE_FPV) {
+//                    fpvTextureListener.sendDataToDecoder(videoBuffer, size);
+//                } else if (mode == MODE_TPV) {
+//                    tpvTextureListener.sendDataToDecoder(videoBuffer, size);
+//                } else if (mode == MODE_MENU) {
+//                    if (lastMode == MODE_FPV) {
+//                        fpvTextureListener.sendDataToDecoder(videoBuffer, size);
+//                    } else if (lastMode == MODE_TPV) {
+//                        tpvTextureListener.sendDataToDecoder(videoBuffer, size);
+//                    }
+//                }
             }
         };
 
@@ -456,9 +470,9 @@ public class FPVFragment extends Fragment {
         tvFlightVerticalSpeed = (TextView) view.findViewById(R.id.tv_fpv_flight_vertical_speed);
         ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_fpv_flight_vertical_speed);
         //ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
-        tvPreview = (TextureView) view.findViewById(R.id.tv_fpv_preview);
+        //tvPreview = (TextureView) view.findViewById(R.id.tv_fpv_preview);
 
-        tvTpvPreview = (TextureView) view.findViewById(R.id.tv_tpv_preview);
+        //tvTpvPreview = (TextureView) view.findViewById(R.id.tv_tpv_preview);
         //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
         mapView = (MapView) view.findViewById(R.id.mv_fpv_map);
 
@@ -477,6 +491,7 @@ public class FPVFragment extends Fragment {
 
         llFpvCamera = (LinearLayout) view.findViewById(R.id.layout_fpv_camera);
         rlTpvCamera = (RelativeLayout) view.findViewById(R.id.layout_tpv_camera);
+        llPreview = (LinearLayout) view.findViewById(R.id.ll_preview);
 
         menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
         menuLayout.setMenuItemCount(18);
@@ -544,8 +559,8 @@ public class FPVFragment extends Fragment {
                 if (camera != null) {
                     // Set the callback
                     camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
-                    tvPreview.setSurfaceTextureListener(fpvTextureListener);
-                    tvTpvPreview.setSurfaceTextureListener(tpvTextureListener);
+                    //tvPreview.setSurfaceTextureListener(fpvTextureListener);
+                    //tvTpvPreview.setSurfaceTextureListener(tpvTextureListener);
                 }
             }
         }

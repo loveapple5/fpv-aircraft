@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextureView
-        android:id="@+id/tv_fpv_preview"
+    <LinearLayout
+        android:id="@+id/ll_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
+    <!--<TextureView-->
+        <!--android:id="@+id/tv_fpv_preview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
     <!--top-->
     <RelativeLayout
@@ -178,11 +183,11 @@
             android:gravity="center"
             android:visibility="gone">
 
-            <TextureView
-                android:id="@+id/tv_tpv_preview"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:background="@color/colorWhite" />
+            <!--<TextureView-->
+                <!--android:id="@+id/tv_tpv_preview"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="55dp"-->
+                <!--android:background="@color/colorWhite" />-->
         </RelativeLayout>
         <!--map-->
         <RelativeLayout
