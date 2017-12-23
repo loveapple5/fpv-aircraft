@@ -50,6 +50,7 @@
                     android:id="@+id/et_wifi_name"
                     style="@style/SettingValue"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="名称" />
             </LinearLayout>
         </LinearLayout>
@@ -85,6 +86,7 @@
                     android:id="@+id/et_wifi_password"
                     style="@style/SettingValue"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="名称" />
             </LinearLayout>
         </LinearLayout>

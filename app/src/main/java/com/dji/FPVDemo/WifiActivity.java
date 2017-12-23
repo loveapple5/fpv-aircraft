@@ -4,48 +4,100 @@ package com.dji.FPVDemo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
+import android.os.Messenger;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import dji.common.error.DJIError;
-import dji.common.util.DJICommonCallbacks;
-import dji.sdk.airlink.DJIAirLink;
-import dji.sdk.airlink.DJIWiFiLink;
-import dji.sdk.products.DJIAircraft;
+import com.dji.FPVDemo.dji.MessageType;
 
-public class WifiActivity extends FragmentActivity implements View.OnClickListener {
-
-    protected static final int MSG_GET_WIFI_SSID = 1;
-    protected static final int MSG_GET_WIFI_PASSWORD = 2;
+public class WifiActivity extends DJIActivity implements View.OnClickListener {
 
     private View btnBack;
 
     private EditText etWifiName;
     private EditText etWifiPassword;
 
-    private DJIWiFiLink djiWiFiLink;
+//    private DJIWiFiLink djiWiFiLink;
 
-    protected Handler handler = new Handler() {
+//    protected Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case MSG_GET_WIFI_SSID:
+//                    String WiFiSSID = msg.getData().getString("WiFiSSID");
+//                    etWifiName.setText(WiFiSSID);
+//                    break;
+//                case MSG_GET_WIFI_PASSWORD:
+//                    String WiFiPassword = msg.getData().getString("WiFiPassword");
+//                    etWifiPassword.setText(WiFiPassword);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
+
+    private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_GET_WIFI_SSID:
-                    String WiFiSSID = msg.getData().getString("WiFiSSID");
-                    etWifiName.setText(WiFiSSID);
+            Log.d("WifiActivity", msg.what + "");
+            String errDesc;
+            Bundle bundle = msg.getData();
+            switch(msg.what) {
+                case MessageType.MSG_GET_WIFI_NAME_RESPONSE:
+
+                    errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        String wifiSSId = bundle.getString("wifiSSId");
+                        etWifiName.setText(wifiSSId);
+                    } else {
+                        Toast.makeText(WifiActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                case MSG_GET_WIFI_PASSWORD:
-                    String WiFiPassword = msg.getData().getString("WiFiPassword");
-                    etWifiPassword.setText(WiFiPassword);
+
+                case MessageType.MSG_SET_WIFI_NAME_RESPONSE:
+
+                    errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        String wifiSSId = bundle.getString("wifiSSId");
+                        etWifiName.setText(wifiSSId);
+                    } else {
+                        Toast.makeText(WifiActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                default:
+
+                case MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE:
+
+                    errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        String wifiPassword = bundle.getString("wifiPassword");
+                        Log.d("WifiActivity", wifiPassword);
+                        etWifiPassword.setText(wifiPassword);
+                    } else {
+                        Toast.makeText(WifiActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+
+                case MessageType.MSG_SET_WIFI_PASSWORD_RESPONSE:
+
+                    errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        String wifiPassword = bundle.getString("wifiPassword");
+                        etWifiPassword.setText(wifiPassword);
+                    } else {
+                        Toast.makeText(WifiActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
+
         }
     };
+
+    private Messenger messenger = new Messenger(handler);
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +114,34 @@ public class WifiActivity extends FragmentActivity implements View.OnClickListen
         etWifiPassword = (EditText) findViewById(R.id.et_wifi_password);
         etWifiPassword.setOnEditorActionListener(etListener);
 
-        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        DJIAirLink djiAirLink = djiAircraft.getAirLink();
-        if (djiAirLink != null && djiAirLink.getWiFiLink() != null) {
-            djiWiFiLink = djiAirLink.getWiFiLink();
-            djiWiFiLink.getWiFiSSID(new getWiFiSSIDcallback());
-            djiWiFiLink.getWiFiPassword(new getWiFiPasswordCallback());
-        }
+        registerDJIMessenger(MessageType.MSG_GET_WIFI_NAME_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_SET_WIFI_NAME_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_SET_WIFI_PASSWORD_RESPONSE, messenger);
 
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_GET_WIFI_NAME;
+        sendDJIMessage(message);
+
+        Message message2 = Message.obtain();
+        message2.what = MessageType.MSG_GET_WIFI_PASSWORD;
+        sendDJIMessage(message2);
+
+//        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
+//        DJIAirLink djiAirLink = djiAircraft.getAirLink();
+//        if (djiAirLink != null && djiAirLink.getWiFiLink() != null) {
+//            djiWiFiLink = djiAirLink.getWiFiLink();
+//            djiWiFiLink.getWiFiSSID(new getWiFiSSIDcallback());
+//            djiWiFiLink.getWiFiPassword(new getWiFiPasswordCallback());
+//        }
+
+    }
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterDJIMessenger(MessageType.MSG_GET_WIFI_NAME_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_SET_WIFI_NAME_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_SET_WIFI_PASSWORD_RESPONSE, messenger);
     }
 
     @Override
@@ -89,55 +161,62 @@ public class WifiActivity extends FragmentActivity implements View.OnClickListen
             if (EditorInfo.IME_ACTION_DONE == actionId) {
                 int id = v.getId();
                 if (id == R.id.et_wifi_name) {
-                    djiWiFiLink.setWiFiSSID(v.getText().toString(), null);
-
+                    Message message = Message.obtain();
+                    message.what = MessageType.MSG_SET_WIFI_NAME;
+                    Bundle data = new Bundle();
+                    data.putString("wifiSSId", v.getText().toString());
+                    message.setData(data);
+                    sendDJIMessage(message);
                 } else if (id == R.id.et_wifi_password) {
-                    djiWiFiLink.setWiFiPassword(v.getText().toString(), null);
+                    Message message = Message.obtain();
+                    message.what = MessageType.MSG_SET_WIFI_PASSWORD;
+                    Bundle data = new Bundle();
+                    data.putString("wifiPassword", v.getText().toString());
+                    message.setData(data);
+                    sendDJIMessage(message);
                 }
             }
             return false;
         }
     };
 
-    class getWiFiSSIDcallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
-        @Override
-        public void onSuccess(String djiWiFiSSID) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(djiWiFiSSID);
-            Bundle bundle = new Bundle();
-            bundle.putString("WiFiSSID", sb.toString());
-            Message msg = Message.obtain();
-            msg.what = MSG_GET_WIFI_SSID;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-        }
+//    class getWiFiSSIDcallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
+//        @Override
+//        public void onSuccess(String djiWiFiSSID) {
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(djiWiFiSSID);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("WiFiSSID", sb.toString());
+//            Message msg = Message.obtain();
+//            msg.what = MSG_GET_WIFI_SSID;
+//            msg.setData(bundle);
+//            handler.sendMessage(msg);
+//        }
+//
+//        @Override
+//        public void onFailure(DJIError djiError) {
+//
+//        }
+//    }
+//
+//
+//    class getWiFiPasswordCallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
+//        @Override
+//        public void onSuccess(String djiWiFiPassword) {
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(djiWiFiPassword);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("WiFiPassword", sb.toString());
+//            Message msg = Message.obtain();
+//            msg.what = MSG_GET_WIFI_PASSWORD;
+//            msg.setData(bundle);
+//            handler.sendMessage(msg);
+//        }
+//
+//        @Override
+//        public void onFailure(DJIError djiError) {
+//
+//        }
+//    }
 
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    }
-
-    ;
-
-    class getWiFiPasswordCallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
-        @Override
-        public void onSuccess(String djiWiFiPassword) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(djiWiFiPassword);
-            Bundle bundle = new Bundle();
-            bundle.putString("WiFiPassword", sb.toString());
-            Message msg = Message.obtain();
-            msg.what = MSG_GET_WIFI_PASSWORD;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    }
-
-    ;
 }

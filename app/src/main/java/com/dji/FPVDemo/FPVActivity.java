@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,6 +70,25 @@ public class FPVActivity extends FragmentActivity {
     private DJIRemoteController djiRemoteController;
 
     private Vector<MenuFragment> mMenuFragments = new Vector<>();
+
+    private final static int MSG_SET_FPV_MODE = 1;
+    private final static int MSG_SET_TPV_MODE = 2;
+
+    private Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SET_FPV_MODE:
+                    Log.d(TAG, "mode:" + MODE_FPV);
+                    mFPVFragment.setMode(MODE_FPV);
+                    break;
+                case MSG_SET_TPV_MODE:
+                    Log.d(TAG, "mode:" + MODE_TPV);
+                    mFPVFragment.setMode(MODE_TPV);
+                    break;
+            }
+        }
+    };
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -267,11 +288,11 @@ public class FPVActivity extends FragmentActivity {
                         buttonDownTime = 0;
                         int mode = mFPVFragment.getMode();
                         if (mode == MODE_FPV) {
-                            mBluetoothLeService.writeValue("FLAG-FPV");
-                            mFPVFragment.setMode(MODE_FPV);
-                        } else {
                             mBluetoothLeService.writeValue("FLAG-TPV");
-                            mFPVFragment.setMode(MODE_TPV);
+                            handler.sendEmptyMessage(MSG_SET_TPV_MODE);
+                        } else {
+                            mBluetoothLeService.writeValue("FLAG-FPV");
+                            handler.sendEmptyMessage(MSG_SET_FPV_MODE);
                         }
                     }
                 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.dji.FPVDemo.dji.MessageType;
 import com.dji.FPVDemo.dji.Task;
@@ -18,10 +17,13 @@ import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 
-public class GetWifiPassword extends Task {
+public class SetWifiPassword extends Task {
 
-    public GetWifiPassword(Bundle data, Messenger messenger) {
+    private String wifiPassword;
+
+    public SetWifiPassword(Bundle data, Messenger messenger) {
         super(data, messenger);
+        wifiPassword = data.getString("wifiPassword");
     }
 
 
@@ -34,44 +36,32 @@ public class GetWifiPassword extends Task {
             DJIWiFiLink wiFiLink = airLink.getWiFiLink();
             if (wiFiLink == null) {
                 Bundle bundle = new Bundle();
-                bundle.putString("DJI_DESC", "该型号飞机没有wifi");
+                bundle.putString("DJI_DESC", "该型号飞行器没有wifi模块");
                 Message message = Message.obtain();
-                message.what = MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE;
+                message.what = MessageType.MSG_SET_WIFI_PASSWORD_RESPONSE;
                 message.setData(bundle);
                 try {
                     messenger.send(message);
                 } catch (RemoteException e) {
-
+                    e.printStackTrace();
                 }
             } else {
-                wiFiLink.getWiFiPassword(new DJICommonCallbacks.DJICompletionCallbackWith<String>() {
+                wiFiLink.setWiFiPassword(wifiPassword, new DJICommonCallbacks.DJICompletionCallback() {
 
                     @Override
-                    public void onSuccess(String password) {
-                        Log.d("GetWifiPassword", password);
+                    public void onResult(DJIError djiError) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("wifiPassword", password);
-                        Message message = Message.obtain();
-                        message.what = MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE;
-                        message.setData(bundle);
-                        try {
-                            messenger.send(message);
-                        } catch (RemoteException e) {
-
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
                         }
-                    }
-
-                    @Override
-                    public void onFailure(DJIError djiError) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("DJI_DESC", djiError.getDescription());
+                        bundle.putString("wifiPassword", wifiPassword);
                         Message message = Message.obtain();
-                        message.what = MessageType.MSG_GET_WIFI_PASSWORD_RESPONSE;
+                        message.what = MessageType.MSG_SET_WIFI_PASSWORD_RESPONSE;
                         message.setData(bundle);
                         try {
                             messenger.send(message);
                         } catch (RemoteException e) {
-
+                            e.printStackTrace();
                         }
                     }
                 });

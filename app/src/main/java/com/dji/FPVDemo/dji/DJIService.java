@@ -105,9 +105,11 @@ public class DJIService extends Service {
                         //创建对应的任务
                         Task task = TaskFactory.createTask(msg.what, msg.getData(), mDJIServiceMessenger);
                         //运行任务
+                        //同步任务
                         if (task != null) {
                             task.run();
                         }
+                        //TODO:可以使用线程池支持异步任务
                     } catch (Exception e) {
 
                     }
@@ -123,7 +125,9 @@ public class DJIService extends Service {
                                 message.copyFrom(msg);
                                 clientMessenger.send(message);
                             } catch (RemoteException e) {
-                                e.printStackTrace();
+                                if(e.getLocalizedMessage() != null) {
+                                    Log.e(TAG, e.getLocalizedMessage());
+                                }
                             }
                         }
                     }
