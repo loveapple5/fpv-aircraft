@@ -23,25 +23,6 @@ public class WifiActivity extends DJIActivity implements View.OnClickListener {
     private EditText etWifiName;
     private EditText etWifiPassword;
 
-//    private DJIWiFiLink djiWiFiLink;
-
-//    protected Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case MSG_GET_WIFI_SSID:
-//                    String WiFiSSID = msg.getData().getString("WiFiSSID");
-//                    etWifiName.setText(WiFiSSID);
-//                    break;
-//                case MSG_GET_WIFI_PASSWORD:
-//                    String WiFiPassword = msg.getData().getString("WiFiPassword");
-//                    etWifiPassword.setText(WiFiPassword);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    };
-
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             Log.d("WifiActivity", msg.what + "");
@@ -127,14 +108,6 @@ public class WifiActivity extends DJIActivity implements View.OnClickListener {
         message2.what = MessageType.MSG_GET_WIFI_PASSWORD;
         sendDJIMessage(message2);
 
-//        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-//        DJIAirLink djiAirLink = djiAircraft.getAirLink();
-//        if (djiAirLink != null && djiAirLink.getWiFiLink() != null) {
-//            djiWiFiLink = djiAirLink.getWiFiLink();
-//            djiWiFiLink.getWiFiSSID(new getWiFiSSIDcallback());
-//            djiWiFiLink.getWiFiPassword(new getWiFiPasswordCallback());
-//        }
-
     }
     public void onDestroy() {
         super.onDestroy();
@@ -179,44 +152,5 @@ public class WifiActivity extends DJIActivity implements View.OnClickListener {
             return false;
         }
     };
-
-//    class getWiFiSSIDcallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
-//        @Override
-//        public void onSuccess(String djiWiFiSSID) {
-//            StringBuilder sb = new StringBuilder();
-//            sb.append(djiWiFiSSID);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("WiFiSSID", sb.toString());
-//            Message msg = Message.obtain();
-//            msg.what = MSG_GET_WIFI_SSID;
-//            msg.setData(bundle);
-//            handler.sendMessage(msg);
-//        }
-//
-//        @Override
-//        public void onFailure(DJIError djiError) {
-//
-//        }
-//    }
-//
-//
-//    class getWiFiPasswordCallback implements DJICommonCallbacks.DJICompletionCallbackWith<String> {
-//        @Override
-//        public void onSuccess(String djiWiFiPassword) {
-//            StringBuilder sb = new StringBuilder();
-//            sb.append(djiWiFiPassword);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("WiFiPassword", sb.toString());
-//            Message msg = Message.obtain();
-//            msg.what = MSG_GET_WIFI_PASSWORD;
-//            msg.setData(bundle);
-//            handler.sendMessage(msg);
-//        }
-//
-//        @Override
-//        public void onFailure(DJIError djiError) {
-//
-//        }
-//    }
 
 }
