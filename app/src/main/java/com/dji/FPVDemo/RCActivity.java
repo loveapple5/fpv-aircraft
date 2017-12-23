@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -15,11 +16,8 @@ import com.dji.FPVDemo.dji.MessageType;
 import com.dji.FPVDemo.view.ActionSheetDialog;
 
 import dji.common.remotecontroller.DJIRCControlStyle;
-import dji.sdk.remotecontroller.DJIRemoteController;
 
 public class RCActivity extends DJIActivity implements View.OnClickListener {
-
-    //protected static final int MSG_REMOTE_CONTROLLER_STATUS = 1;
 
     private View btnBack;
     private TextView tvWheelSpeed;
@@ -27,8 +25,6 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
     private TextView tcRCMode;
     private ImageView ivRCMode1;
     private ImageView ivRCMode2;
-
-    private DJIRemoteController remoteController;
 
     private short wheelSpeed = 50;
 
@@ -54,6 +50,7 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
+            Log.d("RCActivity", "msg:" + msg.what + "");
             int what = msg.what;
             if (what == MessageType.MSG_GET_GIMBAL_WHEEL_SPEED_RESPONSE) {
 
