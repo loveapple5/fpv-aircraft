@@ -248,6 +248,11 @@ public class FPVActivity extends FragmentActivity {
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
+
+        if (djiAircraft != null) {
+            djiRemoteController = djiAircraft.getRemoteController();
+            djiRemoteController.setHardwareStateUpdateCallback(null);
+        }
     }
 
     @Override
@@ -263,6 +268,8 @@ public class FPVActivity extends FragmentActivity {
                 break;
             case R.id.menu_menu:
                 mFPVFragment.setMode(MODE_MENU);
+                break;
+            case R.id.menu_map:
                 break;
         }
         return super.onOptionsItemSelected(item);
