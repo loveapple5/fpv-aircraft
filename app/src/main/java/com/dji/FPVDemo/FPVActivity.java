@@ -245,6 +245,7 @@ public class FPVActivity extends FragmentActivity {
 
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
@@ -270,6 +271,9 @@ public class FPVActivity extends FragmentActivity {
                 mFPVFragment.setMode(MODE_MENU);
                 break;
             case R.id.menu_map:
+                Intent mapIntent = new Intent(this, MapActivity.class);
+                startActivity(mapIntent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
