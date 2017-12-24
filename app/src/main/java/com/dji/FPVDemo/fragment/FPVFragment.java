@@ -1,5 +1,6 @@
 package com.dji.FPVDemo.fragment;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -70,7 +71,6 @@ import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.remotecontroller.DJIRemoteController;
-import dji.sdk.sdkmanager.DJISDKManager;
 
 
 public class FPVFragment extends Fragment {
@@ -422,7 +422,7 @@ public class FPVFragment extends Fragment {
         // criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
         // criteria.setAltitudeRequired(false);//不要求海拔信息
         if (locationManager != null) {
-            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationListener = new MyLocationListener();
                 Criteria criteria = new Criteria();
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -543,6 +543,14 @@ public class FPVFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+
+        mSensorManager.unregisterListener(sensorEventListener);
+
+        if (locationManager != null) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.removeUpdates(locationListener);
+            }
+        }
     }
 
     public void onResume() {
