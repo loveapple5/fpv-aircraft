@@ -40,6 +40,7 @@ public class SetGoHomeAltitude extends Task {
                     bundle.putFloat("goHomeAltitude", goHomeAltitude);
                     Message message = Message.obtain();
                     message.what = MessageType.MSG_SET_GO_HOME_ALTITUDE_RESPONSE;
+                    message.setData(bundle);
                     try {
                         messenger.send(message);
                     } catch (RemoteException e) {

@@ -37,6 +37,7 @@ public class GetGoHomeAltitude extends Task {
                     bundle.putFloat("goHomeAltitude", aFloat);
                     Message message = Message.obtain();
                     message.what = MessageType.MSG_GET_GO_HOME_ALTITUDE_RESPONSE;
+                    message.setData(bundle);
                     try {
                         messenger.send(message);
                     } catch (RemoteException e) {
@@ -51,6 +52,7 @@ public class GetGoHomeAltitude extends Task {
                     bundle.putString("DJI_DESC", djiError.getDescription());
                     Message message = Message.obtain();
                     message.what = MessageType.MSG_GET_GO_HOME_ALTITUDE_RESPONSE;
+                    message.setData(bundle);
                     try {
                         messenger.send(message);
                     } catch (RemoteException e) {
