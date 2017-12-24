@@ -8,7 +8,9 @@ import com.dji.FPVDemo.dji.airlink.GetWifiSSId;
 import com.dji.FPVDemo.dji.airlink.GetWifiPassword;
 import com.dji.FPVDemo.dji.airlink.SetWifiPassword;
 import com.dji.FPVDemo.dji.airlink.SetWifiSSId;
+import com.dji.FPVDemo.dji.flightcontroller.GetCurrentState;
 import com.dji.FPVDemo.dji.flightcontroller.GetGoHomeAltitude;
+import com.dji.FPVDemo.dji.flightcontroller.GetHomeLocation;
 import com.dji.FPVDemo.dji.flightcontroller.SetGoHomeAltitude;
 import com.dji.FPVDemo.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.dji.FPVDemo.dji.gimbal.GetPitchExtension;
@@ -92,6 +94,16 @@ public class TaskFactory {
             case (MessageType.MSG_SET_WIFI_PASSWORD): {
 
                 return new SetWifiPassword(data, messenger);
+
+            }
+            case (MessageType.MSG_GET_HOME_LOCATION): {
+
+                return new GetHomeLocation(data, messenger);
+
+            }
+            case (MessageType.MSG_GET_FC_STATE): {
+
+                return new GetCurrentState(data, messenger);
 
             }
         }

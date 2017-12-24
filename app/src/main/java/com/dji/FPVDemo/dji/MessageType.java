@@ -35,6 +35,11 @@ public class MessageType {
     public static final int MSG_GET_SMOOTHING_ON_AXIS = 100018;
     public static final int MSG_SET_SMOOTHING_ON_AXIS = 100019;
 
+    public static final int MSG_GET_HOME_LOCATION = 100020;
+    public static final int MSG_SET_HOME_LOCATION = 100021;
+
+    public static final int MSG_GET_FC_STATE = 100022;
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -65,4 +70,9 @@ public class MessageType {
 
     public static final int MSG_GET_SMOOTHING_ON_AXIS_RESPONSE = 200018;
     public static final int MSG_SET_SMOOTHING_ON_AXIS_RESPONSE = 200019;
+
+    public static final int MSG_GET_HOME_LOCATION_RESPONSE = 200020;
+    public static final int MSG_SET_HOME_LOCATION_RESPONSE = 200021;
+
+    public static final int MSG_GET_FC_STATE_RESPONSE = 200022;
 }
