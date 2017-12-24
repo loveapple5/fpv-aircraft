@@ -138,10 +138,11 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
     private Runnable hideLauncher = new Runnable() {
         @Override
         public void run() {
+            ivLauncher.setImageDrawable(null);
             ivLauncher.setVisibility(View.GONE);
         }
     };
-
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -152,6 +153,9 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
             case R.id.tv_prepare_flight:
                 Intent fpvIntent = new Intent(this, BluetoothActivity.class);
                 startActivity(fpvIntent);
+
+//                Intent fpvIntent = new Intent(this, FPVActivity.class);
+//                startActivity(fpvIntent);
                 break;
         }
     }
