@@ -16,10 +16,12 @@ import com.dji.FPVDemo.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.dji.FPVDemo.dji.gimbal.GetPitchExtension;
 import com.dji.FPVDemo.dji.gimbal.SetGimbalSmoothingOnAxis;
 import com.dji.FPVDemo.dji.gimbal.SetPitchExtension;
+import com.dji.FPVDemo.dji.remotecontroller.GetHardwareState;
 import com.dji.FPVDemo.dji.remotecontroller.GetRCMode;
 import com.dji.FPVDemo.dji.remotecontroller.GetWheelSpeed;
 import com.dji.FPVDemo.dji.remotecontroller.SetRCMode;
 import com.dji.FPVDemo.dji.remotecontroller.SetWheelSpeed;
+import com.dji.FPVDemo.dji.remotecontroller.StopGetHardwareState;
 
 public class TaskFactory {
 
@@ -104,6 +106,16 @@ public class TaskFactory {
             case (MessageType.MSG_GET_FC_STATE): {
 
                 return new GetCurrentState(data, messenger);
+
+            }
+            case (MessageType.MSG_GET_FC_HARDWARE_STATE): {
+
+                return new GetHardwareState(data, messenger);
+
+            }
+            case (MessageType.MSG_STOP_GET_FC_HARDWARE_STATE): {
+
+                return new StopGetHardwareState(data, messenger);
 
             }
         }

@@ -12,15 +12,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
+import android.os.Messenger;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.dji.FPVDemo.bluetooth.BluetoothLeService;
+import com.dji.FPVDemo.dji.MessageType;
 import com.dji.FPVDemo.fragment.FPVFragment;
 import com.dji.FPVDemo.fragment.MenuFragment;
 import com.dji.FPVDemo.model.FlightHeightMenuItem;
@@ -41,15 +41,12 @@ import com.dji.FPVDemo.model.WhiteBalanceMenuItem;
 
 import java.util.Vector;
 
-import dji.common.remotecontroller.DJIRCHardwareState;
-import dji.sdk.products.DJIAircraft;
-import dji.sdk.remotecontroller.DJIRemoteController;
 
 import static com.dji.FPVDemo.fragment.FPVFragment.MODE_FPV;
-import static com.dji.FPVDemo.fragment.FPVFragment.MODE_TPV;
 import static com.dji.FPVDemo.fragment.FPVFragment.MODE_MENU;
+import static com.dji.FPVDemo.fragment.FPVFragment.MODE_TPV;
 
-public class FPVActivity extends FragmentActivity {
+public class FPVActivity extends DJIActivity {
 
     private static final String TAG = FPVActivity.class.getName();
 
@@ -66,29 +63,50 @@ public class FPVActivity extends FragmentActivity {
     private String mDeviceName;
     private String mDeviceAddress;
 
-    private DJIAircraft djiAircraft;
-    private DJIRemoteController djiRemoteController;
-
     private Vector<MenuFragment> mMenuFragments = new Vector<>();
 
-    private final static int MSG_SET_FPV_MODE = 1;
-    private final static int MSG_SET_TPV_MODE = 2;
+    //c2按钮长按0.5s有效
+    private static final int C2BUTTON_PRESS_DURATION = 500;
+
+    private long c2DownTime;
+    private long c2UpTime;
 
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
             switch (msg.what) {
-                case MSG_SET_FPV_MODE:
-                    Log.d(TAG, "mode:" + MODE_FPV);
-                    mFPVFragment.setMode(MODE_FPV);
-                    break;
-                case MSG_SET_TPV_MODE:
-                    Log.d(TAG, "mode:" + MODE_TPV);
-                    mFPVFragment.setMode(MODE_TPV);
+                case MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE:
+                    boolean c2Present = bundle.getBoolean("c2Present");
+                    boolean c2Down = bundle.getBoolean("c2Down");
+                    if (c2Present) {
+                        //记录c2按下时间
+                        if (c2Down) {
+                            c2DownTime = System.currentTimeMillis();
+                        }
+                        //记录c2弹起时间
+                        else {
+                            c2UpTime = System.currentTimeMillis();
+                            if (c2UpTime - c2DownTime >= C2BUTTON_PRESS_DURATION && c2DownTime > 0) {
+                                c2DownTime = 0;
+                                int mode = mFPVFragment.getMode();
+                                //切换模式
+                                if (mode == MODE_FPV) {
+                                    mBluetoothLeService.writeValue("FLAG-TPV");
+                                    mFPVFragment.setMode(MODE_TPV);
+                                } else {
+                                    mBluetoothLeService.writeValue("FLAG-FPV");
+                                    mFPVFragment.setMode(MODE_FPV);
+                                }
+                            }
+                        }
+                    }
                     break;
             }
         }
     };
+
+    private Messenger messenger = new Messenger(handler);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,28 +134,26 @@ public class FPVActivity extends FragmentActivity {
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
-        djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
-            djiRemoteController = djiAircraft.getRemoteController();
-            djiRemoteController.setHardwareStateUpdateCallback(new HardwareStateCallback());
-        }
-
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(FPVDemoApplication.FLAG_CONNECTION_CHANGE);
-//        registerReceiver(mReceiver, filter);
-
         initMenuData();
     }
 
+    protected void onStart() {
+        super.onStart();
+        registerDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
 
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_GET_FC_HARDWARE_STATE;
+        sendDJIMessage(message);
+    }
 
-//    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Toast.makeText(FPVActivity.this, "设备无连接，请检测并重启飞机", Toast.LENGTH_LONG).show();
-//        }
-//    };
+    protected void onStop() {
+        super.onStop();
+        unregisterDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
+
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_STOP_GET_FC_HARDWARE_STATE;
+        sendDJIMessage(message);
+    }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -161,18 +177,17 @@ public class FPVActivity extends FragmentActivity {
                     Log.i(TAG, "EXTRA_DATA:" + data);
                     if (data.equals("FLAG-TPV")) {
                         mFPVFragment.setMode(MODE_TPV);
-                    }
-                    else if (data.equals("FLAG-FPV")) {
+                    } else if (data.equals("FLAG-FPV")) {
                         mFPVFragment.setMode(MODE_FPV);
                     }
                     //确认键
-                    else if(data.equals("ET")) {
+                    else if (data.equals("ET")) {
                         //切换到菜单模式
-                        if(mFPVFragment.getMode() != MODE_MENU) {
+                        if (mFPVFragment.getMode() != MODE_MENU) {
                             mFPVFragment.setMode(MODE_MENU);
                         }
                         //展示菜单
-                        else if(mCurMenuFragment.isHidden()) {
+                        else if (mCurMenuFragment.isHidden()) {
                             showMenu();
                         }
                         //展示子菜单或者进行操作
@@ -181,20 +196,20 @@ public class FPVActivity extends FragmentActivity {
                         }
                     }
                     //返回键
-                    else if(data.equals("RT")) {
+                    else if (data.equals("RT")) {
                         hideMenu();
                     }
                     //逆时针
-                    else if(data.equals("CC")) {
-                        if(!mCurMenuFragment.isHidden()) {
+                    else if (data.equals("CC")) {
+                        if (!mCurMenuFragment.isHidden()) {
                             mCurMenuFragment.onUpPressed();
                         } else {
                             mFPVFragment.onUpPressed();
                         }
                     }
                     //顺时针
-                    else if(data.equals("CW")) {
-                        if(!mCurMenuFragment.isHidden()) {
+                    else if (data.equals("CW")) {
+                        if (!mCurMenuFragment.isHidden()) {
                             mCurMenuFragment.onDownPressed();
                         } else {
                             mFPVFragment.onDownPressed();
@@ -207,7 +222,7 @@ public class FPVActivity extends FragmentActivity {
                         int energy = 0;
                         try {
                             energy = Integer.parseInt(helmetEnergy);
-                        }catch(Exception e) {
+                        } catch (Exception e) {
 
                         }
                         mFPVFragment.setHelmetEnergy(energy);
@@ -250,10 +265,6 @@ public class FPVActivity extends FragmentActivity {
 //        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
 
-        if (djiAircraft != null) {
-            djiRemoteController = djiAircraft.getRemoteController();
-            djiRemoteController.setHardwareStateUpdateCallback(null);
-        }
     }
 
     @Override
@@ -277,38 +288,6 @@ public class FPVActivity extends FragmentActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private class HardwareStateCallback implements DJIRemoteController.RCHardwareStateUpdateCallback {
-
-        //c2按钮长按0.5s有效
-        private static final int C2BUTTON_PRESS_DURATION = 500;
-
-        private long buttonDownTime;
-        private long buttonUpTime;
-
-        @Override
-        public void onHardwareStateUpdate(DJIRemoteController djiRemoteController, DJIRCHardwareState djircHardwareState) {
-            if (djircHardwareState.customButton2.isPresent) {
-                Log.i(TAG, "c2:" + djircHardwareState.customButton2.buttonDown);
-                if (djircHardwareState.customButton2.buttonDown) {
-                    buttonDownTime = System.currentTimeMillis();
-                } else {
-                    buttonUpTime = System.currentTimeMillis();
-                    if (buttonUpTime - buttonDownTime >= C2BUTTON_PRESS_DURATION && buttonDownTime > 0) {
-                        buttonDownTime = 0;
-                        int mode = mFPVFragment.getMode();
-                        if (mode == MODE_FPV) {
-                            mBluetoothLeService.writeValue("FLAG-TPV");
-                            handler.sendEmptyMessage(MSG_SET_TPV_MODE);
-                        } else {
-                            mBluetoothLeService.writeValue("FLAG-FPV");
-                            handler.sendEmptyMessage(MSG_SET_FPV_MODE);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void initMenuData() {
@@ -342,7 +321,7 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(screenMenuFragment);
         //头盔菜单
         //音量
-        VolumeMenuItem volumeSubMenu = new VolumeMenuItem(100, MenuItem.TYPE_PROGRESS, "50", null,  null);
+        VolumeMenuItem volumeSubMenu = new VolumeMenuItem(100, MenuItem.TYPE_PROGRESS, "50", null, null);
         volumeSubMenu.setActivity(this);
         MenuItem volumeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.volume), null, volumeSubMenu);
         //通风
@@ -351,11 +330,11 @@ public class FPVActivity extends FragmentActivity {
         MenuItem fanMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.fan), null, fanSubMenu);
         //找回
         MenuItem findBackSubMenu = new MenuItem(102, MenuItem.TYPE_SWITCH, getString(R.string.auto),
-                new String[]{getString(R.string.open), getString(R.string.close) }, null);
+                new String[]{getString(R.string.open), getString(R.string.close)}, null);
         MenuItem findBackMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.find_back), null, findBackSubMenu);
         //风格
         MenuItem styleSubMenu = new MenuItem(103, MenuItem.TYPE_SELECT, getString(R.string.style_1),
-                new String[]{getString(R.string.style_1), getString(R.string.style_2), getString(R.string.style_3) }, null);
+                new String[]{getString(R.string.style_1), getString(R.string.style_2), getString(R.string.style_3)}, null);
         MenuItem styleMenu = new MenuItem(3, MenuItem.TYPE_TEXT, getString(R.string.style), null, styleSubMenu);
         Menu helmetMenu = new Menu();
         helmetMenu.items.add(volumeMenu);
@@ -372,7 +351,7 @@ public class FPVActivity extends FragmentActivity {
         MenuItem shutterMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.shutter_speed), null, shutterSubMenu);
         //拍照模式
         MenuItem photoModeSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, getString(R.string.single_photo),
-                new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo),getString(R.string.internal_photo)}, null);
+                new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo), getString(R.string.internal_photo)}, null);
         MenuItem photoMode = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.photo_mode), null, photoModeSubMenu);
         //照片比例
         PhotoRatioMenuItem ratioSubMenu = new PhotoRatioMenuItem(102, MenuItem.TYPE_SELECT, getString(R.string.ratio43),
@@ -397,13 +376,13 @@ public class FPVActivity extends FragmentActivity {
         mMenuFragments.add(photoMenuFragment);
         //录像菜单
         //尺寸
-        VideoRatioMenuItem sizeSubMenu = new VideoRatioMenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[] {"4K", "1080P", "720P"}, null);
+        VideoRatioMenuItem sizeSubMenu = new VideoRatioMenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[]{"4K", "1080P", "720P"}, null);
         MenuItem sizeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.video_resolve), null, sizeSubMenu);
         //帧率
-        VideoFrameRateMenuItem frameRateSubMenu = new VideoFrameRateMenuItem(101, MenuItem.TYPE_SELECT, "24", new String[] {"24", "30", "60"}, null);
+        VideoFrameRateMenuItem frameRateSubMenu = new VideoFrameRateMenuItem(101, MenuItem.TYPE_SELECT, "24", new String[]{"24", "30", "60"}, null);
         MenuItem frameRateMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.frame_rate), null, frameRateSubMenu);
         //视频格式
-        VideoFormatMenuItem formatSubMenu = new VideoFormatMenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[] {"MOV", "MP4"}, null);
+        VideoFormatMenuItem formatSubMenu = new VideoFormatMenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[]{"MOV", "MP4"}, null);
         MenuItem formatMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.video_format), null, formatSubMenu);
         Menu videoMenu = new Menu();
         videoMenu.items.add(sizeMenu);
@@ -476,7 +455,7 @@ public class FPVActivity extends FragmentActivity {
     }
 
     public void onBackPressed() {
-        if(hideMenu()) {
+        if (hideMenu()) {
             return;
         }
         super.onBackPressed();
@@ -485,17 +464,17 @@ public class FPVActivity extends FragmentActivity {
     private boolean hideMenu() {
         //收起二级菜单
         boolean result = mCurMenuFragment.onBackPressed();
-        if(result) {
+        if (result) {
             return true;
         }
         //收起一级菜单
-        if(!mCurMenuFragment.isHidden()) {
+        if (!mCurMenuFragment.isHidden()) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.hide(mCurMenuFragment).commit();
             return true;
         }
         //收起滑动菜单
-        if(mFPVFragment.getMode() == MODE_MENU) {
+        if (mFPVFragment.getMode() == MODE_MENU) {
             mFPVFragment.setMode(mFPVFragment.getLastMode());
             return true;
         }
@@ -506,14 +485,14 @@ public class FPVActivity extends FragmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if(!mCurMenuFragment.isHidden()) {
+                if (!mCurMenuFragment.isHidden()) {
                     mCurMenuFragment.onDownPressed();
                 } else {
                     mFPVFragment.onDownPressed();
                 }
                 break;
             case KeyEvent.KEYCODE_VOLUME_UP:
-                if(!mCurMenuFragment.isHidden()) {
+                if (!mCurMenuFragment.isHidden()) {
                     mCurMenuFragment.onUpPressed();
                 } else {
                     mFPVFragment.onUpPressed();
