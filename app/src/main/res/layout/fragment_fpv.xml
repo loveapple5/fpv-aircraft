@@ -268,7 +268,7 @@
             android:layout_height="120dp"
             android:layout_marginBottom="-10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/direction"
+            android:src="@drawable/direction"
             android:rotationX="60" />
 
         <com.dji.FPVDemo.view.CircleMenuLayout

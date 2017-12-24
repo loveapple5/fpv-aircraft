@@ -541,8 +541,11 @@ public class FPVFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         mapView.onDestroy();
+
+        ivDirection.setImageDrawable(null);
 
         mSensorManager.unregisterListener(sensorEventListener);
 
