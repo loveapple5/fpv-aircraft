@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synseaero.fpv.fragment.CompassDialogFragment;
+//import com.synseaero.fpv.fragment.CompassDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,24 +237,24 @@ public class StatusListActivity extends FragmentActivity {
             }
         });
 
-        tvCompassStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("djicompass", djiCompass.getCalibrationStatus().toString());
-                CompassDialogFragment compassDialogFragment = new CompassDialogFragment();
-                compassDialogFragment.setDialogListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的响应事件
-                        if (which == DialogInterface.BUTTON_POSITIVE) {
-                            //---------------------------B1compass校准-------------------------------
-                            djiCompass.startCompassCalibration(new DJiCompassCalibrateCallback());
-                        }
-                    }
-                });
-                compassDialogFragment.show(getSupportFragmentManager(), "compass");
-            }
-        });
+//        tvCompassStatus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("djicompass", djiCompass.getCalibrationStatus().toString());
+//                CompassDialogFragment compassDialogFragment = new CompassDialogFragment();
+//                compassDialogFragment.setDialogListener(new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //确定按钮的响应事件
+//                        if (which == DialogInterface.BUTTON_POSITIVE) {
+//                            //---------------------------B1compass校准-------------------------------
+//                            djiCompass.startCompassCalibration(new DJiCompassCalibrateCallback());
+//                        }
+//                    }
+//                });
+//                compassDialogFragment.show(getSupportFragmentManager(), "compass");
+//            }
+//        });
 
     }
 

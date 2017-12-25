@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +36,7 @@ public class WaveView extends View {
         }
     };
 
-    private Interpolator mInterpolator = new LinearInterpolator();
+    private Interpolator mInterpolator = new AccelerateInterpolator(1.2f);
 
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

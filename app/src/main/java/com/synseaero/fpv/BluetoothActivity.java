@@ -64,7 +64,6 @@ public class BluetoothActivity extends FragmentActivity implements View.OnClickL
         wcConnect.setDuration(5000);
         wcConnect.setStyle(Paint.Style.FILL);
         wcConnect.setColor(getResources().getColor(R.color.blue));
-        wcConnect.setInterpolator(new LinearOutSlowInInterpolator());
 
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
