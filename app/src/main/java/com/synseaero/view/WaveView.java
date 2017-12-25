@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -172,7 +173,7 @@ public class WaveView extends View {
     public void setInterpolator(Interpolator interpolator) {
         mInterpolator = interpolator;
         if (mInterpolator == null) {
-            mInterpolator = new LinearInterpolator();
+            mInterpolator = new AccelerateInterpolator(1.2f);
         }
     }
 }

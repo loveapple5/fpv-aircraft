@@ -83,7 +83,6 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         wcConnect.setDuration(5000);
         wcConnect.setStyle(Paint.Style.FILL);
         wcConnect.setColor(getResources().getColor(R.color.blue));
-        wcConnect.setInterpolator(new AccelerateInterpolator(1.2f));
         wcConnect.start();
 
         btnSetting = findViewById(R.id.tv_setting);
