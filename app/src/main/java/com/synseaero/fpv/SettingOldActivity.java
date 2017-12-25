@@ -15,13 +15,13 @@ import com.synseaero.fpv.fragment.CameraVideoFragment;
 import com.synseaero.fpv.fragment.FlightControllerSettingFragment;
 import com.synseaero.fpv.fragment.GimbalSettingFragment;
 import com.synseaero.fpv.fragment.RemoteControllerSettingFragment;
-import com.synseaero.fpv.fragment.WiFiLinkSettingFragment;
+//import com.synseaero.fpv.fragment.WiFiLinkSettingFragment;
 
 public class SettingOldActivity extends FragmentActivity {
 
     private FlightControllerSettingFragment mFCSFragment;
     private RemoteControllerSettingFragment mRCSFragment;
-    private WiFiLinkSettingFragment mWLSFragment;
+//    private WiFiLinkSettingFragment mWLSFragment;
     private BatterySettingFragment mBSFragment;
     private GimbalSettingFragment gimbalFragment;
     private CameraFragment cameraFragment;
@@ -77,18 +77,18 @@ public class SettingOldActivity extends FragmentActivity {
 
             }
         });
-        btnWLS = (Button) findViewById(R.id.btn_wls);
-        btnWLS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                mWLSFragment = new WiFiLinkSettingFragment();
-                transaction.replace(R.id.container, mWLSFragment);
-                transaction.commit();
-
-            }
-        });
+//        btnWLS = (Button) findViewById(R.id.btn_wls);
+//        btnWLS.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                FragmentTransaction transaction = fm.beginTransaction();
+//                mWLSFragment = new WiFiLinkSettingFragment();
+//                transaction.replace(R.id.container, mWLSFragment);
+//                transaction.commit();
+//
+//            }
+//        });
         btnBS = (Button) findViewById(R.id.btn_bs);
         btnBS.setOnClickListener(new View.OnClickListener() {
             @Override
