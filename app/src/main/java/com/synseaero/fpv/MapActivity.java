@@ -19,7 +19,7 @@ import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 
 import java.util.Timer;
 import java.util.TimerTask;

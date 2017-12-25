@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 import com.synseaero.view.SwitchButton;
 
 public class GimbalActivity extends DJIActivity implements View.OnClickListener {

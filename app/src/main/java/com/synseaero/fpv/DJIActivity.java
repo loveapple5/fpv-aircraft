@@ -5,7 +5,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.FragmentActivity;
 
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 
 
 public class DJIActivity extends FragmentActivity {

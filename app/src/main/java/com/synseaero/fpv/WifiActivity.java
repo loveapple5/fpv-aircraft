@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 
 public class WifiActivity extends DJIActivity implements View.OnClickListener {
 

@@ -212,7 +212,7 @@
             android:enabled="true" />
 
         <service
-            android:name="com.synseaero.fpv.dji.DJIService"
+            android:name="com.synseaero.dji.DJIService"
             android:enabled="true" />
     </application>
 

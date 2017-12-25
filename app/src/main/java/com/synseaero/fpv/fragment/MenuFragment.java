@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.synseaero.fpv.R;
 import com.synseaero.fpv.model.Menu;
 import com.synseaero.fpv.model.MenuItem;
-import com.synseaero.fpv.util.DensityUtil;
+import com.synseaero.util.DensityUtil;
 import com.synseaero.view.SwitchButton;
 
 public class MenuFragment extends Fragment {

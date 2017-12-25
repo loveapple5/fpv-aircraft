@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.synseaero.fpv.util.DensityUtil;
+import com.synseaero.util.DensityUtil;
 
 import java.util.HashMap;
 

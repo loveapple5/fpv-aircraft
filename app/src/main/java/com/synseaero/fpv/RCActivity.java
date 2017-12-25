@@ -12,7 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 import com.synseaero.view.ActionSheetDialog;
 
 import dji.common.remotecontroller.DJIRCControlStyle;

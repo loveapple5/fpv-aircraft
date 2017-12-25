@@ -13,7 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.synseaero.fpv.util.StringUtils;
+import com.synseaero.util.StringUtils;
 
 import dji.common.battery.DJIBatteryState;
 import dji.common.error.DJIError;

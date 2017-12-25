@@ -13,7 +13,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.multidex.MultiDex;
 
-import com.synseaero.fpv.dji.DJIService;
+import com.synseaero.dji.DJIService;
 
 import java.io.File;
 import java.io.FileOutputStream;

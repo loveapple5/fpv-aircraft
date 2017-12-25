@@ -7,7 +7,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
-import com.synseaero.fpv.util.CoordinateUtils;
+import com.synseaero.util.CoordinateUtils;
 
 import java.util.Vector;
 

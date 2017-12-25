@@ -16,7 +16,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 import com.synseaero.view.WaveView;
 
 public class ConnectActivity extends DJIActivity implements View.OnClickListener {

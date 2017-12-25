@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synseaero.fpv.util.DJIUtils;
+import com.synseaero.util.DJIUtils;
 import com.synseaero.view.ActionSheetDialog;
 
 import dji.common.camera.DJICameraSettingsDef;

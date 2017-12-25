@@ -20,7 +20,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.synseaero.fpv.bluetooth.BluetoothLeService;
-import com.synseaero.fpv.dji.MessageType;
+import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.fragment.FPVFragment;
 import com.synseaero.fpv.fragment.MenuFragment;
 import com.synseaero.fpv.model.FlightHeightMenuItem;
