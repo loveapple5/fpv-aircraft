@@ -50,7 +50,6 @@ public class FPVActivity extends DJIActivity {
 
     private static final String TAG = FPVActivity.class.getName();
 
-    //    private TPVFragment mTPVFragment;
     private FPVFragment mFPVFragment;
 
     private MenuFragment mCurMenuFragment;
@@ -115,7 +114,6 @@ public class FPVActivity extends DJIActivity {
         setContentView(R.layout.activity_fpv);
 
         mFPVFragment = new FPVFragment();
-        //mTPVFragment = new TPVFragment();
 
         //mMenuFragment = new MenuFragment();
         //mMenuFragment.setMenuData(menuData);
