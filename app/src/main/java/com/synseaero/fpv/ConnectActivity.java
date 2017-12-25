@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.synseaero.fpv.dji.MessageType;
-import com.synseaero.fpv.view.WaveView;
+import com.synseaero.view.WaveView;
 
 public class ConnectActivity extends DJIActivity implements View.OnClickListener {
 

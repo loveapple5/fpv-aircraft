@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.synseaero.fpv.dji.MessageType;
-import com.synseaero.fpv.view.ActionSheetDialog;
+import com.synseaero.view.ActionSheetDialog;
 
 import dji.common.remotecontroller.DJIRCControlStyle;
 

@@ -13,7 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.synseaero.fpv.view.SwitchButton;
+import com.synseaero.view.SwitchButton;
 
 import dji.common.error.DJIError;
 import dji.common.util.DJICommonCallbacks;

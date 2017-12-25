@@ -26,12 +26,12 @@
             android:textColor="@color/gray"
             android:textStyle="bold" />
 
-        <com.synseaero.fpv.view.SquareRelativeLayout
+        <com.synseaero.view.SquareRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
-            <com.synseaero.fpv.view.WaveView
+            <com.synseaero.view.WaveView
                 android:id="@+id/wv_connect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -42,7 +42,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:src="@drawable/controller" />
-        </com.synseaero.fpv.view.SquareRelativeLayout>
+        </com.synseaero.view.SquareRelativeLayout>
 
         <TextView
             android:id="@+id/tv_search_hint"

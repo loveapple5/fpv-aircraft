@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.synseaero.fpv.view.WaveView;
+import com.synseaero.view.WaveView;
 
 import java.util.ArrayList;
 

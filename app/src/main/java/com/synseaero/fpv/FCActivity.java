@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.synseaero.fpv.util.DJIUtils;
-import com.synseaero.fpv.view.ActionSheetDialog;
-import com.synseaero.fpv.view.SwitchButton;
+import com.synseaero.view.ActionSheetDialog;
+import com.synseaero.view.SwitchButton;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.DJIFlightFailsafeOperation;

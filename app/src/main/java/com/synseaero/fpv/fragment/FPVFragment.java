@@ -40,11 +40,10 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.fpv.FPVActivity;
-import com.synseaero.fpv.FPVDemoApplication;
 import com.synseaero.fpv.opengl.MyGLSurfaceView;
 import com.synseaero.fpv.util.DensityUtil;
 import com.synseaero.fpv.util.StringUtils;
-import com.synseaero.fpv.view.CircleMenuLayout;
+import com.synseaero.view.CircleMenuLayout;
 
 import java.util.ArrayList;
 import java.util.Vector;

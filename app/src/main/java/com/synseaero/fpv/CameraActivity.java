@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.synseaero.fpv.util.DJIUtils;
-import com.synseaero.fpv.view.ActionSheetDialog;
+import com.synseaero.view.ActionSheetDialog;
 
 import dji.common.camera.DJICameraSettingsDef;
 import dji.common.error.DJIError;
