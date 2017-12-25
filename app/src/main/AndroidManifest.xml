@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dji.FPVDemo">
+    package="com.synseaero.fpv">
 
     <!-- DJI SDK need permission -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -46,7 +46,8 @@
 
         <meta-data
             android:name="com.dji.sdk.API_KEY"
-            android:value="52f9794311e7259ab6c49998" />
+            android:value="258a00075f6ba13066ce9d6f" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ed379eec475c1132c19badfab1b5702b" />
@@ -207,11 +208,11 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <service
-            android:name="com.dji.FPVDemo.bluetooth.BluetoothLeService"
+            android:name="com.synseaero.fpv.bluetooth.BluetoothLeService"
             android:enabled="true" />
 
         <service
-            android:name="com.dji.FPVDemo.dji.DJIService"
+            android:name="com.synseaero.fpv.dji.DJIService"
             android:enabled="true" />
     </application>
 

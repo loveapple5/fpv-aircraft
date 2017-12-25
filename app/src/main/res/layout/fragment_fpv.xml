@@ -271,7 +271,7 @@
             android:src="@drawable/direction"
             android:rotationX="60" />
 
-        <com.dji.FPVDemo.view.CircleMenuLayout
+        <com.synseaero.fpv.view.CircleMenuLayout
             android:id="@+id/menu_tpv"
             android:layout_width="200dp"
             android:layout_height="200dp"
