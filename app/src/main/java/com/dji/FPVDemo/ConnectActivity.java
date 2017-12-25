@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,7 +83,7 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         wcConnect.setDuration(5000);
         wcConnect.setStyle(Paint.Style.FILL);
         wcConnect.setColor(getResources().getColor(R.color.blue));
-        wcConnect.setInterpolator(new LinearOutSlowInInterpolator());
+        wcConnect.setInterpolator(new AccelerateInterpolator(1.2f));
         wcConnect.start();
 
         btnSetting = findViewById(R.id.tv_setting);
@@ -111,20 +111,7 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
 
         @Override
         public void onReceive(Context context, Intent intent) {
-//            DJIBaseProduct mProduct = FPVDemoApplication.getProductInstance();
-//
-//            if (null != mProduct && mProduct.isConnected()) {
-//                btnSetting.setEnabled(true);
-//                btnPrepareFlight.setEnabled(true);
-//
-//                if (null != mProduct.getModel()) {
-//                    tvModel.setText(mProduct.getModel().getDisplayName());
-//                }
-//
-//            } else {
-//                btnSetting.setEnabled(false);
-//                btnPrepareFlight.setEnabled(false);
-//            }
+
             registerDJIMessenger(MessageType.MSG_PRODUCT_CHANGED, messenger);
             registerDJIMessenger(MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED, messenger);
 
@@ -142,13 +129,14 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
             ivLauncher.setVisibility(View.GONE);
         }
     };
-    
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_setting:
                 Intent intent = new Intent(this, SettingActivity.class);
                 startActivity(intent);
+
                 break;
             case R.id.tv_prepare_flight:
                 Intent fpvIntent = new Intent(this, BluetoothActivity.class);

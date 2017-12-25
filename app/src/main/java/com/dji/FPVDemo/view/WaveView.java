@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.dji.FPVDemo.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,12 +42,22 @@ public class WaveView extends View {
 
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
+    private Paint mStokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     public WaveView(Context context) {
         super(context);
+        init();
     }
 
     public WaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
+
+    private void init() {
+        mStokePaint.setStyle(Paint.Style.STROKE);
+        mStokePaint.setColor(getResources().getColor(R.color.blue));
+        mStokePaint.setStrokeWidth(1);
     }
 
     public void setStyle(Paint.Style style) {
@@ -100,7 +112,10 @@ public class WaveView extends View {
             float radius = circle.getCurrentRadius();
             if (System.currentTimeMillis() - circle.mCreateTime < mDuration) {
                 mPaint.setAlpha(circle.getAlpha());
+                mStokePaint.setAlpha(circle.getAlpha() * 4);
                 canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, mPaint);
+                canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, mStokePaint);
+
             } else {
                 iterator.remove();
             }
@@ -147,7 +162,7 @@ public class WaveView extends View {
 
         int getAlpha() {
             float percent = (getCurrentRadius() - mInitialRadius) / (mMaxRadius - mInitialRadius);
-            return (int) (255 - mInterpolator.getInterpolation(percent) * 255);
+            return (int) (64 - mInterpolator.getInterpolation(percent) * 64);
         }
 
         float getCurrentRadius() {
