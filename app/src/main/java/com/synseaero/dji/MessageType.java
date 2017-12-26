@@ -40,8 +40,8 @@ public class MessageType {
 
     public static final int MSG_GET_FC_STATE = 100022;
 
-    public static final int MSG_GET_FC_HARDWARE_STATE = 100023;
-    public static final int MSG_STOP_GET_FC_HARDWARE_STATE = 100024;
+    public static final int MSG_WATCH_FC_HARDWARE_STATE = 100023;
+    public static final int MSG_UNWATCH_FC_HARDWARE_STATE = 100024;
 
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
@@ -80,4 +80,5 @@ public class MessageType {
     public static final int MSG_GET_FC_STATE_RESPONSE = 200022;
 
     public static final int MSG_GET_FC_HARDWARE_STATE_RESPONSE = 200023;
+
 }

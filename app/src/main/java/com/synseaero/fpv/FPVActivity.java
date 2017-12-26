@@ -140,7 +140,7 @@ public class FPVActivity extends DJIActivity {
         registerDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
 
         Message message = Message.obtain();
-        message.what = MessageType.MSG_GET_FC_HARDWARE_STATE;
+        message.what = MessageType.MSG_WATCH_FC_HARDWARE_STATE;
         sendDJIMessage(message);
     }
 
@@ -149,7 +149,7 @@ public class FPVActivity extends DJIActivity {
         unregisterDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
 
         Message message = Message.obtain();
-        message.what = MessageType.MSG_STOP_GET_FC_HARDWARE_STATE;
+        message.what = MessageType.MSG_UNWATCH_FC_HARDWARE_STATE;
         sendDJIMessage(message);
     }
 

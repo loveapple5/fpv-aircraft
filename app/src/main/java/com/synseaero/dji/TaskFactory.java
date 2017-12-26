@@ -16,12 +16,12 @@ import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.SetPitchExtension;
-import com.synseaero.dji.remotecontroller.GetHardwareState;
+import com.synseaero.dji.remotecontroller.WatchHardwareState;
 import com.synseaero.dji.remotecontroller.GetRCMode;
 import com.synseaero.dji.remotecontroller.GetWheelSpeed;
 import com.synseaero.dji.remotecontroller.SetRCMode;
 import com.synseaero.dji.remotecontroller.SetWheelSpeed;
-import com.synseaero.dji.remotecontroller.StopGetHardwareState;
+import com.synseaero.dji.remotecontroller.UnwatchHardwareState;
 
 public class TaskFactory {
 
@@ -108,14 +108,14 @@ public class TaskFactory {
                 return new GetCurrentState(data, messenger);
 
             }
-            case (MessageType.MSG_GET_FC_HARDWARE_STATE): {
+            case (MessageType.MSG_WATCH_FC_HARDWARE_STATE): {
 
-                return new GetHardwareState(data, messenger);
+                return new WatchHardwareState(data, messenger);
 
             }
-            case (MessageType.MSG_STOP_GET_FC_HARDWARE_STATE): {
+            case (MessageType.MSG_UNWATCH_FC_HARDWARE_STATE): {
 
-                return new StopGetHardwareState(data, messenger);
+                return new UnwatchHardwareState(data, messenger);
 
             }
         }
