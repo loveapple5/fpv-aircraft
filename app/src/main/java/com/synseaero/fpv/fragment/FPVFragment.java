@@ -44,7 +44,6 @@ import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.FPVActivity;
 import com.synseaero.fpv.opengl.MyGLSurfaceView;
 import com.synseaero.util.DensityUtil;
-import com.synseaero.util.StringUtils;
 import com.synseaero.view.CircleMenuLayout;
 
 import java.util.ArrayList;
@@ -52,24 +51,11 @@ import java.util.Vector;
 
 import dji.common.airlink.DJISignalInformation;
 import dji.common.airlink.SignalQualityUpdatedCallback;
-import dji.common.battery.DJIBatteryState;
-import dji.common.camera.DJICameraExposureParameters;
-import dji.common.camera.DJICameraSettingsDef;
-import dji.common.flightcontroller.DJIFlightControllerCurrentState;
-import dji.common.product.Model;
-import dji.common.remotecontroller.DJIRCBatteryInfo;
-import dji.sdk.airlink.DJIAirLink;
 import dji.sdk.airlink.DJIAuxLink;
 import dji.sdk.airlink.DJILBAirLink;
-import dji.sdk.airlink.DJIOcuSyncLink;
 import dji.sdk.base.DJIBaseProduct;
-import dji.sdk.battery.DJIBattery;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
-import dji.sdk.flightcontroller.DJIFlightController;
-import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
-import dji.sdk.products.DJIAircraft;
-import dji.sdk.remotecontroller.DJIRemoteController;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 
@@ -82,10 +68,6 @@ public class FPVFragment extends Fragment {
     public static final int MSG_BATTERY_STATE = 3;
     public static final int MSG_CONTROL_SIGNAL = 4;
     public static final int MSG_CAMERA_INFO = 5;
-
-    private DJIAircraft djiAircraft;
-    private DJIFlightController djiFlightController;
-    private DJICamera djiCamera;
 
     private int wWidth;
     private int wHeight;
@@ -398,7 +380,6 @@ public class FPVFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        djiAircraft = (DJIAircraft) DJISDKManager.getInstance().getDJIProduct();
 
         WindowManager wm = getActivity().getWindowManager();
         wWidth = wm.getDefaultDisplay().getWidth();
@@ -566,94 +547,34 @@ public class FPVFragment extends Fragment {
         DJIBaseProduct product = DJISDKManager.getInstance().getDJIProduct();
         if (product != null && product.isConnected()) {
             DJICamera camera = product.getCamera();
-            if (camera != null) {
-                // Set the callback
-                camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
-                //tvPreview.setSurfaceTextureListener(fpvTextureListener);
-                //tvTpvPreview.setSurfaceTextureListener(tpvTextureListener);
-            }
+            // Set the callback
+            camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
         }
 
-        //Log.d("djiAircraft", djiAircraft.toString());
-
-        if (djiAircraft != null) {
-            //飞机电池电量
-            //DJIBattery djiBattery = djiAircraft.getBattery();
-            //djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
-
-            //遥控信号强度
-            //上行信号强度
-            DJIAirLink airLink = djiAircraft.getAirLink();
-            Model model = djiAircraft.getModel();
-            if (model == Model.Phantom_3_Standard || model == Model.Phantom_3_4K) {
-
-                DJIAuxLink auxLink = airLink.getAuxLink();
-                auxLink.setAuxLinkUpdatedRemoteControllerSignalInformationCallback(new AuxRCSignalCallback());
-
-            } else if (model == Model.MavicPro) {
-                DJIOcuSyncLink ocuSyncLink = airLink.getOcuSyncLink();
-                ocuSyncLink.setUplinkSignalQualityUpdatedCallback(new OcuSignalCallback());
-                //ocuSyncLink.setDownlinkSignalQualityUpdatedCallback();
-            } else {
-                DJILBAirLink lbAirLink = airLink.getLBAirLink();
-                //下行
-                lbAirLink.setDJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback(new LBRCSignalCallback());
-                //上行
-                //lbAirLink.setLBAirLinkUpdatedRemoteControllerSignalInformationCallback();
-            }
-
-//            djiFlightController = djiAircraft.getFlightController();
-//            djiFlightController.setUpdateSystemStateCallback(new FlightControllerCallback());
-            //DJIRemoteController remoteController = djiAircraft.getRemoteController();
-            //remoteController.setBatteryStateUpdateCallback(new RCBatteryStateCallback());
-
-//            djiCamera = djiAircraft.getCamera();
-//            djiCamera.setCameraUpdatedCurrentExposureValuesCallback(new DJICamera.CameraUpdatedCurrentExposureValuesCallback() {
+//        if (djiAircraft != null) {
 //
-//                @Override
-//                public void onResult(DJICameraExposureParameters exposure) {
-//                    DJICameraSettingsDef.CameraAperture aperture = exposure.getAperture();
-//                    DJICameraSettingsDef.CameraShutterSpeed speed = exposure.getShutterSpeed();
-//                    DJICameraSettingsDef.CameraISO ISO = exposure.getISO();
-//                    DJICameraSettingsDef.CameraExposureCompensation compensation = exposure.getExposureCompensation();
+//            //遥控信号强度
+//            //上行信号强度
+//            DJIAirLink airLink = djiAircraft.getAirLink();
+//            Model model = djiAircraft.getModel();
+//            if (model == Model.Phantom_3_Standard || model == Model.Phantom_3_4K) {
 //
-//                    if (aperture == null || speed == null || ISO == null || compensation == null) {
-//                        return;
-//                    }
+//                DJIAuxLink auxLink = airLink.getAuxLink();
+//                auxLink.setAuxLinkUpdatedRemoteControllerSignalInformationCallback(new AuxRCSignalCallback());
 //
-//                    String strSpeed = "";
-//                    float flSpeed = speed.value();
+//            } else if (model == Model.MavicPro) {
+//                DJIOcuSyncLink ocuSyncLink = airLink.getOcuSyncLink();
+//                ocuSyncLink.setUplinkSignalQualityUpdatedCallback(new OcuSignalCallback());
+//                //ocuSyncLink.setDownlinkSignalQualityUpdatedCallback();
+//            } else {
+//                DJILBAirLink lbAirLink = airLink.getLBAirLink();
+//                //下行
+//                lbAirLink.setDJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback(new LBRCSignalCallback());
+//                //上行
+//                //lbAirLink.setLBAirLinkUpdatedRemoteControllerSignalInformationCallback();
+//            }
 //
-//                    if (flSpeed >= 1) {
-//                        strSpeed = String.format("%.2f", flSpeed);
-//                    } else {
-//                        float denominator = 1 / flSpeed;
-//                        StringBuilder sb = new StringBuilder();
-//                        strSpeed = sb.append("1/").append(String.format("%.2f", denominator)).toString();
-//                    }
-//
-//                    //Log.d("aperture", aperture.value() + "");
-//                    //Log.d("ISO", ISO.value() + "");
-//
-//                    float flAperture = (float) aperture.value() / 100;
-//                    String strAperture = String.format("%.1f", flAperture);
-//
-//                    String strISO = StringUtils.getISOString(ISO);
-//                    String EV = StringUtils.getEVString(compensation);
-//
-//                    Message msg = Message.obtain();
-//                    msg.what = MSG_CAMERA_INFO;
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("shutterSpeed", strSpeed);
-//                    bundle.putString("aperture", "f " + strAperture);
-//                    bundle.putString("ISO", "ISO " + strISO);
-//                    bundle.putString("EV", "EV " + EV);
-//                    msg.setData(bundle);
-//                    mHandler.sendMessage(msg);
-//                }
-//            });
-
-        }
+//        }
 
     }
 
@@ -664,17 +585,13 @@ public class FPVFragment extends Fragment {
 
         getActivity().unregisterReceiver(mReceiver);
 
-        if (djiAircraft != null) {
-            DJIFlightController flightController = djiAircraft.getFlightController();
-            flightController.setUpdateSystemStateCallback(null);
-            DJIBattery djiBattery = djiAircraft.getBattery();
-            djiBattery.setBatteryStateUpdateCallback(null);
 
-            DJICamera camera = djiAircraft.getCamera();
-            if (camera != null) {
-                // Reset the callback
-                camera.setDJICameraReceivedVideoDataCallback(null);
-            }
+        //视频流数据量大，不使用消息系统进行数据传输
+        DJIBaseProduct product = DJISDKManager.getInstance().getDJIProduct();
+        if (product != null && product.isConnected()) {
+            DJICamera camera = product.getCamera();
+            // Reset the callback
+            camera.setDJICameraReceivedVideoDataCallback(null);
         }
 
 
@@ -721,70 +638,6 @@ public class FPVFragment extends Fragment {
         }
     }
 
-//    class FlightControllerCallback implements DJIFlightControllerDelegate.FlightControllerUpdateSystemStateCallback {
-//
-//        @Override
-//        public void onResult(DJIFlightControllerCurrentState FCState) {
-//            double speed = Math.sqrt(Math.pow(FCState.getVelocityX(), 2) + Math.pow(FCState.getVelocityY(), 2));
-//            float vSpeed = -1 * FCState.getVelocityZ();
-//            // get aircraft altitude
-//            double altitude;
-//            if (FCState.isUltrasonicBeingUsed()) {
-//                altitude = FCState.getUltrasonicHeight();
-//            } else {
-//                altitude = FCState.getAircraftLocation().getAltitude();
-//            }
-//
-//            double longA = FCState.getAircraftLocation().getCoordinate2D().getLongitude();
-//            double longH = FCState.getHomeLocation().getLongitude();
-//            double latA = FCState.getAircraftLocation().getCoordinate2D().getLatitude();
-//            double latH = FCState.getHomeLocation().getLatitude();
-//
-//            FCState.getAircraftLocation().getLongitude();
-//            FCState.getAircraftLocation().getLatitude();
-//
-//            double radLatA = Math.toRadians(FCState.getAircraftLocation().getCoordinate2D().getLatitude());
-//            double radLatH = Math.toRadians(FCState.getHomeLocation().getLatitude());
-//            double a = radLatA - radLatH;
-//            double b = Math.toRadians(FCState.getAircraftLocation().getCoordinate2D().getLongitude())
-//                    - Math.toRadians(FCState.getHomeLocation().getLongitude());
-//            double dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
-//                    Math.cos(radLatA) * Math.cos(radLatH) * Math.pow(Math.sin(b / 2), 2)));
-//            dis = dis * 6378.137; //  the earth radius= 6378.137km
-//            //  distance into meter
-//            dis = Math.round(dis * 10000.0) / 10000.0 * 1000.0;
-//
-//            int gpsSignalLevel = FCState.getGpsSignalStatus().value();
-//
-//            Double heading = djiFlightController.getCompass().getHeading();
-//            Double AircraftPitch = FCState.getAttitude().pitch;
-//            Double AircraftRoll = FCState.getAttitude().roll;
-//            Double AircraftYaw = FCState.getAttitude().yaw;
-//
-//            Message msg = Message.obtain();
-//            Bundle bundle = new Bundle();
-//            bundle.putDouble("speed", speed);
-//            bundle.putFloat("vSpeed", vSpeed);
-//            bundle.putDouble("altitude", altitude);
-//            bundle.putDouble("distance", dis);
-//            bundle.putInt("gpsSignalLevel", gpsSignalLevel);
-//
-//            bundle.putDouble("longA", longA);
-//            bundle.putDouble("longH", longH);
-//            bundle.putDouble("latA", latA);
-//            bundle.putDouble("latH", latH);
-//
-//            bundle.putDouble("AircraftPitch", AircraftPitch);
-//            bundle.putDouble("AircraftRoll", AircraftRoll);
-//            bundle.putDouble("AircraftYaw", AircraftYaw);
-//            bundle.putDouble("Head", heading);
-//
-//            msg.what = MSG_FLIGHT_CONTROLLER_CURRENT_STATE;
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//        }
-//    }
-
     class VSpeedWatcher implements TextWatcher {
 
         @Override
@@ -824,37 +677,6 @@ public class FPVFragment extends Fragment {
             rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
         }
     }
-
-//    class RCBatteryStateCallback implements DJIRemoteController.RCBatteryStateUpdateCallback {
-//
-//        @Override
-//        public void onBatteryStateUpdate(DJIRemoteController djiRemoteController, DJIRCBatteryInfo batteryInfo) {
-//            int remainingPercent = batteryInfo.remainingEnergyInPercent;
-//
-//            Message msg = Message.obtain();
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("remainingPercent", remainingPercent);
-//            msg.what = MSG_REMOTE_CONTROLLER_BATTERY_STATE;
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//
-//        }
-//    }
-//
-//    class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
-//
-//        @Override
-//        public void onResult(DJIBatteryState djiBatteryState) {
-//            int remainingPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
-//
-//            Message msg = Message.obtain();
-//            msg.what = MSG_BATTERY_STATE;
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("remainingPercent", remainingPercent);
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//        }
-//    }
 
     class AuxRCSignalCallback implements DJIAuxLink.DJIAuxLinkUpdatedRemoteControllerSignalInformationCallback {
 
@@ -917,6 +739,7 @@ public class FPVFragment extends Fragment {
         }
     }
 
+    //手机位置
     class MyLocationListener implements LocationListener {
 
         @Override
@@ -955,7 +778,7 @@ public class FPVFragment extends Fragment {
         }
     }
 
-
+    //手机姿态
     class MySensorEventListener implements SensorEventListener {
         @Override
         public void onSensorChanged(SensorEvent event) {
