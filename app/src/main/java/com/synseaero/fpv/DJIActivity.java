@@ -41,4 +41,14 @@ public class DJIActivity extends FragmentActivity {
         return app.sendDJIMessage(message);
     }
 
+    public boolean sendWatchDJIMessage(int messageId, int flag) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("flag", flag);
+        Message message = Message.obtain();
+        message.what = messageId;
+        message.setData(bundle);
+        return app.sendDJIMessage(message);
+    }
+
 }
