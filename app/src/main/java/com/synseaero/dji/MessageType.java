@@ -40,8 +40,17 @@ public class MessageType {
 
     public static final int MSG_GET_FC_STATE = 100022;
 
-    public static final int MSG_WATCH_FC_HARDWARE_STATE = 100023;
-    public static final int MSG_UNWATCH_FC_HARDWARE_STATE = 100024;
+    public static final int MSG_WATCH_RC_HARDWARE_STATE = 100023;
+
+    public static final int MSG_WATCH_CAMERA_EXPOSURE = 100024;
+
+    public static final int MSG_WATCH_RC_BATTERY_STATE = 100025;
+
+    public static final int MSG_WATCH_BATTERY_STATE = 100026;
+
+    public static final int MSG_WATCH_GIMBAL_STATE = 100027;
+
+    public static final int MSG_WATCH_SDCARD_STATE = 100028;
 
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
@@ -79,6 +88,15 @@ public class MessageType {
 
     public static final int MSG_GET_FC_STATE_RESPONSE = 200022;
 
-    public static final int MSG_GET_FC_HARDWARE_STATE_RESPONSE = 200023;
+    public static final int MSG_GET_RC_HARDWARE_STATE_RESPONSE = 200023;
 
+    public static final int MSG_GET_CAMERA_EXPOSURE_RESPONSE = 200024;
+
+    public static final int MSG_GET_RC_BATTERY_STATE_RESPONSE = 200025;
+
+    public static final int MSG_GET_BATTERY_STATE_RESPONSE = 200026;
+
+    public static final int MSG_GET_GIMBAL_STATE_RESPONSE = 200027;
+
+    public static final int MSG_GET_SDCARD_STATE_RESPONSE = 200028;
 }

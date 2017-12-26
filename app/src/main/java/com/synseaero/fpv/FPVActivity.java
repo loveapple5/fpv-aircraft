@@ -39,6 +39,8 @@ import com.synseaero.fpv.model.VideoRatioMenuItem;
 import com.synseaero.fpv.model.VolumeMenuItem;
 import com.synseaero.fpv.model.WhiteBalanceMenuItem;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 
@@ -70,12 +72,14 @@ public class FPVActivity extends DJIActivity {
     private long c2DownTime;
     private long c2UpTime;
 
+    private Timer timer;
+
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
             switch (msg.what) {
-                case MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE:
+                case MessageType.MSG_GET_RC_HARDWARE_STATE_RESPONSE:
                     boolean c2Present = bundle.getBoolean("c2Present");
                     boolean c2Down = bundle.getBoolean("c2Down");
                     if (c2Present) {
@@ -137,20 +141,70 @@ public class FPVActivity extends DJIActivity {
 
     protected void onStart() {
         super.onStart();
-        registerDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
+        //注册大疆响应消息
+        //遥控器按键状态
+        registerDJIMessenger(MessageType.MSG_GET_RC_HARDWARE_STATE_RESPONSE, messenger);
 
-        Message message = Message.obtain();
-        message.what = MessageType.MSG_WATCH_FC_HARDWARE_STATE;
-        sendDJIMessage(message);
+        //相机曝光属性
+        registerDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, mFPVFragment.getMessenger());
+        //遥控器状态
+        registerDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //飞机电池状态
+        registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //云台状态
+        registerDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //飞控状态
+        registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, mFPVFragment.getMessenger());
+
+        //停止watch rc按键状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 0);
+        //停止watch camera exposure状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
+        //停止watch rc电池状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
+        //停止watch飞机电池状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+        //停止watch云台状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Message message2 = Message.obtain();
+                message2.what = MessageType.MSG_GET_FC_STATE;
+                sendDJIMessage(message2);
+            }
+        }, 1000, 1000);
     }
 
     protected void onStop() {
         super.onStop();
-        unregisterDJIMessenger(MessageType.MSG_GET_FC_HARDWARE_STATE_RESPONSE, messenger);
+        //遥控器按键状态
+        unregisterDJIMessenger(MessageType.MSG_GET_RC_HARDWARE_STATE_RESPONSE, messenger);
+        //相机曝光属性
+        unregisterDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, mFPVFragment.getMessenger());
+        //遥控器电池状态
+        unregisterDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //飞机电池状态
+        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //云台状态
+        unregisterDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, mFPVFragment.getMessenger());
+        //飞控状态
+        unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, mFPVFragment.getMessenger());
 
-        Message message = Message.obtain();
-        message.what = MessageType.MSG_UNWATCH_FC_HARDWARE_STATE;
-        sendDJIMessage(message);
+        //停止watch rc按键状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 1);
+        //停止watch camera exposure状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
+        //停止watch rc电池状态变化
+        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 1);
+        //停止watch飞机电池状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+        //停止watch云台状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
+
+        timer.cancel();
     }
 
     private static IntentFilter makeGattUpdateIntentFilter() {

@@ -8,6 +8,8 @@ import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.GetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiSSId;
+import com.synseaero.dji.battery.WatchBatteryState;
+import com.synseaero.dji.camera.WatchExposure;
 import com.synseaero.dji.flightcontroller.GetCurrentState;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
@@ -16,12 +18,13 @@ import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.SetPitchExtension;
-import com.synseaero.dji.remotecontroller.WatchHardwareState;
+import com.synseaero.dji.gimbal.WatchGimbalState;
+import com.synseaero.dji.remotecontroller.WatchRCBatteryState;
+import com.synseaero.dji.remotecontroller.WatchRCHardwareState;
 import com.synseaero.dji.remotecontroller.GetRCMode;
 import com.synseaero.dji.remotecontroller.GetWheelSpeed;
 import com.synseaero.dji.remotecontroller.SetRCMode;
 import com.synseaero.dji.remotecontroller.SetWheelSpeed;
-import com.synseaero.dji.remotecontroller.UnwatchHardwareState;
 
 public class TaskFactory {
 
@@ -108,14 +111,29 @@ public class TaskFactory {
                 return new GetCurrentState(data, messenger);
 
             }
-            case (MessageType.MSG_WATCH_FC_HARDWARE_STATE): {
+            case (MessageType.MSG_WATCH_RC_HARDWARE_STATE): {
 
-                return new WatchHardwareState(data, messenger);
+                return new WatchRCHardwareState(data, messenger);
 
             }
-            case (MessageType.MSG_UNWATCH_FC_HARDWARE_STATE): {
+            case (MessageType.MSG_WATCH_CAMERA_EXPOSURE): {
 
-                return new UnwatchHardwareState(data, messenger);
+                return new WatchExposure(data, messenger);
+
+            }
+            case (MessageType.MSG_WATCH_RC_BATTERY_STATE): {
+
+                return new WatchRCBatteryState(data, messenger);
+
+            }
+            case (MessageType.MSG_WATCH_BATTERY_STATE): {
+
+                return new WatchBatteryState(data, messenger);
+
+            }
+            case (MessageType.MSG_WATCH_GIMBAL_STATE): {
+
+                return new WatchGimbalState(data, messenger);
 
             }
         }
