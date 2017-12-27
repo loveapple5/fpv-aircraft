@@ -13,7 +13,7 @@ import com.synseaero.dji.battery.SetSelfDischargeDay;
 import com.synseaero.dji.battery.WatchBatteryState;
 import com.synseaero.dji.camera.WatchExposure;
 import com.synseaero.dji.camera.WatchSDCardState;
-import com.synseaero.dji.flightcontroller.GetCurrentState;
+import com.synseaero.dji.flightcontroller.GetFCState;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
 import com.synseaero.dji.flightcontroller.SetGoHomeAltitude;
@@ -111,7 +111,7 @@ public class TaskFactory {
             }
             case (MessageType.MSG_GET_FC_STATE): {
 
-                return new GetCurrentState(data, messenger);
+                return new GetFCState(data, messenger);
 
             }
             case (MessageType.MSG_WATCH_RC_HARDWARE_STATE): {
