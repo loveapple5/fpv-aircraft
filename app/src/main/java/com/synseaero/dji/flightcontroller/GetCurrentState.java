@@ -62,7 +62,8 @@ public class GetCurrentState extends Task {
             Double AircraftRoll = curState.getAttitude().roll;
             Double AircraftYaw = curState.getAttitude().yaw;
 
-            Message message = Message.obtain();
+            int flightTime = curState.getFlightTime();
+
             Bundle bundle = new Bundle();
             bundle.putDouble("speed", speed);
             bundle.putFloat("vSpeed", vSpeed);
@@ -80,6 +81,17 @@ public class GetCurrentState extends Task {
             bundle.putDouble("AircraftYaw", AircraftYaw);
             bundle.putDouble("Head", heading);
 
+            bundle.putInt("flightTime", flightTime);
+
+            //飞行中
+            curState.isFlying();
+            //到达最大飞行高度
+            curState.isReachLimitedHeight();
+            //到达最大飞行距离
+            curState.isReachLimitedRadius();
+
+
+            Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_STATE_RESPONSE;
             message.setData(bundle);
             try {

@@ -1,73 +1,79 @@
 package com.synseaero.fpv;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
+import android.os.Messenger;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.synseaero.dji.MessageType;
 import com.synseaero.util.StringUtils;
 
-import dji.common.battery.DJIBatteryState;
-import dji.common.error.DJIError;
-import dji.common.flightcontroller.DJIFlightControllerCurrentState;
-import dji.common.util.DJICommonCallbacks;
-import dji.sdk.battery.DJIBattery;
-import dji.sdk.flightcontroller.DJIFlightController;
-import dji.sdk.products.DJIAircraft;
-
-public class BatteryActivity extends FragmentActivity implements View.OnClickListener {
-
-    protected static final int MSG_BATTERY_STATUS = 1;
-    protected static final int MSG_BATTERY_DISCHARGE_TIME = 2;
-
-    private View btnBack;
-    private View btnHistory;
+public class BatteryActivity extends DJIActivity implements View.OnClickListener {
 
     private TextView tvBatteryCurrentEnergy;
     private TextView tvBatteryTemperature;
     private TextView tvFlightTime;
     private EditText etDischargeTime;
 
-    private DJIBattery djiBattery;
-
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            String errDesc = bundle.getString("DJI_DESC", "");
             switch (msg.what) {
-                case MSG_BATTERY_STATUS:
-                    String BatteryCurrentEnergy = msg.getData().getString("BatteryCurrentEnergy");
-                    tvBatteryCurrentEnergy.setText(BatteryCurrentEnergy);
+                case MessageType.MSG_GET_BATTERY_STATE_RESPONSE:
 
-                    String BatteryTemperature = msg.getData().getString("BatteryTemperature");
-                    tvBatteryTemperature.setText(BatteryTemperature);
+                    int currentEnergy = bundle.getInt("currentEnergy", 0);
+                    float batteryTemperature = bundle.getFloat("batteryTemperature", 0);
+
+                    String temperature = String.format("%.1f℃", batteryTemperature);
+                    tvBatteryCurrentEnergy.setText(currentEnergy + "mAH");
+                    tvBatteryTemperature.setText(temperature);
+
                     break;
-                case MSG_BATTERY_DISCHARGE_TIME:
-                    int dischargeTime = msg.getData().getInt("BatteryDischargeDay");
-                    etDischargeTime.setText(String.valueOf(dischargeTime));
+                case MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE:
+
+                    if (errDesc.isEmpty()) {
+                        int dischargeDay = bundle.getInt("day", 0);
+                        etDischargeTime.setText(String.valueOf(dischargeDay));
+                    } else {
+                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+                case MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE:
+
+                    if (!errDesc.isEmpty()) {
+                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+                case MessageType.MSG_GET_FC_STATE_RESPONSE:
+
+                    int flightTimeSec = bundle.getInt("flightTime", 0);
+                    tvFlightTime.setText(StringUtils.getTime(flightTimeSec));
                     break;
             }
         }
 
     };
 
+    private Messenger messenger = new Messenger(handler);
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
         setContentView(R.layout.activity_battery);
 
-        btnBack = findViewById(R.id.iv_back);
-        btnBack.setOnClickListener(this);
-        btnHistory = findViewById(R.id.ll_battery_history);
-        btnHistory.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.ll_battery_history).setOnClickListener(this);
 
         tvBatteryCurrentEnergy = (TextView) findViewById(R.id.tv_battery_energy);
         tvBatteryTemperature = (TextView) findViewById(R.id.tv_battery_temperature);
@@ -75,15 +81,31 @@ public class BatteryActivity extends FragmentActivity implements View.OnClickLis
         etDischargeTime = (EditText) findViewById(R.id.et_discharge_time);
         etDischargeTime.setOnEditorActionListener(etListener);
 
-        DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
-            djiBattery = djiAircraft.getBattery();
-            djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
-            DJIFlightController djiFlightController = djiAircraft.getFlightController();
-            DJIFlightControllerCurrentState state = djiFlightController.getCurrentState();
-            tvFlightTime.setText(StringUtils.getTime(state.getFlightTime()));
-            djiBattery.getSelfDischargeDay(dischargeDayCallback);
-        }
+        registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
+
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+
+        Message getDischargeMsg = Message.obtain();
+        getDischargeMsg.what = MessageType.MSG_GET_BATTERY_DISCHARGE_DAY;
+        sendDJIMessage(getDischargeMsg);
+
+        Message getFlightStateMsg = Message.obtain();
+        getFlightStateMsg.what = MessageType.MSG_GET_FC_STATE;
+        sendDJIMessage(getFlightStateMsg);
+
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
+
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
     }
 
     @Override
@@ -99,41 +121,6 @@ public class BatteryActivity extends FragmentActivity implements View.OnClickLis
         }
     }
 
-    class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
-        @Override
-        public void onResult(DJIBatteryState djiBatteryState) {
-
-            Bundle bundle = new Bundle();
-            bundle.putString("BatteryCurrentEnergy", djiBatteryState.getCurrentEnergy() + "mAH");
-
-            String temperature = String.format("%.1f", djiBatteryState.getBatteryTemperature());
-            bundle.putString("BatteryTemperature", temperature + "℃");
-            Message msg = Message.obtain();
-            msg.what = MSG_BATTERY_STATUS;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-
-        }
-    }
-
-    private DJICommonCallbacks.DJICompletionCallbackWith<Integer> dischargeDayCallback = new DJICommonCallbacks.DJICompletionCallbackWith<Integer>() {
-
-        @Override
-        public void onSuccess(Integer day) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("BatteryDischargeDay", day);
-            Message msg = Message.obtain();
-            msg.what = MSG_BATTERY_DISCHARGE_TIME;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    };
-
     private TextView.OnEditorActionListener etListener = new TextView.OnEditorActionListener() {
 
         @Override
@@ -143,7 +130,13 @@ public class BatteryActivity extends FragmentActivity implements View.OnClickLis
                 int id = v.getId();
                 if (id == R.id.et_discharge_time) {
                     String time = etDischargeTime.getText().toString();
-                    djiBattery.setSelfDischargeDay(Integer.valueOf(time), null);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("day", Integer.valueOf(time));
+                    Message message = Message.obtain();
+                    message.what = MessageType.MSG_SET_BATTERY_DISCHARGE_DAY;
+                    message.setData(bundle);
+                    sendDJIMessage(message);
                 }
             }
             return false;

@@ -8,8 +8,11 @@ import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.GetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiSSId;
+import com.synseaero.dji.battery.GetSelfDischargeDay;
+import com.synseaero.dji.battery.SetSelfDischargeDay;
 import com.synseaero.dji.battery.WatchBatteryState;
 import com.synseaero.dji.camera.WatchExposure;
+import com.synseaero.dji.camera.WatchSDCardState;
 import com.synseaero.dji.flightcontroller.GetCurrentState;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
@@ -135,6 +138,18 @@ public class TaskFactory {
 
                 return new WatchGimbalState(data, messenger);
 
+            }
+            case (MessageType.MSG_WATCH_SDCARD_STATE): {
+
+                return new WatchSDCardState(data, messenger);
+            }
+            case (MessageType.MSG_GET_BATTERY_DISCHARGE_DAY): {
+
+                return new GetSelfDischargeDay(data, messenger);
+            }
+            case (MessageType.MSG_SET_BATTERY_DISCHARGE_DAY): {
+
+                return new SetSelfDischargeDay(data, messenger);
             }
         }
         return null;

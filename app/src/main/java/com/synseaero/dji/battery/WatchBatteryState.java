@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import com.synseaero.dji.MessageType;
 import com.synseaero.dji.Task;
 
+import dji.common.battery.DJIBatteryLowCellVoltageOperation;
 import dji.common.battery.DJIBatteryState;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.battery.DJIBattery;
@@ -15,7 +16,6 @@ import dji.sdk.products.DJIAircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 public class WatchBatteryState extends Task {
-
 
     public WatchBatteryState(Bundle data, Messenger messenger) {
         super(data, messenger);
@@ -33,7 +33,8 @@ public class WatchBatteryState extends Task {
             } else {
                 djiBattery.setBatteryStateUpdateCallback(null);
             }
-
+            //djiBattery.setLevel1CellVoltageThreshold();
+            //djiBattery.setLevel2CellVoltageThreshold();
         }
     }
 
@@ -41,10 +42,13 @@ public class WatchBatteryState extends Task {
 
         @Override
         public void onResult(DJIBatteryState djiBatteryState) {
+            //mAH
+            int currentEnergy = djiBatteryState.getCurrentEnergy();
             int remainingPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
             float batteryTemperature = djiBatteryState.getBatteryTemperature();
 
             Bundle bundle = new Bundle();
+            bundle.putInt("currentEnergy", currentEnergy);
             bundle.putInt("remainingPercent", remainingPercent);
             bundle.putFloat("batteryTemperature", batteryTemperature);
 

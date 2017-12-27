@@ -63,11 +63,7 @@ public class FPVFragment extends Fragment {
 
     private static final String TAG = FPVFragment.class.getName();
 
-    public static final int MSG_FLIGHT_CONTROLLER_CURRENT_STATE = 1;
-    public static final int MSG_REMOTE_CONTROLLER_BATTERY_STATE = 2;
-    public static final int MSG_BATTERY_STATE = 3;
     public static final int MSG_CONTROL_SIGNAL = 4;
-    public static final int MSG_CAMERA_INFO = 5;
 
     private int wWidth;
     private int wHeight;
