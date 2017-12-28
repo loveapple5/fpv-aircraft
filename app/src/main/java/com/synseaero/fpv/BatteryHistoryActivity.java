@@ -4,10 +4,14 @@ package com.synseaero.fpv;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.synseaero.dji.MessageType;
 
 import dji.common.battery.DJIBatteryState;
 import dji.common.error.DJIError;
@@ -16,31 +20,31 @@ import dji.sdk.battery.DJIBattery;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 
-public class BatteryHistoryActivity extends FragmentActivity implements View.OnClickListener {
+public class BatteryHistoryActivity extends DJIActivity implements View.OnClickListener {
 
-    protected static final int MSG_BATTERY_SERIES_NUMBER = 1;
-    protected static final int MSG_BATTERY_STATUS = 2;
-
-
-    private View btnBack;
     private TextView tvBatterySeriesNo;
     private TextView tvBatteryDischargeNum;
     private TextView tvBatteryLiftTime;
 
-    private DJIBattery djiBattery;
-
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            String errDesc = bundle.getString("DJI_DESC", "");
             switch (msg.what) {
-                case MSG_BATTERY_SERIES_NUMBER:
-                    String batterySerialNumber = msg.getData().getString("batterySerialNumber");
-                    tvBatterySeriesNo.setText(batterySerialNumber);
+                case MessageType.MSG_GET_BATTERY_SERIES_NUMBER_RESPONSE:
+                    if (errDesc.isEmpty()) {
+                        String batterySerialNumber = msg.getData().getString("batterySerialNumber");
+                        tvBatterySeriesNo.setText(batterySerialNumber);
+                    } else {
+                        Toast.makeText(BatteryHistoryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
-                case MSG_BATTERY_STATUS:
-                    int dischargeNumber = msg.getData().getInt("dischargeNumber");
+                case MessageType.MSG_GET_BATTERY_STATE_RESPONSE:
+                    int dischargeNumber = bundle.getInt("dischargeNumber");
                     tvBatteryDischargeNum.setText(dischargeNumber + "次");
-                    int batteryLifeTime = msg.getData().getInt("batteryLifeTime");
+                    int batteryLifeTime = bundle.getInt("batteryLifeTime");
                     tvBatteryLiftTime.setText(batteryLifeTime + "%");
                     break;
             }
@@ -48,31 +52,38 @@ public class BatteryHistoryActivity extends FragmentActivity implements View.OnC
 
     };
 
+    private Messenger messenger = new Messenger(handler);
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
         setContentView(R.layout.activity_battery_history);
 
-        btnBack = findViewById(R.id.iv_back);
-        btnBack.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
 
         tvBatterySeriesNo = (TextView) findViewById(R.id.tv_battery_no);
         tvBatteryDischargeNum = (TextView) findViewById(R.id.tv_circle_no);
         tvBatteryLiftTime = (TextView) findViewById(R.id.tv_battery_life_time);
 
-        DJIAircraft djiAircraft = (DJIAircraft) DJISDKManager.getInstance().getDJIProduct();
-        if (djiAircraft != null) {
-            djiBattery = djiAircraft.getBattery();
-            djiBattery.getSerialNumber(batterySeriesNoCallback);
-            djiBattery.setBatteryStateUpdateCallback(new BatteryStateUpdateCallback());
+        registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_BATTERY_SERIES_NUMBER_RESPONSE, messenger);
 
-        }
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_GET_BATTERY_SERIES_NUMBER;
+        sendDJIMessage(message);
+
     }
 
     public void onDestroy() {
         super.onDestroy();
-        djiBattery.setBatteryStateUpdateCallback(null);
+        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_SERIES_NUMBER_RESPONSE, messenger);
+
+        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+
     }
 
     @Override
@@ -84,42 +95,4 @@ public class BatteryHistoryActivity extends FragmentActivity implements View.OnC
         }
     }
 
-    class BatteryStateUpdateCallback implements DJIBattery.DJIBatteryStateUpdateCallback {
-        @Override
-        public void onResult(DJIBatteryState djiBatteryState) {
-
-            Bundle bundle2 = new Bundle();
-            //放电次数
-            int dischargeNumber = djiBatteryState.getNumberOfDischarge();
-            bundle2.putInt("dischargeNumber", dischargeNumber);
-
-
-            //电池寿命
-            int batteryLifeTime = djiBatteryState.getLifetimeRemainingPercent();
-            bundle2.putInt("batteryLifeTime", batteryLifeTime);
-            Message msg2 = Message.obtain();
-            msg2.what = MSG_BATTERY_STATUS;
-            msg2.setData(bundle2);
-            handler.sendMessage(msg2);
-
-        }
-    }
-
-    DJICommonCallbacks.DJICompletionCallbackWith<String> batterySeriesNoCallback = new DJICommonCallbacks.DJICompletionCallbackWith<String>() {
-
-        @Override
-        public void onSuccess(String s) {
-            Bundle bundle = new Bundle();
-            bundle.putString("batterySerialNumber", s);
-            Message msg = Message.obtain();
-            msg.what = MSG_BATTERY_SERIES_NUMBER;
-            msg.setData(bundle);
-            handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    };
 }

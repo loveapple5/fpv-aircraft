@@ -9,6 +9,7 @@ import com.synseaero.dji.airlink.GetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiSSId;
 import com.synseaero.dji.battery.GetSelfDischargeDay;
+import com.synseaero.dji.battery.GetSeriesNumber;
 import com.synseaero.dji.battery.SetSelfDischargeDay;
 import com.synseaero.dji.battery.WatchBatteryState;
 import com.synseaero.dji.camera.WatchExposure;
@@ -16,6 +17,7 @@ import com.synseaero.dji.camera.WatchSDCardState;
 import com.synseaero.dji.flightcontroller.GetFCState;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
+import com.synseaero.dji.flightcontroller.GetFCInfoState;
 import com.synseaero.dji.flightcontroller.SetGoHomeAltitude;
 import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
@@ -150,6 +152,14 @@ public class TaskFactory {
             case (MessageType.MSG_SET_BATTERY_DISCHARGE_DAY): {
 
                 return new SetSelfDischargeDay(data, messenger);
+            }
+            case (MessageType.MSG_GET_FC_INFO_STATE): {
+
+                return new GetFCInfoState(data, messenger);
+            }
+            case (MessageType.MSG_GET_BATTERY_SERIES_NUMBER): {
+
+                return new GetSeriesNumber(data, messenger);
             }
         }
         return null;

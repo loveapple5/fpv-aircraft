@@ -55,6 +55,10 @@ public class MessageType {
     public static final int MSG_GET_BATTERY_DISCHARGE_DAY = 100029;
     public static final int MSG_SET_BATTERY_DISCHARGE_DAY = 100030;
 
+    public static final int MSG_GET_FC_INFO_STATE = 100031;
+
+    public static final int MSG_GET_BATTERY_SERIES_NUMBER = 100032;
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -105,4 +109,8 @@ public class MessageType {
 
     public static final int MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE = 200029;
     public static final int MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE = 200030;
+
+    public static final int MSG_GET_FC_INFO_STATE_RESPONSE = 200031;
+
+    public static final int MSG_GET_BATTERY_SERIES_NUMBER_RESPONSE = 200032;
 }

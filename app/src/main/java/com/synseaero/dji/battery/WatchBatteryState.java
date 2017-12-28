@@ -42,15 +42,24 @@ public class WatchBatteryState extends Task {
 
         @Override
         public void onResult(DJIBatteryState djiBatteryState) {
-            //mAH
+            //当前电量mAH
             int currentEnergy = djiBatteryState.getCurrentEnergy();
+            //剩余电量百分比
             int remainingPercent = djiBatteryState.getBatteryEnergyRemainingPercent();
+            //电池温度
             float batteryTemperature = djiBatteryState.getBatteryTemperature();
+            //放电次数
+            int dischargeNumber = djiBatteryState.getNumberOfDischarge();
+            //电池寿命
+            int batteryLifeTime = djiBatteryState.getLifetimeRemainingPercent();
 
             Bundle bundle = new Bundle();
             bundle.putInt("currentEnergy", currentEnergy);
             bundle.putInt("remainingPercent", remainingPercent);
             bundle.putFloat("batteryTemperature", batteryTemperature);
+
+            bundle.putInt("dischargeNumber", dischargeNumber);
+            bundle.putInt("batteryLifeTime", batteryLifeTime);
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_BATTERY_STATE_RESPONSE;

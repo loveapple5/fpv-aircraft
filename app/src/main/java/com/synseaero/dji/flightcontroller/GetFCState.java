@@ -15,6 +15,9 @@ import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 
+/***
+ * 获取飞机的位置速度姿态等信息
+ */
 public class GetFCState extends Task {
 
     public GetFCState(Bundle data, Messenger messenger) {
@@ -82,14 +85,6 @@ public class GetFCState extends Task {
             bundle.putDouble("Head", heading);
 
             bundle.putInt("flightTime", flightTime);
-
-            //飞行中
-            curState.isFlying();
-            //到达最大飞行高度
-            curState.isReachLimitedHeight();
-            //到达最大飞行距离
-            curState.isReachLimitedRadius();
-
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_STATE_RESPONSE;
