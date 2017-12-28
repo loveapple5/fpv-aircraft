@@ -5,20 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.synseaero.dji.MessageType;
-
-import dji.common.battery.DJIBatteryState;
-import dji.common.error.DJIError;
-import dji.common.util.DJICommonCallbacks;
-import dji.sdk.battery.DJIBattery;
-import dji.sdk.products.DJIAircraft;
-import dji.sdk.sdkmanager.DJISDKManager;
 
 public class BatteryHistoryActivity extends DJIActivity implements View.OnClickListener {
 
@@ -56,7 +47,6 @@ public class BatteryHistoryActivity extends DJIActivity implements View.OnClickL
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
         setContentView(R.layout.activity_battery_history);
 
