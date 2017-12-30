@@ -239,6 +239,10 @@ public class DJIService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
+        DJIBaseProduct product = DJISDKManager.getInstance().getDJIProduct();
+        if(product != null) {
+            product.destroy();
+        }
     }
 
 }

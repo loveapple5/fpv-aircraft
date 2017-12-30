@@ -59,6 +59,15 @@ public class MessageType {
 
     public static final int MSG_GET_BATTERY_SERIES_NUMBER = 100032;
 
+    //最大升限
+    public static final int MSG_GET_MAX_FLIGHT_HEIGHT = 100033;
+    public static final int MSG_SET_MAX_FLIGHT_HEIGHT = 100034;
+
+    //获取最大距离
+    public static final int MSG_GET_MAX_FLIGHT_RADIUS = 100035;
+    public static final int MSG_SET_MAX_FLIGHT_RADIUS = 100036;
+
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -113,4 +122,12 @@ public class MessageType {
     public static final int MSG_GET_FC_INFO_STATE_RESPONSE = 200031;
 
     public static final int MSG_GET_BATTERY_SERIES_NUMBER_RESPONSE = 200032;
+
+    //最大升限
+    public static final int MSG_GET_MAX_FLIGHT_HEIGHT_RESPONSE = 200033;
+    public static final int MSG_SET_MAX_FLIGHT_HEIGHT_RESPONSE = 200034;
+
+    //获取最大距离
+    public static final int MSG_GET_MAX_FLIGHT_RADIUS_RESPONSE = 200035;
+    public static final int MSG_SET_MAX_FLIGHT_RADIUS_RESPONSE = 200036;
 }

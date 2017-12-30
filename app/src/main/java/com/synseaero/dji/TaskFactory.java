@@ -18,7 +18,11 @@ import com.synseaero.dji.flightcontroller.GetFCState;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
 import com.synseaero.dji.flightcontroller.GetFCInfoState;
+import com.synseaero.dji.flightcontroller.GetMaxFlightHeight;
+import com.synseaero.dji.flightcontroller.GetMaxFlightRadius;
 import com.synseaero.dji.flightcontroller.SetGoHomeAltitude;
+import com.synseaero.dji.flightcontroller.SetMaxFlightHeight;
+import com.synseaero.dji.flightcontroller.SetMaxFlightRadius;
 import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
@@ -160,6 +164,22 @@ public class TaskFactory {
             case (MessageType.MSG_GET_BATTERY_SERIES_NUMBER): {
 
                 return new GetSeriesNumber(data, messenger);
+            }
+            case (MessageType.MSG_GET_MAX_FLIGHT_HEIGHT): {
+
+                return new GetMaxFlightHeight(data, messenger);
+            }
+            case (MessageType.MSG_SET_MAX_FLIGHT_HEIGHT): {
+
+                return new SetMaxFlightHeight(data, messenger);
+            }
+            case (MessageType.MSG_GET_MAX_FLIGHT_RADIUS): {
+
+                return new GetMaxFlightRadius(data, messenger);
+            }
+            case (MessageType.MSG_SET_MAX_FLIGHT_RADIUS): {
+
+                return new SetMaxFlightRadius(data, messenger);
             }
         }
         return null;
