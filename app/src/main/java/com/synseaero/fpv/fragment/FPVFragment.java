@@ -282,7 +282,7 @@ public class FPVFragment extends Fragment {
                         information.level = 203;
                         information.information = getString(R.string.rc_battery_low_power_hint);
                         information.type = 0;
-                        setComprehensiveInfo(203, information, false);
+                        setComprehensiveInfo(203, information, true);
                     }
 
                     break;
@@ -298,13 +298,13 @@ public class FPVFragment extends Fragment {
                         information.level = 202;
                         information.information = getString(R.string.fc_battery_very_low_power_hint);
                         information.type = 0;
-                        setComprehensiveInfo(202, information, false);
+                        setComprehensiveInfo(202, information, true);
                     } else if (aircraftRemainingPercent < lowEnergyWarningThreshold) {
                         FlightInformation information = new FlightInformation();
                         information.level = 202;
                         information.information = getString(R.string.fc_battery_low_power_hint);
                         information.type = 0;
-                        setComprehensiveInfo(202, information, false);
+                        setComprehensiveInfo(202, information, true);
                     }
 
                     break;
@@ -335,7 +335,7 @@ public class FPVFragment extends Fragment {
                         information.level = 103;
                         information.information = getString(R.string.rc_battery_low_power_hint);
                         information.type = 1;
-                        setComprehensiveInfo(103, information, false);
+                        setComprehensiveInfo(103, information, true);
                     }
                     break;
                 }
@@ -346,13 +346,13 @@ public class FPVFragment extends Fragment {
                         information.level = 104;
                         information.information = getString(R.string.down_link_signal_none_hint);
                         information.type = 1;
-                        setComprehensiveInfo(104, information, false);
+                        setComprehensiveInfo(104, information, true);
                     } else if (percent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
                         information.level = 104;
                         information.information = getString(R.string.down_link_signal_weak_hint);
                         information.type = 1;
-                        setComprehensiveInfo(104, information, false);
+                        setComprehensiveInfo(104, information, true);
                     }
                     break;
                 }
@@ -363,7 +363,7 @@ public class FPVFragment extends Fragment {
                         information.level = 101;
                         information.information = getString(R.string.gimbal_motor_overloaded);
                         information.type = 1;
-                        setComprehensiveInfo(101, information, false);
+                        setComprehensiveInfo(101, information, true);
                     }
                     break;
                 }
@@ -425,7 +425,7 @@ public class FPVFragment extends Fragment {
                         reachLimitedHeightInfo.level = 208;
                         reachLimitedHeightInfo.information = activity.getString(R.string.reach_limited_height);
                         reachLimitedHeightInfo.type = 0;
-                        setComprehensiveInfo(208, reachLimitedHeightInfo, false);
+                        setComprehensiveInfo(208, reachLimitedHeightInfo, true);
                     }
 
                     if (reachLimitedRadius) {
@@ -433,7 +433,7 @@ public class FPVFragment extends Fragment {
                         reachLimitedRadiusInfo.level = 209;
                         reachLimitedRadiusInfo.information = activity.getString(R.string.reach_limited_radius);
                         reachLimitedRadiusInfo.type = 0;
-                        setComprehensiveInfo(209, reachLimitedRadiusInfo, false);
+                        setComprehensiveInfo(209, reachLimitedRadiusInfo, true);
                     }
 
                     break;
@@ -485,7 +485,7 @@ public class FPVFragment extends Fragment {
             fpvModeInfo.level = 207;
             fpvModeInfo.information = getString(R.string.change_to_fpv_mode);
             fpvModeInfo.type = 0;
-            setComprehensiveInfo(207, fpvModeInfo, true);
+            setComprehensiveInfo(207, fpvModeInfo, false);
         } else if (this.mode == MODE_TPV) {
             this.rlCraftSignal.setRotation(0);
             this.rlCraftSignal.setRotationY(0);
@@ -520,7 +520,7 @@ public class FPVFragment extends Fragment {
             tpvModeInfo.level = 207;
             tpvModeInfo.information = getString(R.string.change_to_tpv_mode);
             tpvModeInfo.type = 0;
-            setComprehensiveInfo(207, tpvModeInfo, true);
+            setComprehensiveInfo(207, tpvModeInfo, false);
 
         } else if (this.mode == MODE_MENU) {
             this.ivDirection.setVisibility(View.GONE);
@@ -1055,7 +1055,7 @@ public class FPVFragment extends Fragment {
         long curTime = System.currentTimeMillis();
         //设置等级信息
         FlightInformation beforeInfo = flightInfoMap.get(level);
-        if (force || beforeInfo == null || !beforeInfo.equals(flightInformation) || beforeInfo.expiredTime < curTime) {
+        if (force || beforeInfo == null || !beforeInfo.equals(flightInformation)) {
             flightInfoMap.put(level, flightInformation);
         }
 

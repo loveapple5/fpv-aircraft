@@ -21,7 +21,7 @@ public class FlightInformation {
 
     public boolean equals(Object other) {
         if (other instanceof FlightInformation) {
-            return ((FlightInformation) other).level == level;
+            return ((FlightInformation) other).level == level && ((FlightInformation) other).information.equals(information);
         } else {
             return false;
         }
