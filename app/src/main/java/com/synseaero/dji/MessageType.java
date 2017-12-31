@@ -67,6 +67,22 @@ public class MessageType {
     public static final int MSG_GET_MAX_FLIGHT_RADIUS = 100035;
     public static final int MSG_SET_MAX_FLIGHT_RADIUS = 100036;
 
+    public static final int MSG_GET_FLIGHT_FAIL_SAFE_OP = 100037;
+    public static final int MSG_SET_FLIGHT_FAIL_SAFE_OP = 100038;
+
+    public static final int MSG_GET_LED_ENABLED = 100039;
+    public static final int MSG_SET_LED_ENABLED = 100040;
+    //视觉定位开关
+    public static final int MSG_GET_VP_ENABLED = 100041;
+    public static final int MSG_SET_VP_ENABLED = 100042;
+
+    //自动返航电量
+    public static final int MSG_GET_GO_HOME_BATTERY_THRESHOLD = 100043;
+    public static final int MSG_SET_GO_HOME_BATTERY_THRESHOLD = 100044;
+
+    //自动降落电量
+    public static final int MSG_GET_LANDING_BATTERY_THRESHOLD = 100045;
+    public static final int MSG_SET_LANDING_BATTERY_THRESHOLD = 100046;
 
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
@@ -130,4 +146,21 @@ public class MessageType {
     //获取最大距离
     public static final int MSG_GET_MAX_FLIGHT_RADIUS_RESPONSE = 200035;
     public static final int MSG_SET_MAX_FLIGHT_RADIUS_RESPONSE = 200036;
+
+    public static final int MSG_GET_FLIGHT_FAIL_SAFE_OP_RESPONSE = 200037;
+    public static final int MSG_SET_FLIGHT_FAIL_SAFE_OP_RESPONSE = 200038;
+
+    public static final int MSG_GET_LED_ENABLED_RESPONSE = 200039;
+    public static final int MSG_SET_LED_ENABLED_RESPONSE = 200040;
+
+    public static final int MSG_GET_VP_ENABLED_RESPONSE = 200041;
+    public static final int MSG_SET_VP_ENABLED_RESPONSE = 200042;
+
+    //自动返航电量
+    public static final int MSG_GET_GO_HOME_BATTERY_THRESHOLD_RESPONSE = 200043;
+    public static final int MSG_SET_GO_HOME_BATTERY_THRESHOLD_RESPONSE = 200044;
+
+    //自动降落电量
+    public static final int MSG_GET_LANDING_BATTERY_THRESHOLD_RESPONSE = 200045;
+    public static final int MSG_SET_LANDING_BATTERY_THRESHOLD_RESPONSE = 200046;
 }

@@ -15,14 +15,25 @@ import com.synseaero.dji.battery.WatchBatteryState;
 import com.synseaero.dji.camera.WatchExposure;
 import com.synseaero.dji.camera.WatchSDCardState;
 import com.synseaero.dji.flightcontroller.GetFCState;
+import com.synseaero.dji.flightcontroller.GetFlightFailSafeOp;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
+import com.synseaero.dji.flightcontroller.GetGoHomeBatteryThreshold;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
 import com.synseaero.dji.flightcontroller.GetFCInfoState;
+import com.synseaero.dji.flightcontroller.GetLandingBatteryThreshold;
+import com.synseaero.dji.flightcontroller.GetLedEnabled;
 import com.synseaero.dji.flightcontroller.GetMaxFlightHeight;
 import com.synseaero.dji.flightcontroller.GetMaxFlightRadius;
+import com.synseaero.dji.flightcontroller.GetVPEnabled;
+import com.synseaero.dji.flightcontroller.SetFlightFailSafeOp;
 import com.synseaero.dji.flightcontroller.SetGoHomeAltitude;
+import com.synseaero.dji.flightcontroller.SetGoHomeBatteryThreshold;
+import com.synseaero.dji.flightcontroller.SetHomeLocation;
+import com.synseaero.dji.flightcontroller.SetLandingBatteryThreshold;
+import com.synseaero.dji.flightcontroller.SetLedEnabled;
 import com.synseaero.dji.flightcontroller.SetMaxFlightHeight;
 import com.synseaero.dji.flightcontroller.SetMaxFlightRadius;
+import com.synseaero.dji.flightcontroller.SetVPEnabled;
 import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
@@ -115,6 +126,11 @@ public class TaskFactory {
                 return new GetHomeLocation(data, messenger);
 
             }
+            case (MessageType.MSG_SET_HOME_LOCATION): {
+
+                return new SetHomeLocation(data, messenger);
+
+            }
             case (MessageType.MSG_GET_FC_STATE): {
 
                 return new GetFCState(data, messenger);
@@ -180,6 +196,46 @@ public class TaskFactory {
             case (MessageType.MSG_SET_MAX_FLIGHT_RADIUS): {
 
                 return new SetMaxFlightRadius(data, messenger);
+            }
+            case (MessageType.MSG_GET_FLIGHT_FAIL_SAFE_OP): {
+
+                return new GetFlightFailSafeOp(data, messenger);
+            }
+            case (MessageType.MSG_SET_FLIGHT_FAIL_SAFE_OP): {
+
+                return new SetFlightFailSafeOp(data, messenger);
+            }
+            case (MessageType.MSG_GET_LED_ENABLED): {
+
+                return new GetLedEnabled(data, messenger);
+            }
+            case (MessageType.MSG_SET_LED_ENABLED): {
+
+                return new SetLedEnabled(data, messenger);
+            }
+            case (MessageType.MSG_GET_VP_ENABLED): {
+
+                return new GetVPEnabled(data, messenger);
+            }
+            case (MessageType.MSG_SET_VP_ENABLED): {
+
+                return new SetVPEnabled(data, messenger);
+            }
+            case (MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD): {
+
+                return new GetGoHomeBatteryThreshold(data, messenger);
+            }
+            case (MessageType.MSG_SET_GO_HOME_BATTERY_THRESHOLD): {
+
+                return new SetGoHomeBatteryThreshold(data, messenger);
+            }
+            case (MessageType.MSG_GET_LANDING_BATTERY_THRESHOLD): {
+
+                return new GetLandingBatteryThreshold(data, messenger);
+            }
+            case (MessageType.MSG_SET_LANDING_BATTERY_THRESHOLD): {
+
+                return new SetLandingBatteryThreshold(data, messenger);
             }
         }
         return null;

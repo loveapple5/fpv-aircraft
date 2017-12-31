@@ -205,29 +205,94 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center"
-                    android:text="@string/low_power_home"
-                    android:textColor="@color/gray" />
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et_smart_go_home_threshold"
-                        style="@style/SettingValue"
-                        android:text="25" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center"
+                        android:text="@string/smart_go_home_energy"
+                        android:textColor="@color/gray" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical">
+
+                        <TextView
+                            android:id="@+id/tv_smart_go_home_energy"
+                            style="@style/SettingValue"
+                            android:text="30" />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/sb_smart_go_home_energy"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:maxHeight="6dp"
+                    android:progressDrawable="@drawable/bg_seekbar"
+                    android:thumb="@drawable/thumb_seekbar"
+                    android:thumbOffset="0dp"
+                    android:max="50" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center"
+                        android:text="@string/smart_land_energy"
+                        android:textColor="@color/gray" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical">
+
+                        <TextView
+                            android:id="@+id/tv_smart_land_energy"
+                            style="@style/SettingValue"
+                            android:text="30" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/sb_smart_land_energy"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:maxHeight="6dp"
+                    android:progressDrawable="@drawable/bg_seekbar"
+                    android:thumb="@drawable/thumb_seekbar"
+                    android:thumbOffset="0dp"
+                    android:max="50" />
             </LinearLayout>
 
             <LinearLayout

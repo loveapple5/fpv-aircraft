@@ -238,4 +238,6 @@
 
     <string name="gimbal_pitch_smooth">云台俯仰平滑</string>
 
+    <string name="smart_go_home_energy">自动返航电量</string>
+    <string name="smart_land_energy">自动降落电量</string>
 </resources>
