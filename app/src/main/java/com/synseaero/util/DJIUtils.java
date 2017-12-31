@@ -10,6 +10,8 @@ import dji.common.remotecontroller.DJIRCControlStyle;
 
 public class DJIUtils {
 
+    public static final int COMMON_LOW_PERCENT = 30;
+
     public static HashMap photoResolutionMap = new HashMap();
 
     public static HashMap photoFormatMap = new HashMap();

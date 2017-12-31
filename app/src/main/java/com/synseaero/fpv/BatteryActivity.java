@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.synseaero.dji.MessageType;
+import com.synseaero.util.DJIUtils;
 import com.synseaero.util.StringUtils;
 
 public class BatteryActivity extends DJIActivity implements View.OnClickListener {
@@ -106,7 +107,7 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         sendDJIMessage(getFlightStateMsg);
 
         SharedPreferences sp = getApplicationContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
-        int lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", 30);
+        int lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", DJIUtils.COMMON_LOW_PERCENT);
         tvLowEnergy.setText(String.valueOf(lowEnergyWarningThreshold));
         sbLowEnergy.setProgress(lowEnergyWarningThreshold);
     }

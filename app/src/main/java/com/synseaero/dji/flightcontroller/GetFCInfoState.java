@@ -33,12 +33,12 @@ public class GetFCInfoState extends Task {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIFlightController flightController = aircraft.getFlightController();
             DJIFlightControllerCurrentState curState = flightController.getCurrentState();
-            DJIAircraftRemainingBatteryState batteryState = curState.getRemainingBattery();
+            //DJIAircraftRemainingBatteryState batteryState = curState.getRemainingBattery();
 
             //飞行中
             boolean flying = curState.isFlying();
             //飞机剩余电量 1和2都是电量不足
-            int batteryLevel = batteryState.value();
+            //int batteryLevel = batteryState.value();
             //飞行模式
             String flightMode = curState.getFlightModeString();
 
@@ -52,7 +52,7 @@ public class GetFCInfoState extends Task {
 
             Bundle bundle = new Bundle();
             bundle.putBoolean("flying", flying);
-            bundle.putInt("batteryLevel", batteryLevel);
+            //bundle.putInt("batteryLevel", batteryLevel);
             bundle.putString("flightMode", flightMode);
             bundle.putBoolean("goHomeCompleted", goHomeCompleted);
             bundle.putBoolean("reachLimitedHeight", reachLimitedHeight);
