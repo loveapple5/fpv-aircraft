@@ -1,6 +1,8 @@
 package com.synseaero.fpv;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
     private TextView tvBatteryTemperature;
     private TextView tvFlightTime;
     private EditText etDischargeTime;
+    private TextView tvLowEnergy;
+    private SeekBar sbLowEnergy;
 
     private Handler handler = new Handler() {
 
@@ -81,6 +86,10 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         etDischargeTime = (EditText) findViewById(R.id.et_discharge_time);
         etDischargeTime.setOnEditorActionListener(etListener);
 
+        tvLowEnergy = (TextView) findViewById(R.id.tv_low_energy_warning);
+        sbLowEnergy = (SeekBar) findViewById(R.id.sb_low_energy_warning);
+        sbLowEnergy.setOnSeekBarChangeListener(new LowEnergyListener());
+
         registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
@@ -96,6 +105,10 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         getFlightStateMsg.what = MessageType.MSG_GET_FC_STATE;
         sendDJIMessage(getFlightStateMsg);
 
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
+        int lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", 30);
+        tvLowEnergy.setText(String.valueOf(lowEnergyWarningThreshold));
+        sbLowEnergy.setProgress(lowEnergyWarningThreshold);
     }
 
     public void onDestroy() {
@@ -142,4 +155,30 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
             return false;
         }
     };
+
+    class LowEnergyListener implements SeekBar.OnSeekBarChangeListener {
+
+        private boolean fromUser = false;
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            this.fromUser = fromUser;
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            this.fromUser = true;
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            if (this.fromUser) {
+                SharedPreferences sp = getApplicationContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("lowEnergyWarningThreshold", seekBar.getProgress());
+                editor.apply();
+                tvLowEnergy.setText(String.valueOf(seekBar.getProgress()));
+            }
+        }
+    }
 }
