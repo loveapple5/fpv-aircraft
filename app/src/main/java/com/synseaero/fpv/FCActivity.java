@@ -29,9 +29,6 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
 
     protected static final int MSG_FLIGHT_CONTROLLER_STATUS = 1;
 
-    private View btnBack;
-    private View btnFlightLimit;
-    private View btnGoHome;
     private EditText etGoHomeAltitude;
     private SwitchButton sbLed;
     private TextView tvFailSafe;
@@ -68,14 +65,9 @@ public class FCActivity extends FragmentActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_fc);
 
-        btnBack = findViewById(R.id.iv_back);
-        btnBack.setOnClickListener(this);
-
-        btnFlightLimit = findViewById(R.id.ll_flight_limit);
-        btnFlightLimit.setOnClickListener(this);
-
-        btnGoHome = findViewById(R.id.tv_go_home);
-        btnGoHome.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.ll_flight_limit).setOnClickListener(this);
+        findViewById(R.id.tv_go_home).setOnClickListener(this);
 
         sbLed = (SwitchButton) findViewById(R.id.sb_led);
         sbLed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
