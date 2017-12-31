@@ -84,6 +84,10 @@ public class MessageType {
     public static final int MSG_GET_LANDING_BATTERY_THRESHOLD = 100045;
     public static final int MSG_SET_LANDING_BATTERY_THRESHOLD = 100046;
 
+    //数据传输信号强度
+    public static final int MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY = 100047;
+    public static final int MSG_WATCH_UP_LINK_SIGNAL_QUALITY = 100048;
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -163,4 +167,8 @@ public class MessageType {
     //自动降落电量
     public static final int MSG_GET_LANDING_BATTERY_THRESHOLD_RESPONSE = 200045;
     public static final int MSG_SET_LANDING_BATTERY_THRESHOLD_RESPONSE = 200046;
+
+    //数据传输信号强度
+    public static final int MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE = 200047;
+    public static final int MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE = 200048;
 }

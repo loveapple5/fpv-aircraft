@@ -8,6 +8,8 @@ import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.GetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiSSId;
+import com.synseaero.dji.airlink.WatchDownLinkSignalQuality;
+import com.synseaero.dji.airlink.WatchUpLinkSignalQuality;
 import com.synseaero.dji.battery.GetSelfDischargeDay;
 import com.synseaero.dji.battery.GetSeriesNumber;
 import com.synseaero.dji.battery.SetSelfDischargeDay;
@@ -236,6 +238,14 @@ public class TaskFactory {
             case (MessageType.MSG_SET_LANDING_BATTERY_THRESHOLD): {
 
                 return new SetLandingBatteryThreshold(data, messenger);
+            }
+            case (MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY): {
+
+                return new WatchDownLinkSignalQuality(data, messenger);
+            }
+            case (MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY): {
+
+                return new WatchUpLinkSignalQuality(data, messenger);
             }
         }
         return null;

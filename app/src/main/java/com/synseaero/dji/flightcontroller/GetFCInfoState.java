@@ -11,6 +11,7 @@ import com.synseaero.dji.Task;
 
 import dji.common.flightcontroller.DJIAircraftRemainingBatteryState;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
+import dji.common.flightcontroller.DJIGPSSignalStatus;
 import dji.common.flightcontroller.DJIGoHomeStatus;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.flightcontroller.DJIFlightController;
@@ -35,6 +36,7 @@ public class GetFCInfoState extends Task {
             DJIFlightControllerCurrentState curState = flightController.getCurrentState();
             //DJIAircraftRemainingBatteryState batteryState = curState.getRemainingBattery();
 
+            int gpsSignalStatus = curState.getGpsSignalStatus().value();
             //飞行中
             boolean flying = curState.isFlying();
             //飞机剩余电量 1和2都是电量不足
@@ -42,9 +44,11 @@ public class GetFCInfoState extends Task {
             //飞行模式
             String flightMode = curState.getFlightModeString();
 
+            boolean isHomeSet = curState.isHomePointSet();
+
             DJIGoHomeStatus goHomeStatus = curState.getGoHomeStatus();
             //飞机已降落
-            boolean goHomeCompleted = goHomeStatus == DJIGoHomeStatus.Completion;
+            //boolean goHomeCompleted = goHomeStatus == DJIGoHomeStatus.Completion;
             //到达最大飞行高度
             boolean reachLimitedHeight = curState.isReachLimitedHeight();
             //到达最大飞行距离
@@ -52,11 +56,13 @@ public class GetFCInfoState extends Task {
 
             Bundle bundle = new Bundle();
             bundle.putBoolean("flying", flying);
+            bundle.putBoolean("isHomeSet", isHomeSet);
             //bundle.putInt("batteryLevel", batteryLevel);
             bundle.putString("flightMode", flightMode);
-            bundle.putBoolean("goHomeCompleted", goHomeCompleted);
+            //bundle.putBoolean("goHomeCompleted", goHomeCompleted);
             bundle.putBoolean("reachLimitedHeight", reachLimitedHeight);
             bundle.putBoolean("reachLimitedRadius", reachLimitedRadius);
+            bundle.putInt("gpsSignalStatus", gpsSignalStatus);
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_INFO_STATE_RESPONSE;

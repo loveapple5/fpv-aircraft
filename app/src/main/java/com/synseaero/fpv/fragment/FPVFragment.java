@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
@@ -32,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,17 +44,18 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.FPVActivity;
+import com.synseaero.fpv.R;
+import com.synseaero.fpv.model.FlightInformation;
 import com.synseaero.fpv.opengl.MyGLSurfaceView;
+import com.synseaero.util.DJIUtils;
 import com.synseaero.util.DensityUtil;
 import com.synseaero.view.CircleMenuLayout;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
-import dji.common.airlink.DJISignalInformation;
-import dji.common.airlink.SignalQualityUpdatedCallback;
-import dji.sdk.airlink.DJIAuxLink;
-import dji.sdk.airlink.DJILBAirLink;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
@@ -63,7 +66,9 @@ public class FPVFragment extends Fragment {
 
     private static final String TAG = FPVFragment.class.getName();
 
-    public static final int MSG_CONTROL_SIGNAL = 4;
+//    public static final int MSG_CONTROL_SIGNAL = 4;
+
+    private FPVActivity activity;
 
     private int wWidth;
     private int wHeight;
@@ -77,8 +82,8 @@ public class FPVFragment extends Fragment {
     private RelativeLayout rlControllerSignal;
     private TextView tvSafeInfo;
 
-    private ImageView ivCraftSignal;
-    private ImageView ivControllerSignal;
+//    private ImageView ivCraftSignal;
+//    private ImageView ivControllerSignal;
 
     private View rlHelmetEnergy;
     private View rlPhoneEnergy;
@@ -135,28 +140,31 @@ public class FPVFragment extends Fragment {
 //            R.drawable.signal_icon_4
 //    };
 
+    //综合信息栏信息map
+    private TreeMap<Integer, FlightInformation> flightInfoMap = new TreeMap<>();
+
     private int[] mItemImgs = new int[]{
-            com.synseaero.fpv.R.drawable.menu_map, com.synseaero.fpv.R.drawable.menu_luminance, com.synseaero.fpv.R.drawable.menu_helmet,
-            com.synseaero.fpv.R.drawable.menu_camera, com.synseaero.fpv.R.drawable.menu_video, com.synseaero.fpv.R.drawable.menu_pan, com.synseaero.fpv.R.drawable.menu_setting
+            R.drawable.menu_map, R.drawable.menu_luminance, R.drawable.menu_helmet,
+            R.drawable.menu_camera, R.drawable.menu_video, R.drawable.menu_pan, R.drawable.menu_setting
     };
 
     private int[] mItemsText = new int[]{
-            com.synseaero.fpv.R.string.map, com.synseaero.fpv.R.string.brightness, com.synseaero.fpv.R.string.helmet, com.synseaero.fpv.R.string.photo, com.synseaero.fpv.R.string.video, com.synseaero.fpv.R.string.gimbal,
-            com.synseaero.fpv.R.string.fc
+            R.string.map, R.string.brightness, R.string.helmet, R.string.photo, R.string.video, R.string.gimbal,
+            R.string.fc
     };
 
     private static final int ENERGY_ICON[] = {
-            com.synseaero.fpv.R.drawable.energy_icon_1,
-            com.synseaero.fpv.R.drawable.energy_icon_2,
-            com.synseaero.fpv.R.drawable.energy_icon_3,
-            com.synseaero.fpv.R.drawable.energy_icon_4,
-            com.synseaero.fpv.R.drawable.energy_icon_5,
-            com.synseaero.fpv.R.drawable.energy_icon_6,
-            com.synseaero.fpv.R.drawable.energy_icon_7,
-            com.synseaero.fpv.R.drawable.energy_icon_8,
-            com.synseaero.fpv.R.drawable.energy_icon_9,
-            com.synseaero.fpv.R.drawable.energy_icon_10,
-            com.synseaero.fpv.R.drawable.energy_icon_11,
+            R.drawable.energy_icon_1,
+            R.drawable.energy_icon_2,
+            R.drawable.energy_icon_3,
+            R.drawable.energy_icon_4,
+            R.drawable.energy_icon_5,
+            R.drawable.energy_icon_6,
+            R.drawable.energy_icon_7,
+            R.drawable.energy_icon_8,
+            R.drawable.energy_icon_9,
+            R.drawable.energy_icon_10,
+            R.drawable.energy_icon_11,
     };
 
     private LocationManager locationManager;
@@ -172,6 +180,17 @@ public class FPVFragment extends Fragment {
 
     private MySensorEventListener sensorEventListener;
 
+    private int lowEnergyWarningThreshold = DJIUtils.COMMON_LOW_PERCENT;
+    private int goHomeBatteryThreshold = DJIUtils.COMMON_LOW_PERCENT;
+
+    private boolean isFlying = false;
+    private long flyingStateChangeTime;
+    //0已降落 1起飞中 2飞行中
+    private int flyState = 0;
+
+    private RatingBar rbRc;
+    private RatingBar rbGps;
+
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
 
@@ -183,25 +202,24 @@ public class FPVFragment extends Fragment {
         }
     };
 
-    private Handler mHandler = new Handler(new Handler.Callback() {
-
+    private Handler mHandler = new Handler() {
         @Override
-        public boolean handleMessage(Message msg) {
+        public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
             switch (msg.what) {
-                case MSG_CONTROL_SIGNAL: {
-                    int strengthPercent = bundle.getInt("strengthPercent");
-                    int index2 = Math.round((float) strengthPercent / 25);
-
-                    //ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
-                    break;
-                }
+//                case MSG_CONTROL_SIGNAL: {
+//                    int strengthPercent = bundle.getInt("strengthPercent");
+//                    int index2 = Math.round((float) strengthPercent / 25);
+//
+//                    //ivControllerSignal.setImageResource(SIGNAL_ICON[index2]);
+//                    break;
+//                }
                 case MessageType.MSG_GET_FC_STATE_RESPONSE: {
                     double speed = bundle.getDouble("speed");
                     float vSpeed = bundle.getFloat("vSpeed");
                     double altitude = bundle.getDouble("altitude");
                     int distance = (int) bundle.getDouble("distance");
-                    int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
+                    //int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
 
                     double longA = bundle.getDouble("longA");
                     double longH = bundle.getDouble("longH");
@@ -219,9 +237,9 @@ public class FPVFragment extends Fragment {
 
                     int intVSpeed = (int) vSpeed;
 
-                    if (gpsSignalLevel > 5 || gpsSignalLevel < 0) {
-                        gpsSignalLevel = 0;
-                    }
+//                    if (gpsSignalLevel > 5 || gpsSignalLevel < 0) {
+//                        gpsSignalLevel = 0;
+//                    }
 
                     tvFlightSpeed.setText(strSpeed);
                     tvFlightVerticalSpeed.setText(intVSpeed + "");
@@ -258,6 +276,15 @@ public class FPVFragment extends Fragment {
                     int index = Math.round((float) remainingPercent / 8) - 1;
                     index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
                     rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
+
+                    if (remainingPercent < DJIUtils.COMMON_LOW_PERCENT) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 203;
+                        information.information = getString(R.string.rc_battery_low_power_hint);
+                        information.type = 0;
+                        setComprehensiveInfo(203, information, false);
+                    }
+
                     break;
                 }
                 case MessageType.MSG_GET_BATTERY_STATE_RESPONSE: {
@@ -265,6 +292,21 @@ public class FPVFragment extends Fragment {
                     int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8) - 1;
                     aircraftIndex = aircraftIndex < 0 ? 0 : (aircraftIndex > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : aircraftIndex);
                     rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
+
+                    if (aircraftRemainingPercent < goHomeBatteryThreshold) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 202;
+                        information.information = getString(R.string.fc_battery_very_low_power_hint);
+                        information.type = 0;
+                        setComprehensiveInfo(202, information, false);
+                    } else if (aircraftRemainingPercent < lowEnergyWarningThreshold) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 202;
+                        information.information = getString(R.string.fc_battery_low_power_hint);
+                        information.type = 0;
+                        setComprehensiveInfo(202, information, false);
+                    }
+
                     break;
                 }
                 case MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE: {
@@ -282,14 +324,127 @@ public class FPVFragment extends Fragment {
 
                     break;
                 }
+                case MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE: {
+                    int percent = bundle.getInt("percent");
 
+                    rbRc.setRating((float) percent / 10);
+                    Log.d(TAG, "upLink:" + percent);
+
+                    if (percent < DJIUtils.COMMON_LOW_PERCENT) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 103;
+                        information.information = getString(R.string.rc_battery_low_power_hint);
+                        information.type = 1;
+                        setComprehensiveInfo(103, information, false);
+                    }
+                    break;
+                }
+                case MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE: {
+                    int percent = bundle.getInt("percent");
+                    if (percent < 5) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 104;
+                        information.information = getString(R.string.down_link_signal_none_hint);
+                        information.type = 1;
+                        setComprehensiveInfo(104, information, false);
+                    } else if (percent < DJIUtils.COMMON_LOW_PERCENT) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 104;
+                        information.information = getString(R.string.down_link_signal_weak_hint);
+                        information.type = 1;
+                        setComprehensiveInfo(104, information, false);
+                    }
+                    break;
+                }
+                case MessageType.MSG_GET_GIMBAL_STATE_RESPONSE: {
+                    boolean isMotorOverloaded = bundle.getBoolean("isMotorOverloaded", false);
+                    if (isMotorOverloaded) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 101;
+                        information.information = getString(R.string.gimbal_motor_overloaded);
+                        information.type = 1;
+                        setComprehensiveInfo(101, information, false);
+                    }
+                    break;
+                }
+                case MessageType.MSG_GET_SDCARD_STATE_RESPONSE: {
+                    boolean isFull = bundle.getBoolean("isFull", false);
+                    if (isFull) {
+                        FlightInformation information = new FlightInformation();
+                        information.level = 105;
+                        information.information = getString(R.string.sd_card_full);
+                        information.type = 1;
+                        setComprehensiveInfo(105, information, false);
+                    }
+                    break;
+                }
+                case MessageType.MSG_GET_FC_INFO_STATE_RESPONSE: {
+                    String flightMode = bundle.getString("flightMode", "");
+                    boolean isFlying = bundle.getBoolean("isFlying");
+                    boolean isHomeSet = bundle.getBoolean("isHomeSet");
+                    int gpsSignalStatus = bundle.getInt("gpsSignalStatus");
+
+                    //boolean goHomeCompleted = bundle.getBoolean("goHomeCompleted", false);
+                    boolean reachLimitedHeight = bundle.getBoolean("reachLimitedHeight", false);
+                    boolean reachLimitedRadius = bundle.getBoolean("reachLimitedRadius", false);
+
+                    //记录起飞时间
+                    if (FPVFragment.this.isFlying != isFlying) {
+                        FPVFragment.this.isFlying = isFlying;
+                        flyingStateChangeTime = System.currentTimeMillis();
+                    }
+
+                    //获取当前飞行状态
+                    if (!FPVFragment.this.isFlying) {
+                        flyState = 0;
+                    } else {
+                        //起飞5s内
+                        if (isHomeSet && flyingStateChangeTime + 5000 > System.currentTimeMillis()) {
+                            flyState = 1;
+                        } else {
+                            flyState = 2;
+                        }
+                    }
+
+                    //设置gps信号强度
+                    int gpsLevel = gpsSignalStatus * 2;
+                    if (gpsLevel > 10) {
+                        gpsLevel = 0;
+                    }
+                    rbGps.setRating(gpsLevel);
+                    Log.d(TAG, "gpsLevel:" + gpsLevel);
+
+                    FlightInformation flightModeInfo = new FlightInformation();
+                    flightModeInfo.level = 206;
+                    flightModeInfo.information = flightMode + activity.getString(R.string.mode);
+                    flightModeInfo.type = 0;
+                    setComprehensiveInfo(206, flightModeInfo, false);
+
+                    if (reachLimitedHeight) {
+                        FlightInformation reachLimitedHeightInfo = new FlightInformation();
+                        reachLimitedHeightInfo.level = 208;
+                        reachLimitedHeightInfo.information = activity.getString(R.string.reach_limited_height);
+                        reachLimitedHeightInfo.type = 0;
+                        setComprehensiveInfo(208, reachLimitedHeightInfo, false);
+                    }
+
+                    if (reachLimitedRadius) {
+                        FlightInformation reachLimitedRadiusInfo = new FlightInformation();
+                        reachLimitedRadiusInfo.level = 209;
+                        reachLimitedRadiusInfo.information = activity.getString(R.string.reach_limited_radius);
+                        reachLimitedRadiusInfo.type = 0;
+                        setComprehensiveInfo(209, reachLimitedRadiusInfo, false);
+                    }
+
+                    break;
+                }
+                case MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD_RESPONSE: {
+                    goHomeBatteryThreshold = bundle.getInt("threshold");
+                    break;
+                }
             }
-
-            return true;
-
         }
-
-    });
+    };
 
     private Messenger messenger = new Messenger(mHandler);
 
@@ -325,6 +480,12 @@ public class FPVFragment extends Fragment {
             llPreview.addView(tvPreview, param);
 
             menuLayout.setVisibility(View.GONE);
+
+            FlightInformation fpvModeInfo = new FlightInformation();
+            fpvModeInfo.level = 207;
+            fpvModeInfo.information = getString(R.string.change_to_fpv_mode);
+            fpvModeInfo.type = 0;
+            setComprehensiveInfo(207, fpvModeInfo, true);
         } else if (this.mode == MODE_TPV) {
             this.rlCraftSignal.setRotation(0);
             this.rlCraftSignal.setRotationY(0);
@@ -354,6 +515,13 @@ public class FPVFragment extends Fragment {
             RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(DensityUtil.dip2px(getContext(), 100), DensityUtil.dip2px(getContext(), 55));
             rlTpvCamera.addView(tvPreview, param);
             menuLayout.setVisibility(View.GONE);
+
+            FlightInformation tpvModeInfo = new FlightInformation();
+            tpvModeInfo.level = 207;
+            tpvModeInfo.information = getString(R.string.change_to_tpv_mode);
+            tpvModeInfo.type = 0;
+            setComprehensiveInfo(207, tpvModeInfo, true);
+
         } else if (this.mode == MODE_MENU) {
             this.ivDirection.setVisibility(View.GONE);
             menuLayout.setVisibility(View.VISIBLE);
@@ -415,6 +583,29 @@ public class FPVFragment extends Fragment {
 
         mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
+
+        SharedPreferences sp = getContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
+        lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", DJIUtils.COMMON_LOW_PERCENT);
+
+        activity = (FPVActivity) getActivity();
+        //相机曝光属性
+        activity.registerDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, messenger);
+        //遥控器状态
+        activity.registerDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, messenger);
+        //飞机电池状态
+        activity.registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        //云台状态
+        activity.registerDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, messenger);
+        //飞控参数信息
+        activity.registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
+        //飞控状态信息
+        activity.registerDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
+
+        activity.registerDJIMessenger(MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD_RESPONSE, messenger);
+
+        activity.registerDJIMessenger(MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
+
+        activity.registerDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
     }
 
     public void setHelmetEnergy(int percent) {
@@ -424,50 +615,50 @@ public class FPVFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(com.synseaero.fpv.R.layout.fragment_fpv, container, false);
-        rlTop = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_top);
-        rlLeft = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_left);
-        llBottom = (LinearLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_bottom);
-        rlRight = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_right);
-        rlCraftSignal = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_craft_signal);
-        rlControllerSignal = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_controller_signal);
-        tvSafeInfo = (TextView) view.findViewById(com.synseaero.fpv.R.id.tv_fpv_safe_info);
+        View view = inflater.inflate(R.layout.fragment_fpv, container, false);
+        rlTop = (RelativeLayout) view.findViewById(R.id.layout_fpv_top);
+        rlLeft = (RelativeLayout) view.findViewById(R.id.layout_fpv_left);
+        llBottom = (LinearLayout) view.findViewById(R.id.layout_fpv_bottom);
+        rlRight = (RelativeLayout) view.findViewById(R.id.layout_fpv_right);
+        rlCraftSignal = (RelativeLayout) view.findViewById(R.id.layout_fpv_craft_signal);
+        rlControllerSignal = (RelativeLayout) view.findViewById(R.id.layout_fpv_controller_signal);
+        tvSafeInfo = (TextView) view.findViewById(R.id.tv_fpv_safe_info);
 //        ivCraftSignal = (ImageView) view.findViewById(R.id.iv_craft_signal);
 //        ivControllerSignal = (ImageView) view.findViewById(R.id.iv_controller_signal);
-        rlHelmetEnergy = view.findViewById(com.synseaero.fpv.R.id.rl_fpv_helmet);
-        rlPhoneEnergy = view.findViewById(com.synseaero.fpv.R.id.rl_fpv_phone);
-        rlRCEnergy = view.findViewById(com.synseaero.fpv.R.id.rl_fpv_controller);
-        rlCraftEnergy = view.findViewById(com.synseaero.fpv.R.id.rl_fpv_craft);
-        tvFlightHeight = (TextView) view.findViewById(com.synseaero.fpv.R.id.tv_fpv_flight_height);
-        tvFlightDistance = (TextView) view.findViewById(com.synseaero.fpv.R.id.tv_fpv_flight_distance);
-        tvFlightSpeed = (TextView) view.findViewById(com.synseaero.fpv.R.id.tv_fpv_flight_speed);
-        tvFlightVerticalSpeed = (TextView) view.findViewById(com.synseaero.fpv.R.id.tv_fpv_flight_vertical_speed);
-        ivFlightVerticalSpeed = (ImageView) view.findViewById(com.synseaero.fpv.R.id.iv_fpv_flight_vertical_speed);
+        rlHelmetEnergy = view.findViewById(R.id.rl_fpv_helmet);
+        rlPhoneEnergy = view.findViewById(R.id.rl_fpv_phone);
+        rlRCEnergy = view.findViewById(R.id.rl_fpv_controller);
+        rlCraftEnergy = view.findViewById(R.id.rl_fpv_craft);
+        tvFlightHeight = (TextView) view.findViewById(R.id.tv_fpv_flight_height);
+        tvFlightDistance = (TextView) view.findViewById(R.id.tv_fpv_flight_distance);
+        tvFlightSpeed = (TextView) view.findViewById(R.id.tv_fpv_flight_speed);
+        tvFlightVerticalSpeed = (TextView) view.findViewById(R.id.tv_fpv_flight_vertical_speed);
+        ivFlightVerticalSpeed = (ImageView) view.findViewById(R.id.iv_fpv_flight_vertical_speed);
         //ivLeftBg = (ImageView) view.findViewById(R.id.iv_fpv_left_bg);
         //tvPreview = (TextureView) view.findViewById(R.id.tv_fpv_preview);
 
         //tvTpvPreview = (TextureView) view.findViewById(R.id.tv_tpv_preview);
         //tvPreview.setSurfaceTextureListener(new PreviewSurfaceTextureListener());
-        mapView = (MapView) view.findViewById(com.synseaero.fpv.R.id.mv_fpv_map);
+        mapView = (MapView) view.findViewById(R.id.mv_fpv_map);
 
-        ivSatellite = (ImageView) view.findViewById(com.synseaero.fpv.R.id.iv_fpv_sat);
-        ivRc = (ImageView) view.findViewById(com.synseaero.fpv.R.id.iv_fpv_rc);
+        ivSatellite = (ImageView) view.findViewById(R.id.iv_fpv_sat);
+        ivRc = (ImageView) view.findViewById(R.id.iv_fpv_rc);
 
         int paddingText = (int) (wWidth * 0.013);
         tvSafeInfo.setPadding(paddingText, 0, paddingText, 0);
 
-        tvCameraShutterSpeed = (TextView) view.findViewById(com.synseaero.fpv.R.id.fpv_camera_shutter_speed);
-        tvCameraAperture = (TextView) view.findViewById(com.synseaero.fpv.R.id.fpv_camera_aperture);
-        tvCameraISO = (TextView) view.findViewById(com.synseaero.fpv.R.id.fpv_camera_iso);
-        tvCameraEV = (TextView) view.findViewById(com.synseaero.fpv.R.id.fpv_camera_ev);
+        tvCameraShutterSpeed = (TextView) view.findViewById(R.id.fpv_camera_shutter_speed);
+        tvCameraAperture = (TextView) view.findViewById(R.id.fpv_camera_aperture);
+        tvCameraISO = (TextView) view.findViewById(R.id.fpv_camera_iso);
+        tvCameraEV = (TextView) view.findViewById(R.id.fpv_camera_ev);
 
-        ivDirection = (ImageView) view.findViewById(com.synseaero.fpv.R.id.iv_fpv_direction);
+        ivDirection = (ImageView) view.findViewById(R.id.iv_fpv_direction);
 
-        llFpvCamera = (LinearLayout) view.findViewById(com.synseaero.fpv.R.id.layout_fpv_camera);
-        rlTpvCamera = (RelativeLayout) view.findViewById(com.synseaero.fpv.R.id.layout_tpv_camera);
-        llPreview = (LinearLayout) view.findViewById(com.synseaero.fpv.R.id.ll_preview);
+        llFpvCamera = (LinearLayout) view.findViewById(R.id.layout_fpv_camera);
+        rlTpvCamera = (RelativeLayout) view.findViewById(R.id.layout_tpv_camera);
+        llPreview = (LinearLayout) view.findViewById(R.id.ll_preview);
 
-        menuLayout = (CircleMenuLayout) view.findViewById(com.synseaero.fpv.R.id.menu_tpv);
+        menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
         menuLayout.setMenuItemCount(18);
         menuLayout.setMenuItemIcons(mItemImgs);
         String[] itemTexts = new String[mItemsText.length];
@@ -493,6 +684,9 @@ public class FPVFragment extends Fragment {
             }
         });
 
+        rbGps = (RatingBar) view.findViewById(R.id.rb_fpv_craft_signal);
+        rbRc = (RatingBar) view.findViewById(R.id.rb_fpv_controller_signal);
+
 
         mGLView = new MyGLSurfaceView(getActivity());
         mGLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -510,6 +704,7 @@ public class FPVFragment extends Fragment {
         aMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
 
         setMode(MODE_TPV);
+
         return view;
     }
 
@@ -529,6 +724,24 @@ public class FPVFragment extends Fragment {
             }
         }
 
+        //相机曝光属性
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, messenger);
+        //遥控器状态
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, messenger);
+        //飞机电池状态
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        //云台状态
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, messenger);
+        //飞控参数信息
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
+        //飞控状态信息
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
+
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD_RESPONSE, messenger);
+
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
+
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
     }
 
     public void onResume() {
@@ -653,9 +866,9 @@ public class FPVFragment extends Fragment {
             if (vSpeed <= 0.001 && vSpeed >= -0.0001) {
                 ivFlightVerticalSpeed.setImageResource(0);
             } else if (vSpeed > 0.001) {
-                ivFlightVerticalSpeed.setImageResource(com.synseaero.fpv.R.drawable.arrow_up);
+                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_up);
             } else {
-                ivFlightVerticalSpeed.setImageResource(com.synseaero.fpv.R.drawable.arrow_down);
+                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_down);
             }
         }
     }
@@ -674,66 +887,66 @@ public class FPVFragment extends Fragment {
         }
     }
 
-    class AuxRCSignalCallback implements DJIAuxLink.DJIAuxLinkUpdatedRemoteControllerSignalInformationCallback {
-
-        @Override
-        public void onResult(ArrayList<DJISignalInformation> antennas) {
-            int percent = 0;
-            for (DJISignalInformation antenna : antennas) {
-                percent += antenna.getPercent();
-            }
-            int length = antennas.size();
-            percent = percent / length;
-
-            //Log.d("rcSignal", "aux" + percent + "");
-
-            Message msg = Message.obtain();
-            msg.what = MSG_CONTROL_SIGNAL;
-            Bundle bundle = new Bundle();
-            bundle.putInt("strengthPercent", percent);
-            msg.setData(bundle);
-            mHandler.sendMessage(msg);
-        }
-    }
-
-    class LBRCSignalCallback implements DJILBAirLink.DJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback {
-
-        @Override
-        public void onResult(ArrayList<DJISignalInformation> antennas) {
-            int percent = 0;
-            for (DJISignalInformation antenna : antennas) {
-                percent += antenna.getPercent();
-            }
-            int length = antennas.size();
-            percent = percent / length;
-
-            //Log.d("rcSignal", "lb" + percent + "");
-
-            Message msg = Message.obtain();
-            msg.what = MSG_CONTROL_SIGNAL;
-            Bundle bundle = new Bundle();
-            bundle.putInt("strengthPercent", percent);
-            msg.setData(bundle);
-            mHandler.sendMessage(msg);
-        }
-    }
-
-    class OcuSignalCallback implements SignalQualityUpdatedCallback {
-
-        @Override
-        public void onChange(int strength) {
-
-            //Log.d("rcSignal", "ocu" + strength + "");
-
-            //The signal quality in percent with range [0, 100], where 100 is the best quality
-            Message msg = Message.obtain();
-            msg.what = MSG_CONTROL_SIGNAL;
-            Bundle bundle = new Bundle();
-            bundle.putInt("strengthPercent", strength);
-            msg.setData(bundle);
-            mHandler.sendMessage(msg);
-        }
-    }
+//    class AuxRCSignalCallback implements DJIAuxLink.DJIAuxLinkUpdatedRemoteControllerSignalInformationCallback {
+//
+//        @Override
+//        public void onResult(ArrayList<DJISignalInformation> antennas) {
+//            int percent = 0;
+//            for (DJISignalInformation antenna : antennas) {
+//                percent += antenna.getPercent();
+//            }
+//            int length = antennas.size();
+//            percent = percent / length;
+//
+//            //Log.d("rcSignal", "aux" + percent + "");
+//
+//            Message msg = Message.obtain();
+//            msg.what = MSG_CONTROL_SIGNAL;
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("strengthPercent", percent);
+//            msg.setData(bundle);
+//            mHandler.sendMessage(msg);
+//        }
+//    }
+//
+//    class LBRCSignalCallback implements DJILBAirLink.DJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback {
+//
+//        @Override
+//        public void onResult(ArrayList<DJISignalInformation> antennas) {
+//            int percent = 0;
+//            for (DJISignalInformation antenna : antennas) {
+//                percent += antenna.getPercent();
+//            }
+//            int length = antennas.size();
+//            percent = percent / length;
+//
+//            //Log.d("rcSignal", "lb" + percent + "");
+//
+//            Message msg = Message.obtain();
+//            msg.what = MSG_CONTROL_SIGNAL;
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("strengthPercent", percent);
+//            msg.setData(bundle);
+//            mHandler.sendMessage(msg);
+//        }
+//    }
+//
+//    class OcuSignalCallback implements SignalQualityUpdatedCallback {
+//
+//        @Override
+//        public void onChange(int strength) {
+//
+//            //Log.d("rcSignal", "ocu" + strength + "");
+//
+//            //The signal quality in percent with range [0, 100], where 100 is the best quality
+//            Message msg = Message.obtain();
+//            msg.what = MSG_CONTROL_SIGNAL;
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("strengthPercent", strength);
+//            msg.setData(bundle);
+//            mHandler.sendMessage(msg);
+//        }
+//    }
 
     //手机位置
     class MyLocationListener implements LocationListener {
@@ -810,7 +1023,7 @@ public class FPVFragment extends Fragment {
                 lastOrientation = ORIENTATION;
                 lastPitch = PITCH;
                 lastRoll = ROLL;
-                Vector<Double> aPhone = new Vector<Double>();
+                Vector<Double> aPhone = new Vector<>();
                 aPhone.add(PITCH * Math.PI / 180);
                 aPhone.add(ROLL * Math.PI / 180);
                 aPhone.add(ORIENTATION * Math.PI / 180);
@@ -832,5 +1045,46 @@ public class FPVFragment extends Fragment {
 
     public void onDownPressed() {
         menuLayout.setAngle(-1);
+    }
+
+    /***
+     * 设置综合信息栏信息
+     */
+    private void setComprehensiveInfo(int level, FlightInformation flightInformation, boolean force) {
+
+        long curTime = System.currentTimeMillis();
+        //设置等级信息
+        FlightInformation beforeInfo = flightInfoMap.get(level);
+        if (force || beforeInfo == null || !beforeInfo.equals(flightInformation) || beforeInfo.expiredTime < curTime) {
+            flightInfoMap.put(level, flightInformation);
+        }
+
+        //获取当前最高等级的信息
+        FlightInformation priorInfo = null;
+        Iterator<Map.Entry<Integer, FlightInformation>> it = flightInfoMap.entrySet().iterator();
+        for (; it.hasNext(); ) {
+            Map.Entry<Integer, FlightInformation> entry = it.next();
+            FlightInformation info = entry.getValue();
+            if (info != null && info.expiredTime >= curTime) {
+                priorInfo = info;
+                break;
+            }
+        }
+
+        int stateStrId = DJIUtils.getMapValue(DJIUtils.flyStateMap, flyState);
+        String prefix = activity.getString(stateStrId);
+
+        String showInfo;
+        //将信息展示在综合信息栏
+        if (priorInfo != null) {
+            showInfo = prefix + activity.getString(R.string.comma) + priorInfo.information;
+        } else {
+            showInfo = prefix;
+        }
+        if (!showInfo.equals(tvSafeInfo.getText().toString())) {
+            Log.d(TAG, "showInfo:" + showInfo);
+            tvSafeInfo.setText(showInfo);
+        }
+
     }
 }

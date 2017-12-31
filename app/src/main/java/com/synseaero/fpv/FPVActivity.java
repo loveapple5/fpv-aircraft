@@ -145,53 +145,57 @@ public class FPVActivity extends DJIActivity {
         //遥控器按键状态
         registerDJIMessenger(MessageType.MSG_GET_RC_HARDWARE_STATE_RESPONSE, messenger);
 
-        //相机曝光属性
-        registerDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, mFPVFragment.getMessenger());
-        //遥控器状态
-        registerDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //飞机电池状态
-        registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //云台状态
-        registerDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //飞控状态
-        registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, mFPVFragment.getMessenger());
-
-        //停止watch rc按键状态变化
+        //watch rc按键状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 0);
-        //停止watch camera exposure状态变化
+        //watch camera exposure状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
-        //停止watch rc电池状态变化
+        //watch rc电池状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
-        //停止watch飞机电池状态
+        //watch飞机电池状态
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
-        //停止watch云台状态
+        //watch云台状态
         sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
+        //watch上行信号强度
+        sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
+        //watch下行信号强度
+        sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
+        //watch sd卡状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
 
+        Message getGoHomeThresholdMsg = Message.obtain();
+        getGoHomeThresholdMsg.what = MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD;
+        sendDJIMessage(getGoHomeThresholdMsg);
+
+    }
+
+    protected void onResume() {
+        super.onResume();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_GET_FC_STATE;
+
+                sendDJIMessage(message);
+
                 Message message2 = Message.obtain();
-                message2.what = MessageType.MSG_GET_FC_STATE;
+                message2.what = MessageType.MSG_GET_FC_INFO_STATE;
                 sendDJIMessage(message2);
             }
-        }, 1000, 1000);
+        }, 2000, 1000);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 
     protected void onStop() {
         super.onStop();
         //遥控器按键状态
         unregisterDJIMessenger(MessageType.MSG_GET_RC_HARDWARE_STATE_RESPONSE, messenger);
-        //相机曝光属性
-        unregisterDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, mFPVFragment.getMessenger());
-        //遥控器电池状态
-        unregisterDJIMessenger(MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //飞机电池状态
-        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //云台状态
-        unregisterDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, mFPVFragment.getMessenger());
-        //飞控状态
-        unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, mFPVFragment.getMessenger());
 
         //停止watch rc按键状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 1);
@@ -203,6 +207,12 @@ public class FPVActivity extends DJIActivity {
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
         //停止watch云台状态
         sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
+        //停止watch上行信号强度
+        sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
+        //停止watch下行信号强度
+        sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
+        //停止watch sd卡状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
 
         timer.cancel();
     }

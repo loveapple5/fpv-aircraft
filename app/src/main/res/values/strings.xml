@@ -240,4 +240,29 @@
 
     <string name="smart_go_home_energy">自动返航电量</string>
     <string name="smart_land_energy">自动降落电量</string>
+
+    <string name="rc_battery_low_power_hint">遥控电量不足，请立即返航</string>
+    <string name="up_link_signal_weak_hint">遥控信号弱</string>
+    <string name="down_link_signal_weak_hint">图传信号弱，请调整天线</string>
+    <string name="down_link_signal_none_hint">无图传</string>
+
+    <string name="gimbal_motor_overloaded">云台电机过载</string>
+    <string name="sd_card_full">SD卡存储不足</string>
+
+    <string name="change_to_fpv_mode">进入第一人称视角</string>
+    <string name="change_to_tpv_mode">进入第三人称视角</string>
+
+    <string name="reach_limited_height">到达最大飞行高度</string>
+    <string name="reach_limited_radius">到达最大飞行距离</string>
+
+    <string name="fc_battery_low_power_hint">飞机电量不足，请立即返航</string>
+    <string name="fc_battery_very_low_power_hint">飞机电量过低，即将自动返航</string>
+
+    <string name="taking_off">飞机起飞，记录返航点</string>
+    <string name="flying">飞行中</string>
+    <string name="landed">飞机已降落</string>
+
+    <string name="comma">，</string>
+
+    <string name="mode">模式</string>
 </resources>

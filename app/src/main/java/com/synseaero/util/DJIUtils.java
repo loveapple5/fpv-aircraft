@@ -32,6 +32,8 @@ public class DJIUtils {
     public static HashMap rcStyleMap2 = new HashMap();
     public static HashMap rcStyleMap3 = new HashMap();
 
+    public static HashMap flyStateMap = new HashMap();
+
     static {
         photoResolutionMap.put(DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_4_3, R.string.ratio43);
         photoResolutionMap.put(DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_16_9, R.string.ratio169);
@@ -73,6 +75,9 @@ public class DJIUtils {
         rcStyleMap3.put(DJIRCControlStyle.American, R.drawable.us_mode_2);
         rcStyleMap3.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_2);
 
+        flyStateMap.put(0, R.string.landed);
+        flyStateMap.put(1, R.string.taking_off);
+        flyStateMap.put(2, R.string.flying);
     }
 
     public static int getMapValue(HashMap map, Object key) {

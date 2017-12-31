@@ -58,7 +58,7 @@ public class GetFCState extends Task {
             //  distance into meter
             dis = Math.round(dis * 10000.0) / 10000.0 * 1000.0;
 
-            int gpsSignalLevel = curState.getGpsSignalStatus().value();
+            //int gpsSignalLevel = curState.getGpsSignalStatus().value();
 
             Double heading = flightController.getCompass().getHeading();
             Double AircraftPitch = curState.getAttitude().pitch;
@@ -72,7 +72,7 @@ public class GetFCState extends Task {
             bundle.putFloat("vSpeed", vSpeed);
             bundle.putDouble("altitude", altitude);
             bundle.putDouble("distance", dis);
-            bundle.putInt("gpsSignalLevel", gpsSignalLevel);
+            //bundle.putInt("gpsSignalLevel", gpsSignalLevel);
 
             bundle.putDouble("longA", longA);
             bundle.putDouble("longH", longH);

@@ -10,6 +10,7 @@ import com.synseaero.dji.MessageType;
 import com.synseaero.dji.Task;
 import com.synseaero.util.StringUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import dji.common.camera.DJICameraExposureParameters;
@@ -22,9 +23,17 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 public class WatchExposure extends Task {
 
+    private static Callback callback = new Callback();
+
+    private static int flag = 0;
+
+    private static WeakReference<Messenger> reference;
 
     public WatchExposure(Bundle data, Messenger messenger) {
         super(data, messenger);
+        flag = data.getInt("flag", 0);
+        callback = new Callback();
+        reference = new WeakReference<>(messenger);
     }
 
     @Override
@@ -33,20 +42,20 @@ public class WatchExposure extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-
-            if (flag == 0) {
-                camera.setCameraUpdatedCurrentExposureValuesCallback(callback);
-            } else {
-                camera.setCameraUpdatedCurrentExposureValuesCallback(null);
-            }
+            camera.setCameraUpdatedCurrentExposureValuesCallback(callback);
         }
 
     }
 
-    DJICamera.CameraUpdatedCurrentExposureValuesCallback callback = new DJICamera.CameraUpdatedCurrentExposureValuesCallback() {
+
+    private static class Callback implements DJICamera.CameraUpdatedCurrentExposureValuesCallback {
 
         @Override
         public void onResult(DJICameraExposureParameters exposure) {
+
+            if (flag == 1) {
+                return;
+            }
             DJICameraSettingsDef.CameraAperture aperture = exposure.getAperture();
             DJICameraSettingsDef.CameraShutterSpeed speed = exposure.getShutterSpeed();
             DJICameraSettingsDef.CameraISO ISO = exposure.getISO();
@@ -76,12 +85,16 @@ public class WatchExposure extends Task {
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE;
             message.setData(bundle);
+
+            Messenger messenger = reference.get();
             try {
                 messenger.send(message);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+
+
         }
-    };
+    }
 
 }
