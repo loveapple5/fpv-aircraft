@@ -17,7 +17,7 @@ public class DJIActivity extends FragmentActivity {
         app = (FPVApplication) getApplication();
     }
 
-    protected boolean sendDJIMessage(Message message) {
+    public boolean sendDJIMessage(Message message) {
         return app.sendDJIMessage(message);
     }
 

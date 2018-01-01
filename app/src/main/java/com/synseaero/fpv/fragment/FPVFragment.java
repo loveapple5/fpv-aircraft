@@ -53,6 +53,8 @@ import com.synseaero.view.CircleMenuLayout;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -191,6 +193,8 @@ public class FPVFragment extends Fragment {
     private RatingBar rbRc;
     private RatingBar rbGps;
 
+    private Timer timer;
+
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
 
@@ -280,7 +284,7 @@ public class FPVFragment extends Fragment {
                     if (remainingPercent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
                         information.level = 203;
-                        information.information = getString(R.string.rc_battery_low_power_hint);
+                        information.information = activity.getString(R.string.rc_battery_low_power_hint);
                         information.type = 0;
                         setComprehensiveInfo(203, information, true);
                     }
@@ -296,13 +300,13 @@ public class FPVFragment extends Fragment {
                     if (aircraftRemainingPercent < goHomeBatteryThreshold) {
                         FlightInformation information = new FlightInformation();
                         information.level = 202;
-                        information.information = getString(R.string.fc_battery_very_low_power_hint);
+                        information.information = activity.getString(R.string.fc_battery_very_low_power_hint);
                         information.type = 0;
                         setComprehensiveInfo(202, information, true);
                     } else if (aircraftRemainingPercent < lowEnergyWarningThreshold) {
                         FlightInformation information = new FlightInformation();
                         information.level = 202;
-                        information.information = getString(R.string.fc_battery_low_power_hint);
+                        information.information = activity.getString(R.string.fc_battery_low_power_hint);
                         information.type = 0;
                         setComprehensiveInfo(202, information, true);
                     }
@@ -333,7 +337,7 @@ public class FPVFragment extends Fragment {
                     if (percent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
                         information.level = 103;
-                        information.information = getString(R.string.rc_battery_low_power_hint);
+                        information.information = activity.getString(R.string.rc_battery_low_power_hint);
                         information.type = 1;
                         setComprehensiveInfo(103, information, true);
                     }
@@ -344,13 +348,13 @@ public class FPVFragment extends Fragment {
                     if (percent < 5) {
                         FlightInformation information = new FlightInformation();
                         information.level = 104;
-                        information.information = getString(R.string.down_link_signal_none_hint);
+                        information.information = activity.getString(R.string.down_link_signal_none_hint);
                         information.type = 1;
                         setComprehensiveInfo(104, information, true);
                     } else if (percent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
                         information.level = 104;
-                        information.information = getString(R.string.down_link_signal_weak_hint);
+                        information.information = activity.getString(R.string.down_link_signal_weak_hint);
                         information.type = 1;
                         setComprehensiveInfo(104, information, true);
                     }
@@ -361,7 +365,7 @@ public class FPVFragment extends Fragment {
                     if (isMotorOverloaded) {
                         FlightInformation information = new FlightInformation();
                         information.level = 101;
-                        information.information = getString(R.string.gimbal_motor_overloaded);
+                        information.information = activity.getString(R.string.gimbal_motor_overloaded);
                         information.type = 1;
                         setComprehensiveInfo(101, information, true);
                     }
@@ -372,7 +376,7 @@ public class FPVFragment extends Fragment {
                     if (isFull) {
                         FlightInformation information = new FlightInformation();
                         information.level = 105;
-                        information.information = getString(R.string.sd_card_full);
+                        information.information = activity.getString(R.string.sd_card_full);
                         information.type = 1;
                         setComprehensiveInfo(105, information, false);
                     }
@@ -606,6 +610,37 @@ public class FPVFragment extends Fragment {
         activity.registerDJIMessenger(MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
 
         activity.registerDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
+
+        //watch camera exposure状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
+        //watch rc电池状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
+        //watch飞机电池状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+        //watch云台状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
+        //watch上行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
+        //watch下行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
+        //watch sd卡状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_GET_FC_STATE;
+
+                activity.sendDJIMessage(message);
+
+                Message message2 = Message.obtain();
+                message2.what = MessageType.MSG_GET_FC_INFO_STATE;
+                activity.sendDJIMessage(message2);
+            }
+        }, 2000, 1000);
     }
 
     public void setHelmetEnergy(int percent) {
@@ -742,6 +777,23 @@ public class FPVFragment extends Fragment {
         activity.unregisterDJIMessenger(MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
 
         activity.unregisterDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
+
+        //停止watch camera exposure状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
+        //停止watch rc电池状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 1);
+        //停止watch飞机电池状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+        //停止watch云台状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
+        //停止watch上行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
+        //停止watch下行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
+        //停止watch sd卡状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
+
+        timer.cancel();
     }
 
     public void onResume() {
@@ -987,6 +1039,7 @@ public class FPVFragment extends Fragment {
         }
     }
 
+
     //手机姿态
     class MySensorEventListener implements SensorEventListener {
         @Override
@@ -1016,9 +1069,9 @@ public class FPVFragment extends Fragment {
             double PITCH = Math.toDegrees(values[1]);
             double ROLL = Math.toDegrees(values[2]);
 
-            Log.i(TAG, "ORIENTATION:" + ORIENTATION);
-            Log.i(TAG, "PITCH" + PITCH);
-            Log.i(TAG, "ROLL" + ROLL);
+//            Log.i(TAG, "ORIENTATION:" + ORIENTATION);
+//            Log.i(TAG, "PITCH" + PITCH);
+//            Log.i(TAG, "ROLL" + ROLL);
             if (Math.abs(ORIENTATION - lastOrientation) >= 3 || Math.abs(PITCH - lastPitch) >= 3 || Math.abs(ROLL - lastRoll) >= 3) {
                 lastOrientation = ORIENTATION;
                 lastPitch = PITCH;
@@ -1028,6 +1081,22 @@ public class FPVFragment extends Fragment {
                 aPhone.add(ROLL * Math.PI / 180);
                 aPhone.add(ORIENTATION * Math.PI / 180);
                 mGLView.setaPhonePRY(aPhone);
+
+                if(mode == MODE_FPV || (mode == MODE_MENU && lastMode == MODE_FPV)) {
+                    //云台俯仰角设置
+                    float roll = Math.round(lastRoll);
+                    Log.d(TAG, "roll:" + roll);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putFloat("pitch", -(roll - 78));
+//                    bundle.putFloat("yaw", Math.round(lastOrientation));
+
+                    Message message = Message.obtain();
+                    message.what = MessageType.MSG_ROTATE_GIMBAL_BY_ANGLE;
+                    message.setData(bundle);
+                    activity.sendDJIMessage(message);
+                }
+
             }
 
         }

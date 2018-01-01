@@ -72,7 +72,7 @@ public class FPVActivity extends DJIActivity {
     private long c2DownTime;
     private long c2UpTime;
 
-    private Timer timer;
+
 
     private Handler handler = new Handler() {
 
@@ -147,20 +147,7 @@ public class FPVActivity extends DJIActivity {
 
         //watch rc按键状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 0);
-        //watch camera exposure状态变化
-        sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
-        //watch rc电池状态变化
-        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
-        //watch飞机电池状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
-        //watch云台状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
-        //watch上行信号强度
-        sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
-        //watch下行信号强度
-        sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
-        //watch sd卡状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
+
 
         Message getGoHomeThresholdMsg = Message.obtain();
         getGoHomeThresholdMsg.what = MessageType.MSG_GET_GO_HOME_BATTERY_THRESHOLD;
@@ -170,26 +157,11 @@ public class FPVActivity extends DJIActivity {
 
     protected void onResume() {
         super.onResume();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
 
-                Message message = Message.obtain();
-                message.what = MessageType.MSG_GET_FC_STATE;
-
-                sendDJIMessage(message);
-
-                Message message2 = Message.obtain();
-                message2.what = MessageType.MSG_GET_FC_INFO_STATE;
-                sendDJIMessage(message2);
-            }
-        }, 2000, 1000);
     }
 
     protected void onPause() {
         super.onPause();
-        timer.cancel();
     }
 
     protected void onStop() {
@@ -199,22 +171,7 @@ public class FPVActivity extends DJIActivity {
 
         //停止watch rc按键状态变化
         sendWatchDJIMessage(MessageType.MSG_WATCH_RC_HARDWARE_STATE, 1);
-        //停止watch camera exposure状态变化
-        sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
-        //停止watch rc电池状态变化
-        sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 1);
-        //停止watch飞机电池状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
-        //停止watch云台状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
-        //停止watch上行信号强度
-        sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
-        //停止watch下行信号强度
-        sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
-        //停止watch sd卡状态
-        sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
 
-        timer.cancel();
     }
 
     private static IntentFilter makeGattUpdateIntentFilter() {

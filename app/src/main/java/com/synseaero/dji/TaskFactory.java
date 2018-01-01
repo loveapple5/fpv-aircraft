@@ -38,6 +38,7 @@ import com.synseaero.dji.flightcontroller.SetMaxFlightRadius;
 import com.synseaero.dji.flightcontroller.SetVPEnabled;
 import com.synseaero.dji.gimbal.GetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.GetPitchExtension;
+import com.synseaero.dji.gimbal.RotateByAngle;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.SetPitchExtension;
 import com.synseaero.dji.gimbal.WatchGimbalState;
@@ -246,6 +247,10 @@ public class TaskFactory {
             case (MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY): {
 
                 return new WatchUpLinkSignalQuality(data, messenger);
+            }
+            case (MessageType.MSG_ROTATE_GIMBAL_BY_ANGLE): {
+
+                return new RotateByAngle(data, messenger);
             }
         }
         return null;
