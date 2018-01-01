@@ -8,11 +8,9 @@ import com.synseaero.dji.Task;
 
 import dji.common.error.DJIError;
 import dji.common.gimbal.DJIGimbalAngleRotation;
-import dji.common.gimbal.DJIGimbalCapabilityKey;
 import dji.common.gimbal.DJIGimbalRotateAngleMode;
 import dji.common.gimbal.DJIGimbalRotateDirection;
 import dji.common.util.DJICommonCallbacks;
-import dji.common.util.DJIParamMinMaxCapability;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.gimbal.DJIGimbal;
 import dji.sdk.products.DJIAircraft;
