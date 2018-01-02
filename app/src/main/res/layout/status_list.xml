@@ -34,8 +34,7 @@
             android:id="@+id/tv_compass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_compass" />
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/tv_compass_status"
@@ -60,8 +59,7 @@
             android:id="@+id/tv_IMU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_IMU" />
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/tv_IMU_status"
@@ -100,8 +98,7 @@
             android:id="@+id/tv_FlightMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_flight_mode" />
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/tv_FlightMode_status"
@@ -120,8 +117,7 @@
             android:id="@+id/tv_RemoteControllerMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_remote_controller_mode" />
+            android:layout_alignParentStart="true"/>
 
         <Spinner
             android:id="@+id/sp_RemoteControllerMode"
@@ -140,8 +136,7 @@
             android:id="@+id/tv_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_battery_voltage" />
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/tv_battery_voltage"
@@ -161,8 +156,7 @@
             android:id="@+id/tv_sdcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_SD_card_remaining_space" />
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/tv_sdcard_space"
@@ -181,8 +175,7 @@
             android:id="@+id/tv_gimbal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/tx_Gimbal_status" />
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/tv_gimbal_status"
