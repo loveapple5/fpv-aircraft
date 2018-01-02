@@ -118,6 +118,7 @@ public class FPVActivity extends DJIActivity {
         setContentView(R.layout.activity_fpv);
 
         mFPVFragment = new FPVFragment();
+        mFPVFragment.setActivity(this);
 
         //mMenuFragment = new MenuFragment();
         //mMenuFragment.setMenuData(menuData);

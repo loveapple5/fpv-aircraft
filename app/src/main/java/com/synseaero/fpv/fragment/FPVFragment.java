@@ -546,6 +546,10 @@ public class FPVFragment extends Fragment {
         return this.lastMode;
     }
 
+    public void setActivity(FPVActivity activity) {
+        this.activity = activity;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -1082,7 +1086,7 @@ public class FPVFragment extends Fragment {
                 aPhone.add(ORIENTATION * Math.PI / 180);
                 mGLView.setaPhonePRY(aPhone);
 
-                if(mode == MODE_FPV || (mode == MODE_MENU && lastMode == MODE_FPV)) {
+                if (mode == MODE_FPV || (mode == MODE_MENU && lastMode == MODE_FPV)) {
                     //云台俯仰角设置
                     float roll = Math.round(lastRoll);
                     Log.d(TAG, "roll:" + roll);
