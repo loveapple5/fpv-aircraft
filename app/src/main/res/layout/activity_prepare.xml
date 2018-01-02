@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_prepare_root">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/prepare_flight_head" />
+
+    <TextView
+        android:id="@+id/prepare_label"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="85dp"
+        android:text="@string/prepare_flight"
+        android:textColor="@color/colorWhite"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="484dp"
+        android:layout_below="@id/prepare_label">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="460dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/bg_prepare"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_no_fly"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fly_zone" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_fly_zone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_model_check"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/model_self_check" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_imu"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imu" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_imu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_compass"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/compass" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_compass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/bg_setting"
+                        android:gravity="center"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/normal"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_wireless_signal"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wireless_signal" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_wireless_signal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_flight_mode"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/flight_mode" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_flight_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_rc_mode"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rc_mode" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_rc_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/bg_setting"
+                        android:gravity="center"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_battery_voltage"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/battery_voltage" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_battery_voltage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_sdcard"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sd_card_remaining_space" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_sdcard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/bg_setting"
+                        android:gravity="center"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/iv_gimbal"
+                    style="@style/SelfCheckIcon" />
+
+                <TextView
+                    style="@style/SelfCheckLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gimbal_status" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_gimbal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/lightBlue3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_connect_helmet"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginStart="60dp"
+            android:background="@drawable/bg_btn"
+            android:text="@string/connect_helmet"
+            android:textColor="@color/text_btn" />
+    </RelativeLayout>
+</RelativeLayout>

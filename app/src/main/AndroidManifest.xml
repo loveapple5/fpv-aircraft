@@ -94,7 +94,9 @@
 
         <activity
             android:name=".PrepareActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <activity
             android:name=".BluetoothActivity"
@@ -174,38 +176,38 @@
         <activity
             android:name=".FPVActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
         <activity
             android:name=".MapActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask">
+            android:windowSoftInputMode="stateHidden">
 
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".StatusListActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".SettingOldActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--<activity-->
+        <!--android:name=".MainActivity"-->
+        <!--android:screenOrientation="landscape"-->
+        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
+        <!--<activity-->
+        <!--android:name=".StatusListActivity"-->
+        <!--android:screenOrientation="landscape"-->
+        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
+        <!--<activity-->
+        <!--android:name=".SettingOldActivity"-->
+        <!--android:screenOrientation="landscape"-->
+        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
 
         <service
             android:name="com.synseaero.fpv.bluetooth.BluetoothLeService"

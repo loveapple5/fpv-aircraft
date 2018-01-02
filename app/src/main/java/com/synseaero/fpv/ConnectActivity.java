@@ -12,7 +12,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,6 +110,7 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            //onCreate的时候注册有可能失败
             registerDJIMessenger(MessageType.MSG_PRODUCT_CHANGED, messenger);
             registerDJIMessenger(MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED, messenger);
 
@@ -138,11 +138,14 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
 
                 break;
             case R.id.tv_prepare_flight:
-                Intent fpvIntent = new Intent(this, BluetoothActivity.class);
-                startActivity(fpvIntent);
+//                Intent fpvIntent = new Intent(this, BluetoothActivity.class);
+//                startActivity(fpvIntent);
 
 //                Intent fpvIntent = new Intent(this, FPVActivity.class);
 //                startActivity(fpvIntent);
+
+                Intent prepareIntent = new Intent(this, PrepareActivity.class);
+                startActivity(prepareIntent);
                 break;
         }
     }
