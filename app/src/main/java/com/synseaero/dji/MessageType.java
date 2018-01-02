@@ -90,6 +90,14 @@ public class MessageType {
 
     public static final int MSG_ROTATE_GIMBAL_BY_ANGLE = 100049;
 
+    public static final int MSG_WATCH_FLY_FORBID_STATUS = 100050;
+
+    public static final int MSG_GET_AIRCRAFT_FIRM_VERSION = 100051;
+
+    public static final int MSG_WATCH_DIAGNOSTIS = 100052;
+
+    public static final int MSG_FORMAT_SDCARD = 100053;
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -175,4 +183,12 @@ public class MessageType {
     public static final int MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE = 200048;
 
     public static final int MSG_ROTATE_GIMBAL_BY_ANGLE_RESPONSE = 200049;
+
+    public static final int MSG_GET_FLY_FORBID_STATUS_RESPONSE = 200050;
+
+    public static final int MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE = 200051;
+
+    public static final int MSG_GET_DIAGNOSTIS_RESPONSE = 200052;
+
+    public static final int MSG_FORMAT_SDCARD_RESPONSE = 200053;
 }

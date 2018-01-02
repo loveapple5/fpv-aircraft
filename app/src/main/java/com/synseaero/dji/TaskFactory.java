@@ -4,6 +4,8 @@ package com.synseaero.dji;
 import android.os.Bundle;
 import android.os.Messenger;
 
+import com.synseaero.dji.aircraft.GetFirmwarePackageVersion;
+import com.synseaero.dji.aircraft.WatchDiagnostics;
 import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.GetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiPassword;
@@ -14,6 +16,7 @@ import com.synseaero.dji.battery.GetSelfDischargeDay;
 import com.synseaero.dji.battery.GetSeriesNumber;
 import com.synseaero.dji.battery.SetSelfDischargeDay;
 import com.synseaero.dji.battery.WatchBatteryState;
+import com.synseaero.dji.camera.FormatSDCard;
 import com.synseaero.dji.camera.WatchExposure;
 import com.synseaero.dji.camera.WatchSDCardState;
 import com.synseaero.dji.flightcontroller.GetFCState;
@@ -48,6 +51,7 @@ import com.synseaero.dji.remotecontroller.GetRCMode;
 import com.synseaero.dji.remotecontroller.GetWheelSpeed;
 import com.synseaero.dji.remotecontroller.SetRCMode;
 import com.synseaero.dji.remotecontroller.SetWheelSpeed;
+import com.synseaero.dji.sdkmanager.WatchFlyForbidStatus;
 
 public class TaskFactory {
 
@@ -251,6 +255,22 @@ public class TaskFactory {
             case (MessageType.MSG_ROTATE_GIMBAL_BY_ANGLE): {
 
                 return new RotateByAngle(data, messenger);
+            }
+            case (MessageType.MSG_WATCH_FLY_FORBID_STATUS): {
+
+                return new WatchFlyForbidStatus(data, messenger);
+            }
+            case (MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION): {
+
+                return new GetFirmwarePackageVersion(data, messenger);
+            }
+            case (MessageType.MSG_WATCH_DIAGNOSTIS): {
+
+                return new WatchDiagnostics(data, messenger);
+            }
+            case (MessageType.MSG_FORMAT_SDCARD): {
+
+                return new FormatSDCard(data, messenger);
             }
         }
         return null;
