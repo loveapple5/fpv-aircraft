@@ -36,5 +36,11 @@
     <color name="darkWhite2">#ADADAD</color>
     <color name="darkBlue2">#0CB4C7</color>
 
+    <color name="darkWhite3">#F5FBFB</color>
+
+    <color name="transGreen">#1807776F</color>
+
+    <color name="orange">#FF855F</color>
+
 
 </resources>

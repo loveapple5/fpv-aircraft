@@ -10,7 +10,6 @@
     <string name="sdk_version">Powered by DJI SDK V3.3</string>
     <string name="connection">连 接</string>
     <string name="value0">0</string>
-    <string name="compass">compass</string>
 
     <string name="language">语言</string>
     <string name="formatting_sd_card">格式化SD卡</string>
@@ -23,14 +22,14 @@
     <string name="states_list">状态列表</string>
     <string name="setting">设置</string>
     <string name="auto_check">状态自检</string>
-    <string name="tx_IMU">IMU</string>
-    <string name="tx_compass">指南针</string>
+    <string name="imu">IMU</string>
+    <string name="compass">指南针</string>
     <string name="tx_wifi">无线信道质量</string>
-    <string name="tx_flight_mode">飞行模式</string>
-    <string name="tx_remote_controller_mode">遥控器模式</string>
-    <string name="tx_battery_voltage">飞行器电量</string>
-    <string name="tx_SD_card_remaining_space">SD卡剩余容量</string>
-    <string name="tx_Gimbal_status">云台状态</string>
+    <string name="flight_mode">飞行模式</string>
+    <string name="rc_mode">遥控器模式</string>
+    <string name="battery_voltage">飞行器电量</string>
+    <string name="sd_card_remaining_space">SD卡剩余容量</string>
+    <string name="gimbal_status">云台状态</string>
 
     <string name="flight_controller">飞控</string>
     <string name="remote_controller">遥控器</string>
@@ -231,7 +230,7 @@
 
     <string name="no_vision_position_hint">此机型不支持视觉定位</string>
 
-    <string name="rc_mode">摇杆模式</string>
+    <!--<string name="rc_mode">摇杆模式</string>-->
     <string name="cn_mode">中国手</string>
     <string name="us_mode">美国手</string>
     <string name="jp_mode">日本手</string>
@@ -265,4 +264,19 @@
     <string name="comma">，</string>
 
     <string name="mode">模式</string>
+
+    <string name="connect_helmet">连接头盔</string>
+
+    <string name="fly_zone">飞行区域</string>
+    <string name="model_self_check">模块自检</string>
+    <string name="wireless_signal">无线信道</string>
+    <string name="aircraft_energy">飞行器电量</string>
+
+    <string name="no_restriction_flight">可正常飞行</string>
+    <string name="restrict_flight">限制飞行</string>
+    <string name="forbid_flight">禁止飞行</string>
+
+    <string name="normal">正常</string>
+
+    <string name="unknown">未知</string>
 </resources>
