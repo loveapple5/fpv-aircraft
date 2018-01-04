@@ -74,20 +74,19 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:gravity="bottom"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_search_bluetooth"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="100dp"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
             android:background="@drawable/bg_btn"
             android:gravity="center"
             android:text="@string/manual_search"
             android:textColor="@color/text_btn" />
+
     </LinearLayout>
 
 
