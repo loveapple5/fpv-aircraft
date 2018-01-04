@@ -19,8 +19,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
-import com.synseaero.fpv.bluetooth.BluetoothLeService;
 import com.synseaero.dji.MessageType;
+import com.synseaero.fpv.bluetooth.BluetoothLeService;
 import com.synseaero.fpv.fragment.FPVFragment;
 import com.synseaero.fpv.fragment.MenuFragment;
 import com.synseaero.fpv.model.FlightHeightMenuItem;
@@ -39,10 +39,7 @@ import com.synseaero.fpv.model.VideoRatioMenuItem;
 import com.synseaero.fpv.model.VolumeMenuItem;
 import com.synseaero.fpv.model.WhiteBalanceMenuItem;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
-
 
 import static com.synseaero.fpv.fragment.FPVFragment.MODE_FPV;
 import static com.synseaero.fpv.fragment.FPVFragment.MODE_MENU;
@@ -71,7 +68,6 @@ public class FPVActivity extends DJIActivity {
 
     private long c2DownTime;
     private long c2UpTime;
-
 
 
     private Handler handler = new Handler() {
@@ -182,6 +178,7 @@ public class FPVActivity extends DJIActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BluetoothDevice.ACTION_UUID);
+
         return intentFilter;
     }
 
@@ -191,7 +188,12 @@ public class FPVActivity extends DJIActivity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 mBluetoothLeService.writeValue("FLAG-TPV");
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+            }
+            //重连
+            else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mBluetoothLeService.connect(mDeviceAddress);
+            }
+            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
                     Log.i(TAG, "EXTRA_DATA:" + data);
@@ -284,7 +286,6 @@ public class FPVActivity extends DJIActivity {
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
-
     }
 
     @Override
