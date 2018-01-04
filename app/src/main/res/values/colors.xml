@@ -41,6 +41,9 @@
     <color name="transGreen">#1807776F</color>
 
     <color name="orange">#FF855F</color>
+    <color name="lightGray4">#A2A2B0</color>
+
+    <color name="lightWhite3">#D8D8D8</color>
 
 
 </resources>

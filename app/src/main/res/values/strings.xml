@@ -195,6 +195,7 @@
 
     <string name="open_helmet_power">请打开头盔电源</string>
     <string name="searching_bluetooth">正在搜索蓝牙设备</string>
+    <string name="confirm_granted_bluetooth">请确保授权应用使用蓝牙</string>
 
     <string name="manual_search">手动搜索</string>
 
