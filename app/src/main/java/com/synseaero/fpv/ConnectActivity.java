@@ -47,37 +47,37 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-//            int what = msg.what;
-//            //识别出当前产品
-//            if (what == MessageType.MSG_PRODUCT_CHANGED) {
-//                Bundle bundle = msg.getData();
-//                boolean hasProduct = bundle.getBoolean("hasProduct", false);
-//                String productName = bundle.getString("productName", "");
-//                if (!hasProduct) {
-//                    btnSetting.setEnabled(false);
-//                    btnPrepareFlight.setEnabled(false);
-//                    tvModel.setText(R.string.connecting);
-//                } else {
-//                    btnSetting.setEnabled(true);
-//                    btnPrepareFlight.setEnabled(true);
-//                    tvModel.setText(productName);
-//                }
-//            }
-//            //产品连接状态改变
-//            else if (what == MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED) {
-//                Bundle bundle = msg.getData();
-//                String productName = bundle.getString("productName", "");
-//                boolean isConnected = bundle.getBoolean("isConnected");
-//                if (!isConnected) {
-//                    btnSetting.setEnabled(false);
-//                    btnPrepareFlight.setEnabled(false);
-//                    tvModel.setText(R.string.connecting);
-//                } else {
-//                    btnSetting.setEnabled(true);
-//                    btnPrepareFlight.setEnabled(true);
-//                    tvModel.setText(productName);
-//                }
-//            }
+            int what = msg.what;
+            //识别出当前产品
+            if (what == MessageType.MSG_PRODUCT_CHANGED) {
+                Bundle bundle = msg.getData();
+                boolean hasProduct = bundle.getBoolean("hasProduct", false);
+                String productName = bundle.getString("productName", "");
+                if (!hasProduct) {
+                    btnSetting.setEnabled(false);
+                    btnPrepareFlight.setEnabled(false);
+                    tvModel.setText(R.string.connecting);
+                } else {
+                    btnSetting.setEnabled(true);
+                    btnPrepareFlight.setEnabled(true);
+                    tvModel.setText(productName);
+                }
+            }
+            //产品连接状态改变
+            else if (what == MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED) {
+                Bundle bundle = msg.getData();
+                String productName = bundle.getString("productName", "");
+                boolean isConnected = bundle.getBoolean("isConnected");
+                if (!isConnected) {
+                    btnSetting.setEnabled(false);
+                    btnPrepareFlight.setEnabled(false);
+                    tvModel.setText(R.string.connecting);
+                } else {
+                    btnSetting.setEnabled(true);
+                    btnPrepareFlight.setEnabled(true);
+                    tvModel.setText(productName);
+                }
+            }
 
         }
     };
