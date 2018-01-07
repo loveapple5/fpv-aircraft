@@ -337,7 +337,7 @@ public class FPVFragment extends Fragment {
                     if (percent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
                         information.level = 103;
-                        information.information = activity.getString(R.string.rc_battery_low_power_hint);
+                        information.information = activity.getString(R.string.up_link_signal_weak_hint);
                         information.type = 1;
                         setComprehensiveInfo(103, information, true);
                     }
