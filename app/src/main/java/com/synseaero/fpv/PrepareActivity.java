@@ -134,7 +134,12 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         tvRCMode.setOnClickListener(this);
         tvCompass.setOnClickListener(this);
         tvSDCardRemaining.setOnClickListener(this);
+        
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         registerDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_DIAGNOSTIS_RESPONSE, messenger);
@@ -160,12 +165,11 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         Message rcModeMsg = Message.obtain();
         rcModeMsg.what = MessageType.MSG_GET_REMOTE_CONTROLLER_MODE;
         sendDJIMessage(rcModeMsg);
-
     }
 
-
-    protected void onDestroy() {
-        super.onDestroy();
+    @Override
+    protected void onStop() {
+        super.onStop();
         unregisterDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_DIAGNOSTIS_RESPONSE, messenger);
@@ -179,6 +183,11 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
         sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+    }
+
+
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
