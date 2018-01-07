@@ -134,7 +134,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         tvRCMode.setOnClickListener(this);
         tvCompass.setOnClickListener(this);
         tvSDCardRemaining.setOnClickListener(this);
-        
+
     }
 
     @Override
