@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_prepare_root">
+    android:background="@drawable/bg_prepare_root"
+    skin:enable="true">
 
     <ImageView
         android:layout_width="match_parent"
@@ -44,15 +46,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <ImageView
                     android:id="@+id/iv_no_fly"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fly_zone" />
+                    android:text="@string/fly_zone"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -66,7 +72,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -77,15 +84,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_model_check"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/model_self_check" />
+                    android:text="@string/model_self_check"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -100,7 +111,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -111,15 +123,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_imu"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/imu" />
+                    android:text="@string/imu"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -134,7 +150,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -146,15 +163,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_compass"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/compass" />
+                    android:text="@string/compass"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -173,7 +194,8 @@
                         android:paddingStart="10dp"
                         android:text="@string/normal"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -185,15 +207,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_wireless_signal"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/wireless_signal" />
+                    android:text="@string/wireless_signal"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -208,7 +234,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -220,15 +247,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_flight_mode"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/flight_mode" />
+                    android:textColor="@color/gray"
+                    android:text="@string/flight_mode"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -243,7 +274,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -255,15 +287,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_rc_mode"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/rc_mode" />
+                    android:text="@string/rc_mode"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -281,7 +317,8 @@
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -293,15 +330,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_battery_voltage"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/battery_voltage" />
+                    android:text="@string/battery_voltage"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -316,7 +357,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -328,15 +370,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_sdcard"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sd_card_remaining_space" />
+                    android:text="@string/sd_card_remaining_space"
+                    android:textColor="@color/gray"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -354,7 +400,8 @@
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -366,15 +413,19 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <View
+                <TextView
                     android:id="@+id/iv_gimbal"
-                    style="@style/SelfCheckIcon" />
+                    style="@style/SelfCheckIcon"
+                    android:background="@drawable/bg_self_check"
+                    skin:enable="true" />
 
                 <TextView
                     style="@style/SelfCheckLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gimbal_status" />
+                    android:textColor="@color/gray"
+                    android:text="@string/gimbal_status"
+                    skin:enable="true" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -389,7 +440,8 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -404,6 +456,7 @@
             android:layout_marginStart="60dp"
             android:background="@drawable/bg_btn"
             android:text="@string/connect_helmet"
-            android:textColor="@color/text_btn" />
+            android:textColor="@color/text_btn"
+            skin:enable="true" />
     </RelativeLayout>
 </RelativeLayout>

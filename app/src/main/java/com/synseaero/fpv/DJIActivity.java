@@ -3,12 +3,13 @@ package com.synseaero.fpv;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.FragmentActivity;
 
 import com.synseaero.dji.MessageType;
 
+import cn.feng.skin.manager.base.BaseFragmentActivity;
 
-public class DJIActivity extends FragmentActivity {
+
+public class DJIActivity extends BaseFragmentActivity {
 
     private FPVApplication app;
 

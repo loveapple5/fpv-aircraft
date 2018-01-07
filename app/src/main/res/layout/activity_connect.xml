@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        skin:enable="true"
+        android:background="@color/colorWhite">
 
         <TextView
             android:layout_width="match_parent"
@@ -17,7 +19,8 @@
             android:gravity="center"
             android:text="@string/connect_controller"
             android:textColor="@color/gray"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            skin:enable="true" />
 
         <com.synseaero.view.SquareRelativeLayout
             android:layout_width="match_parent"
@@ -27,7 +30,8 @@
             <com.synseaero.view.WaveView
                 android:id="@+id/wv_connect"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                skin:enable="true"/>
 
             <ImageView
                 android:layout_width="150dp"
@@ -62,7 +66,8 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/setting"
-                android:textColor="@color/text_setting" />
+                android:textColor="@color/text_setting"
+                skin:enable="true" />
 
             <TextView
                 android:id="@+id/tv_prepare_flight"
@@ -75,7 +80,8 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/prepare_flight"
-                android:textColor="@color/text_btn" />
+                android:textColor="@color/text_btn"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 

@@ -6,23 +6,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.multidex.MultiDex;
+import android.widget.Toast;
 
 import com.synseaero.dji.DJIService;
+import com.synseaero.util.FileUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import cn.feng.skin.manager.listener.ILoaderListener;
+import cn.feng.skin.manager.loader.SkinManager;
 
 
 public class FPVApplication extends Application {
@@ -31,9 +28,15 @@ public class FPVApplication extends Application {
 
     public static final String DJI_SERVICE_CONNECTED = "DJI_SERVICE_CONNECTED";
 
+    private static final String SKIN_DIR = "skin";
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        SkinManager.getInstance().init(this);
+        SkinManager.getInstance().load();
+
         Intent dJIIntent = new Intent(this, DJIService.class);
         bindService(dJIIntent, dJIConnection, BIND_AUTO_CREATE);
 
@@ -78,6 +81,16 @@ public class FPVApplication extends Application {
 //                }
 //            }
 //        });
+
+        new Thread() {
+            public void run() {
+                File cacheDir = getExternalCacheDir();
+                if (cacheDir != null) {
+                    //skin目录下的皮肤文件拷贝到外部缓存目录
+                    FileUtils.copyFiles(FPVApplication.this, SKIN_DIR, cacheDir.getAbsolutePath() + File.separator + SKIN_DIR);
+                }
+            }
+        }.start();
     }
 
     private ServiceConnection dJIConnection = new ServiceConnection() {
@@ -113,6 +126,40 @@ public class FPVApplication extends Application {
             return false;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public void changeSkin(int styleId) {
+        if (styleId == 0) {
+            SkinManager.getInstance().restoreDefaultTheme();
+        } else {
+            File cacheDir = getExternalCacheDir();
+            if (cacheDir != null) {
+                File skin = new File(cacheDir.getAbsolutePath() + File.separator + SKIN_DIR + File.separator + "skin" + styleId);
+
+                if (!skin.exists()) {
+                    Toast.makeText(getApplicationContext(), "请检查" + SKIN_DIR + styleId + "是否存在", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                SkinManager.getInstance().load(skin.getAbsolutePath(),
+                        new ILoaderListener() {
+                            @Override
+                            public void onStart() {
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getApplicationContext(), "切换成功", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailed() {
+                                Toast.makeText(getApplicationContext(), "切换失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
         }
     }
 
