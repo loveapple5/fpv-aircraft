@@ -40,9 +40,9 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
     private View btnPrepareFlight;
     private TextView tvModel;
 
-    private static final String SKIN_NAME = "blackfantacy";
-    private static final String SKIN_DIR = Environment
-            .getExternalStorageDirectory() + File.separator + SKIN_NAME;
+//    private static final String SKIN_NAME = "blackfantacy";
+//    private static final String SKIN_DIR = Environment
+//            .getExternalStorageDirectory() + File.separator + SKIN_NAME;
 
 
     private Handler handler = new Handler() {
