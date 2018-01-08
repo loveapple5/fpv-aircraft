@@ -47,7 +47,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
+                <TextView
                     android:id="@+id/iv_no_fly"
                     style="@style/SelfCheckIcon"
                     android:background="@drawable/bg_self_check"
@@ -189,7 +189,7 @@
                         android:id="@+id/tv_compass"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:background="@drawable/bg_setting"
+                        android:background="@drawable/bg_prepare_value"
                         android:gravity="center"
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
@@ -313,7 +313,7 @@
                         android:id="@+id/tv_rc_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:background="@drawable/bg_setting"
+                        android:background="@drawable/bg_prepare_value"
                         android:gravity="center"
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
@@ -396,7 +396,7 @@
                         android:id="@+id/tv_sdcard"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:background="@drawable/bg_setting"
+                        android:background="@drawable/bg_prepare_value"
                         android:gravity="center"
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
