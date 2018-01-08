@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@drawable/bg_root"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    skin:enable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,20 +14,24 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/compass_calibrate"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/divider"></View>
+        android:background="@drawable/divider"
+        skin:enable="true"/>
 
     <ImageView
         android:id="@+id/iv_aircraft_compass"
@@ -33,7 +39,8 @@
         android:layout_height="267dp"
         android:layout_marginBottom="28dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/compass_horizontal" />
+        android:src="@drawable/compass_horizontal"
+        skin:enable="true"/>
 
     <TextView
         android:id="@+id/tv_compass_hint"
@@ -45,7 +52,8 @@
         android:gravity="center"
         android:singleLine="false"
         android:text="@string/compass_correct"
-        android:textColor="@color/darkGray" />
+        android:textColor="@color/darkGray"
+        skin:enable="true"/>
 
     <Button
         android:id="@+id/btn_compass_calibrate"
@@ -56,6 +64,7 @@
         android:background="@drawable/bg_btn"
         android:gravity="center"
         android:text="@string/start_calibrate"
-        android:textColor="@color/text_btn" />
+        android:textColor="@color/text_btn"
+        skin:enable="true"/>
 
 </LinearLayout>

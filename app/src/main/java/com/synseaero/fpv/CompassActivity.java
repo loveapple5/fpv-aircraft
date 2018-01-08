@@ -19,7 +19,7 @@ import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.flightcontroller.DJIFlightControllerDelegate;
 import dji.sdk.products.DJIAircraft;
 
-public class CompassActivity extends FragmentActivity implements View.OnClickListener {
+public class CompassActivity extends DJIActivity implements View.OnClickListener {
 
     private static final String TAG = CompassActivity.class.getName();
 
