@@ -52,4 +52,25 @@ public class DJIActivity extends BaseFragmentActivity {
         return app.sendDJIMessage(message);
     }
 
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.common_style, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        //FragmentManager fm = getSupportFragmentManager();
+        //FragmentTransaction transaction = fm.beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.menu_style_1: {
+                ((FPVApplication) getApplication()).changeSkin(0);
+                break;
+            }
+            case R.id.menu_style_2: {
+                ((FPVApplication) getApplication()).changeSkin(2);
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

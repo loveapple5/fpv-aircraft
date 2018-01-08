@@ -219,16 +219,16 @@ public class FPVFragment extends Fragment {
 //                    break;
 //                }
                 case MessageType.MSG_GET_FC_STATE_RESPONSE: {
-                    double speed = bundle.getDouble("speed");
-                    float vSpeed = bundle.getFloat("vSpeed");
-                    double altitude = bundle.getDouble("altitude");
-                    int distance = (int) bundle.getDouble("distance");
+                    double speed = bundle.getDouble("speed", 0);
+                    float vSpeed = bundle.getFloat("vSpeed", 0);
+                    double altitude = bundle.getDouble("altitude", 0);
+                    int distance = (int) bundle.getDouble("distance", 0);
                     //int gpsSignalLevel = bundle.getInt("gpsSignalLevel");
 
-                    double longA = bundle.getDouble("longA");
-                    double longH = bundle.getDouble("longH");
-                    double latA = bundle.getDouble("latA");
-                    double latH = bundle.getDouble("latH");
+                    double longA = bundle.getDouble("longA", 0);
+                    double longH = bundle.getDouble("longH", 0);
+                    double latA = bundle.getDouble("latA", 0);
+                    double latH = bundle.getDouble("latH", 0);
 
                     String strSpeed = String.valueOf(speed);
                     if (speed < 2.001 && speed > 0.001) {
@@ -250,9 +250,9 @@ public class FPVFragment extends Fragment {
                     tvFlightHeight.setText(Math.round(altitude) + "");
                     tvFlightDistance.setText(distance + "");
 
-                    Double AircraftPitch = bundle.getDouble("AircraftPitch");
-                    Double AircraftRoll = bundle.getDouble("AircraftRoll");
-                    Double AircraftYaw = bundle.getDouble("AircraftYaw");
+                    Double AircraftPitch = bundle.getDouble("AircraftPitch", 0);
+                    Double AircraftRoll = bundle.getDouble("AircraftRoll", 0);
+                    Double AircraftYaw = bundle.getDouble("AircraftYaw", 0);
                     Double Heading = bundle.getDouble("Head"); // aircraft compass heading
                     String Fheading = String.format("%.0f", Heading);
                     String Sptich = String.format("%.0f", AircraftPitch);
