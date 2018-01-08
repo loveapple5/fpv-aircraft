@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider"
+    skin:enable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,14 +14,17 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -32,13 +39,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_compass" />
+            android:src="@drawable/setting_compass"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/compass_calibration"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,7 +55,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -62,13 +74,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_fc" />
+            android:src="@drawable/setting_fc"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fc_param_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -76,7 +90,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,13 +109,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_rc" />
+            android:src="@drawable/setting_rc"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rc_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -106,14 +125,18 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="18dp"
-        android:background="@drawable/divider2" />
+        android:background="@drawable/divider2"
+        skin:enable="true" />
 
     <LinearLayout
         android:id="@+id/ll_wifi"
@@ -127,13 +150,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_data" />
+            android:src="@drawable/setting_data"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/data_connect_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -141,7 +166,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -157,13 +185,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_battery" />
+            android:src="@drawable/setting_battery"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/battery_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -171,7 +201,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -187,13 +220,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_gimbal" />
+            android:src="@drawable/setting_gimbal"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gimbal_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -201,7 +236,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -217,13 +255,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_camera" />
+            android:src="@drawable/setting_camera"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -231,14 +271,18 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="18dp"
-        android:background="@drawable/divider2" />
+        android:background="@drawable/divider2"
+        skin:enable="true" />
 
     <LinearLayout
         android:id="@+id/ll_ui"
@@ -252,13 +296,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_ui" />
+            android:src="@drawable/setting_ui"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ui_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -266,7 +312,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -282,13 +331,15 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/setting_common" />
+            android:src="@drawable/setting_common"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/common_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -296,7 +347,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 

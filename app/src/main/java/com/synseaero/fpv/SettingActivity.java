@@ -3,7 +3,6 @@ package com.synseaero.fpv;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,7 +10,7 @@ import dji.sdk.airlink.DJIAirLink;
 import dji.sdk.airlink.DJIWiFiLink;
 import dji.sdk.products.DJIAircraft;
 
-public class SettingActivity extends FragmentActivity implements View.OnClickListener {
+public class SettingActivity extends DJIActivity implements View.OnClickListener {
 
 
     @Override
@@ -44,15 +43,16 @@ public class SettingActivity extends FragmentActivity implements View.OnClickLis
                 break;
             case R.id.ll_wifi:
                 DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-                DJIAirLink djiAirLink = djiAircraft.getAirLink();
-                DJIWiFiLink djiWiFiLink = djiAirLink.getWiFiLink();
-                if (djiWiFiLink == null) {
-                    Toast.makeText(this, R.string.no_wifi_hint, Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent wifiIntent = new Intent(this, WifiActivity.class);
-                    startActivity(wifiIntent);
+                if (djiAircraft != null) {
+                    DJIAirLink djiAirLink = djiAircraft.getAirLink();
+                    DJIWiFiLink djiWiFiLink = djiAirLink.getWiFiLink();
+                    if (djiWiFiLink == null) {
+                        Toast.makeText(this, R.string.no_wifi_hint, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent wifiIntent = new Intent(this, WifiActivity.class);
+                        startActivity(wifiIntent);
+                    }
                 }
-
                 break;
             case R.id.ll_battery:
                 Intent batteryIntent = new Intent(this, BatteryActivity.class);
