@@ -19,7 +19,7 @@ import android.widget.ListView;
 
 import com.synseaero.view.WaveView;
 
-public class BluetoothActivity extends FragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class BluetoothActivity extends DJIActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = BluetoothActivity.class.getName();
 
