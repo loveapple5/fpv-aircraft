@@ -47,4 +47,6 @@
 
     <color name="commonText">#767682</color>
 
+    <color name="transGray">#808FA9C0</color>
+
 </resources>
