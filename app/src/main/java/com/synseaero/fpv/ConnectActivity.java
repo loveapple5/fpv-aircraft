@@ -95,7 +95,7 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         btnPrepareFlight.setOnClickListener(this);
 
         tvModel = (TextView) findViewById(R.id.tv_craft_model);
-        tvModel.setOnClickListener(this);
+//        tvModel.setOnClickListener(this);
 
         handler.postDelayed(hideLauncher, 3000);
 
@@ -145,15 +145,6 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
 
                 break;
             }
-//            case R.id.tv_craft_model: {
-//
-//                if (i++ % 2 == 0) {
-//                    ((FPVApplication) getApplication()).changeSkin(0);
-//                } else {
-//                    ((FPVApplication) getApplication()).changeSkin(2);
-//                }
-//                break;
-//            }
             case R.id.tv_prepare_flight: {
 //                Intent fpvIntent = new Intent(this, BluetoothActivity.class);
 //                startActivity(fpvIntent);
