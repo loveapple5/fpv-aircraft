@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         skin:enable="true"
-        android:background="@color/colorWhite">
+        android:background="@drawable/bg_root">
 
         <TextView
             android:layout_width="match_parent"
