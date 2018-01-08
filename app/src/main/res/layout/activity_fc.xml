@@ -187,8 +187,8 @@
                             fpv:kswThumbMarginBottom="-7dp"
                             fpv:kswThumbWidth="20dp"
                             fpv:kswThumbHeight="20dp"
-                            fpv:kswBackDrawable="@drawable/bg_switch_back"
-                            fpv:kswThumbDrawable="@drawable/bg_switch_thumb"
+                            fpv:kswBackDrawable="@drawable/bg_switch"
+                            fpv:kswThumbDrawable="@drawable/switch_thumb"
                             skin:enable="true" />
                     </LinearLayout>
                 </LinearLayout>
@@ -374,8 +374,8 @@
                             fpv:kswThumbMarginBottom="-7dp"
                             fpv:kswThumbWidth="20dp"
                             fpv:kswThumbHeight="20dp"
-                            fpv:kswBackDrawable="@drawable/bg_switch_back"
-                            fpv:kswThumbDrawable="@drawable/bg_switch_thumb"
+                            fpv:kswBackDrawable="@drawable/bg_switch"
+                            fpv:kswThumbDrawable="@drawable/switch_thumb"
                             skin:enable="true" />
                     </LinearLayout>
                 </LinearLayout>
@@ -423,8 +423,8 @@
                         fpv:kswThumbMarginBottom="-7dp"
                         fpv:kswThumbWidth="20dp"
                         fpv:kswThumbHeight="20dp"
-                        fpv:kswBackDrawable="@drawable/bg_switch_back"
-                        fpv:kswThumbDrawable="@drawable/bg_switch_thumb"
+                        fpv:kswBackDrawable="@drawable/bg_switch"
+                        fpv:kswThumbDrawable="@drawable/switch_thumb"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
