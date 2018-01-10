@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_root"
+    android:divider="@drawable/divider"
+    skin:enable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,14 +14,17 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/battery_history_info"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -38,7 +45,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/battery_series_no"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -49,7 +57,10 @@
                 <TextView
                     android:id="@+id/tv_battery_no"
                     style="@style/SettingValue"
-                    android:text="名称" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -72,7 +83,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/circus_number"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -83,7 +95,10 @@
                 <TextView
                     android:id="@+id/tv_circle_no"
                     style="@style/SettingValue"
-                    android:text="名称" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -106,7 +121,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/battery_life"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -117,7 +133,10 @@
                 <TextView
                     android:id="@+id/tv_battery_life_time"
                     style="@style/SettingValue"
-                    android:text="名称" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -140,7 +159,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/battery_history_record"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -150,7 +170,10 @@
 
                 <TextView
                     style="@style/SettingValue"
-                    android:text="名称" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

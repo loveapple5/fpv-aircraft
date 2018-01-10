@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fpv="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_root"
+    android:divider="@drawable/divider"
+    skin:enable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,14 +14,17 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/battery_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -39,7 +45,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/current_power" />
+                android:text="@string/current_power"
+                android:textColor="@color/commonText2"
+                skin:enable="true" />
 
             <TextView
                 android:id="@+id/tv_battery_energy"
@@ -47,7 +55,8 @@
                 android:layout_height="46dp"
                 android:text="0mAH"
                 android:textColor="@color/lightBlue3"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                skin:enable="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +70,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/current_temperature" />
+                android:text="@string/current_temperature"
+                android:textColor="@color/commonText2"
+                skin:enable="true" />
 
             <TextView
                 android:id="@+id/tv_battery_temperature"
@@ -69,7 +80,8 @@
                 android:layout_height="46dp"
                 android:text="0c"
                 android:textColor="@color/lightBlue3"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                skin:enable="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,7 +95,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/flight_time" />
+                android:text="@string/flight_time"
+                android:textColor="@color/commonText2"
+                skin:enable="true" />
 
             <TextView
                 android:id="@+id/tv_flight_time"
@@ -91,14 +105,16 @@
                 android:layout_height="46dp"
                 android:text="00:00"
                 android:textColor="@color/lightBlue3"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="18dp"
-        android:background="@drawable/divider2" />
+        android:background="@drawable/divider2"
+        skin:enable="true" />
 
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
@@ -153,7 +169,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/low_power_warning"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -164,7 +181,10 @@
                 <TextView
                     android:id="@+id/tv_low_energy_warning"
                     style="@style/SettingValue"
-                    android:text="30" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="30"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
 
@@ -174,11 +194,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
+            android:max="50"
             android:maxHeight="6dp"
             android:progressDrawable="@drawable/bg_seekbar"
             android:thumb="@drawable/thumb_seekbar"
             android:thumbOffset="0dp"
-            android:max="50" />
+            skin:enable="true" />
     </LinearLayout>
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
@@ -231,7 +252,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/discharge_time"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -242,7 +264,10 @@
                 <EditText
                     android:id="@+id/et_discharge_time"
                     style="@style/SettingValue"
-                    android:text="名称" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -259,7 +284,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="@string/battery_history_info"
-            android:textColor="@color/gray" />
+            android:textColor="@color/commonText"
+            skin:enable="true" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -267,7 +293,10 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical">
 
-            <ImageView style="@style/SettingArrow" />
+            <ImageView
+                style="@style/SettingArrow"
+                android:src="@drawable/right_arrow"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 
