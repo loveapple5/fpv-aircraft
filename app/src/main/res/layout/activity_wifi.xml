@@ -45,7 +45,7 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_name"
-                android:textColor="@color/gray"
+                android:textColor="@color/commonText"
                 skin:enable="true" />
 
             <LinearLayout
@@ -85,7 +85,7 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_password"
-                android:textColor="@color/gray"
+                android:textColor="@color/commonText"
                 skin:enable="true" />
 
             <LinearLayout

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     xmlns:fpv="http://schemas.android.com/apk/res-auto"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/bg_root"
+    android:divider="@drawable/divider"
+    android:orientation="vertical"
+    skin:enable="true">
 
 
     <RelativeLayout
@@ -13,14 +17,16 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            skin:enable="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/gimbal_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -41,7 +47,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/gimbal_pitch_range"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -55,13 +62,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:textColor="@color/lightGray2"
-                    fpv:kswBackRadius="4dp"
-                    fpv:kswTextOff="@string/close"
-                    fpv:kswTextOn="@string/open"
-                    fpv:kswThumbMargin="2dp"
-                    fpv:kswThumbRadius="3dp"
-                    fpv:kswThumbRangeRatio="2"
-                    fpv:kswThumbWidth="40dp" />
+                    fpv:kswBackDrawable="@drawable/bg_switch"
+                    fpv:kswThumbDrawable="@drawable/switch_thumb"
+                    fpv:kswThumbHeight="20dp"
+                    fpv:kswThumbMarginBottom="-7dp"
+                    fpv:kswThumbMarginLeft="-2dp"
+                    fpv:kswThumbMarginRight="-2dp"
+                    fpv:kswThumbMarginTop="-7dp"
+                    fpv:kswThumbWidth="20dp"
+                    skin:enable="true"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -76,7 +85,8 @@
                 android:layout_height="65dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/gimbal_pitch_range" />
+                android:src="@drawable/gimbal_pitch_range"
+                skin:enable="true"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -98,7 +108,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/gimbal_pitch_smooth"
-                android:textColor="@color/gray" />
+                android:textColor="@color/commonText"
+                skin:enable="true"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -109,7 +120,10 @@
                 <TextView
                     android:id="@+id/tv_gimbal_pitch_smooth"
                     style="@style/SettingValue"
-                    android:text="15" />
+                    android:background="@drawable/bg_setting_value"
+                    android:textColor="@color/lightGray2"
+                    android:text="15"
+                    skin:enable="true"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -124,7 +138,8 @@
             android:progress="15"
             android:progressDrawable="@drawable/bg_seekbar"
             android:thumb="@drawable/thumb_seekbar"
-            android:thumbOffset="0dp" />
+            android:thumbOffset="0dp"
+            skin:enable="true"/>
     </LinearLayout>
 
 </LinearLayout>
