@@ -58,13 +58,14 @@ import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import cn.feng.skin.manager.base.BaseFragment;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 
-public class FPVFragment extends Fragment {
+public class FPVFragment extends BaseFragment {
 
     private static final String TAG = FPVFragment.class.getName();
 
@@ -167,6 +168,7 @@ public class FPVFragment extends Fragment {
             R.drawable.energy_icon_9,
             R.drawable.energy_icon_10,
             R.drawable.energy_icon_11,
+            R.drawable.energy_icon_12,
     };
 
     private LocationManager locationManager;
@@ -595,7 +597,6 @@ public class FPVFragment extends Fragment {
         SharedPreferences sp = getContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
         lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", DJIUtils.COMMON_LOW_PERCENT);
 
-        activity = (FPVActivity) getActivity();
         //相机曝光属性
         activity.registerDJIMessenger(MessageType.MSG_GET_CAMERA_EXPOSURE_RESPONSE, messenger);
         //遥控器状态
