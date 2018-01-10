@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider"
+    android:orientation="vertical"
+    skin:enable="true">
 
 
     <RelativeLayout
@@ -12,14 +16,17 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/rc_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -40,7 +47,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/gimbal_wheel_speed"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -51,7 +59,10 @@
                 <TextView
                     android:id="@+id/tv_gimbal_wheel_speed"
                     style="@style/SettingValue"
-                    android:text="100" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="100"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
 
@@ -64,7 +75,8 @@
             android:maxHeight="6dp"
             android:progressDrawable="@drawable/bg_seekbar"
             android:thumb="@drawable/thumb_seekbar"
-            android:thumbOffset="0dp" />
+            android:thumbOffset="0dp"
+            skin:enable="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -85,7 +97,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/rc_mode"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -96,7 +109,10 @@
                 <TextView
                     android:id="@+id/tv_rc_mode"
                     style="@style/SettingValue"
-                    android:text="@string/cn_mode" />
+                    android:background="@drawable/bg_setting_value"
+                    android:text="@string/cn_mode"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
 
@@ -112,13 +128,15 @@
                 android:layout_height="80dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/cn_mode_1" />
+                android:src="@drawable/cn_mode_1"
+                skin:enable="true" />
 
             <ImageView
                 android:id="@+id/iv_rc_mode_2"
                 android:layout_width="115dp"
                 android:layout_height="80dp"
-                android:src="@drawable/cn_mode_2" />
+                android:src="@drawable/cn_mode_2"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 

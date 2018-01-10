@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     style="@style/SettingRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_root"
+    android:divider="@drawable/divider"
+    skin:enable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,14 +14,17 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/SettingBackBtn" />
+            style="@style/SettingBackBtn"
+            android:src="@drawable/left_arrow"
+            skin:enable="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/data_connect_setting"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray"
+            skin:enable="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -38,7 +45,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_name"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -49,9 +57,12 @@
                 <EditText
                     android:id="@+id/et_wifi_name"
                     style="@style/SettingValue"
+                    android:background="@drawable/bg_setting_value"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:text="名称" />
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -74,7 +85,8 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_password"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                skin:enable="true" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -85,9 +97,12 @@
                 <EditText
                     android:id="@+id/et_wifi_password"
                     style="@style/SettingValue"
+                    android:background="@drawable/bg_setting_value"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:text="名称" />
+                    android:text="名称"
+                    android:textColor="@color/lightGray2"
+                    skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
