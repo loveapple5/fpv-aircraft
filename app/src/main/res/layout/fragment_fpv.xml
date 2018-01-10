@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,11 +31,13 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_info_left"
             android:rotation="8"
-            android:rotationY="20">
+            android:rotationY="20"
+            skin:enable="true">
 
             <RatingBar
                 android:id="@+id/rb_fpv_craft_signal"
                 style="@style/tenRatingBar"
+                android:progressDrawable="@drawable/power_rating_bar"
                 android:layout_width="40dp"
                 android:layout_height="10dp"
                 android:layout_centerVertical="true"
@@ -42,7 +45,8 @@
                 android:isIndicator="true"
                 android:numStars="10"
                 android:rating="3"
-                android:scaleX="-1" />
+                android:scaleX="-1"
+                skin:enable="true"/>
 
             <ImageView
                 android:id="@+id/iv_fpv_sat"
@@ -52,7 +56,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="14dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_sat" />
+                android:src="@drawable/icon_sat"
+                skin:enable="true"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -60,7 +65,8 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_info_middle">
+            android:background="@drawable/bg_info_middle"
+            skin:enable="true">
 
             <TextView
                 android:id="@+id/tv_fpv_safe_info"
@@ -74,8 +80,9 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
                 android:text="TPV-综合信息"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textColor="@color/fpvTopInfo"
+                android:textSize="12sp"
+                skin:enable="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -85,7 +92,8 @@
                 android:layout_marginBottom="3dp"
                 android:text="-ALT-FLIGHT-"
                 android:textColor="@color/blue"
-                android:textSize="8dp" />
+                android:textSize="8dp"
+                skin:enable="true"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -96,7 +104,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_info_right"
             android:rotation="-8"
-            android:rotationY="-20">
+            android:rotationY="-20"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_rc"
@@ -105,11 +114,13 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="14dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_rc" />
+                android:src="@drawable/icon_rc"
+                skin:enable="true"/>
 
             <RatingBar
                 android:id="@+id/rb_fpv_controller_signal"
                 style="@style/tenRatingBar"
+                android:progressDrawable="@drawable/power_rating_bar"
                 android:layout_width="40dp"
                 android:layout_height="10dp"
                 android:layout_alignParentEnd="true"
@@ -117,7 +128,8 @@
                 android:layout_marginEnd="12dp"
                 android:isIndicator="true"
                 android:numStars="10"
-                android:rating="5" />
+                android:rating="5"
+                skin:enable="true"/>
         </RelativeLayout>
     </RelativeLayout>
     <!--left-->
@@ -138,7 +150,8 @@
             android:background="@drawable/bg_camera"
             android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            skin:enable="true">
 
             <TextView
                 android:id="@+id/fpv_camera_shutter_speed"
@@ -147,7 +160,8 @@
                 android:layout_marginStart="17dp"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                skin:enable="true"/>
 
             <TextView
                 android:id="@+id/fpv_camera_aperture"
@@ -156,7 +170,8 @@
                 android:layout_marginStart="17dp"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                skin:enable="true"/>
 
             <TextView
                 android:id="@+id/fpv_camera_iso"
@@ -165,7 +180,8 @@
                 android:layout_marginStart="17dp"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                skin:enable="true"/>
 
             <TextView
                 android:id="@+id/fpv_camera_ev"
@@ -174,7 +190,8 @@
                 android:layout_marginStart="17dp"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                skin:enable="true"/>
         </LinearLayout>
         <!--camera-->
         <RelativeLayout
@@ -186,7 +203,8 @@
             android:layout_marginTop="60dp"
             android:background="@drawable/map_bg"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="gone"
+            skin:enable="true">
 
             <!--<TextureView-->
             <!--android:id="@+id/tv_tpv_preview"-->
@@ -204,7 +222,8 @@
             android:layout_marginBottom="60dp"
             android:layout_marginStart="15dp"
             android:background="@drawable/map_bg"
-            android:gravity="center">
+            android:gravity="center"
+            skin:enable="true">
 
             <com.amap.api.maps2d.MapView
                 android:id="@+id/mv_fpv_map"
@@ -218,7 +237,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/layout_fpv_map"
-            android:src="@drawable/bg_tpv_left" />
+            android:src="@drawable/bg_tpv_left"
+            skin:enable="true"/>
     </RelativeLayout>
 
     <!--bottom-->
@@ -235,7 +255,8 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_1">
+            android:background="@drawable/energy_icon_1"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_helmet"
@@ -245,7 +266,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_helmet" />
+                android:src="@drawable/icon_helmet"
+                skin:enable="true"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -254,7 +276,8 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_2">
+            android:background="@drawable/energy_icon_2"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_phone"
@@ -264,7 +287,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_phone" />
+                android:src="@drawable/icon_phone"
+                skin:enable="true"/>
         </RelativeLayout>
 
         <ImageView
@@ -274,7 +298,8 @@
             android:layout_marginBottom="-10dp"
             android:layout_marginEnd="16dp"
             android:rotationX="60"
-            android:src="@drawable/direction" />
+            android:src="@drawable/direction"
+            skin:enable="true"/>
 
         <com.synseaero.view.CircleMenuLayout
             android:id="@+id/menu_tpv"
@@ -291,7 +316,8 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_3">
+            android:background="@drawable/energy_icon_3"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_craft"
@@ -301,7 +327,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_craft" />
+                android:src="@drawable/icon_craft"
+                skin:enable="true"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -309,7 +336,8 @@
             android:layout_width="40dp"
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/energy_icon_4">
+            android:background="@drawable/energy_icon_4"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_controller"
@@ -319,7 +347,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_controller" />
+                android:src="@drawable/icon_controller"
+                skin:enable="true"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -342,7 +371,8 @@
             android:background="@drawable/alt_card"
             android:gravity="center"
             android:text="20"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            skin:enable="true"/>
 
         <TextView
             android:id="@+id/tv_fpv_flight_distance"
@@ -354,7 +384,8 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/dis_card"
             android:gravity="center"
-            android:text="351" />
+            android:text="351"
+            skin:enable="true"/>
 
         <RelativeLayout
             android:id="@+id/rl_fpv_vertical_speed"
@@ -365,7 +396,8 @@
             android:layout_marginBottom="50dp"
             android:layout_marginEnd="78dp"
             android:background="@drawable/vspd_card"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            skin:enable="true">
 
             <ImageView
                 android:id="@+id/iv_fpv_flight_vertical_speed"
@@ -373,7 +405,8 @@
                 android:layout_height="12dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dp"
-                android:src="@drawable/vspd_up" />
+                android:src="@drawable/vspd_up"
+                skin:enable="true"/>
 
             <TextView
                 android:id="@+id/tv_fpv_flight_vertical_speed"
@@ -384,7 +417,8 @@
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/iv_fpv_flight_vertical_speed"
                 android:text="5.0"
-                android:textSize="9dp" />
+                android:textSize="9dp"
+                skin:enable="true"/>
         </RelativeLayout>
 
 
@@ -398,14 +432,16 @@
             android:layout_marginEnd="15dp"
             android:background="@drawable/spd_card"
             android:gravity="center"
-            android:text="626" />
+            android:text="626"
+            skin:enable="true"/>
 
         <ImageView
             android:layout_width="25dp"
             android:layout_height="240dp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/rl_fpv_vertical_speed"
-            android:src="@drawable/bg_tpv_right" />
+            android:src="@drawable/bg_tpv_right"
+            skin:enable="true"/>
     </RelativeLayout>
 
 

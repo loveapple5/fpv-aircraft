@@ -49,4 +49,6 @@
 
     <color name="transGray">#808FA9C0</color>
 
+    <color name="fpvTopInfo">#FFFFFF</color>
+
 </resources>
