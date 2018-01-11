@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-public class HelmetActivity extends FragmentActivity implements View.OnClickListener {
+public class HelmetActivity extends DJIActivity implements View.OnClickListener {
 
 
     protected void onCreate(Bundle savedInstanceState) {
