@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-public class CommonSettingActivity extends FragmentActivity implements View.OnClickListener {
+public class CommonSettingActivity extends DJIActivity implements View.OnClickListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
