@@ -10,7 +10,6 @@ public class CommonSettingActivity extends DJIActivity implements View.OnClickLi
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
 
         setContentView(R.layout.activity_common_setting);
 
