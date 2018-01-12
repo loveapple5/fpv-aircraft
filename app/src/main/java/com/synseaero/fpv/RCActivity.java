@@ -210,7 +210,7 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            if(this.fromUser) {
+            if (this.fromUser) {
                 Message message = Message.obtain();
                 message.what = MessageType.MSG_SET_GIMBAL_WHEEL_SPEED;
                 Bundle data = new Bundle();

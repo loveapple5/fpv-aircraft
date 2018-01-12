@@ -163,7 +163,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@drawable/divider"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="end">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -187,6 +188,7 @@
                 android:gravity="end|center_vertical">
 
                 <TextView
+                    android:id="@+id/tv_volume"
                     style="@style/SettingValue"
                     android:background="@drawable/bg_setting_value"
                     android:text="名称"
@@ -194,6 +196,19 @@
                     skin:enable="true" />
             </LinearLayout>
         </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sb_volume"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:max="100"
+            android:maxHeight="6dp"
+            android:progressDrawable="@drawable/bg_seekbar"
+            android:thumb="@drawable/thumb_seekbar"
+            android:thumbOffset="0dp"
+            skin:enable="true" />
     </LinearLayout>
 
 </LinearLayout>
