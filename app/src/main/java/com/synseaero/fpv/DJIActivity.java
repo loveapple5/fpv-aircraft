@@ -59,11 +59,9 @@ public class DJIActivity extends BaseFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        //FragmentManager fm = getSupportFragmentManager();
-        //FragmentTransaction transaction = fm.beginTransaction();
         switch (item.getItemId()) {
             case R.id.menu_style_1: {
-                ((FPVApplication) getApplication()).changeSkin(0);
+                ((FPVApplication) getApplication()).changeSkin(1);
                 break;
             }
             case R.id.menu_style_2: {

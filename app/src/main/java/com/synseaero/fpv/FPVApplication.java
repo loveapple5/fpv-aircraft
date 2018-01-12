@@ -18,6 +18,7 @@ import com.synseaero.util.FileUtils;
 
 import java.io.File;
 
+import cn.feng.skin.manager.config.SkinConfig;
 import cn.feng.skin.manager.listener.ILoaderListener;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -29,6 +30,8 @@ public class FPVApplication extends Application {
     public static final String DJI_SERVICE_CONNECTED = "DJI_SERVICE_CONNECTED";
 
     private static final String SKIN_DIR = "skin";
+
+    public static final String ACTION_APP_SKIN_CHANGED = "ACTION_APP_SKIN_CHANGED";
 
     @Override
     public void onCreate() {
@@ -129,10 +132,16 @@ public class FPVApplication extends Application {
         }
     }
 
-    public void changeSkin(int styleId) {
-        if (styleId == 0) {
+    public void changeSkin(final int styleId) {
+        if (styleId == 1) {
             SkinManager.getInstance().restoreDefaultTheme();
-        } else {
+
+            Intent intent = new Intent();
+            intent.setAction(ACTION_APP_SKIN_CHANGED);
+            intent.putExtra("style", styleId);
+            sendBroadcast(intent);
+
+        } else if(styleId > 1){
             File cacheDir = getExternalCacheDir();
             if (cacheDir != null) {
                 File skin = new File(cacheDir.getAbsolutePath() + File.separator + SKIN_DIR + File.separator + "skin" + styleId);
@@ -151,6 +160,11 @@ public class FPVApplication extends Application {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(getApplicationContext(), "切换成功", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent();
+                                intent.setAction(ACTION_APP_SKIN_CHANGED);
+                                intent.putExtra("style", styleId);
+                                sendBroadcast(intent);
                             }
 
                             @Override
@@ -161,6 +175,17 @@ public class FPVApplication extends Application {
             }
 
         }
+    }
+
+    public int getSkinStyle() {
+        if(SkinConfig.isDefaultSkin(this)) {
+            return 1;
+        }
+        String skinPath = SkinConfig.getCustomSkinPath(this);
+        File skinFile = new File(skinPath);
+        String fileName = skinFile.getName();
+        int style = Integer.valueOf(fileName.substring(4));
+        return style;
     }
 
 }
