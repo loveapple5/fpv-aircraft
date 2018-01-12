@@ -75,7 +75,7 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //禁止锁屏
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_connect);
@@ -85,7 +85,6 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         wcConnect.setMaxRadiusRate(1);
         wcConnect.setDuration(5000);
         wcConnect.setStyle(Paint.Style.FILL);
-        wcConnect.setColor(getResources().getColor(R.color.blue));
         wcConnect.start();
 
         btnSetting = findViewById(R.id.tv_setting);

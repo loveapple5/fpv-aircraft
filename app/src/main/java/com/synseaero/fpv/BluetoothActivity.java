@@ -39,7 +39,7 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
         setContentView(R.layout.activity_bluetooth);
         lvBluetooth = (ListView) findViewById(R.id.lv_bluetooth);
 
-        View llEmpty = (LinearLayout) findViewById(R.id.ll_bluetooth_empty);
+        View llEmpty = findViewById(R.id.ll_bluetooth_empty);
         lvBluetooth.setEmptyView(llEmpty);
 
         mLeDeviceListAdapter = new BluetoothListAdapter();
@@ -52,7 +52,6 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
         wcConnect.setMaxRadiusRate(1);
         wcConnect.setDuration(5000);
         wcConnect.setStyle(Paint.Style.FILL);
-        wcConnect.setColor(getResources().getColor(R.color.blue));
 
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();

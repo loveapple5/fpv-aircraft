@@ -2,12 +2,15 @@ package com.synseaero.view;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
+
+import com.synseaero.fpv.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,18 +47,28 @@ public class WaveView extends View {
 
     public WaveView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public WaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
+
+        int color = 0;
+
+        TypedArray ta = attrs == null ? null : getContext().obtainStyledAttributes(attrs, R.styleable.WaveView);
+        if (ta != null) {
+            color = ta.getColor(R.styleable.WaveView_waveColor, color);
+        }
+
         mStokePaint.setStyle(Paint.Style.STROKE);
-        mStokePaint.setColor(getResources().getColor(com.synseaero.fpv.R.color.blue));
+        mStokePaint.setColor(color);
         mStokePaint.setStrokeWidth(1);
+
+        mPaint.setColor(color);
     }
 
     public void setStyle(Paint.Style style) {
@@ -73,8 +86,9 @@ public class WaveView extends View {
         mMaxRadiusRate = maxRadiusRate;
     }
 
-    public void setColor(int color) {
+    public void setWaveColor(int color) {
         mPaint.setColor(color);
+        mStokePaint.setColor(color);
     }
 
     /**
