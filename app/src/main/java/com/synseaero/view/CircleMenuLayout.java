@@ -1,6 +1,7 @@
 package com.synseaero.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.synseaero.fpv.R;
 import com.synseaero.util.DensityUtil;
 
 import java.util.HashMap;
@@ -116,19 +118,33 @@ public class CircleMenuLayout extends ViewGroup {
 
     public CircleMenuLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        int color = 0;
+
+        TypedArray ta = attrs == null ? null : getContext().obtainStyledAttributes(attrs, R.styleable.CircleMenuLayout);
+        if (ta != null) {
+            color = ta.getColor(R.styleable.CircleMenuLayout_menuColor, color);
+        }
+
         // 无视padding
         setPadding(0, 0, 0, 0);
         mLinePaint.setStrokeWidth(2); // 设置圆环的宽度，这个应该是内边距
         mLinePaint.setAntiAlias(true); // 消除锯齿
         mLinePaint.setStyle(Paint.Style.STROKE); // 设置空心
 //        mPaint.setColor(Color.MAGENTA); // 设置圆环的颜色
-        mLinePaint.setARGB(0xff, 0, 0xff, 0xf5);
+        mLinePaint.setColor(color);
 
         mTextPaint.setStrokeWidth(1); // 设置圆环的宽度，这个应该是内边距
         mTextPaint.setAntiAlias(true); // 消除锯齿
         mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setARGB(0xff, 0, 0xff, 0xf5);
+        mTextPaint.setColor(color);
         mTextPaint.setTextSize(DensityUtil.dip2px(context, DEFAULT_TEXT_SIZE));
+    }
+
+    public void setMenuColor(int color) {
+        mLinePaint.setColor(color);
+        mLinePaint.setColor(color);mTextPaint.setColor(color);
+
     }
 
     /**

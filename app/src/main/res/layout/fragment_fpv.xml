@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fpv="http://schemas.android.com/apk/res-auto"
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -310,7 +311,9 @@
             android:layout_marginBottom="-125dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
-            android:visibility="gone" />
+            android:visibility="gone"
+            fpv:menuColor="@color/blue"
+            skin:enable="true"/>
 
         <RelativeLayout
             android:id="@+id/rl_fpv_craft"

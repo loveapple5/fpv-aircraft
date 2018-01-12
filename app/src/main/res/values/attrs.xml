@@ -30,4 +30,8 @@
         <attr name="waveColor" format="color|reference" />
     </declare-styleable>
 
+    <declare-styleable name="CircleMenuLayout" tools:ignore="ResourceName">
+        <attr name="menuColor" format="color|reference" />
+    </declare-styleable>
+
 </resources>
