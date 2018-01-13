@@ -264,8 +264,7 @@ public class CircleMenuLayout extends ViewGroup {
      *
      * @param mOnMenuItemClickListener
      */
-    public void setOnMenuItemClickListener(
-            OnMenuItemClickListener mOnMenuItemClickListener) {
+    public void setOnMenuItemClickListener(OnMenuItemClickListener mOnMenuItemClickListener) {
         this.mOnMenuItemClickListener = mOnMenuItemClickListener;
     }
 
