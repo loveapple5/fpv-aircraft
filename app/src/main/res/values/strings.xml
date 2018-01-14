@@ -283,4 +283,9 @@
 
     <string name="left_controller">左摇杆</string>
     <string name="right_controller">右摇杆</string>
+
+    <string name="attitude_mode">姿态模式</string>
+    <string name="sport_mode">运动模式</string>
+    <string name="gps_mode">GPS模式</string>
+
 </resources>

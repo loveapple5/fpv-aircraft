@@ -43,6 +43,7 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.FPVActivity;
+import com.synseaero.fpv.MediaService;
 import com.synseaero.fpv.R;
 import com.synseaero.fpv.model.FlightInformation;
 import com.synseaero.fpv.opengl.MyGLSurfaceView;
@@ -174,6 +175,8 @@ public class FPVFragment extends BaseFragment {
 
     private Timer timer;
 
+    private long enterTime;
+
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
 
@@ -265,6 +268,7 @@ public class FPVFragment extends BaseFragment {
                         information.level = 203;
                         information.information = activity.getString(R.string.rc_battery_low_power_hint);
                         information.type = 0;
+                        information.voiceId = R.raw.voice07;
                         setComprehensiveInfo(203, information, true);
                     }
 
@@ -281,12 +285,14 @@ public class FPVFragment extends BaseFragment {
                         information.level = 202;
                         information.information = activity.getString(R.string.fc_battery_very_low_power_hint);
                         information.type = 0;
+                        information.voiceId = R.raw.voice05;
                         setComprehensiveInfo(202, information, true);
                     } else if (aircraftRemainingPercent < lowEnergyWarningThreshold) {
                         FlightInformation information = new FlightInformation();
                         information.level = 202;
                         information.information = activity.getString(R.string.fc_battery_low_power_hint);
                         information.type = 0;
+                        information.voiceId = R.raw.voice06;
                         setComprehensiveInfo(202, information, true);
                     }
 
@@ -335,6 +341,7 @@ public class FPVFragment extends BaseFragment {
                         information.level = 104;
                         information.information = activity.getString(R.string.down_link_signal_weak_hint);
                         information.type = 1;
+                        information.voiceId = R.raw.voice03;
                         setComprehensiveInfo(104, information, true);
                     }
                     break;
@@ -362,7 +369,8 @@ public class FPVFragment extends BaseFragment {
                     break;
                 }
                 case MessageType.MSG_GET_FC_INFO_STATE_RESPONSE: {
-                    String flightMode = bundle.getString("flightMode", "");
+                    int flightModeStrId = bundle.getInt("flightModeStrId");
+                    int flightModeVoiceId = bundle.getInt("flightModeVoiceId");
                     boolean isFlying = bundle.getBoolean("isFlying");
                     boolean isHomeSet = bundle.getBoolean("isHomeSet");
                     int gpsSignalStatus = bundle.getInt("gpsSignalStatus");
@@ -397,17 +405,22 @@ public class FPVFragment extends BaseFragment {
                     rbGps.setRating(gpsLevel);
                     Log.d(TAG, "gpsLevel:" + gpsLevel);
 
-                    FlightInformation flightModeInfo = new FlightInformation();
-                    flightModeInfo.level = 206;
-                    flightModeInfo.information = flightMode + activity.getString(R.string.mode);
-                    flightModeInfo.type = 0;
-                    setComprehensiveInfo(206, flightModeInfo, false);
+                    if (flightModeStrId != -1) {
+                        FlightInformation flightModeInfo = new FlightInformation();
+                        flightModeInfo.level = 206;
+                        flightModeInfo.information = activity.getString(flightModeStrId);
+                        flightModeInfo.type = 0;
+                        flightModeInfo.voiceId = flightModeVoiceId;
+                        setComprehensiveInfo(206, flightModeInfo, false);
+                    }
+
 
                     if (reachLimitedHeight) {
                         FlightInformation reachLimitedHeightInfo = new FlightInformation();
                         reachLimitedHeightInfo.level = 208;
                         reachLimitedHeightInfo.information = activity.getString(R.string.reach_limited_height);
                         reachLimitedHeightInfo.type = 0;
+                        reachLimitedHeightInfo.voiceId = R.raw.voice18;
                         setComprehensiveInfo(208, reachLimitedHeightInfo, true);
                     }
 
@@ -416,6 +429,7 @@ public class FPVFragment extends BaseFragment {
                         reachLimitedRadiusInfo.level = 209;
                         reachLimitedRadiusInfo.information = activity.getString(R.string.reach_limited_radius);
                         reachLimitedRadiusInfo.type = 0;
+                        reachLimitedRadiusInfo.voiceId = R.raw.voice19;
                         setComprehensiveInfo(209, reachLimitedRadiusInfo, true);
                     }
 
@@ -468,6 +482,7 @@ public class FPVFragment extends BaseFragment {
             fpvModeInfo.level = 207;
             fpvModeInfo.information = getString(R.string.change_to_fpv_mode);
             fpvModeInfo.type = 0;
+            fpvModeInfo.voiceId = R.raw.voice14;
             setComprehensiveInfo(207, fpvModeInfo, false);
         } else if (this.mode == MODE_TPV) {
             this.rlCraftSignal.setRotation(0);
@@ -503,6 +518,7 @@ public class FPVFragment extends BaseFragment {
             tpvModeInfo.level = 207;
             tpvModeInfo.information = getString(R.string.change_to_tpv_mode);
             tpvModeInfo.type = 0;
+            tpvModeInfo.voiceId = R.raw.voice16;
             setComprehensiveInfo(207, tpvModeInfo, false);
 
         } else if (this.mode == MODE_MENU) {
@@ -623,6 +639,8 @@ public class FPVFragment extends BaseFragment {
                 activity.sendDJIMessage(message2);
             }
         }, 2000, 1000);
+
+        enterTime = System.currentTimeMillis();
     }
 
     public void setHelmetEnergy(int percent) {
@@ -1041,16 +1059,24 @@ public class FPVFragment extends BaseFragment {
         String prefix = activity.getString(stateStrId);
 
         String showInfo;
+        int voiceId = -1;
         //将信息展示在综合信息栏
         if (priorInfo != null) {
             showInfo = prefix + activity.getString(R.string.comma) + priorInfo.information;
+            voiceId = priorInfo.voiceId;
         } else {
             showInfo = prefix;
         }
         if (!showInfo.equals(tvSafeInfo.getText().toString())) {
             Log.d(TAG, "showInfo:" + showInfo);
             tvSafeInfo.setText(showInfo);
+            if (voiceId != -1 && curTime - 5000 >= enterTime) {
+                Intent intent = new Intent(activity, MediaService.class);
+                intent.putExtra("source", voiceId);
+                activity.startService(intent);
+            }
         }
+
 
     }
 }

@@ -8,9 +8,11 @@ import android.os.RemoteException;
 
 import com.synseaero.dji.MessageType;
 import com.synseaero.dji.Task;
+import com.synseaero.util.DJIUtils;
 
 import dji.common.flightcontroller.DJIAircraftRemainingBatteryState;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
+import dji.common.flightcontroller.DJIFlightControllerFlightMode;
 import dji.common.flightcontroller.DJIGPSSignalStatus;
 import dji.common.flightcontroller.DJIGoHomeStatus;
 import dji.sdk.base.DJIBaseProduct;
@@ -42,7 +44,10 @@ public class GetFCInfoState extends Task {
             //飞机剩余电量 1和2都是电量不足
             //int batteryLevel = batteryState.value();
             //飞行模式
-            String flightMode = curState.getFlightModeString();
+            //String flightMode = curState.getFlightModeString();
+            DJIFlightControllerFlightMode flightMode = curState.getFlightMode();
+            int flightModeStrId = DJIUtils.getMapValue(DJIUtils.flightModeStringMap, flightMode);
+            int flightModeVoiceId = DJIUtils.getMapValue(DJIUtils.flightModeVoiceMap, flightMode);
 
             boolean isHomeSet = curState.isHomePointSet();
 
@@ -58,11 +63,13 @@ public class GetFCInfoState extends Task {
             bundle.putBoolean("flying", flying);
             bundle.putBoolean("isHomeSet", isHomeSet);
             //bundle.putInt("batteryLevel", batteryLevel);
-            bundle.putString("flightMode", flightMode);
+            bundle.putInt("flightModeStrId", flightModeStrId);
+            bundle.putInt("flightModeVoiceId", flightModeVoiceId);
             //bundle.putBoolean("goHomeCompleted", goHomeCompleted);
             bundle.putBoolean("reachLimitedHeight", reachLimitedHeight);
             bundle.putBoolean("reachLimitedRadius", reachLimitedRadius);
             bundle.putInt("gpsSignalStatus", gpsSignalStatus);
+
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_INFO_STATE_RESPONSE;

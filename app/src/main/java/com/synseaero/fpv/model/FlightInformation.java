@@ -14,6 +14,8 @@ public class FlightInformation {
 
     public long expiredTime;
 
+    public int voiceId = -1;
+
 
     public FlightInformation() {
         expiredTime = System.currentTimeMillis() + DEFAULT_EXPIRED_TIME;
