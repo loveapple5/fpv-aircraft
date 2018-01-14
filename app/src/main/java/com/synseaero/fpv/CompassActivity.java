@@ -4,7 +4,6 @@ package com.synseaero.fpv;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -48,7 +47,7 @@ public class CompassActivity extends DJIActivity implements View.OnClickListener
 
                     //只有收到完成状态就不再接受后续状态变化
                     if (calibrationStatus == DJICompassCalibrationStatus.Succeeded.value()) {
-                        ivCompass.setImageResource(R.drawable.compass_horizontal);
+                        ivCompass.setImageLevel(1);
                         tvHint.setText(R.string.compass_correct);
                         btnCalibrate.setText(R.string.finish);
                         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
@@ -61,13 +60,13 @@ public class CompassActivity extends DJIActivity implements View.OnClickListener
 
                     //有错误状态
                     if (compassError) {
-                        ivCompass.setImageResource(R.drawable.compass_horizontal);
+                        ivCompass.setImageLevel(1);
                         tvHint.setText(R.string.compass_incorrect);
                         btnCalibrate.setText(R.string.start_calibrate);
                     }
                     //处于准备状态
                     else if (!isCalibrating) {
-                        ivCompass.setImageResource(R.drawable.compass_horizontal);
+                        ivCompass.setImageLevel(1);
                         tvHint.setText(R.string.compass_correct);
                         btnCalibrate.setText(R.string.start_calibrate);
 
@@ -75,23 +74,23 @@ public class CompassActivity extends DJIActivity implements View.OnClickListener
                     //处于校准中状态
                     else {
                         if (calibrationStatus == DJICompassCalibrationStatus.Normal.value()) {
-                            ivCompass.setImageResource(R.drawable.compass_horizontal);
+                            ivCompass.setImageLevel(1);
                             tvHint.setText(R.string.compass_correct);
                             btnCalibrate.setText(R.string.cancel_calibrate);
                         } else if (calibrationStatus == DJICompassCalibrationStatus.Horizontal.value()) {
-                            ivCompass.setImageResource(R.drawable.compass_horizontal);
+                            ivCompass.setImageLevel(1);
                             tvHint.setText(R.string.compass_calibrate_horizontal_hint);
                             btnCalibrate.setText(R.string.cancel_calibrate);
                         } else if (calibrationStatus == DJICompassCalibrationStatus.Vertical.value()) {
-                            ivCompass.setImageResource(R.drawable.compass_vertical);
+                            ivCompass.setImageLevel(2);
                             tvHint.setText(R.string.compass_calibrate_vertical_hint);
                             btnCalibrate.setText(R.string.cancel_calibrate);
                         } else if (calibrationStatus == DJICompassCalibrationStatus.Succeeded.value()) {
-                            ivCompass.setImageResource(R.drawable.compass_horizontal);
+                            ivCompass.setImageLevel(1);
                             tvHint.setText(R.string.compass_correct);
                             btnCalibrate.setText(R.string.finish);
                         } else if (calibrationStatus == DJICompassCalibrationStatus.Failed.value()) {
-                            ivCompass.setImageResource(R.drawable.compass_horizontal);
+                            ivCompass.setImageLevel(1);
                             tvHint.setText(R.string.compass_correct);
                             btnCalibrate.setText(R.string.start_calibrate);
                         }

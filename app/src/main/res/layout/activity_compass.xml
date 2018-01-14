@@ -39,7 +39,7 @@
         android:layout_height="267dp"
         android:layout_marginBottom="28dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/compass_horizontal"
+        android:src="@drawable/compass_calibrate"
         skin:enable="true"/>
 
     <TextView
