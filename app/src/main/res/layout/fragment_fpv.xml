@@ -258,7 +258,7 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_1"
+            android:background="@drawable/circular_signal"
             skin:enable="true">
 
             <ImageView
@@ -279,7 +279,7 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_2"
+            android:background="@drawable/circular_signal"
             skin:enable="true">
 
             <ImageView
@@ -321,7 +321,7 @@
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/energy_icon_3"
+            android:background="@drawable/circular_signal"
             skin:enable="true">
 
             <ImageView
@@ -341,7 +341,7 @@
             android:layout_width="40dp"
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/energy_icon_4"
+            android:background="@drawable/circular_signal"
             skin:enable="true">
 
             <ImageView

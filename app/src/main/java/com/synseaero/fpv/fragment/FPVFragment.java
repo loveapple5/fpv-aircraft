@@ -51,7 +51,9 @@ import com.synseaero.util.DJIUtils;
 import com.synseaero.util.DensityUtil;
 import com.synseaero.view.CircleMenuLayout;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,6 +61,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import cn.feng.skin.manager.base.BaseFragment;
+import cn.feng.skin.manager.entity.AttrFactory;
+import cn.feng.skin.manager.entity.DynamicAttr;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
@@ -156,20 +160,20 @@ public class FPVFragment extends BaseFragment {
             R.string.fc
     };
 
-    private static final int ENERGY_ICON[] = {
-            R.drawable.energy_icon_1,
-            R.drawable.energy_icon_2,
-            R.drawable.energy_icon_3,
-            R.drawable.energy_icon_4,
-            R.drawable.energy_icon_5,
-            R.drawable.energy_icon_6,
-            R.drawable.energy_icon_7,
-            R.drawable.energy_icon_8,
-            R.drawable.energy_icon_9,
-            R.drawable.energy_icon_10,
-            R.drawable.energy_icon_11,
-            R.drawable.energy_icon_12,
-    };
+//    private static final int ENERGY_ICON[] = {
+//            R.drawable.energy_icon_1,
+//            R.drawable.energy_icon_2,
+//            R.drawable.energy_icon_3,
+//            R.drawable.energy_icon_4,
+//            R.drawable.energy_icon_5,
+//            R.drawable.energy_icon_6,
+//            R.drawable.energy_icon_7,
+//            R.drawable.energy_icon_8,
+//            R.drawable.energy_icon_9,
+//            R.drawable.energy_icon_10,
+//            R.drawable.energy_icon_11,
+//            R.drawable.energy_icon_12,
+//    };
 
     private LocationManager locationManager;
 
@@ -280,8 +284,8 @@ public class FPVFragment extends BaseFragment {
                 case MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE: {
                     int remainingPercent = bundle.getInt("remainingPercent");
                     int index = Math.round((float) remainingPercent / 8) - 1;
-                    index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
-                    rlRCEnergy.setBackgroundResource(ENERGY_ICON[index]);
+                    index = index < 0 ? 0 : index;
+                    rlRCEnergy.getBackground().setLevel(index);
 
                     if (remainingPercent < DJIUtils.COMMON_LOW_PERCENT) {
                         FlightInformation information = new FlightInformation();
@@ -296,8 +300,8 @@ public class FPVFragment extends BaseFragment {
                 case MessageType.MSG_GET_BATTERY_STATE_RESPONSE: {
                     int aircraftRemainingPercent = bundle.getInt("remainingPercent");
                     int aircraftIndex = Math.round((float) aircraftRemainingPercent / 8) - 1;
-                    aircraftIndex = aircraftIndex < 0 ? 0 : (aircraftIndex > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : aircraftIndex);
-                    rlCraftEnergy.setBackgroundResource(ENERGY_ICON[aircraftIndex]);
+                    aircraftIndex = aircraftIndex < 0 ? 0 : aircraftIndex;
+                    rlCraftEnergy.getBackground().setLevel(aircraftIndex);
 
                     if (aircraftRemainingPercent < goHomeBatteryThreshold) {
                         FlightInformation information = new FlightInformation();
@@ -650,8 +654,8 @@ public class FPVFragment extends BaseFragment {
 
     public void setHelmetEnergy(int percent) {
         int index = Math.round((float) percent / 8) - 1;
-        index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
-        rlHelmetEnergy.setBackgroundResource(ENERGY_ICON[index]);
+        index = index < 0 ? 0 : index;
+        rlHelmetEnergy.getBackground().setLevel(index);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -939,8 +943,9 @@ public class FPVFragment extends BaseFragment {
             int total = intent.getExtras().getInt("scale");
             float percent = (float) current * 100 / total;
             int index = Math.round(percent / 10);
-            index = index < 0 ? 0 : (index > ENERGY_ICON.length - 1 ? ENERGY_ICON.length - 1 : index);
-            rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
+            index = index < 0 ? 0 : index;
+            //rlPhoneEnergy.setBackgroundResource(ENERGY_ICON[index]);
+            rlPhoneEnergy.getBackground().setLevel(index);
         }
     }
 
