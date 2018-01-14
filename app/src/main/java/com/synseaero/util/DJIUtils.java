@@ -29,8 +29,8 @@ public class DJIUtils {
     public static HashMap failSafeOperationMap = new HashMap();
 
     public static HashMap rcStyleMap1 = new HashMap();
-    public static HashMap rcStyleMap2 = new HashMap();
-    public static HashMap rcStyleMap3 = new HashMap();
+//    public static HashMap rcStyleMap2 = new HashMap();
+//    public static HashMap rcStyleMap3 = new HashMap();
 
     public static HashMap flyStateMap = new HashMap();
 
@@ -67,13 +67,13 @@ public class DJIUtils {
         rcStyleMap1.put(DJIRCControlStyle.American, R.string.us_mode);
         rcStyleMap1.put(DJIRCControlStyle.Japanese, R.string.jp_mode);
 
-        rcStyleMap2.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_1);
-        rcStyleMap2.put(DJIRCControlStyle.American, R.drawable.us_mode_1);
-        rcStyleMap2.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_1);
-
-        rcStyleMap3.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_2);
-        rcStyleMap3.put(DJIRCControlStyle.American, R.drawable.us_mode_2);
-        rcStyleMap3.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_2);
+//        rcStyleMap2.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_1);
+//        rcStyleMap2.put(DJIRCControlStyle.American, R.drawable.us_mode_1);
+//        rcStyleMap2.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_1);
+//
+//        rcStyleMap3.put(DJIRCControlStyle.Chinese, R.drawable.cn_mode_2);
+//        rcStyleMap3.put(DJIRCControlStyle.American, R.drawable.us_mode_2);
+//        rcStyleMap3.put(DJIRCControlStyle.Japanese, R.drawable.jp_mode_2);
 
         flyStateMap.put(0, R.string.landed);
         flyStateMap.put(1, R.string.taking_off);

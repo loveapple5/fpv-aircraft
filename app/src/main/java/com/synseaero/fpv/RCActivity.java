@@ -7,7 +7,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +22,8 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
     private TextView tvWheelSpeed;
     private SeekBar sbWheelSpeed;
     private TextView tcRCMode;
-    private ImageView ivRCMode1;
-    private ImageView ivRCMode2;
+    private TextView ivRCMode1;
+    private TextView ivRCMode2;
 
     private short wheelSpeed = 50;
 
@@ -82,12 +81,15 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
                 Bundle bundle = msg.getData();
                 String errDesc = bundle.getString("DJI_DESC", "");
                 if (errDesc.isEmpty()) {
+                    int controlStyle = bundle.getInt("controlStyle");
                     int modeId = bundle.getInt("controlStyleResId");
-                    int modeImageId1 = bundle.getInt("controlStyleImageResId1");
-                    int modeImageId2 = bundle.getInt("controlStyleImageResId2");
+//                    int modeImageId1 = bundle.getInt("controlStyleImageResId1");
+//                    int modeImageId2 = bundle.getInt("controlStyleImageResId2");
                     tcRCMode.setText(modeId);
-                    ivRCMode1.setImageResource(modeImageId1);
-                    ivRCMode2.setImageResource(modeImageId2);
+                    ivRCMode1.getBackground().setLevel(controlStyle);
+                    ivRCMode2.getBackground().setLevel(controlStyle);
+//                    ivRCMode1.setImageResource(modeImageId1);
+//                    ivRCMode2.setImageResource(modeImageId2);
                 } else {
                     Toast.makeText(RCActivity.this, errDesc, Toast.LENGTH_SHORT).show();
                 }
@@ -97,12 +99,15 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
                 Bundle bundle = msg.getData();
                 String errDesc = bundle.getString("DJI_DESC", "");
                 if (errDesc.isEmpty()) {
+                    int controlStyle = bundle.getInt("controlStyle");
                     int modeId = bundle.getInt("controlStyleResId");
-                    int modeImageId1 = bundle.getInt("controlStyleImageResId1");
-                    int modeImageId2 = bundle.getInt("controlStyleImageResId2");
+//                    int modeImageId1 = bundle.getInt("controlStyleImageResId1");
+//                    int modeImageId2 = bundle.getInt("controlStyleImageResId2");
                     tcRCMode.setText(modeId);
-                    ivRCMode1.setImageResource(modeImageId1);
-                    ivRCMode2.setImageResource(modeImageId2);
+                    ivRCMode1.getBackground().setLevel(controlStyle);
+                    ivRCMode2.getBackground().setLevel(controlStyle);
+//                    ivRCMode1.setImageResource(modeImageId1);
+//                    ivRCMode2.setImageResource(modeImageId2);
                 } else {
                     Toast.makeText(RCActivity.this, errDesc, Toast.LENGTH_SHORT).show();
                 }
@@ -125,8 +130,8 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
         tvWheelSpeed = (TextView) findViewById(R.id.tv_gimbal_wheel_speed);
         sbWheelSpeed = (SeekBar) findViewById(R.id.sb_gimbal_wheel_speed);
         tcRCMode = (TextView) findViewById(R.id.tv_rc_mode);
-        ivRCMode1 = (ImageView) findViewById(R.id.iv_rc_mode_1);
-        ivRCMode2 = (ImageView) findViewById(R.id.iv_rc_mode_2);
+        ivRCMode1 = (TextView) findViewById(R.id.iv_rc_mode_1);
+        ivRCMode2 = (TextView) findViewById(R.id.iv_rc_mode_2);
 
 
 //        DJIAircraft aircraft = FPVDemoApplication.getAircraftInstance();

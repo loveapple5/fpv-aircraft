@@ -122,20 +122,30 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <TextView
                 android:id="@+id/iv_rc_mode_1"
                 android:layout_width="115dp"
                 android:layout_height="80dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/cn_mode_1"
+                android:background="@drawable/fl_mode_left"
+                android:gravity="start|top"
+                android:text="@string/left_controller"
+                android:textColor="@color/blue"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
                 skin:enable="true" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/iv_rc_mode_2"
                 android:layout_width="115dp"
                 android:layout_height="80dp"
-                android:src="@drawable/cn_mode_2"
+                android:background="@drawable/fl_mode_right"
+                android:gravity="start|top"
+                android:text="@string/right_controller"
+                android:textColor="@color/blue"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
                 skin:enable="true" />
         </LinearLayout>
     </LinearLayout>

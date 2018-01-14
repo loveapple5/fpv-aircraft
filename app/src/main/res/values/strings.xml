@@ -280,4 +280,7 @@
     <string name="normal">正常</string>
 
     <string name="unknown">未知</string>
+
+    <string name="left_controller">左摇杆</string>
+    <string name="right_controller">右摇杆</string>
 </resources>

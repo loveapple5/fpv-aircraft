@@ -40,8 +40,8 @@ public class GetRCMode extends Task {
                     Bundle bundle = new Bundle();
                     bundle.putInt("controlStyle", djircControlMode.controlStyle.value());
                     bundle.putInt("controlStyleResId", DJIUtils.getMapValue(DJIUtils.rcStyleMap1, djircControlMode.controlStyle));
-                    bundle.putInt("controlStyleImageResId1", DJIUtils.getMapValue(DJIUtils.rcStyleMap2, djircControlMode.controlStyle));
-                    bundle.putInt("controlStyleImageResId2", DJIUtils.getMapValue(DJIUtils.rcStyleMap3, djircControlMode.controlStyle));
+//                    bundle.putInt("controlStyleImageResId1", DJIUtils.getMapValue(DJIUtils.rcStyleMap2, djircControlMode.controlStyle));
+//                    bundle.putInt("controlStyleImageResId2", DJIUtils.getMapValue(DJIUtils.rcStyleMap3, djircControlMode.controlStyle));
                     message.setData(bundle);
                     try {
                         messenger.send(message);

@@ -49,8 +49,8 @@ public class SetRCMode extends Task {
                     }
                     bundle.putInt("controlStyle", controlStyle.value());
                     bundle.putInt("controlStyleResId", controlStyleResId);
-                    bundle.putInt("controlStyleImageResId1", DJIUtils.getMapValue(DJIUtils.rcStyleMap2, controlStyle));
-                    bundle.putInt("controlStyleImageResId2", DJIUtils.getMapValue(DJIUtils.rcStyleMap3, controlStyle));
+//                    bundle.putInt("controlStyleImageResId1", DJIUtils.getMapValue(DJIUtils.rcStyleMap2, controlStyle));
+//                    bundle.putInt("controlStyleImageResId2", DJIUtils.getMapValue(DJIUtils.rcStyleMap3, controlStyle));
 
                     message.setData(bundle);
                     try {
