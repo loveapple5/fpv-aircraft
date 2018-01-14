@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -51,9 +50,7 @@ import com.synseaero.util.DJIUtils;
 import com.synseaero.util.DensityUtil;
 import com.synseaero.view.CircleMenuLayout;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,8 +58,6 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import cn.feng.skin.manager.base.BaseFragment;
-import cn.feng.skin.manager.entity.AttrFactory;
-import cn.feng.skin.manager.entity.DynamicAttr;
 import dji.sdk.base.DJIBaseProduct;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.codec.DJICodecManager;
@@ -139,13 +134,6 @@ public class FPVFragment extends BaseFragment {
     private int mode = MODE_TPV;
     private int lastMode = MODE_TPV;
 
-//    private static final int SIGNAL_ICON[] = {
-//            R.drawable.signal_icon_0,
-//            R.drawable.signal_icon_1,
-//            R.drawable.signal_icon_2,
-//            R.drawable.signal_icon_3,
-//            R.drawable.signal_icon_4
-//    };
 
     //综合信息栏信息map
     private TreeMap<Integer, FlightInformation> flightInfoMap = new TreeMap<>();
@@ -159,21 +147,6 @@ public class FPVFragment extends BaseFragment {
             R.string.map, R.string.brightness, R.string.helmet, R.string.photo, R.string.video, R.string.gimbal,
             R.string.fc
     };
-
-//    private static final int ENERGY_ICON[] = {
-//            R.drawable.energy_icon_1,
-//            R.drawable.energy_icon_2,
-//            R.drawable.energy_icon_3,
-//            R.drawable.energy_icon_4,
-//            R.drawable.energy_icon_5,
-//            R.drawable.energy_icon_6,
-//            R.drawable.energy_icon_7,
-//            R.drawable.energy_icon_8,
-//            R.drawable.energy_icon_9,
-//            R.drawable.energy_icon_10,
-//            R.drawable.energy_icon_11,
-//            R.drawable.energy_icon_12,
-//    };
 
     private LocationManager locationManager;
 
@@ -821,31 +794,6 @@ public class FPVFragment extends BaseFragment {
             camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
         }
 
-//        if (djiAircraft != null) {
-//
-//            //遥控信号强度
-//            //上行信号强度
-//            DJIAirLink airLink = djiAircraft.getAirLink();
-//            Model model = djiAircraft.getModel();
-//            if (model == Model.Phantom_3_Standard || model == Model.Phantom_3_4K) {
-//
-//                DJIAuxLink auxLink = airLink.getAuxLink();
-//                auxLink.setAuxLinkUpdatedRemoteControllerSignalInformationCallback(new AuxRCSignalCallback());
-//
-//            } else if (model == Model.MavicPro) {
-//                DJIOcuSyncLink ocuSyncLink = airLink.getOcuSyncLink();
-//                ocuSyncLink.setUplinkSignalQualityUpdatedCallback(new OcuSignalCallback());
-//                //ocuSyncLink.setDownlinkSignalQualityUpdatedCallback();
-//            } else {
-//                DJILBAirLink lbAirLink = airLink.getLBAirLink();
-//                //下行
-//                lbAirLink.setDJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback(new LBRCSignalCallback());
-//                //上行
-//                //lbAirLink.setLBAirLinkUpdatedRemoteControllerSignalInformationCallback();
-//            }
-//
-//        }
-
     }
 
     public void onPause() {
@@ -948,67 +896,6 @@ public class FPVFragment extends BaseFragment {
             rlPhoneEnergy.getBackground().setLevel(index);
         }
     }
-
-//    class AuxRCSignalCallback implements DJIAuxLink.DJIAuxLinkUpdatedRemoteControllerSignalInformationCallback {
-//
-//        @Override
-//        public void onResult(ArrayList<DJISignalInformation> antennas) {
-//            int percent = 0;
-//            for (DJISignalInformation antenna : antennas) {
-//                percent += antenna.getPercent();
-//            }
-//            int length = antennas.size();
-//            percent = percent / length;
-//
-//            //Log.d("rcSignal", "aux" + percent + "");
-//
-//            Message msg = Message.obtain();
-//            msg.what = MSG_CONTROL_SIGNAL;
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("strengthPercent", percent);
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//        }
-//    }
-//
-//    class LBRCSignalCallback implements DJILBAirLink.DJILBAirLinkUpdatedLightbridgeModuleSignalInformationCallback {
-//
-//        @Override
-//        public void onResult(ArrayList<DJISignalInformation> antennas) {
-//            int percent = 0;
-//            for (DJISignalInformation antenna : antennas) {
-//                percent += antenna.getPercent();
-//            }
-//            int length = antennas.size();
-//            percent = percent / length;
-//
-//            //Log.d("rcSignal", "lb" + percent + "");
-//
-//            Message msg = Message.obtain();
-//            msg.what = MSG_CONTROL_SIGNAL;
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("strengthPercent", percent);
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//        }
-//    }
-//
-//    class OcuSignalCallback implements SignalQualityUpdatedCallback {
-//
-//        @Override
-//        public void onChange(int strength) {
-//
-//            //Log.d("rcSignal", "ocu" + strength + "");
-//
-//            //The signal quality in percent with range [0, 100], where 100 is the best quality
-//            Message msg = Message.obtain();
-//            msg.what = MSG_CONTROL_SIGNAL;
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("strengthPercent", strength);
-//            msg.setData(bundle);
-//            mHandler.sendMessage(msg);
-//        }
-//    }
 
     //手机位置
     class MyLocationListener implements LocationListener {
