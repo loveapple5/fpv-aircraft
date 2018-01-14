@@ -61,18 +61,24 @@ public class WatchExposure extends Task {
             DJICameraSettingsDef.CameraISO ISO = exposure.getISO();
             DJICameraSettingsDef.CameraExposureCompensation compensation = exposure.getExposureCompensation();
 
-            String strSpeed;
-            float flSpeed = speed.value();
-            if (flSpeed >= 1) {
-                strSpeed = String.format(Locale.getDefault(), "%.2f", flSpeed);
-            } else {
-                float denominator = 1 / flSpeed;
-                StringBuilder sb = new StringBuilder();
-                strSpeed = sb.append("1/").append(String.format(Locale.getDefault(), "%.2f", denominator)).toString();
+            String strSpeed = "0";
+            if(speed != null) {
+                float flSpeed = speed.value();
+                if (flSpeed >= 1) {
+                    strSpeed = String.format(Locale.getDefault(), "%.2f", flSpeed);
+                } else {
+                    float denominator = 1 / flSpeed;
+                    StringBuilder sb = new StringBuilder();
+                    strSpeed = sb.append("1/").append(String.format(Locale.getDefault(), "%.2f", denominator)).toString();
+                }
             }
 
-            float flAperture = (float) aperture.value() / 100;
-            String strAperture = String.format(Locale.getDefault(), "%.1f", flAperture);
+            String strAperture = "0";
+            if(aperture != null) {
+                float flAperture = (float) aperture.value() / 100;
+                strAperture = String.format(Locale.getDefault(), "%.1f", flAperture);
+            }
+
 
             String strISO = StringUtils.getISOString(ISO);
             String EV = StringUtils.getEVString(compensation);

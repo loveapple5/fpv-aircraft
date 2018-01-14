@@ -196,6 +196,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
             case R.id.btn_connect_helmet: {
                 Intent helmetIntent = new Intent(this, BluetoothActivity.class);
                 startActivity(helmetIntent);
+                finish();
                 break;
             }
             case R.id.tv_compass: {

@@ -9,12 +9,10 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.synseaero.view.WaveView;
@@ -135,6 +133,7 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
         intent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, deviceName);
         intent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, deviceAddress);
         startActivity(intent);
+        finish();
     }
 
 

@@ -11,7 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
-import android.view.WindowManager;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
