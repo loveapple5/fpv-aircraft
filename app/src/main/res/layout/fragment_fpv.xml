@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/fpvTopInfo"
                 android:textSize="12dp"
                 skin:enable="true" />
 
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/fpvTopInfo"
                 android:textSize="12dp"
                 skin:enable="true" />
 
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/fpvTopInfo"
                 android:textSize="12dp"
                 skin:enable="true" />
 
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:gravity="center"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/fpvTopInfo"
                 android:textSize="12dp"
                 skin:enable="true" />
         </LinearLayout>
@@ -313,7 +313,7 @@
             android:background="@android:color/transparent"
             android:visibility="gone"
             fpv:menuColor="@color/blue"
-            skin:enable="true"/>
+            skin:enable="true" />
 
         <RelativeLayout
             android:id="@+id/rl_fpv_craft"
@@ -376,6 +376,7 @@
             android:background="@drawable/alt_card"
             android:gravity="center"
             android:text="20"
+            android:textColor="@color/fpvTopInfo"
             android:textStyle="bold"
             skin:enable="true" />
 
@@ -390,6 +391,7 @@
             android:background="@drawable/dis_card"
             android:gravity="center"
             android:text="351"
+            android:textColor="@color/fpvTopInfo"
             skin:enable="true" />
 
         <RelativeLayout
@@ -422,6 +424,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/iv_fpv_flight_vertical_speed"
                 android:text="5.0"
+                android:textColor="@color/fpvTopInfo"
                 android:textSize="9dp"
                 skin:enable="true" />
         </RelativeLayout>
@@ -438,6 +441,7 @@
             android:background="@drawable/spd_card"
             android:gravity="center"
             android:text="626"
+            android:textColor="@color/fpvTopInfo"
             skin:enable="true" />
 
         <ImageView
