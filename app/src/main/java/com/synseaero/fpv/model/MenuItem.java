@@ -33,11 +33,8 @@ public class MenuItem {
             case TYPE_TEXT:
                 try {
                     int progress = Integer.valueOf(curValue);
-                    progress--;
-                    if (progress > 0) {
-                        curValue = String.valueOf(progress);
-                    }
-
+                    progress++;
+                    curValue = String.valueOf(progress);
                 } catch (Exception e) {
 
                 }
@@ -67,7 +64,7 @@ public class MenuItem {
             case TYPE_PROGRESS:
                 try {
                     int progress = Integer.valueOf(curValue);
-                    progress--;
+                    progress++;
                     if (progress >= 0 && progress <= 100) {
                         curValue = String.valueOf(progress);
                     }
@@ -83,8 +80,10 @@ public class MenuItem {
             case TYPE_TEXT:
                 try {
                     int progress = Integer.valueOf(curValue);
-                    progress++;
-                    curValue = String.valueOf(progress);
+                    if (progress > 0) {
+                        progress--;
+                        curValue = String.valueOf(progress);
+                    }
                 } catch (Exception e) {
 
                 }
@@ -114,7 +113,7 @@ public class MenuItem {
             case TYPE_PROGRESS:
                 try {
                     int progress = Integer.valueOf(curValue);
-                    progress++;
+                    progress--;
                     if (progress >= 0 && progress <= 100) {
                         curValue = String.valueOf(progress);
                     }
