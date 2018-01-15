@@ -70,8 +70,8 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
                     break;
                 }
                 case MessageType.MSG_GET_FC_INFO_STATE_RESPONSE: {
-                    String flightMode = bundle.getString("flightMode", "");
-                    tvFlightMode.setText(flightMode);
+                    String flightModeStr = bundle.getString("flightModeStr", "");
+                    tvFlightMode.setText(flightModeStr);
                     ivFlightMode.setEnabled(true);
                     break;
                 }

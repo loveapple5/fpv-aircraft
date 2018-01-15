@@ -40,11 +40,11 @@ public class GetFCInfoState extends Task {
 
             int gpsSignalStatus = curState.getGpsSignalStatus().value();
             //飞行中
-            boolean flying = curState.isFlying();
+            boolean isFlying = curState.isFlying();
             //飞机剩余电量 1和2都是电量不足
             //int batteryLevel = batteryState.value();
             //飞行模式
-            //String flightMode = curState.getFlightModeString();
+            String flightModeStr = curState.getFlightModeString();
             DJIFlightControllerFlightMode flightMode = curState.getFlightMode();
             int flightModeStrId = DJIUtils.getMapValue(DJIUtils.flightModeStringMap, flightMode);
             int flightModeVoiceId = DJIUtils.getMapValue(DJIUtils.flightModeVoiceMap, flightMode);
@@ -60,9 +60,10 @@ public class GetFCInfoState extends Task {
             boolean reachLimitedRadius = curState.isReachLimitedRadius();
 
             Bundle bundle = new Bundle();
-            bundle.putBoolean("flying", flying);
+            bundle.putBoolean("isFlying", isFlying);
             bundle.putBoolean("isHomeSet", isHomeSet);
             //bundle.putInt("batteryLevel", batteryLevel);
+            bundle.putString("flightModeStr", flightModeStr);
             bundle.putInt("flightModeStrId", flightModeStrId);
             bundle.putInt("flightModeVoiceId", flightModeVoiceId);
             //bundle.putBoolean("goHomeCompleted", goHomeCompleted);
