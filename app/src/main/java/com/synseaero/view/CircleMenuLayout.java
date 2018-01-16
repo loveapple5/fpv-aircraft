@@ -144,7 +144,7 @@ public class CircleMenuLayout extends ViewGroup {
     public void setMenuColor(int color) {
         mLinePaint.setColor(color);
         mLinePaint.setColor(color);mTextPaint.setColor(color);
-
+        invalidate();
     }
 
     /**
