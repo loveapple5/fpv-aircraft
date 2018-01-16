@@ -23,9 +23,18 @@ import com.synseaero.fpv.R;
 import com.synseaero.fpv.model.Menu;
 import com.synseaero.fpv.model.MenuItem;
 import com.synseaero.util.DensityUtil;
+import com.synseaero.view.SectionTextView;
 import com.synseaero.view.SwitchButton;
 
-public class MenuFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.feng.skin.manager.base.BaseFragment;
+import cn.feng.skin.manager.entity.AttrFactory;
+import cn.feng.skin.manager.entity.DynamicAttr;
+import cn.feng.skin.manager.loader.SkinManager;
+
+public class MenuFragment extends BaseFragment {
 
     private Menu menuData = new Menu();
 
@@ -85,60 +94,81 @@ public class MenuFragment extends Fragment {
         View menu = null;
         int type = data.type;
         switch (type) {
-            case MenuItem.TYPE_TEXT:
+            case MenuItem.TYPE_TEXT: {
                 TextView tvMenu = new TextView(getContext());
                 tvMenu.setGravity(Gravity.CENTER);
                 tvMenu.setText(data.curValue);
-                tvMenu.setTextColor(getResources().getColor(R.color.blue));
-                tvMenu.setBackgroundResource(R.drawable.bg_menu);
+                tvMenu.setTextColor(SkinManager.getInstance().getColor(R.color.blue));
+                tvMenu.setBackground(SkinManager.getInstance().getDrawable(R.drawable.bg_menu));
                 tvMenu.setTextSize(TypedValue.COMPLEX_UNIT_PX, DensityUtil.dip2px(getContext(), 12));
                 menu = tvMenu;
+
+                List<DynamicAttr> mDynamicAttr = new ArrayList<DynamicAttr>();
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.BACKGROUND, R.drawable.bg_menu));
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.TEXT_COLOR, R.color.blue));
+                dynamicAddView(menu, mDynamicAttr);
+
                 break;
-            case MenuItem.TYPE_SWITCH:
+            }
+            case MenuItem.TYPE_SWITCH: {
                 SwitchButton sbMenu = new SwitchButton(getContext());
-                sbMenu.setText(data.values[0], data.values[1]);
+                //sbMenu.setText(data.values[0], data.values[1]);
                 sbMenu.setChecked("true".equalsIgnoreCase(data.curValue));
                 sbMenu.setTextSize(TypedValue.COMPLEX_UNIT_PX, DensityUtil.dip2px(getContext(), 12));
-                sbMenu.setBackRadius(DensityUtil.dip2px(getContext(), 4));
-                sbMenu.setThumbRadius(DensityUtil.dip2px(getContext(), 3));
-                sbMenu.setThumbColor(ContextCompat.getColorStateList(getContext(), R.color.colorWhite));
-                sbMenu.setBackColor(ContextCompat.getColorStateList(getContext(), R.color.transBlue));
-//                sbMenu.setBackgroundResource(R.drawable.bg_switch);
-                sbMenu.setThumbSize(DensityUtil.dip2px(getContext(), 40), 0);
-                sbMenu.setThumbRangeRatio(2f);
-//                sbMenu.setFadeBack(true);
-                int margin = DensityUtil.dip2px(getContext(), 2);
-                sbMenu.setThumbMargin(new RectF(margin, margin, margin, margin));
+
+                sbMenu.setBackDrawable(SkinManager.getInstance().getDrawable(R.drawable.bg_switch));
+                sbMenu.setThumbDrawable(SkinManager.getInstance().getDrawable(R.drawable.switch_thumb));
+
+                int size = DensityUtil.dip2px(getContext(), 20);
+                int marginTop = DensityUtil.dip2px(getContext(), -7);
+                int marginLeft = DensityUtil.dip2px(getContext(), -2);
+                sbMenu.setThumbSize(size, size);
+                sbMenu.setThumbMargin(marginLeft, marginTop, marginLeft, marginTop);
                 menu = sbMenu;
+
+                List<DynamicAttr> mDynamicAttr = new ArrayList<DynamicAttr>();
+                //mDynamicAttr.add(new DynamicAttr(AttrFactory.TEXT_COLOR, R.color.lightGray2));
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.KSW_BACK_DRAWABLE, R.drawable.bg_switch));
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.KSW_THUMB_DRAWABLE, R.drawable.switch_thumb));
+                dynamicAddView(menu, mDynamicAttr);
                 break;
-            case MenuItem.TYPE_SELECT:
-                TextView tvSelectMenu = new TextView(getContext());
+            }
+            case MenuItem.TYPE_SELECT: {
+                SectionTextView tvSelectMenu = new SectionTextView(getContext());
                 tvSelectMenu.setGravity(Gravity.CENTER);
 //                ColorStateList selectCsl = getResources().getColorStateList(R.color.menu_tv);
 //                tvSelectMenu.setTextColor(selectCsl);
-                SpannableStringBuilder sb = new SpannableStringBuilder();
-                for (int i = 0; i < data.values.length; i++) {
-                    sb.append(data.values[i]);
-                    if (i < data.values.length - 1) {
-                        sb.append("/");
-                    }
-                }
-                int start = sb.toString().indexOf(data.curValue);
-                ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.blue));
-                sb.setSpan(span, start, start + data.curValue.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                tvSelectMenu.setText(sb);
+
+                tvSelectMenu.setValue(data.values);
+                tvSelectMenu.setSelectedText(data.curValue);
 
                 tvSelectMenu.setBackgroundResource(R.drawable.transparent);
                 tvSelectMenu.setTextSize(TypedValue.COMPLEX_UNIT_PX, DensityUtil.dip2px(getContext(), 12));
+
+                tvSelectMenu.setSelectedTextColor(SkinManager.getInstance().getColor(R.color.blue));
+                tvSelectMenu.setUnSelectedTextColor(SkinManager.getInstance().getColor(R.color.menuText));
+
                 menu = tvSelectMenu;
+
+                List<DynamicAttr> mDynamicAttr = new ArrayList<DynamicAttr>();
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.SELECTED_TEXT_COLOR, R.color.blue));
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.UNSELECTED_TEXT_COLOR, R.color.menuText));
+                dynamicAddView(menu, mDynamicAttr);
+
                 break;
-            case MenuItem.TYPE_PROGRESS:
+            }
+            case MenuItem.TYPE_PROGRESS: {
                 SeekBar sbarMenu = new SeekBar(getContext());
                 sbarMenu.setThumb(null);
-                sbarMenu.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar));
+                sbarMenu.setProgressDrawable(SkinManager.getInstance().getDrawable(R.drawable.progressbar));
                 sbarMenu.setProgress(Integer.parseInt(data.curValue));
                 menu = sbarMenu;
+
+                List<DynamicAttr> mDynamicAttr = new ArrayList<DynamicAttr>();
+                mDynamicAttr.add(new DynamicAttr(AttrFactory.PROGRESS_DRAWABLE, R.drawable.progressbar));
+                dynamicAddView(menu, mDynamicAttr);
                 break;
+            }
         }
         LinearLayout.LayoutParams menuParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(getContext(), 25));
         if (menu instanceof SeekBar) {
@@ -149,6 +179,7 @@ public class MenuFragment extends Fragment {
         menu.setFocusable(true);
         menu.setClickable(true);
         menu.setTag(data);
+
         return menu;
     }
 
@@ -165,17 +196,9 @@ public class MenuFragment extends Fragment {
                     ((SwitchButton) subMenuView).setChecked("true".equalsIgnoreCase(data.curValue));
                     break;
                 case MenuItem.TYPE_SELECT:
-                    SpannableStringBuilder sb = new SpannableStringBuilder();
-                    for (int i = 0; i < data.values.length; i++) {
-                        sb.append(data.values[i]);
-                        if (i < data.values.length - 1) {
-                            sb.append("/");
-                        }
-                    }
-                    int start = sb.toString().indexOf(data.curValue);
-                    ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.blue));
-                    sb.setSpan(span, start, start + data.curValue.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    ((TextView) subMenuView).setText(sb);
+
+                    ((SectionTextView) subMenuView).setValue(data.values);
+                    ((SectionTextView) subMenuView).setSelectedText(data.curValue);
                     break;
                 case MenuItem.TYPE_PROGRESS:
                     ((SeekBar) subMenuView).setProgress(Integer.parseInt(data.curValue));
