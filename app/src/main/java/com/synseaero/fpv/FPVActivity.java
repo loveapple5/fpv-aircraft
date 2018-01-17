@@ -23,6 +23,8 @@ import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.bluetooth.BluetoothLeService;
 import com.synseaero.fpv.fragment.FPVFragment;
 import com.synseaero.fpv.fragment.MenuFragment;
+import com.synseaero.fpv.fragment.OneLevelMenuFragment;
+import com.synseaero.fpv.fragment.TwoLevelMenuFragment;
 import com.synseaero.fpv.model.FlightHeightMenuItem;
 import com.synseaero.fpv.model.FlightRadiusMenuItem;
 import com.synseaero.fpv.model.GoHomeHeightMenuItem;
@@ -116,7 +118,7 @@ public class FPVActivity extends DJIActivity {
         mFPVFragment = new FPVFragment();
         mFPVFragment.setActivity(this);
 
-        //mMenuFragment = new MenuFragment();
+        //mMenuFragment = new TwoLevelMenuFragment();
         //mMenuFragment.setMenuData(menuData);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -293,20 +295,32 @@ public class FPVActivity extends DJIActivity {
         //FragmentManager fm = getSupportFragmentManager();
         //FragmentTransaction transaction = fm.beginTransaction();
         switch (item.getItemId()) {
-            case R.id.menu_fpv:
+            case R.id.menu_fpv: {
                 mFPVFragment.setMode(MODE_FPV);
                 break;
-            case R.id.menu_tpv:
+            }
+            case R.id.menu_tpv: {
                 mFPVFragment.setMode(MODE_TPV);
                 break;
-            case R.id.menu_menu:
+            }
+            case R.id.menu_menu: {
                 mFPVFragment.setMode(MODE_MENU);
                 break;
-            case R.id.menu_map:
+            }
+            case R.id.menu_map: {
                 Intent mapIntent = new Intent(this, MapActivity.class);
                 startActivity(mapIntent);
                 finish();
                 break;
+            }
+//            case R.id.menu_style_1: {
+//                ((FPVApplication) getApplication()).changeSkin(1);
+//                break;
+//            }
+//            case R.id.menu_style_2: {
+//                ((FPVApplication) getApplication()).changeSkin(2);
+//                break;
+//            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -327,17 +341,17 @@ public class FPVActivity extends DJIActivity {
         //mapMenu.items.add(backMenu);
         mapMenu.items.add(showPathMenu);
         mapMenu.items.add(clearPathMenu);
-        MenuFragment mapMenuFragment = new MenuFragment();
+        MenuFragment mapMenuFragment = new TwoLevelMenuFragment();
         mapMenuFragment.setMenuData(mapMenu);
         mMenuFragments.add(mapMenuFragment);
         //屏幕菜单
         //亮度
         ScreenMenuItem lightSubMenu = new ScreenMenuItem(100, MenuItem.TYPE_PROGRESS, "30", null, null);
         lightSubMenu.setActivity(this);
-        MenuItem lightMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.brightness), null, lightSubMenu);
+        //MenuItem lightMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.brightness), null, lightSubMenu);
         Menu screenMenu = new Menu();
-        screenMenu.items.add(lightMenu);
-        MenuFragment screenMenuFragment = new MenuFragment();
+        screenMenu.items.add(lightSubMenu);
+        MenuFragment screenMenuFragment = new OneLevelMenuFragment();
         screenMenuFragment.setMenuData(screenMenu);
         mMenuFragments.add(screenMenuFragment);
         //头盔菜单
@@ -362,7 +376,7 @@ public class FPVActivity extends DJIActivity {
         helmetMenu.items.add(fanMenu);
         helmetMenu.items.add(findBackMenu);
         helmetMenu.items.add(styleMenu);
-        MenuFragment helmetMenuFragment = new MenuFragment();
+        MenuFragment helmetMenuFragment = new TwoLevelMenuFragment();
         helmetMenuFragment.setMenuData(helmetMenu);
         mMenuFragments.add(helmetMenuFragment);
         //拍照菜单
@@ -392,7 +406,7 @@ public class FPVActivity extends DJIActivity {
         photoMenu.items.add(ratioMenu);
         photoMenu.items.add(photoFormatMenu);
         photoMenu.items.add(whiteBalanceMenu);
-        MenuFragment photoMenuFragment = new MenuFragment();
+        MenuFragment photoMenuFragment = new TwoLevelMenuFragment();
         photoMenuFragment.setMenuData(photoMenu);
         mMenuFragments.add(photoMenuFragment);
         //录像菜单
@@ -409,7 +423,7 @@ public class FPVActivity extends DJIActivity {
         videoMenu.items.add(sizeMenu);
         videoMenu.items.add(frameRateMenu);
         videoMenu.items.add(formatMenu);
-        MenuFragment videoMenuFragment = new MenuFragment();
+        MenuFragment videoMenuFragment = new TwoLevelMenuFragment();
         videoMenuFragment.setMenuData(videoMenu);
         mMenuFragments.add(videoMenuFragment);
         //云台菜单
@@ -422,7 +436,7 @@ public class FPVActivity extends DJIActivity {
         Menu panMenu = new Menu();
         panMenu.items.add(headMenu);
         panMenu.items.add(courseMenu);
-        MenuFragment panMenuFragment = new MenuFragment();
+        MenuFragment panMenuFragment = new TwoLevelMenuFragment();
         panMenuFragment.setMenuData(panMenu);
         mMenuFragments.add(panMenuFragment);
         //飞控菜单
@@ -444,7 +458,7 @@ public class FPVActivity extends DJIActivity {
         RCMenu.items.add(homeHeightMenu);
         RCMenu.items.add(maxHeightMenu);
         RCMenu.items.add(maxRadiusMenu);
-        MenuFragment RCMenuFragment = new MenuFragment();
+        MenuFragment RCMenuFragment = new TwoLevelMenuFragment();
         RCMenuFragment.setMenuData(RCMenu);
         mMenuFragments.add(RCMenuFragment);
 
@@ -483,12 +497,12 @@ public class FPVActivity extends DJIActivity {
     }
 
     private boolean hideMenu() {
-        //收起二级菜单
+        //收起菜单内容
         boolean result = mCurMenuFragment.onBackPressed();
         if (result) {
             return true;
         }
-        //收起一级菜单
+        //收起菜单本身
         if (!mCurMenuFragment.isHidden()) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.hide(mCurMenuFragment).commit();
