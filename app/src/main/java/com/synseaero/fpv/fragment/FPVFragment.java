@@ -927,9 +927,9 @@ public class FPVFragment extends BaseFragment {
             //海拔
             double altitude = location.getAltitude();
 
-            Log.i(TAG, "longitude" + longitude);
-            Log.i(TAG, "latitude" + latitude);
-            Log.i(TAG, "altitude" + altitude);
+//            Log.i(TAG, "longitude" + longitude);
+//            Log.i(TAG, "latitude" + latitude);
+//            Log.i(TAG, "altitude" + altitude);
 
             Vector<Double> vPhone = new Vector<Double>();
             vPhone.add(longitude * Math.PI / 180);
