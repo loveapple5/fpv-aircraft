@@ -61,21 +61,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Vector<Double> vAircraftLBH;
     //人的PRY
     private Vector<Double> aPhonePRY;
+    //飞机的姿态角
+    private Vector<Double> aAircraftAPR;
 
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
+    //飞机的三个opengl角度
     private final float[] mRotationMatrix = new float[16];
-
-
+    //找回model的三个opengl角度
     private float[] mRotationMatrixZ = new float[16];
 
-    private float mAngle;
-
-    private float mPitch;
-    private float mRoll;
+//    private float mAngle;
+//
+//    private float mPitch;
+//    private float mRoll;
 
     private float declination = 0;
 
@@ -141,9 +143,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         Vector<Double> aAPR = calFindBackAPR();
 
-        setPitch((float) (aAPR.get(0) * 180 / Math.PI));
-        setRoll((float) (aAPR.get(1) * 180 / Math.PI));
-        setAngle((float) (aAPR.get(2) * 180 / Math.PI));
+        float findBackPitch = ((float) (aAPR.get(0) * 180 / Math.PI));
+        float findBackRoll = ((float) (aAPR.get(1) * 180 / Math.PI));
+        float findBackAngle =((float) (aAPR.get(2) * 180 / Math.PI));
+
+        float aircraftPitch = 0;
+        float aircraftRoll = 0;
+        if(aAircraftAPR != null && aAircraftAPR.size() == 3) {
+            aircraftPitch = aAircraftAPR.get(1).floatValue();
+            aircraftRoll = aAircraftAPR.get(2).floatValue();
+        }
 
         // clear buffer
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -175,18 +184,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Draw static square
         Matrix.setRotateM(mRotationMatrix, 0, 0, 0, 1.0f, 0f);
-        Matrix.rotateM(mRotationMatrix, 0, -mPitch, 1f, 0, 0);
-        Matrix.rotateM(mRotationMatrix, 0, mRoll, 0f, 0f, 1f);
+        Matrix.rotateM(mRotationMatrix, 0, -aircraftPitch, 1f, 0, 0);
+        Matrix.rotateM(mRotationMatrix, 0, aircraftRoll, 0f, 0f, 1f);
 
         Matrix.multiplyMM(mRotationMatrix, 0, Aircraftmatrix, 0, mRotationMatrix, 0);
 
 
 
 /* matrix for grahpic postion*/
-        Matrix.setRotateM(mRotationMatrixZ, 0, mAngle, 0f, 1f, 0f);
+        Matrix.setRotateM(mRotationMatrixZ, 0, findBackAngle, 0f, 1f, 0f);
 //
-        Matrix.rotateM(mRotationMatrixZ, 0, mPitch, 1f, 0, 0);
-        Matrix.rotateM(mRotationMatrixZ, 0, mRoll, 0f, 0f, 1f);
+        Matrix.rotateM(mRotationMatrixZ, 0, findBackPitch, 1f, 0, 0);
+        Matrix.rotateM(mRotationMatrixZ, 0, findBackRoll, 0f, 0f, 1f);
 
         Matrix.multiplyMM(mRotationMatrixZ, 0, plusmatrix, 0, mRotationMatrixZ, 0);
 //        Matrix.translateM(mRotationMatrixZ,0,0,0f,-190f); // 移回原位，绕设定轴转
@@ -288,29 +297,29 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    /**
-     * Returns the rotation angle of the triangle shape (mTriangle).
-     *
-     * @return - A float representing the rotation angle.
-     */
-    public float getAngle() {
-        return mAngle;
-    }
-
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void setAngle(float angle) {
-        mAngle = angle;
-    }
-
-    public void setPitch(float pitch) {
-        mPitch = pitch;
-    }
-
-    public void setRoll(float roll) {
-        mRoll = roll;
-    }
+//    /**
+//     * Returns the rotation angle of the triangle shape (mTriangle).
+//     *
+//     * @return - A float representing the rotation angle.
+//     */
+//    public float getAngle() {
+//        return mAngle;
+//    }
+//
+//    /**
+//     * Sets the rotation angle of the triangle shape (mTriangle).
+//     */
+//    public void setAngle(float angle) {
+//        mAngle = angle;
+//    }
+//
+//    public void setPitch(float pitch) {
+//        mPitch = pitch;
+//    }
+//
+//    public void setRoll(float roll) {
+//        mRoll = roll;
+//    }
 
     public synchronized void setPhoneLBH(Vector<Double> vPhoneLBH) {
         this.vPhoneLBH = vPhoneLBH;
@@ -328,6 +337,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public synchronized void setPhonePRY(Vector<Double> aPhonePRY) {
         this.aPhonePRY = aPhonePRY;
         this.aPhonePRY.set(2, this.aPhonePRY.get(2) + declination);
+    }
+
+    public synchronized void setAircraftAPR(Vector<Double> aAircraftAPR) {
+        this.aAircraftAPR = aAircraftAPR;
     }
 
     public synchronized Vector<Double> calFindBackAPR() {

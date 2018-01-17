@@ -232,17 +232,23 @@ public class FPVFragment extends BaseFragment {
                     tvFlightHeight.setText(Math.round(altitude) + "");
                     tvFlightDistance.setText(distance + "");
 
-                    Double AircraftPitch = bundle.getDouble("AircraftPitch", 0);
-                    Double AircraftRoll = bundle.getDouble("AircraftRoll", 0);
-                    Double AircraftYaw = bundle.getDouble("AircraftYaw", 0);
-                    Double Heading = bundle.getDouble("Head"); // aircraft compass heading
-                    String Fheading = String.format("%.0f", Heading);
-                    String Sptich = String.format("%.0f", AircraftPitch);
-                    String Sroll = String.format("%.0f", AircraftRoll);
-                    mGLView.setHeadingAngle(Float.parseFloat(Fheading));
-                    mGLView.setAttitude(Float.parseFloat(Sptich), Float.parseFloat(Sroll));
+                    double AircraftPitch = bundle.getDouble("AircraftPitch", 0);
+                    double AircraftRoll = bundle.getDouble("AircraftRoll", 0);
+                    double AircraftYaw = bundle.getDouble("AircraftYaw", 0);
+                    double Heading = bundle.getDouble("Head"); // aircraft compass heading
+//                    String Fheading = String.format("%.0f", Heading);
+//                    String Sptich = String.format("%.0f", AircraftPitch);
+//                    String Sroll = String.format("%.0f", AircraftRoll);
+//                    mGLView.setHeadingAngle((float)Heading);
+//                    mGLView.setAttitude(AircraftPitch, AircraftRoll);
 
-                    ivDirection.setRotation(-Heading.floatValue());
+                    Vector<Double> aAircraft = new Vector<>();
+                    aAircraft.add(Heading);
+                    aAircraft.add(AircraftPitch);
+                    aAircraft.add(AircraftRoll);
+                    mGLView.setAircraftAPR(aAircraft);
+
+                    ivDirection.setRotation((float)Heading);
                     //ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
 
                     Vector<Double> vPhone = new Vector<>();

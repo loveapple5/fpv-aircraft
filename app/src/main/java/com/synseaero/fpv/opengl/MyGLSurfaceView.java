@@ -32,7 +32,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     //    protected final MyGLRenderer mRenderer;
     public final MyGLRenderer mRenderer;
     public static Resources res;
-    Double headingangle;
+    //Double headingangle;
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -52,29 +52,29 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     }
 
-    private float mPreviousAngle;
-
-    public void setHeadingAngle(Float headingangle) {
-//        float x = mPreviousAngle;
-        if (headingangle != mPreviousAngle) {
-            mPreviousAngle = headingangle;
-            mRenderer.setAngle(headingangle);
-            requestRender();
-        }
-
-    }
-
-    private float mPreviousPitch;
-    private float mPreviousRoll;
-
-    public void setAttitude(Float pitch, Float roll) {
-        if (pitch != mPreviousPitch || roll != mPreviousRoll) {
-            mPreviousPitch = pitch;
-            mPreviousRoll = roll;
-            mRenderer.setPitch(pitch);
-            mRenderer.setRoll(roll);
-        }
-    }
+//    private float mPreviousAngle;
+//
+//    public void setHeadingAngle(Float headingangle) {
+////        float x = mPreviousAngle;
+//        if (headingangle != mPreviousAngle) {
+//            mPreviousAngle = headingangle;
+//            mRenderer.setAngle(headingangle);
+//            requestRender();
+//        }
+//
+//    }
+//
+//    private float mPreviousPitch;
+//    private float mPreviousRoll;
+//
+//    public void setAttitude(Float pitch, Float roll) {
+//        if (pitch != mPreviousPitch || roll != mPreviousRoll) {
+//            mPreviousPitch = pitch;
+//            mPreviousRoll = roll;
+//            mRenderer.setPitch(pitch);
+//            mRenderer.setRoll(roll);
+//        }
+//    }
 
 //    private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
 //    private float mPreviousY;
@@ -128,6 +128,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     public void setPhonePRY(Vector<Double> aPhonePRY) {
         mRenderer.setPhonePRY(aPhonePRY);
+        requestRender();
+    }
+
+    public void setAircraftAPR(Vector<Double> aAircraftAPR) {
+        mRenderer.setAircraftAPR(aAircraftAPR);
         requestRender();
     }
 
