@@ -344,9 +344,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         vPA.add(vNorth);
         vPA.add(vCore);
 
-        Log.d(TAG, "vPA0:" + vPA.get(0).floatValue());
-        Log.d(TAG, "vPA1:" + vPA.get(1).floatValue());
-        Log.d(TAG, "vPA2:" + vPA.get(2).floatValue());
+//        Log.d(TAG, "vPA0:" + vPA.get(0).floatValue());
+//        Log.d(TAG, "vPA1:" + vPA.get(1).floatValue());
+//        Log.d(TAG, "vPA2:" + vPA.get(2).floatValue());
 
         //通过PA向量得到大地球坐标
         double Fa = 0;
@@ -358,16 +358,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        Fa = -Fa;
         double Si = -Math.asin(vCore / Math.sqrt(vNorth * vNorth + vEast * vEast + vCore * vCore));
 
-        Log.d(TAG, "Fa:" + Fa * 180 / Math.PI);
-        Log.d(TAG, "Si:" + Si * 180 / Math.PI);
+//        Log.d(TAG, "Fa:" + Fa * 180 / Math.PI);
+//        Log.d(TAG, "Si:" + Si * 180 / Math.PI);
 
         //手机方向角放入头盔后需要转换的角度
         double pitch = aPhonePRY.get(1) + 102 * Math.PI / 180;
         double roll = aPhonePRY.get(0);
         double yaw = aPhonePRY.get(2) + 90 * Math.PI / 180;
 
-        Log.d(TAG, "pitch:" + pitch * 180 / Math.PI);
-        Log.d(TAG, "yaw:" + yaw * 180 / Math.PI);
+//        Log.d(TAG, "pitch:" + pitch * 180 / Math.PI);
+//        Log.d(TAG, "yaw:" + yaw * 180 / Math.PI);
 
 
         //获取最终的偏转角
@@ -376,9 +376,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         aDeflection.add(0d);
         aDeflection.add(yaw - Fa + Math.PI);
 
-        Log.d(TAG, "aDeflection0:" + aDeflection.get(0).floatValue() * 180 / Math.PI);
-        Log.d(TAG, "aDeflection1:" + aDeflection.get(1).floatValue() * 180 / Math.PI);
-        Log.d(TAG, "aDeflection2:" + aDeflection.get(2).floatValue() * 180 / Math.PI);
+//        Log.d(TAG, "aDeflection0:" + aDeflection.get(0).floatValue() * 180 / Math.PI);
+//        Log.d(TAG, "aDeflection1:" + aDeflection.get(1).floatValue() * 180 / Math.PI);
+//        Log.d(TAG, "aDeflection2:" + aDeflection.get(2).floatValue() * 180 / Math.PI);
 
         return aDeflection;
     }
