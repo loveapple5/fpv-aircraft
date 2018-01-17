@@ -249,12 +249,12 @@ public class FPVFragment extends BaseFragment {
                     vPhone.add(longH * Math.PI / 180);
                     vPhone.add(latH * Math.PI / 180);
                     vPhone.add(0d);
-                    mGLView.setvPhoneLBH(vPhone);
+                    mGLView.setPhoneLBH(vPhone);
                     Vector<Double> vAircraft = new Vector<>();
                     vAircraft.add(longA * Math.PI / 180);
                     vAircraft.add(latA * Math.PI / 180);
                     vAircraft.add(altitude);
-                    mGLView.setvAircraftLBH(vAircraft);
+                    mGLView.setAircraftLBH(vAircraft);
                     break;
                 }
                 case MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE: {
@@ -935,7 +935,7 @@ public class FPVFragment extends BaseFragment {
             vPhone.add(longitude * Math.PI / 180);
             vPhone.add(latitude * Math.PI / 180);
             vPhone.add(altitude);
-//            mGLView.setvPhoneLBH(vPhone);
+//            mGLView.setPhoneLBH(vPhone);
         }
 
         @Override
@@ -995,7 +995,7 @@ public class FPVFragment extends BaseFragment {
                 aPhone.add(PITCH * Math.PI / 180);
                 aPhone.add(ROLL * Math.PI / 180);
                 aPhone.add(ORIENTATION * Math.PI / 180);
-                mGLView.setaPhonePRY(aPhone);
+                mGLView.setPhonePRY(aPhone);
 
                 if (mode == MODE_FPV || (mode == MODE_MENU && lastMode == MODE_FPV)) {
                     //云台俯仰角设置

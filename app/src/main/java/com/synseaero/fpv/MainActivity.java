@@ -528,8 +528,8 @@ public class MainActivity extends Activity implements SurfaceTextureListener,Sen
             vspd.setText(Svspd);
             alt.setText(Salt);
             dis.setText(Sdis);
-            mGLView.setHeadingAngle(Float.parseFloat(Fheading));
-            mGLView.setAttitude(Float.parseFloat(Sptich),Float.parseFloat(Sroll));
+//            mGLView.setHeadingAngle(Float.parseFloat(Fheading));
+//            mGLView.setAttitude(Float.parseFloat(Sptich),Float.parseFloat(Sroll));
 
             return false;
 

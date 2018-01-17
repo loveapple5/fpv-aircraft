@@ -139,7 +139,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 0, 0, 1, 0,
                 0, -1.15f, 3, 1}; //135+190
 
-        Vector<Double> aAPR = getaAPR();
+        Vector<Double> aAPR = calFindBackAPR();
 
         setPitch((float) (aAPR.get(0) * 180 / Math.PI));
         setRoll((float) (aAPR.get(1) * 180 / Math.PI));
@@ -312,7 +312,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mRoll = roll;
     }
 
-    public synchronized void setvPhoneLBH(Vector<Double> vPhoneLBH) {
+    public synchronized void setPhoneLBH(Vector<Double> vPhoneLBH) {
         this.vPhoneLBH = vPhoneLBH;
         long curTime = System.currentTimeMillis();
         float lat = (float) (this.vPhoneLBH.get(1) * 180 / Math.PI);
@@ -321,16 +321,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         declination = geoField.getDeclination();
     }
 
-    public synchronized void setvAircraftLBH(Vector<Double> vAircraftLBH) {
+    public synchronized void setAircraftLBH(Vector<Double> vAircraftLBH) {
         this.vAircraftLBH = vAircraftLBH;
     }
 
-    public synchronized void setaPhonePRY(Vector<Double> aPhonePRY) {
+    public synchronized void setPhonePRY(Vector<Double> aPhonePRY) {
         this.aPhonePRY = aPhonePRY;
         this.aPhonePRY.set(2, this.aPhonePRY.get(2) + declination);
     }
 
-    public synchronized Vector<Double> getaAPR() {
+    public synchronized Vector<Double> calFindBackAPR() {
 
         // Double DisNorth = R_earth*(BH-BA);
         //Double DisEast = R_earth*Math.cos(BA)*(LH-LA);

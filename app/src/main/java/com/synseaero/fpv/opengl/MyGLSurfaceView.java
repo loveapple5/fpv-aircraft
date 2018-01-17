@@ -116,18 +116,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
 //        return true;
 //    }
 
-    public void setvPhoneLBH(Vector<Double> vPhoneLBH) {
-        mRenderer.setvPhoneLBH(vPhoneLBH);
+    public void setPhoneLBH(Vector<Double> vPhoneLBH) {
+        mRenderer.setPhoneLBH(vPhoneLBH);
         requestRender();
     }
 
-    public void setvAircraftLBH(Vector<Double> vAircraftLBH) {
-        mRenderer.setvAircraftLBH(vAircraftLBH);
+    public void setAircraftLBH(Vector<Double> vAircraftLBH) {
+        mRenderer.setAircraftLBH(vAircraftLBH);
         requestRender();
     }
 
-    public void setaPhonePRY(Vector<Double> aPhonePRY) {
-        mRenderer.setaPhonePRY(aPhonePRY);
+    public void setPhonePRY(Vector<Double> aPhonePRY) {
+        mRenderer.setPhonePRY(aPhonePRY);
         requestRender();
     }
 
