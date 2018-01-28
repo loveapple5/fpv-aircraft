@@ -144,7 +144,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="65dp"
+            android:layout_width="83dp"
             android:layout_height="70dp"
             android:layout_marginBottom="20dp"
             android:layout_marginStart="20dp"

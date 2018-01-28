@@ -84,8 +84,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="89dp"
-                android:layout_height="65dp"
+                android:layout_width="58dp"
+                android:layout_height="61dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:src="@drawable/gimbal_pitch_range"
