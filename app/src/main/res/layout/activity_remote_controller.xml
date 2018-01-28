@@ -26,6 +26,7 @@
             android:layout_centerInParent="true"
             android:text="@string/rc_setting"
             android:textColor="@color/gray"
+            android:textSize="20dp"
             skin:enable="true" />
     </RelativeLayout>
 
@@ -48,6 +49,7 @@
                 android:gravity="center"
                 android:text="@string/gimbal_wheel_speed"
                 android:textColor="@color/gray"
+                android:textSize="16dp"
                 skin:enable="true" />
 
             <LinearLayout
@@ -98,6 +100,7 @@
                 android:gravity="center"
                 android:text="@string/rc_mode"
                 android:textColor="@color/gray"
+                android:textSize="16dp"
                 skin:enable="true" />
 
             <LinearLayout
@@ -131,6 +134,7 @@
                 android:background="@drawable/fl_mode_left"
                 android:gravity="start|top"
                 android:text="@string/left_controller"
+                android:textSize="12dp"
                 android:textColor="@color/blue"
                 android:paddingStart="5dp"
                 android:paddingTop="3dp"
@@ -143,6 +147,7 @@
                 android:background="@drawable/fl_mode_right"
                 android:gravity="start|top"
                 android:text="@string/right_controller"
+                android:textSize="12dp"
                 android:textColor="@color/blue"
                 android:paddingStart="5dp"
                 android:paddingTop="3dp"

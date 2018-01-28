@@ -24,6 +24,7 @@
             android:layout_centerInParent="true"
             android:text="@string/setting"
             android:textColor="@color/gray"
+            android:textSize="20dp"
             skin:enable="true" />
     </RelativeLayout>
 
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:text="@string/compass_calibration"
             android:textColor="@color/commonText"
+            android:textSize="16dp"
             skin:enable="true" />
 
         <LinearLayout
@@ -82,6 +84,7 @@
             android:layout_height="wrap_content"
             android:text="@string/fc_param_setting"
             android:textColor="@color/commonText"
+            android:textSize="16dp"
             skin:enable="true" />
 
         <LinearLayout
@@ -117,6 +120,7 @@
             android:layout_height="wrap_content"
             android:text="@string/rc_setting"
             android:textColor="@color/commonText"
+            android:textSize="16dp"
             skin:enable="true" />
 
         <LinearLayout
@@ -158,6 +162,7 @@
             android:layout_height="wrap_content"
             android:text="@string/data_connect_setting"
             android:textColor="@color/commonText"
+            android:textSize="16dp"
             skin:enable="true" />
 
         <LinearLayout
@@ -193,6 +198,7 @@
             android:layout_height="wrap_content"
             android:text="@string/battery_setting"
             android:textColor="@color/commonText"
+            android:textSize="16dp"
             skin:enable="true" />
 
         <LinearLayout
@@ -227,6 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gimbal_setting"
+            android:textSize="16dp"
             android:textColor="@color/commonText"
             skin:enable="true" />
 
@@ -262,6 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_setting"
+            android:textSize="16dp"
             android:textColor="@color/commonText"
             skin:enable="true" />
 
@@ -303,6 +311,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ui_setting"
+            android:textSize="16dp"
             android:textColor="@color/commonText"
             skin:enable="true" />
 
@@ -337,6 +346,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
             android:text="@string/common_setting"
             android:textColor="@color/commonText"
             skin:enable="true" />

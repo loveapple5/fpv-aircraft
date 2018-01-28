@@ -24,6 +24,7 @@
             android:layout_centerInParent="true"
             android:text="@string/data_connect_setting"
             android:textColor="@color/gray"
+            android:textSize="20dp"
             skin:enable="true" />
     </RelativeLayout>
 
@@ -45,6 +46,7 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_name"
+                android:textSize="16dp"
                 android:textColor="@color/commonText"
                 skin:enable="true" />
 
@@ -85,6 +87,7 @@
                 android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:text="@string/wifi_password"
+                android:textSize="16dp"
                 android:textColor="@color/commonText"
                 skin:enable="true" />
 

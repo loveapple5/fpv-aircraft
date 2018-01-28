@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_root"
         android:orientation="vertical"
-        skin:enable="true"
-        android:background="@drawable/bg_root">
+        skin:enable="true">
 
         <TextView
             android:layout_width="match_parent"
@@ -21,6 +21,7 @@
             android:text="@string/connect_controller"
             android:textColor="@color/gray"
             android:textStyle="bold"
+            android:textSize="20dp"
             skin:enable="true" />
 
         <com.synseaero.view.SquareRelativeLayout
@@ -33,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 fpv:waveColor="@color/blue"
-                skin:enable="true"/>
+                skin:enable="true" />
 
             <ImageView
                 android:layout_width="150dp"
@@ -49,7 +50,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/connecting"
-            android:textColor="@color/lightGray" />
+            android:textColor="@color/lightGray"
+            android:textSize="18dp" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -69,6 +71,7 @@
                 android:gravity="center"
                 android:text="@string/setting"
                 android:textColor="@color/text_setting"
+                android:textSize="16dp"
                 skin:enable="true" />
 
             <TextView
@@ -83,6 +86,7 @@
                 android:gravity="center"
                 android:text="@string/prepare_flight"
                 android:textColor="@color/text_btn"
+                android:textSize="16dp"
                 skin:enable="true" />
         </LinearLayout>
     </LinearLayout>

@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -112,7 +112,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -151,7 +151,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -195,7 +195,7 @@
                         android:paddingStart="10dp"
                         android:text="@string/normal"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -235,7 +235,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -275,7 +275,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -318,7 +318,7 @@
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -358,7 +358,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -401,7 +401,7 @@
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -441,7 +441,7 @@
                         android:layout_height="20dp"
                         android:gravity="center"
                         android:textColor="@color/lightBlue3"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         skin:enable="true" />
                 </LinearLayout>
             </LinearLayout>
@@ -458,6 +458,7 @@
             android:background="@drawable/bg_btn"
             android:text="@string/connect_helmet"
             android:textColor="@color/text_btn"
+            android:textSize="16dp"
             skin:enable="true" />
     </RelativeLayout>
 </RelativeLayout>

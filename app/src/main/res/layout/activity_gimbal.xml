@@ -27,6 +27,7 @@
             android:layout_centerInParent="true"
             android:text="@string/gimbal_setting"
             android:textColor="@color/gray"
+            android:textSize="20dp"
             skin:enable="true"/>
     </RelativeLayout>
 
@@ -49,6 +50,7 @@
                 android:gravity="center"
                 android:text="@string/gimbal_pitch_range"
                 android:textColor="@color/commonText"
+                android:textSize="16dp"
                 skin:enable="true"/>
 
             <LinearLayout
@@ -110,6 +112,7 @@
                 android:gravity="center"
                 android:text="@string/gimbal_pitch_smooth"
                 android:textColor="@color/commonText"
+                android:textSize="16dp"
                 skin:enable="true"/>
 
             <LinearLayout

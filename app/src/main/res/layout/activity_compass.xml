@@ -24,6 +24,7 @@
             android:layout_centerInParent="true"
             android:text="@string/compass_calibrate"
             android:textColor="@color/gray"
+            android:textSize="20dp"
             skin:enable="true" />
     </RelativeLayout>
 
@@ -53,6 +54,7 @@
         android:singleLine="false"
         android:text="@string/compass_correct"
         android:textColor="@color/darkGray"
+        android:textSize="18dp"
         skin:enable="true"/>
 
     <Button
@@ -65,6 +67,7 @@
         android:gravity="center"
         android:text="@string/start_calibrate"
         android:textColor="@color/text_btn"
+        android:textSize="16dp"
         skin:enable="true"/>
 
 </LinearLayout>

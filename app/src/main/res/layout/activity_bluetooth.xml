@@ -17,6 +17,7 @@
         android:gravity="center"
         android:text="@string/open_helmet_power"
         android:textColor="@color/gray"
+        android:textSize="20dp"
         android:textStyle="bold"
         skin:enable="true"/>
 
@@ -71,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/searching_bluetooth"
+                android:textSize="18dp"
                 android:textColor="@color/lightGray"
                 skin:enable="true"/>
 
@@ -92,6 +94,7 @@
             android:background="@drawable/bg_btn"
             android:gravity="center"
             android:text="@string/manual_search"
+            android:textSize="16dp"
             android:textColor="@color/text_btn"
             skin:enable="true"/>
 
