@@ -68,6 +68,10 @@ public class DJIActivity extends BaseFragmentActivity {
                 ((FPVApplication) getApplication()).changeSkin(2);
                 break;
             }
+            case R.id.menu_style_3: {
+                ((FPVApplication) getApplication()).changeSkin(3);
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

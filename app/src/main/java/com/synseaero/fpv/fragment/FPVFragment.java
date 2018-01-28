@@ -212,10 +212,7 @@ public class FPVFragment extends BaseFragment {
                     double latA = bundle.getDouble("latA", 0);
                     double latH = bundle.getDouble("latH", 0);
 
-                    String strSpeed = String.valueOf(speed);
-                    if (speed < 2.001 && speed > 0.001) {
-                        strSpeed = String.format("%.1f", speed);
-                    }
+                    String strSpeed = String.format("%.1f", speed);
 
                     if (vSpeed <= 0.001 && vSpeed >= -0.0001) {
                         vSpeed = 0;
@@ -248,7 +245,7 @@ public class FPVFragment extends BaseFragment {
                     aAircraft.add(AircraftRoll);
                     mGLView.setAircraftAPR(aAircraft);
 
-                    ivDirection.setRotation((float)Heading);
+                    ivDirection.setRotation(-(float)Heading);
                     //ivCraftSignal.setImageResource(SIGNAL_ICON[gpsSignalLevel]);
 
                     Vector<Double> vPhone = new Vector<>();

@@ -15,7 +15,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
@@ -198,7 +197,7 @@ public class FPVActivity extends DJIActivity {
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
-                    Log.i(TAG, "EXTRA_DATA:" + data);
+                    //Log.i(TAG, "EXTRA_DATA:" + data);
                     if (data.equals("FLAG-TPV")) {
                         mFPVFragment.setMode(MODE_TPV);
                     } else if (data.equals("FLAG-FPV")) {
@@ -241,7 +240,7 @@ public class FPVActivity extends DJIActivity {
                     }
                     //头盔电量
                     else if (data.contains("SOC")) {
-                        Log.i(TAG, "SOC:" + data);
+                        //Log.i(TAG, "SOC:" + data);
                         String helmetEnergy = data.substring(3);
                         int energy = 0;
                         try {
@@ -284,7 +283,7 @@ public class FPVActivity extends DJIActivity {
 
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
+        //Log.d(TAG, "onDestroy");
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
         unregisterReceiver(mGattUpdateReceiver);
@@ -319,6 +318,10 @@ public class FPVActivity extends DJIActivity {
 //            }
 //            case R.id.menu_style_2: {
 //                ((FPVApplication) getApplication()).changeSkin(2);
+//                break;
+//            }
+//            case R.id.menu_style_3: {
+//                ((FPVApplication) getApplication()).changeSkin(3);
 //                break;
 //            }
         }
