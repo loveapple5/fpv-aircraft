@@ -1071,7 +1071,7 @@ public class FPVFragment extends BaseFragment {
             showInfo = prefix;
         }
         if (!showInfo.equals(tvSafeInfo.getText().toString())) {
-            Log.d(TAG, "showInfo:" + showInfo);
+            //Log.d(TAG, "showInfo:" + showInfo);
             tvSafeInfo.setText(showInfo);
             if (voiceId != -1 && curTime - 5000 >= enterTime) {
                 Intent intent = new Intent(activity, MediaService.class);

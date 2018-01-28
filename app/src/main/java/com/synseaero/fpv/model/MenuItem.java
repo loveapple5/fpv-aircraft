@@ -129,7 +129,9 @@ public class MenuItem {
     }
 
     public void fetchCurValue() {
-
+        if (fetchCallback != null) {
+            fetchCallback.onFetch(MenuItem.this);
+        }
     }
 
     public void setFetchCallback(FetchCallback callback) {

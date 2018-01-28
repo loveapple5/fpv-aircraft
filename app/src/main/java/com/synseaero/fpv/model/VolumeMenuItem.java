@@ -34,6 +34,10 @@ public class VolumeMenuItem extends MenuItem{
         int current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
         float percent = (float)current / max * 100;
         curValue = String.valueOf((int)percent);
+
+        if(fetchCallback != null) {
+            fetchCallback.onFetch(VolumeMenuItem.this);
+        }
     }
 
     public void submitCurValue() {

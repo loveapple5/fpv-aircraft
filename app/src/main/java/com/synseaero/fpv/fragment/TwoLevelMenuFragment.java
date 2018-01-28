@@ -40,7 +40,7 @@ public class TwoLevelMenuFragment extends MenuFragment{
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("MenuFragment", "onCreateView");
+        //Log.d("MenuFragment", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         llMenu = (LinearLayout) view.findViewById(R.id.ll_menu);
         llSubMenu = (LinearLayout) view.findViewById(R.id.ll_sub_menu);
