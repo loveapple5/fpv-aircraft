@@ -412,7 +412,7 @@
                 android:layout_height="12dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dp"
-                android:src="@drawable/vspd_up"
+                android:src="@drawable/bg_vspd"
                 skin:enable="true" />
 
             <TextView

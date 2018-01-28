@@ -894,11 +894,11 @@ public class FPVFragment extends BaseFragment {
             String text = s.toString();
             float vSpeed = Float.valueOf(text);
             if (vSpeed <= 0.001 && vSpeed >= -0.0001) {
-                ivFlightVerticalSpeed.setImageResource(0);
+                ivFlightVerticalSpeed.setImageLevel(1);
             } else if (vSpeed > 0.001) {
-                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_up);
+                ivFlightVerticalSpeed.setImageLevel(2);
             } else {
-                ivFlightVerticalSpeed.setImageResource(R.drawable.arrow_down);
+                ivFlightVerticalSpeed.setImageLevel(3);
             }
         }
     }
