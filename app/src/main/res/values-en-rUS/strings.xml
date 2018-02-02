@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MPV DJI</string>
+    <string name="action_settings">Settings</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="remotecontrolerror">Error Link Remotecontroller</string>  <!-- 遥控连接错误-->
+    <string name="product_information">Aircraft Information</string>        <!-- 飞机信息-->
+    <string name="connection_loose">Status: No Aircraft Connected</string>  <!-- 状态: 无机体连接-->
+    <string name="sdk_version">Powered by DJI SDK V3.3</string>
+    <string name="connection">Connect</string>                              <!--　连 接　-->
+    <string name="value0">0</string>
+
+    <string name="language">Language</string>                               <!--　语言　-->
+    <string name="formatting_sd_card">Format SD Card</string>               <!--　格式化SD卡　-->
+    <string name="unit">Unit of measure</string>                            <!--　单位　-->
+    <string name="clear_cache">Clear buffer</string>                        <!--　清除缓存　-->
+    <string name="gyro">gyro bar</string>
+    <string name="cross">cross</string>
+    <string name="status">Status: registering...</string>                   <!--　状态: 注册... -->
+    <string name="pitch">pitch</string>
+    <string name="states_list">Check list</string>                          <!--　状态列表 -->
+    <string name="setting">Config</string>                                  <!--　设置 -->
+    <string name="auto_check">Selfcheck</string>                            <!--　状态自检 -->
+    <string name="imu">IMU</string>
+    <string name="compass">Compass</string>                                 <!--　指南针 -->
+    <string name="tx_wifi">Airlink quality</string>                         <!--　无线信道质量 -->
+    <string name="flight_mode">Flight mode</string>                         <!--　飞行模式 -->
+    <string name="rc_mode">Transmitter Mode</string>                        <!--　遥控器模式 -->
+    <string name="battery_voltage">Aircraft energy</string>                 <!--　飞行器电量 -->
+    <string name="sd_card_remaining_space">SD card free space</string>      <!--　SD卡剩余容量 -->
+    <string name="gimbal_status">Gimbal status</string>                     <!--　云台状态 -->
+
+    <string name="flight_controller">Flight controller</string>             <!--　飞控 -->
+    <string name="remote_controller">Transmitter</string>                   <!--　遥控器 -->
+    <string name="hint">Attention</string>                                  <!--　提示 -->
+    <string name="compass_calibrate_hint">Compass calibration. Keep away from electric tower, magnetic field to avoid EMI </string> <!--　将进行指南针校验，请确保飞机远离电线、铁磁性物体等，防止电磁干扰 -->
+    <string name="cancel">Cancel</string>                               `   <!--　取消 -->
+    <string name="confirm">OK</string>                                      <!--　确定 -->
+    <string name="battery">Battery</string>                                 <!--　电池 -->
+    <string name="wifi_link">WiFi setting</string>                          <!--　WiFi设置 -->
+
+    <string name="home_set">Reset home point</string>                       <!--　返航点设置 -->
+    <string name="allow_change_flight_mode">Change flight mode enabled</string>  <!--　允许切换飞行模式 -->
+    <string name="home_height">Auto return height </string>                 <!--　返航高度 -->
+    <string name="home_height_toast">Auto return height shall be in between 20 and 500</string>   <!--　返航高度只能设置20到500之间 -->
+    <string name="max_flight_height">Max flight height</string>             <!--　最大升限 -->
+    <string name="max_flight_height_toast">Max flight height shall be in between 20 and 500</string> <!--　最大升限只能设置20到500之间 -->
+    <string name="max_flight_radius">Max flight distance</string>           <!--　最大距离 -->
+    <string name="max_flight_radius_toast">Max flight distance shall be in between 20 and 500</string>    <!--　最大距离只能设置20到500之间 -->
+    <string name="novice_mode">Novice mode</string>                         <!--　新手模式 -->
+    <string name="fail_safe">Failsafe mode</string>                         <!--　failsafe模式 -->
+    <string name="smart_go_home">Auto return enabled</string>               <!--　自动返航开关 -->
+    <string name="led_switch">LED enabled</string>                          <!--　led开关 -->
+    <string name="vision_positioning">Vision positioning enabled</string>   <!--　视觉定位开关 -->
+
+    <string name="gimbal">Gimbal</string>                                   <!--　云台 -->
+    <string name="gimbal_pitch_range">Gimbal pitch extension enabled</string>      <!--　云台俯仰限位 -->
+
+    <string name="gimbal_tune">Gimbal roll fine adjustment</string>         <!--　云台滚转轴微调 -->
+
+    <string name="gimbal_wheel_speed">Gimbal control speed</string>         <!--　云台拨轮控制速度 -->
+
+    <string name="camera">Camera</string>                                   <!--　相机 -->
+
+    <string name="camera_mode">Camera mode</string>                         <!--　相机模式 -->
+
+    <string name="iso">ISO</string>
+    <string name="shutter_speed">Shutter speed</string>                     <!--　快门 -->
+    <string name="exposure_compensation">Exposure compensation</string>     <!--　曝光补偿 -->
+
+    <string name="video_format">Video format</string>                       <!--　视频格式 -->
+    <string name="video_resolve">Video resolution</string>                  <!--　视频尺寸 -->
+    <string name="video_standard">Video standard</string>                   <!--　视频标准 -->
+
+    <string name="photo_mode">Photo shoot mode</string>                     <!--　拍照模式 -->
+    <string name="photo_format">Photo format</string>                       <!--　照片格式 -->
+    <string name="photo_resolve">Photo resolution</string>                  <!--　照片格式 -->
+    <string name="white_balance">White balance</string>                     <!--　白平衡-->
+    <string name="camera_filter">Camera lens filter</string>                <!--　滤镜-->
+
+    <string name="video">Video</string>                   <!--　视频-->
+    <string name="photo">Photo</string>                   <!--　拍照-->
+
+    <string name="ratio43">4:3</string>
+    <string name="ratio169">16:9</string>
+
+    <string name="auto">Auto</string>                     <!--　自动-->
+    <string name="manual">Manual</string>                    <!--　手动-->
+
+    <string name="open">ON</string>                    <!--　开 -->
+    <string name="close">OFF</string>             <!--　关 -->
+
+    <string name="back">back</string>        <!--　返回 -->
+
+    <string name="show_path">Flight path display</string>        <!--　显示航线 -->
+    <string name="clear_path">Clear flight path</string>      <!--　清除航线 -->
+
+    <string name="fpv">First Person View</string>       <!--　第一人称视角 -->
+    <string name="tpv">Third Person View</string>       <!--　第三人称视角 -->
+    <string name="menu">Menu</string>                  <!--　菜单 -->
+
+    <string name="map">Map</string>                       <!--　地图 -->
+    <string name="brightness">Brightness</string>                 <!--　亮度 -->
+    <string name="helmet">Goggles</string>             <!--　头盔 -->
+    <string name="fc">Flight Controller</string>                    <!--　飞控 -->
+
+    <string name="head_follow">Head tracking</string>                 <!--　头部跟踪 -->
+    <string name="course_follow">Yaw following</string>                 <!--　航向跟踪 -->
+
+    <string name="single_photo">Single shooting</string>                   <!--　单拍 -->
+    <string name="hdr">HDR</string>
+    <string name="series_photo">Continuous shooting</string>         <!--　连拍 -->
+    <string name="aeb_series_photo">Auto ExposureBracketing</string>             <!--　AEB连拍 -->
+    <string name="internal_photo">Interval timer shooting</string>                <!--　间隔拍 -->
+
+    <string name="jpeg">JPEG</string>
+    <string name="raw">RAW</string>
+
+    <string name="sunny">Sunny</string>              <!--　晴天 -->
+    <string name="cloudy">Cloudy</string>               <!--　阴天 -->
+
+    <string name="volume">Volume</string>          <!--　音量 -->
+    <string name="fan">Ventilation</string>        <!--　散热通风 -->
+
+    <string name="force_open">Force On</string>      <!--　强制打开 -->
+    <string name="force_close">Force Off</string>    <!--　强制关闭 -->
+
+    <string name="find_back">Look up function</string>          <!--　找回 -->
+
+    <string name="style">Style</string>                 <!--　风格 -->
+    <string name="style_1">Style 1</string>             <!--　风格1 -->
+    <string name="style_2">Style 2</string>             <!--　风格2 -->
+    <string name="style_3">Style 3</string>             <!--　风格3 -->
+
+    <string name="frame_rate">Frame rate </string>          <!--　帧率 -->
+
+    <string name="connect_controller">Connect RC transmitter </string>          <!--　连接飞机遥控器 -->
+    <string name="prepare_flight">Prepare flight</string>      <!--　准备飞行 -->
+
+    <string name="connecting">connecting</string>            <!--　正在连接 -->
+
+    <string name="left_arrow">&lt;</string>
+    <string name="right_arrow">&gt;</string>
+
+    <string name="compass_calibration">Compass calibration process</string>    <!--　指南针校准流程 -->
+    <string name="fc_param_setting">Flight controller config</string>      <!--　飞控参数设置-->
+    <string name="compass_correct">Compass normal</string>           <!--　指南针正常-->
+    <string name="compass_incorrect">Compass incorrect</string>         <!--　指南针异常-->
+    <string name="rc_setting">Transmitter</string>          <!--　遥控器设置-->
+    <string name="data_connect_setting">Air Link</string>      <!--　数据连接设置-->
+    <string name="battery_setting">Battery</string>          <!--　智能电池设置-->
+    <string name="gimbal_setting">Gimbal</string>           <!--　云台设置-->
+    <string name="camera_setting">Camera</string>           <!--　相机设置-->
+    <string name="ui_setting">User interface</string>                     <!--　UI设置-->
+    <string name="common_setting">General setting</string>         <!--　通用设置-->
+
+    <string name="flight_limit">Flight limitation</string>  <!--　飞行限制-->
+    <string name="failure_safety_behavior">Fail safe option</string>     <!--　失效安全行为-->
+    <string name="low_power_home">Auto return if low battery</string>   <!--　低电量自动返航-->
+    <string name="open_vision_positioning">Vision position enabled</string>      <!--　启动视觉定位-->
+
+    <string name="wifi_name">WIFI name</string>                   <!--　WIFI名称-->
+    <string name="wifi_password">WIFI password</string>         <!--　WIFI密码-->
+
+    <string name="current_power">Current power</string>       <!--　当前电量-->
+<string name="current_temperature">Current temperature</string>         <!--　当前温度-->
+<string name="flight_time">Flight time</string>       <!--　飞行时间-->
+
+<string name="too_low_power_warning">Critical low battery warning</string>   <!--　严重低电量报警-->
+<string name="low_power_warning">Low battery warning</string>                  <!--　低电量报警-->
+<string name="home_power_threshold">Auto return battery threshold</string>     <!--　返回电量阈值-->
+<string name="discharge_time">Auto discharge time</string>                     <!--　开始自动放电时间-->
+    <string name="battery_history_info">Battery history information</string>               <!--　电池历史信息-->
+
+    <string name="battery_series_no">Battery serial number</string>             <!--　电池序列号 -->
+    <string name="circus_number">Discharge cycles</string>                      <!--　循环次数 -->
+    <string name="battery_life">Battery life</string>              <!--　电池寿命-->
+    <string name="battery_history_record">Battery  history record</string>       <!--　电池历史记录信息 -->
+
+    <string name="helmet_setting">Goggles option</string>              <!--　飞行头盔设置 -->
+    <string name="ui_style">UI style</string>                          <!--　显示风格 -->
+    <string name="find_back_function">Look up function</string>         <!--　找回功能 -->
+
+    <string name="color">Color</string>        <!--　色彩 -->
+    <string name="video2">Video</string>        <!--　录像-->
+
+    <string name="video_select">Video standard option</string>     <!--　制式选择 -->
+    <string name="compass_calibrate">Compass calibration</string>  <!--　指南针校准 -->
+    <string name="start_calibrate">Start calibration</string>        <!--　开始校准 -->
+    <string name="cancel_calibrate">Cancel calibration</string>        <!--　取消校准 -->
+
+    <string name="start">Start</string>                <!--　开始 -->
+    <string name="finish">Finish</string>              <!--　完成 -->
+
+    <string name="open_helmet_power">Please power on goggles</string>       <!--　请打开头盔电源 -->
+    <string name="searching_bluetooth">Searching bluetooth devices</string>            <!--　正在搜索蓝牙设备-->
+    <string name="confirm_granted_bluetooth">Please authorize bluetooth connection</string> <!--　请确保授权应用使用蓝牙 -->
+
+    <string name="manual_search">Manual search</string>        <!--　手动搜索 -->
+
+    <string name="compass_calibrate_horizontal_hint">Compass calibration process\r\nPlease rotate aircraft horizontally by 360°</string>      <!--　进入指南针校准模式\r\n请水平旋转飞行器360 -->
+    <string name="compass_calibrate_vertical_hint">Compass calibration process\r\nPlease rotate aircraft vertically by 360°</string>     <!--　进入指南针校准模式\r\n请竖直旋转飞行器360° -->
+
+    <string name="no_wifi_hint">No WIFI connection for this aircraft</string>    <!--　该型号飞机没有wifi-->
+
+    <string name="day">Day</string>       <!--　天-->
+
+    <string name="pal">PAL</string>
+    <string name="ntsc">NTSC</string>
+
+    <string name="mov">MOV</string>
+    <string name="mp4">MP4</string>
+
+    <string name="resolution_4k">4K</string>
+    <string name="resolution_1080p">1080P</string>
+    <string name="resolution_720p">720P</string>
+
+    <string name="frame_rate_24">24</string>
+    <string name="frame_rate_30">30</string>
+    <string name="frame_rate_60">60</string>
+
+    <string name="refresh">Refresh</string>           <!--　刷新 -->
+    <string name="home_location_updated">Home point updated</string>   <!--　返航点更新成功-->
+
+    <string name="hover">Hover</string>         <!--　悬停 -->
+    <string name="landing">Landing</string>      <!--　降落 -->
+    <string name="go_home">Auto return home</string>          <!--　返航 -->
+
+    <string name="number_between_a_and_b">Value shall be in between %1$s-%2$s</string>    <!--　数值范围%1$s-%2$s -->
+
+    <string name="no_vision_position_hint">Vision position is not supported</string>    <!--　此机型不支持视觉定位-->
+
+    <!--<string name="rc_mode">摇杆模式</string>-->
+    <string name="cn_mode">Chinese stick mode</string>     <!--　中国手 -->
+    <string name="us_mode">American stick mode</string>    <!--　美国手 -->
+    <string name="jp_mode">Japanese stick mode</string>       <!--　日本手 -->
+
+    <string name="gimbal_pitch_smooth">Gimbal pitch smoothing</string>      <!--　云台俯仰平滑-->
+
+    <string name="smart_go_home_energy">Auto return battery level</string>   <!--　自动返航电量-->
+    <string name="smart_land_energy">Auto landing battery level</string>            <!--　自动降落电量-->
+
+    <string name="rc_battery_low_power_hint">Low transmitter battery, please return</string>        <!--　遥控电量不足，请立即返航-->
+    <string name="up_link_signal_weak_hint">Weak transmitter signal</string>        <!--　遥控信号弱-->
+    <string name="down_link_signal_weak_hint">Weak video signal, please adjust the antenna</string>  <!--　图传信号弱，请调整天线-->
+    <string name="down_link_signal_none_hint">No video signal</string>                <!--　无图传 -->
+
+    <string name="gimbal_motor_overloaded">Gimbal motor overloading</string>         <!--　云台电机过载 -->
+    <string name="sd_card_full">Insufficient SD card sapce</string>              <!--　SD卡存储不足-->
+
+    <string name="change_to_fpv_mode">Enter FPV mode</string>             <!--　进入第一人称视角-->
+    <string name="change_to_tpv_mode">Enter TPV mode</string>          <!--　进入第三人称视角-->
+
+    <string name="reach_limited_height">Reach maximum height</string>      <!--　到达最大飞行高度-->
+    <string name="reach_limited_radius">Reach  maximum distance</string>           <!--　到达最大飞行距离-->
+
+    <string name="fc_battery_low_power_hint">Low battery, please return immediately</string>     <!-- 飞机电量不足，请立即返航-->
+    <string name="fc_battery_very_low_power_hint">Low battery, auto return-home will be engaged shortly</string>         <!--　飞机电量过低，即将自动返航-->
+
+    <string name="taking_off">Aircraft takeoff, home point is recorded</string>         <!--　飞机起飞，记录返航点 -->
+    <string name="flying">Flying</string>                   <!--　飞行中 -->
+    <string name="landed">Landing completed</string>                     <!--　飞机已降落 -->
+
+    <string name="comma">，</string>
+
+    <string name="mode">Mode</string>            <!--　模式 -->
+
+    <string name="connect_helmet">Connect the goggle</string>         <!--　连接头盔 -->
+
+    <string name="fly_zone">Fly zone</string>            <!--　飞行区域 -->
+    <string name="model_self_check">Self check</string>        <!--　模块自检 -->
+    <string name="wireless_signal">Wireless signal</string>        <!--　无线信道 -->
+    <string name="aircraft_energy">Aircraft battery</string>     <!--　飞行器电量 -->
+
+    <string name="no_restriction_flight">Normal flight</string>     <!--　可正常飞行 -->
+    <string name="restrict_flight">Restricted flight</string>       <!--　限制飞行 -->
+    <string name="forbid_flight">No flight</string>              <!--　禁止飞行 -->
+
+    <string name="normal">Normal</string>          <!--　正常 -->
+
+    <string name="unknown">Unknown</string>          <!--　未知 -->
+
+    <string name="left_controller">Left stick</string>     <!--　左摇杆 -->
+    <string name="right_controller">Right stick</string>         <!--　右摇杆 -->
+
+    <string name="attitude_mode">Attitude mode</string>    <!--　姿态模式 -->
+    <string name="sport_mode">Sports mode</string>         <!--　运动模式 -->
+    <string name="gps_mode">GPS mode</string>              <!--　GPS模式 -->
+
+</resources>
