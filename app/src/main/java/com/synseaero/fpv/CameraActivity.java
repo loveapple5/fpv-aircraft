@@ -4,11 +4,9 @@ package com.synseaero.fpv;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.synseaero.util.DJIUtils;
 import com.synseaero.view.ActionSheetDialog;
@@ -19,7 +17,7 @@ import dji.common.util.DJICommonCallbacks;
 import dji.sdk.camera.DJICamera;
 import dji.sdk.products.DJIAircraft;
 
-public class CameraActivity extends FragmentActivity implements View.OnClickListener {
+public class CameraActivity extends DJIActivity implements View.OnClickListener {
 
     private static final int MSG_PHOTO_RATIO = 1;
     private static final int MSG_PHOTO_FORMAT = 2;
@@ -28,7 +26,6 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private static final int MSG_VIDEO_FORMAT = 5;
     private static final int MSG_VIDEO_STANDARD = 6;
 
-    private View btnBack;
 
     private TextView tvPhotoMode;
     private TextView tvPhotoResolve;
@@ -90,8 +87,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
         setContentView(R.layout.activity_camera);
 
-        btnBack = findViewById(R.id.iv_back);
-        btnBack.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
 
         tvPhotoResolve = (TextView) findViewById(R.id.tv_photo_resolve);
         tvPhotoFormat = (TextView) findViewById(R.id.tv_photo_format);
@@ -277,23 +273,23 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         }
     }
 
-    private void showCameraModeMenu() {
-
-        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(TextView v, int which) {
-                Toast.makeText(CameraActivity.this, which + "", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
-                .addSheetItem(getString(R.string.single_photo), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(R.string.hdr), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(R.string.series_photo), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(R.string.aeb_series_photo), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(R.string.internal_photo), ActionSheetDialog.SheetItemColor.Black, listener).show();
-    }
+//    private void showCameraModeMenu() {
+//
+//        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
+//
+//            @Override
+//            public void onClick(TextView v, int which) {
+//                Toast.makeText(CameraActivity.this, which + "", Toast.LENGTH_SHORT).show();
+//            }
+//        };
+//
+//        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
+//                .addSheetItem(getString(R.string.single_photo), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(R.string.hdr), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(R.string.series_photo), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(R.string.aeb_series_photo), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(R.string.internal_photo), ActionSheetDialog.SheetItemColor.Black, listener).show();
+//    }
 
     private void showPhotoResolveMenu() {
 

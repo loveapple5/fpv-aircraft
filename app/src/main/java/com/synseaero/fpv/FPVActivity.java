@@ -307,8 +307,10 @@ public class FPVActivity extends DJIActivity {
                 break;
             }
             case R.id.menu_map: {
-                Intent mapIntent = new Intent(this, MapActivity.class);
-                startActivity(mapIntent);
+                Intent intent = new Intent(this, MapActivity.class);
+                intent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
+                intent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
+                startActivity(intent);
                 finish();
                 break;
             }
@@ -488,8 +490,16 @@ public class FPVActivity extends DJIActivity {
     }
 
     public void showMenu() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.show(mCurMenuFragment).commit();
+        if(mMenuFragments.get(0) == mCurMenuFragment) {
+            Intent mapIntent = new Intent(this, MapActivity.class);
+            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
+            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
+            startActivity(mapIntent);
+            finish();
+        } else {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.show(mCurMenuFragment).commit();
+        }
     }
 
     public void onBackPressed() {

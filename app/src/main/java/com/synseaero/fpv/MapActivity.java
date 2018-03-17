@@ -1,9 +1,16 @@
 package com.synseaero.fpv;
 
 
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.WindowManager;
@@ -20,11 +27,19 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.dji.MessageType;
+import com.synseaero.fpv.bluetooth.BluetoothLeService;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.synseaero.fpv.fragment.FPVFragment.MODE_FPV;
+import static com.synseaero.fpv.fragment.FPVFragment.MODE_MENU;
+import static com.synseaero.fpv.fragment.FPVFragment.MODE_TPV;
+
 public class MapActivity extends DJIActivity {
+
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
     private MapView mapView;
     private AMap aMap;
@@ -33,6 +48,11 @@ public class MapActivity extends DJIActivity {
     private Marker aircraftMarker;
 
     private Timer timer;
+
+    private BluetoothLeService mBluetoothLeService;
+
+    private String mDeviceName;
+    private String mDeviceAddress;
 
 //    private LatLng TH = new LatLng(39.926516, 116.389366);
 //    private int index = 0;
@@ -104,6 +124,16 @@ public class MapActivity extends DJIActivity {
         uiSettings.setScaleControlsEnabled(false);
         uiSettings.setMyLocationButtonEnabled(false);
 
+
+        final Intent intent = getIntent();
+        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+
         registerDJIMessenger(MessageType.MSG_GET_HOME_LOCATION_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
 
@@ -136,6 +166,65 @@ public class MapActivity extends DJIActivity {
 
     }
 
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            //重连
+            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mBluetoothLeService.connect(mDeviceAddress);
+            }
+            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                if (data != null) {
+                    //Log.i(TAG, "EXTRA_DATA:" + data);
+
+                    //确认键
+                    if (data.equals("ET")) {
+                        finish();
+                    }
+                    //返回键
+                    else if (data.equals("RT")) {
+                        finish();
+                    }
+                }
+            }
+        }
+    };
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+//                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+            boolean result = mBluetoothLeService.connect(mDeviceAddress);
+//            Log.e(TAG, "mBluetoothLeService is okay");
+            // Automatically connects to the device upon successful start-up initialization.
+            //mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(BluetoothDevice.ACTION_UUID);
+
+        return intentFilter;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -165,6 +254,8 @@ public class MapActivity extends DJIActivity {
     public void finish() {
         super.finish();
         Intent fpvIntent = new Intent(this, FPVActivity.class);
+        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
+        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
         startActivity(fpvIntent);
     }
 
