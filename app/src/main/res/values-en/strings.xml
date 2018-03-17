@@ -129,9 +129,9 @@
     <string name="find_back">Look up function</string>          <!--　找回 -->
 
     <string name="style">Style</string>                 <!--　风格 -->
-    <string name="style_1">Style 1</string>             <!--　风格1 -->
-    <string name="style_2">Style 2</string>             <!--　风格2 -->
-    <string name="style_3">Style 3</string>             <!--　风格3 -->
+    <string name="style_1">AERO BLUE</string>             <!--　风格1 -->
+    <string name="style_2">DEEP BLUE</string>             <!--　风格2 -->
+    <string name="style_3">DEEP GREEN</string>             <!--　风格3 -->
 
     <string name="frame_rate">Frame rate </string>          <!--　帧率 -->
 

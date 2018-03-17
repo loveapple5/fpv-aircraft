@@ -8,8 +8,7 @@
     android:orientation="vertical"
     style="@style/SettingRoot"
     android:showDividers="middle"
-    android:divider="@drawable/divider"
-    >
+    android:divider="@drawable/divider">
 
     <RelativeLayout
         android:layout_width="match_parent"
