@@ -73,7 +73,7 @@ public class CircleMenuLayout extends ViewGroup {
     /**
      * 布局时的开始角度
      */
-    private double mStartAngle = 210;
+    private double mStartAngle = 90;
     /**
      * 菜单项的图标
      */
@@ -95,7 +95,7 @@ public class CircleMenuLayout extends ViewGroup {
     /**
      * 检测按下到抬起时使用的时间
      */
-    private long mDownTime;
+    //private long mDownTime;
 
     /**
      * 判断是否正在自动滚动
@@ -233,7 +233,7 @@ public class CircleMenuLayout extends ViewGroup {
                 //Log.d("test", nextPosition + ":" + nextImgPosition);
                 itemImgMap.put(nextPosition, nextImgPosition);
                 int lastPosition = (mCurrentPosition - i + mMenuItemCount) % mMenuItemCount;
-                int lastImgPosition = (imgPosition - i + mItemImgs.length * 10) % mItemImgs.length;
+                int lastImgPosition = (imgPosition - i + mItemImgs.length ) % mItemImgs.length;
                 itemImgMap.put(lastPosition, lastImgPosition);
                 //Log.d("test", lastPosition + ":" + lastImgPosition);
                 updateMenuItems();
@@ -309,9 +309,8 @@ public class CircleMenuLayout extends ViewGroup {
             //大于360就取余归于小于360度
             mStartAngle = mStartAngle % 360;
 
-            float tmp = 0;
             //计算图片布置的中心点的圆半径。就是tmp
-            tmp = layoutRadius / 2f - cWidth / 2 - mPadding;
+            float tmp = layoutRadius / 2f - cWidth / 2 - mPadding;
             // tmp cosa 即menu item中心点的横坐标。计算的是item的位置，是计算位置！！！
             left = layoutRadius
                     / 2
@@ -336,17 +335,34 @@ public class CircleMenuLayout extends ViewGroup {
     private void backOrPre() {
         isTouchUp = true;
         float angleDelay = 360 / mMenuItemCount;              //这个是每个图形相隔的角度
-        if ((mStartAngle - angleDelay / 2) % angleDelay == 0) {
+        if ((mStartAngle - angleDelay) % angleDelay == 0) {
             return;
         }
-        float angle = (float) ((mStartAngle - angleDelay / 2) % angleDelay);                 //angle就是那个不是13度开始布局，然后是36度的整数的多出来的部分角度
-        if (angleDelay / 2 > angle) {
+        float angle = (float) ((mStartAngle - angleDelay) % angleDelay);                 //angle就是那个不是13度开始布局，然后是36度的整数的多出来的部分角度
+        if (angleDelay > angle) {
             mStartAngle -= angle;
-        } else if (angleDelay / 2 < angle) {
+        } else if (angleDelay < angle) {
             mStartAngle = mStartAngle - angle + angleDelay;         //mStartAngle就是当前角度啦，取余36度就是多出来的角度，拿这个多出来的角度去数据处理。
         }
         requestLayout();
     }
+
+    //item为奇数是用这个方法
+//    private void backOrPre() {
+//        isTouchUp = true;
+//        float angleDelay = 360 / mMenuItemCount;              //这个是每个图形相隔的角度
+//        if ((mStartAngle - angleDelay / 2) % angleDelay == 0) {
+//            return;
+//        }
+//        float angle = (float) ((mStartAngle - angleDelay / 2) % angleDelay);                 //angle就是那个不是13度开始布局，然后是36度的整数的多出来的部分角度
+//        if (angleDelay / 2 > angle) {
+//            mStartAngle -= angle;
+//        } else if (angleDelay / 2 < angle) {
+//            mStartAngle = mStartAngle - angle + angleDelay;         //mStartAngle就是当前角度啦，取余36度就是多出来的角度，拿这个多出来的角度去数据处理。
+//        }
+//        requestLayout();
+//    }
+
 
     /**
      * 记录上一次的x，y坐标
@@ -367,7 +383,7 @@ public class CircleMenuLayout extends ViewGroup {
             case MotionEvent.ACTION_DOWN:
                 mLastX = x;
                 mLastY = y;
-                mDownTime = System.currentTimeMillis();
+                //mDownTime = System.currentTimeMillis();
                 mTmpAngle = 0;
                 break;
             case MotionEvent.ACTION_MOVE:

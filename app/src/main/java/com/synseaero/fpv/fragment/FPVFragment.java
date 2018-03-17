@@ -140,12 +140,14 @@ public class FPVFragment extends BaseFragment {
     private TreeMap<Integer, FlightInformation> flightInfoMap = new TreeMap<>();
 
     private int[] mItemImgs = new int[]{
-            R.drawable.menu_map, R.drawable.menu_luminance, R.drawable.menu_helmet,
-            R.drawable.menu_camera, R.drawable.menu_video, R.drawable.menu_pan, R.drawable.menu_setting
+            R.drawable.menu_map, R.drawable.menu_luminance, R.drawable.menu_helmet, R.drawable.menu_camera,
+//            R.drawable.menu_video, R.drawable.menu_pan,
+            R.drawable.menu_setting
     };
 
     private int[] mItemsText = new int[]{
-            R.string.map, R.string.brightness, R.string.helmet, R.string.photo, R.string.video, R.string.gimbal,
+            R.string.map, R.string.brightness, R.string.helmet, R.string.photo,
+            //R.string.video, R.string.gimbal,
             R.string.fc
     };
 
@@ -697,7 +699,7 @@ public class FPVFragment extends BaseFragment {
         llPreview = (LinearLayout) view.findViewById(R.id.ll_preview);
 
         menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
-        menuLayout.setMenuItemCount(18);
+        menuLayout.setMenuItemCount(12);
         menuLayout.setMenuItemIcons(mItemImgs);
         String[] itemTexts = new String[mItemsText.length];
         for (int i = 0; i < mItemsText.length; i++) {

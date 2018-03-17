@@ -368,19 +368,19 @@ public class FPVActivity extends DJIActivity {
         MenuItem fanSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, getString(R.string.auto),
                 new String[]{getString(R.string.auto), getString(R.string.force_open), getString(R.string.force_close)}, null);
         MenuItem fanMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.fan), null, fanSubMenu);
-        //找回
-        MenuItem findBackSubMenu = new MenuItem(102, MenuItem.TYPE_SWITCH, getString(R.string.auto),
-                new String[]{getString(R.string.open), getString(R.string.close)}, null);
-        MenuItem findBackMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.find_back), null, findBackSubMenu);
-        //风格
-        MenuItem styleSubMenu = new MenuItem(103, MenuItem.TYPE_SELECT, getString(R.string.style_1),
-                new String[]{getString(R.string.style_1), getString(R.string.style_2), getString(R.string.style_3)}, null);
-        MenuItem styleMenu = new MenuItem(3, MenuItem.TYPE_TEXT, getString(R.string.style), null, styleSubMenu);
+//        //找回
+//        MenuItem findBackSubMenu = new MenuItem(102, MenuItem.TYPE_SWITCH, getString(R.string.auto),
+//                new String[]{getString(R.string.open), getString(R.string.close)}, null);
+//        MenuItem findBackMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.find_back), null, findBackSubMenu);
+//        //风格
+//        MenuItem styleSubMenu = new MenuItem(103, MenuItem.TYPE_SELECT, getString(R.string.style_1),
+//                new String[]{getString(R.string.style_1), getString(R.string.style_2), getString(R.string.style_3)}, null);
+//        MenuItem styleMenu = new MenuItem(3, MenuItem.TYPE_TEXT, getString(R.string.style), null, styleSubMenu);
         Menu helmetMenu = new Menu();
         helmetMenu.items.add(volumeMenu);
         helmetMenu.items.add(fanMenu);
-        helmetMenu.items.add(findBackMenu);
-        helmetMenu.items.add(styleMenu);
+        //helmetMenu.items.add(findBackMenu);
+        //helmetMenu.items.add(styleMenu);
         MenuFragment helmetMenuFragment = new TwoLevelMenuFragment();
         helmetMenuFragment.setMenuData(helmetMenu);
         mMenuFragments.add(helmetMenuFragment);
@@ -389,10 +389,10 @@ public class FPVActivity extends DJIActivity {
         ShutterMenuItem shutterSubMenu = new ShutterMenuItem(100, MenuItem.TYPE_SELECT, getString(R.string.auto),
                 new String[]{getString(R.string.auto), getString(R.string.manual)}, null);
         MenuItem shutterMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.shutter_speed), null, shutterSubMenu);
-        //拍照模式
-        MenuItem photoModeSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, getString(R.string.single_photo),
-                new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo), getString(R.string.internal_photo)}, null);
-        MenuItem photoMode = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.photo_mode), null, photoModeSubMenu);
+//        //拍照模式
+//        MenuItem photoModeSubMenu = new MenuItem(101, MenuItem.TYPE_SELECT, getString(R.string.single_photo),
+//                new String[]{getString(R.string.single_photo), getString(R.string.hdr), getString(R.string.series_photo), getString(R.string.aeb_series_photo), getString(R.string.internal_photo)}, null);
+//        MenuItem photoMode = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.photo_mode), null, photoModeSubMenu);
         //照片比例
         PhotoRatioMenuItem ratioSubMenu = new PhotoRatioMenuItem(102, MenuItem.TYPE_SELECT, getString(R.string.ratio43),
                 new String[]{getString(R.string.ratio43), getString(R.string.ratio169)}, null);
@@ -407,43 +407,43 @@ public class FPVActivity extends DJIActivity {
         MenuItem whiteBalanceMenu = new MenuItem(4, MenuItem.TYPE_TEXT, getString(R.string.white_balance), null, whiteBalanceSubMenu);
         Menu photoMenu = new Menu();
         photoMenu.items.add(shutterMenu);
-        photoMenu.items.add(photoMode);
+        //photoMenu.items.add(photoMode);
         photoMenu.items.add(ratioMenu);
         photoMenu.items.add(photoFormatMenu);
         photoMenu.items.add(whiteBalanceMenu);
         MenuFragment photoMenuFragment = new TwoLevelMenuFragment();
         photoMenuFragment.setMenuData(photoMenu);
         mMenuFragments.add(photoMenuFragment);
-        //录像菜单
-        //尺寸
-        VideoRatioMenuItem sizeSubMenu = new VideoRatioMenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[]{"4K", "1080P", "720P"}, null);
-        MenuItem sizeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.video_resolve), null, sizeSubMenu);
-        //帧率
-        VideoFrameRateMenuItem frameRateSubMenu = new VideoFrameRateMenuItem(101, MenuItem.TYPE_SELECT, "24", new String[]{"24", "30", "60"}, null);
-        MenuItem frameRateMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.frame_rate), null, frameRateSubMenu);
-        //视频格式
-        VideoFormatMenuItem formatSubMenu = new VideoFormatMenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[]{"MOV", "MP4"}, null);
-        MenuItem formatMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.video_format), null, formatSubMenu);
-        Menu videoMenu = new Menu();
-        videoMenu.items.add(sizeMenu);
-        videoMenu.items.add(frameRateMenu);
-        videoMenu.items.add(formatMenu);
-        MenuFragment videoMenuFragment = new TwoLevelMenuFragment();
-        videoMenuFragment.setMenuData(videoMenu);
-        mMenuFragments.add(videoMenuFragment);
-        //云台菜单
-        //头部跟踪
-        MenuItem headSubMenu = new MenuItem(100, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
-        MenuItem headMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.head_follow), null, headSubMenu);
-        //航向跟踪
-        MenuItem courseSubMenu = new MenuItem(101, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
-        MenuItem courseMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.course_follow), null, courseSubMenu);
-        Menu panMenu = new Menu();
-        panMenu.items.add(headMenu);
-        panMenu.items.add(courseMenu);
-        MenuFragment panMenuFragment = new TwoLevelMenuFragment();
-        panMenuFragment.setMenuData(panMenu);
-        mMenuFragments.add(panMenuFragment);
+//        //录像菜单
+//        //尺寸
+//        VideoRatioMenuItem sizeSubMenu = new VideoRatioMenuItem(100, MenuItem.TYPE_SELECT, "4K", new String[]{"4K", "1080P", "720P"}, null);
+//        MenuItem sizeMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.video_resolve), null, sizeSubMenu);
+//        //帧率
+//        VideoFrameRateMenuItem frameRateSubMenu = new VideoFrameRateMenuItem(101, MenuItem.TYPE_SELECT, "24", new String[]{"24", "30", "60"}, null);
+//        MenuItem frameRateMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.frame_rate), null, frameRateSubMenu);
+//        //视频格式
+//        VideoFormatMenuItem formatSubMenu = new VideoFormatMenuItem(102, MenuItem.TYPE_SELECT, "MOV", new String[]{"MOV", "MP4"}, null);
+//        MenuItem formatMenu = new MenuItem(2, MenuItem.TYPE_TEXT, getString(R.string.video_format), null, formatSubMenu);
+//        Menu videoMenu = new Menu();
+//        videoMenu.items.add(sizeMenu);
+//        videoMenu.items.add(frameRateMenu);
+//        videoMenu.items.add(formatMenu);
+//        MenuFragment videoMenuFragment = new TwoLevelMenuFragment();
+//        videoMenuFragment.setMenuData(videoMenu);
+//        mMenuFragments.add(videoMenuFragment);
+//        //云台菜单
+//        //头部跟踪
+//        MenuItem headSubMenu = new MenuItem(100, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+//        MenuItem headMenu = new MenuItem(0, MenuItem.TYPE_TEXT, getString(R.string.head_follow), null, headSubMenu);
+//        //航向跟踪
+//        MenuItem courseSubMenu = new MenuItem(101, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
+//        MenuItem courseMenu = new MenuItem(1, MenuItem.TYPE_TEXT, getString(R.string.course_follow), null, courseSubMenu);
+//        Menu panMenu = new Menu();
+//        panMenu.items.add(headMenu);
+//        panMenu.items.add(courseMenu);
+//        MenuFragment panMenuFragment = new TwoLevelMenuFragment();
+//        panMenuFragment.setMenuData(panMenu);
+//        mMenuFragments.add(panMenuFragment);
         //飞控菜单
         //led开关
         LEDMenuItem LEDSubMenu = new LEDMenuItem(100, MenuItem.TYPE_SWITCH, "true", new String[]{getString(R.string.open), getString(R.string.close)}, null);
