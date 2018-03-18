@@ -249,6 +249,10 @@ public class MapActivity extends DJIActivity {
         unregisterDJIMessenger(MessageType.MSG_GET_HOME_LOCATION_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
         timer.cancel();
+
+        unbindService(mServiceConnection);
+//        unregisterReceiver(mReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     public void finish() {
