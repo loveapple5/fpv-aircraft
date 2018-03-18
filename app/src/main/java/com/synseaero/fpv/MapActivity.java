@@ -172,10 +172,10 @@ public class MapActivity extends DJIActivity {
             final String action = intent.getAction();
 
             //重连
-            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mBluetoothLeService.connect(mDeviceAddress);
-            }
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+//                mBluetoothLeService.connect(mDeviceAddress);
+//            }
+            if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
                     //Log.i(TAG, "EXTRA_DATA:" + data);
@@ -250,9 +250,10 @@ public class MapActivity extends DJIActivity {
         unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
         timer.cancel();
 
+        unregisterReceiver(mGattUpdateReceiver);
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
-        unregisterReceiver(mGattUpdateReceiver);
+
     }
 
     public void finish() {

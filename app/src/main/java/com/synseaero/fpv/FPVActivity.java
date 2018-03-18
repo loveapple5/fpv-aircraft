@@ -187,11 +187,11 @@ public class FPVActivity extends DJIActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                mBluetoothLeService.writeValue("FLAG-TPV");
-            }
+//            if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+//                mBluetoothLeService.writeValue("FLAG-TPV");
+//            }
             //重连
-            else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mBluetoothLeService.connect(mDeviceAddress);
             }
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -283,10 +283,12 @@ public class FPVActivity extends DJIActivity {
 
     protected void onDestroy() {
         super.onDestroy();
+
+        unregisterReceiver(mGattUpdateReceiver);
         //Log.d(TAG, "onDestroy");
         unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
-        unregisterReceiver(mGattUpdateReceiver);
+
     }
 
     @Override
