@@ -32,11 +32,9 @@ import com.synseaero.fpv.bluetooth.BluetoothLeService;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.synseaero.fpv.fragment.FPVFragment.MODE_FPV;
-import static com.synseaero.fpv.fragment.FPVFragment.MODE_MENU;
-import static com.synseaero.fpv.fragment.FPVFragment.MODE_TPV;
-
 public class MapActivity extends DJIActivity {
+
+    //public static final LatLng BEIJING = new LatLng(39.90403, 116.407525);// 北京市经纬度
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -57,6 +55,7 @@ public class MapActivity extends DJIActivity {
 //    private LatLng TH = new LatLng(39.926516, 116.389366);
 //    private int index = 0;
 
+
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
@@ -69,10 +68,11 @@ public class MapActivity extends DJIActivity {
                     double latitude = bundle.getDouble("latitude");
                     LatLng home = new LatLng(latitude, longitude);
                     LatLng transHome = convert(home, CoordinateConverter.CoordType.GPS);
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(transHome).zoom(18).bearing(0).tilt(0).build();
-                    CameraUpdate update = CameraUpdateFactory.newCameraPosition(cameraPosition);
-                    aMap.moveCamera(update);
-                    aMap.clear();
+                    //CameraPosition cameraPosition = new CameraPosition.Builder().target(transHome).zoom(18).bearing(0).tilt(0).build();
+                    //CameraUpdate update = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    //aMap.moveCamera(update);
+
+                    //aMap.clear();
                     if (homeMarker != null) {
                         homeMarker.remove();
                     }
@@ -87,6 +87,9 @@ public class MapActivity extends DJIActivity {
                     double heading = bundle.getDouble("Head");
                     LatLng aircraftPosition = new LatLng(latA, longA);
                     LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
+
+                    aMap.moveCamera(CameraUpdateFactory.newLatLng(transAircraftPosition));
+
                     if (aircraftMarker != null) {
                         aircraftMarker.remove();
                     }
@@ -120,10 +123,9 @@ public class MapActivity extends DJIActivity {
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         aMap = mapView.getMap();
         UiSettings uiSettings = aMap.getUiSettings();
-        uiSettings.setZoomControlsEnabled(false);
-        uiSettings.setScaleControlsEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setScaleControlsEnabled(true);
         uiSettings.setMyLocationButtonEnabled(false);
-
 
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -180,13 +182,27 @@ public class MapActivity extends DJIActivity {
                 if (data != null) {
                     //Log.i(TAG, "EXTRA_DATA:" + data);
 
-                    //确认键
-                    if (data.equals("ET")) {
-                        finish();
-                    }
-                    //返回键
-                    else if (data.equals("RT")) {
-                        finish();
+                    switch(data) {
+                        //确认键
+                        case "ET":{
+                            finish();
+                            break;
+                        }
+                        //返回键
+                        case "RT":{
+                            finish();
+                            break;
+                        }
+                        //逆时针
+                        case "CC":{
+                            aMap.moveCamera(CameraUpdateFactory.zoomIn());
+                            break;
+                        }
+                        //顺时针
+                        case "CW":{
+                            aMap.moveCamera(CameraUpdateFactory.zoomOut());
+                            break;
+                        }
                     }
                 }
             }
