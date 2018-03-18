@@ -9,17 +9,23 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.synseaero.dji.MessageType;
 import com.synseaero.view.WaveView;
 
 public class BluetoothActivity extends DJIActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = BluetoothActivity.class.getName();
+
+    public static final int MSG_START_SCAN = 1;
+    public static final int MSG_STOP_SCAN = 2;
 
     private ListView lvBluetooth;
     private BluetoothListAdapter mLeDeviceListAdapter;
@@ -28,7 +34,25 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
 
     private WaveView wcConnect;
 
-    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what) {
+                case MSG_START_SCAN:{
+                    wcConnect.start();
+                    break;
+                }
+                case MSG_STOP_SCAN:{
+                    wcConnect.stop();
+                    break;
+                }
+            }
+        }
+    };
+
+    private HandlerThread mLeThread = new HandlerThread("LE_THREAD");
+
+    private Handler mLeHandler = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,49 +78,68 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
+        mLeThread.start();
+        mLeHandler = new Handler(mLeThread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MSG_START_SCAN: {
+                        if (mBluetoothAdapter != null) {
+                            mBluetoothAdapter.enable();
+                            mBluetoothAdapter.startLeScan(mLeScanCallback);
+                            mHandler.sendEmptyMessage(MSG_START_SCAN);
+
+                            mLeHandler.removeMessages(MSG_STOP_SCAN);
+                            mLeHandler.sendEmptyMessageDelayed(MSG_STOP_SCAN, 15000);
+                        }
+                        break;
+                    }
+                    case MSG_STOP_SCAN: {
+
+                        mLeHandler.removeMessages(MSG_STOP_SCAN);
+                        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                        mHandler.sendEmptyMessage(MSG_STOP_SCAN);
+                        break;
+                    }
+                }
+            }
+        };
     }
 
     protected void onStart() {
         super.onStart();
         mLeDeviceListAdapter.clear();
         mLeDeviceListAdapter.notifyDataSetChanged();
-        if (mBluetoothAdapter != null) {
-            mBluetoothAdapter.enable();
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
-            delayStopScan();
-            wcConnect.start();
-        }
+
+        mLeHandler.sendEmptyMessage(MSG_START_SCAN);
+
     }
 
     protected void onStop() {
         super.onStop();
-        mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        mHandler.removeCallbacks(stopScanRunnable);
+
+        mLeHandler.sendEmptyMessage(MSG_STOP_SCAN);
+
     }
 
-    public void delayStopScan() {
-        mHandler.removeCallbacks(stopScanRunnable);
-        mHandler.postDelayed(stopScanRunnable, 15000);
-    }
-
-    private Runnable stopScanRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-            wcConnect.stopImmediately();
-        }
-    };
+//    public void delayStopScan() {
+//        mHandler.removeCallbacks(stopScanRunnable);
+//        mHandler.postDelayed(stopScanRunnable, 15000);
+//    }
+//
+//    private Runnable stopScanRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//            wcConnect.stopImmediately();
+//        }
+//    };
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_search_bluetooth:
-                if (mBluetoothAdapter != null) {
-                    mBluetoothAdapter.enable();
-                    mBluetoothAdapter.startLeScan(mLeScanCallback);
-                    delayStopScan();
-                    wcConnect.start();
-                }
+                mLeHandler.sendEmptyMessage(MSG_START_SCAN);
                 break;
         }
     }
