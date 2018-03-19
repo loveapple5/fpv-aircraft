@@ -16,7 +16,6 @@ import android.os.Messenger;
 import android.view.WindowManager;
 
 import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.CoordinateConverter;
 import com.amap.api.maps2d.MapView;
@@ -88,13 +87,18 @@ public class MapActivity extends DJIActivity {
                     LatLng aircraftPosition = new LatLng(latA, longA);
                     LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
 
-                    aMap.moveCamera(CameraUpdateFactory.newLatLng(transAircraftPosition));
+                    CameraPosition cameraPosition = aMap.getCameraPosition();
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
 
                     if (aircraftMarker != null) {
                         aircraftMarker.remove();
                     }
                     aircraftMarker = aMap.addMarker(new MarkerOptions().position(transAircraftPosition)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+//                    aircraftMarker = aMap.addMarker(new MarkerOptions().position(transAircraftPosition)
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bg_vspd)));
+
                     aircraftMarker.setRotateAngle(-(float)heading);
 
 
