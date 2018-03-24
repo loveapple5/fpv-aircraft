@@ -133,6 +133,30 @@
                 skin:enable="true" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_video_indicator"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_fpv_top"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_video_indicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/video_indicator"
+            android:layout_marginEnd="5dp"/>
+        <TextView
+            android:id="@+id/tv_video_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/fpvTopInfo"
+            skin:enable="true"/>
+    </LinearLayout>
+
     <!--left-->
     <RelativeLayout
         android:id="@+id/layout_fpv_left"

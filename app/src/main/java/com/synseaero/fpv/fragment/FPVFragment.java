@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -54,6 +55,7 @@ import com.synseaero.fpv.model.FlightInformation;
 import com.synseaero.fpv.opengl.MyGLSurfaceView;
 import com.synseaero.util.DJIUtils;
 import com.synseaero.util.DensityUtil;
+import com.synseaero.util.StringUtils;
 import com.synseaero.view.CircleMenuLayout;
 
 import java.util.Iterator;
@@ -188,6 +190,10 @@ public class FPVFragment extends BaseFragment {
 
     //云台限位初始状态
     private boolean pitchExtensionEnable = false;
+
+    private View llVideoIndicator;
+    private ImageView ivVideoIndicator;
+    private TextView tvVideoTime;
 
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
@@ -474,6 +480,26 @@ public class FPVFragment extends BaseFragment {
                     }
                     break;
                 }
+                case (MessageType.MSG_GET_CAMERA_STATUS_RESPONSE): {
+
+                    String errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        boolean isRecording = bundle.getBoolean("isRecording", false);
+                        int recordTime = bundle.getInt("recordTime", 0);
+                        if(isRecording) {
+                            llVideoIndicator.setVisibility(View.VISIBLE);
+                            AnimationDrawable animationDrawable = (AnimationDrawable) ivVideoIndicator.getDrawable();
+                            animationDrawable.start();
+                            tvVideoTime.setText(StringUtils.secondToTime(recordTime));
+                        } else {
+                            llVideoIndicator.setVisibility(View.GONE);
+                            AnimationDrawable animationDrawable = (AnimationDrawable) ivVideoIndicator.getDrawable();
+                            animationDrawable.stop();
+                            tvVideoTime.setText(0);
+                        }
+                    }
+                    break;
+                }
             }
         }
     };
@@ -691,6 +717,8 @@ public class FPVFragment extends BaseFragment {
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
         //watch sd卡状态
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
+        //watch camera状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 0);
 
         Message message = Message.obtain();
         message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION;
@@ -764,6 +792,11 @@ public class FPVFragment extends BaseFragment {
         llFpvCamera = (LinearLayout) view.findViewById(R.id.layout_fpv_camera);
         rlTpvCamera = (RelativeLayout) view.findViewById(R.id.layout_tpv_camera);
         llPreview = (LinearLayout) view.findViewById(R.id.ll_preview);
+
+        llVideoIndicator = view.findViewById(R.id.ll_video_indicator);
+        ivVideoIndicator = (ImageView) view.findViewById(R.id.iv_video_indicator);
+        tvVideoTime = (TextView) view.findViewById(R.id.tv_video_time);
+
 
         menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
         menuLayout.setMenuItemCount(12);
@@ -868,6 +901,8 @@ public class FPVFragment extends BaseFragment {
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
         //停止watch sd卡状态
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
+        //停止watch camera状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 1);
 
         timer.cancel();
     }
