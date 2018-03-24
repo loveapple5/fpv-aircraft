@@ -38,8 +38,12 @@ import android.widget.TextView;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.CoordinateConverter;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.FPVActivity;
@@ -179,6 +183,8 @@ public class FPVFragment extends BaseFragment {
 
     private long enterTime;
 
+    private Marker aircraftMarker;
+
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
 
@@ -260,6 +266,18 @@ public class FPVFragment extends BaseFragment {
                     vAircraft.add(latA * Math.PI / 180);
                     vAircraft.add(altitude);
                     mGLView.setAircraftLBH(vAircraft);
+
+                    LatLng aircraftPosition = new LatLng(latA, longA);
+                    LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
+                    CameraPosition cameraPosition = aMap.getCameraPosition();
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
+
+                    if (aircraftMarker != null) {
+                        aircraftMarker.remove();
+                    }
+                    aircraftMarker = aMap.addMarker(new MarkerOptions().position(transAircraftPosition)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
                     break;
                 }
                 case MessageType.MSG_GET_RC_BATTERY_STATE_RESPONSE: {
@@ -447,6 +465,17 @@ public class FPVFragment extends BaseFragment {
             }
         }
     };
+
+    private LatLng convert(LatLng sourceLatLng, CoordinateConverter.CoordType coordType ) {
+        CoordinateConverter converter  = new CoordinateConverter();
+        // CoordType.GPS 待转换坐标类型
+        converter.from(coordType);
+        // sourceLatLng待转换坐标点
+        converter.coord(sourceLatLng);
+        // 执行转换操作
+        LatLng desLatLng = converter.convert();
+        return desLatLng;
+    }
 
     private Messenger messenger = new Messenger(mHandler);
 
