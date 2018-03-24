@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -184,6 +185,9 @@ public class FPVFragment extends BaseFragment {
     private long enterTime;
 
     private Marker aircraftMarker;
+
+    //云台限位初始状态
+    private boolean pitchExtensionEnable = false;
 
     // Camera and textureview-display
     protected DJICamera.CameraReceivedVideoDataCallback mReceivedVideoDataCallBack = new DJICamera.CameraReceivedVideoDataCallback() {
@@ -462,6 +466,14 @@ public class FPVFragment extends BaseFragment {
                     goHomeBatteryThreshold = bundle.getInt("threshold");
                     break;
                 }
+                case (MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE): {
+
+                    String errDesc = bundle.getString("DJI_DESC", "");
+                    if (errDesc.isEmpty()) {
+                        pitchExtensionEnable = bundle.getBoolean("pitchExtensionEnable", false);
+                    }
+                    break;
+                }
             }
         }
     };
@@ -512,6 +524,15 @@ public class FPVFragment extends BaseFragment {
 
             menuLayout.setVisibility(View.GONE);
 
+            if(!pitchExtensionEnable) {
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION;
+                Bundle data = new Bundle();
+                data.putBoolean("pitchExtensionEnable", true);
+                message.setData(data);
+                activity.sendDJIMessage(message);
+            }
+
             FlightInformation fpvModeInfo = new FlightInformation();
             fpvModeInfo.level = 207;
             fpvModeInfo.information = getString(R.string.change_to_fpv_mode);
@@ -547,6 +568,15 @@ public class FPVFragment extends BaseFragment {
             RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(DensityUtil.dip2px(getContext(), 100), DensityUtil.dip2px(getContext(), 55));
             rlTpvCamera.addView(tvPreview, param);
             menuLayout.setVisibility(View.GONE);
+
+            if(!pitchExtensionEnable) {
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION;
+                Bundle data = new Bundle();
+                data.putBoolean("pitchExtensionEnable", false);
+                message.setData(data);
+                activity.sendDJIMessage(message);
+            }
 
             FlightInformation tpvModeInfo = new FlightInformation();
             tpvModeInfo.level = 207;
@@ -643,6 +673,10 @@ public class FPVFragment extends BaseFragment {
 
         activity.registerDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
 
+        activity.registerDJIMessenger(MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
+
+        activity.registerDJIMessenger(MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
+
         //watch camera exposure状态变化
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
         //watch rc电池状态变化
@@ -657,6 +691,10 @@ public class FPVFragment extends BaseFragment {
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
         //watch sd卡状态
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
+
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION;
+        activity.sendDJIMessage(message);
 
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -811,6 +849,10 @@ public class FPVFragment extends BaseFragment {
         activity.unregisterDJIMessenger(MessageType.MSG_GET_DOWN_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
 
         activity.unregisterDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
+
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
+
+        activity.unregisterDJIMessenger(MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
 
         //停止watch camera exposure状态变化
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
