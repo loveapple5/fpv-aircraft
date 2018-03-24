@@ -149,4 +149,14 @@ public class StringUtils {
 //        }
 //        return hour + minute + ":" + second;
     }
+
+    public static String secondToTime(int second) {
+        int hour = second / 3600;
+        int minute = (second - hour * 3600) / 60;
+        second = second - hour * 3600 - minute * 60;
+
+        String strTime = String.format("%02d:%02d:%02d", hour, minute, second);
+
+        return strTime;
+    }
 }
