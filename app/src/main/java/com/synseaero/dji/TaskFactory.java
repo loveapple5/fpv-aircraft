@@ -6,8 +6,8 @@ import android.os.Messenger;
 
 import com.synseaero.dji.aircraft.GetFirmwarePackageVersion;
 import com.synseaero.dji.aircraft.WatchDiagnostics;
-import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.GetWifiPassword;
+import com.synseaero.dji.airlink.GetWifiSSId;
 import com.synseaero.dji.airlink.SetWifiPassword;
 import com.synseaero.dji.airlink.SetWifiSSId;
 import com.synseaero.dji.airlink.WatchDownLinkSignalQuality;
@@ -17,14 +17,19 @@ import com.synseaero.dji.battery.GetSeriesNumber;
 import com.synseaero.dji.battery.SetSelfDischargeDay;
 import com.synseaero.dji.battery.WatchBatteryState;
 import com.synseaero.dji.camera.FormatSDCard;
+import com.synseaero.dji.camera.GetPhotoFormat;
+import com.synseaero.dji.camera.GetPhotoRatio;
+import com.synseaero.dji.camera.SetPhotoFormat;
+import com.synseaero.dji.camera.SetPhotoRatio;
+import com.synseaero.dji.camera.WatchCameraStatus;
 import com.synseaero.dji.camera.WatchExposure;
 import com.synseaero.dji.camera.WatchSDCardState;
+import com.synseaero.dji.flightcontroller.GetFCInfoState;
 import com.synseaero.dji.flightcontroller.GetFCState;
 import com.synseaero.dji.flightcontroller.GetFlightFailSafeOp;
 import com.synseaero.dji.flightcontroller.GetGoHomeAltitude;
 import com.synseaero.dji.flightcontroller.GetGoHomeBatteryThreshold;
 import com.synseaero.dji.flightcontroller.GetHomeLocation;
-import com.synseaero.dji.flightcontroller.GetFCInfoState;
 import com.synseaero.dji.flightcontroller.GetLandingBatteryThreshold;
 import com.synseaero.dji.flightcontroller.GetLedEnabled;
 import com.synseaero.dji.flightcontroller.GetMaxFlightHeight;
@@ -45,12 +50,12 @@ import com.synseaero.dji.gimbal.RotateByAngle;
 import com.synseaero.dji.gimbal.SetGimbalSmoothingOnAxis;
 import com.synseaero.dji.gimbal.SetPitchExtension;
 import com.synseaero.dji.gimbal.WatchGimbalState;
-import com.synseaero.dji.remotecontroller.WatchRCBatteryState;
-import com.synseaero.dji.remotecontroller.WatchRCHardwareState;
 import com.synseaero.dji.remotecontroller.GetRCMode;
 import com.synseaero.dji.remotecontroller.GetWheelSpeed;
 import com.synseaero.dji.remotecontroller.SetRCMode;
 import com.synseaero.dji.remotecontroller.SetWheelSpeed;
+import com.synseaero.dji.remotecontroller.WatchRCBatteryState;
+import com.synseaero.dji.remotecontroller.WatchRCHardwareState;
 import com.synseaero.dji.sdkmanager.WatchFlyForbidStatus;
 
 public class TaskFactory {
@@ -271,6 +276,26 @@ public class TaskFactory {
             case (MessageType.MSG_FORMAT_SDCARD): {
 
                 return new FormatSDCard(data, messenger);
+            }
+            case (MessageType.MSG_GET_PHOTO_RATIO): {
+
+                return new GetPhotoRatio(data, messenger);
+            }
+            case (MessageType.MSG_SET_PHOTO_RATIO): {
+
+                return new SetPhotoRatio(data, messenger);
+            }
+            case (MessageType.MSG_GET_PHOTO_FORMAT): {
+
+                return new GetPhotoFormat(data, messenger);
+            }
+            case (MessageType.MSG_SET_PHOTO_FORMAT): {
+
+                return new SetPhotoFormat(data, messenger);
+            }
+            case (MessageType.MSG_WATCH_CAMERA_STATUS): {
+
+                return new WatchCameraStatus(data, messenger);
             }
         }
         return null;

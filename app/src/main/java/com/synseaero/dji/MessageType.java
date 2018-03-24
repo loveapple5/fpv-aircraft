@@ -98,6 +98,26 @@ public class MessageType {
 
     public static final int MSG_FORMAT_SDCARD = 100053;
 
+    public static final int MSG_GET_PHOTO_RATIO = 1000054;
+    public static final int MSG_SET_PHOTO_RATIO = 1000055;
+
+    public static final int MSG_GET_PHOTO_FORMAT = 1000056;
+    public static final int MSG_SET_PHOTO_FORMAT = 1000057;
+
+    public static final int MSG_GET_PHOTO_WB_AND_CT = 1000058;
+    public static final int MSG_SET_PHOTO_WB_AND_CT = 1000059;
+
+    public static final int MSG_GET_VIDEO_R_AND_FR = 1000060;
+    public static final int MSG_SET_VIDEO_R_AND_FR = 1000061;
+
+    public static final int MSG_GET_VIDEO_FORMAT = 1000062;
+    public static final int MSG_SET_VIDEO_FORMAT = 1000063;
+
+    public static final int MSG_GET_VIDEO_STANDARD = 1000064;
+    public static final int MSG_SET_VIDEO_STANDARD = 1000065;
+
+    public static final int MSG_WATCH_CAMERA_STATUS = 1000066;
+
     //大疆sdk返回消息 200001 - 300000
     public static final int MSG_DJI_RESPONSE_BASE = 200000;
 
@@ -191,4 +211,24 @@ public class MessageType {
     public static final int MSG_GET_DIAGNOSTIS_RESPONSE = 200052;
 
     public static final int MSG_FORMAT_SDCARD_RESPONSE = 200053;
+
+    public static final int MSG_GET_PHOTO_RATIO_RESPONSE = 2000054;
+    public static final int MSG_SET_PHOTO_RATIO_RESPONSE = 2000055;
+
+    public static final int MSG_GET_PHOTO_FORMAT_RESPONSE = 2000056;
+    public static final int MSG_SET_PHOTO_FORMAT_RESPONSE = 2000057;
+
+    public static final int MSG_GET_PHOTO_WB_AND_CT_RESPONSE = 2000058;
+    public static final int MSG_SET_PHOTO_WB_AND_CT_RESPONSE = 2000059;
+
+    public static final int MSG_GET_VIDEO_R_AND_FR_RESPONSE = 2000060;
+    public static final int MSG_SET_VIDEO_R_AND_FR_RESPONSE = 2000061;
+
+    public static final int MSG_GET_VIDEO_FORMAT_RESPONSE = 2000062;
+    public static final int MSG_SET_VIDEO_FORMAT_RESPONSE = 2000063;
+
+    public static final int MSG_GET_VIDEO_STANDARD_RESPONSE = 2000064;
+    public static final int MSG_SET_VIDEO_STANDARD_RESPONSE = 2000065;
+
+    public static final int MSG_GET_CAMERA_STATUS_RESPONSE = 2000066;
 }
