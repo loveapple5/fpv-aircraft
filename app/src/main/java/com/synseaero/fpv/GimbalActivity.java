@@ -124,6 +124,7 @@ public class GimbalActivity extends DJIActivity implements View.OnClickListener 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvPitchSmooth.setText(String.valueOf(progress));
         }
 
         @Override

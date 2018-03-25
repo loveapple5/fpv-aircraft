@@ -25,7 +25,7 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
     private TextView ivRCMode1;
     private TextView ivRCMode2;
 
-    private short wheelSpeed = 50;
+    //private short wheelSpeed = 50;
 
     private DJIRCControlStyle rcStyle = DJIRCControlStyle.Chinese;
 
@@ -206,6 +206,7 @@ public class RCActivity extends DJIActivity implements View.OnClickListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvWheelSpeed.setText(String.valueOf(progress));
         }
 
         @Override

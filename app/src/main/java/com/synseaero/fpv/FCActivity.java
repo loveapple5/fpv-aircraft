@@ -284,6 +284,7 @@ public class FCActivity extends DJIActivity implements View.OnClickListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvSmartGoHomeEnergy.setText(String.valueOf(progress));
         }
 
         @Override
@@ -313,6 +314,7 @@ public class FCActivity extends DJIActivity implements View.OnClickListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvSmartLandingEnergy.setText(String.valueOf(progress));
         }
 
         @Override

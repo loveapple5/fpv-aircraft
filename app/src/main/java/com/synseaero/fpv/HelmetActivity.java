@@ -135,6 +135,7 @@ public class HelmetActivity extends DJIActivity implements View.OnClickListener 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvVolume.setText(String.valueOf(progress));
         }
 
         @Override

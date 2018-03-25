@@ -164,6 +164,7 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
+            tvLowEnergy.setText(String.valueOf(progress));
         }
 
         @Override
