@@ -135,10 +135,10 @@ public class MapActivity extends DJIActivity {
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+//        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+//        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+//
+//        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
         registerDJIMessenger(MessageType.MSG_GET_HOME_LOCATION_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
@@ -270,8 +270,8 @@ public class MapActivity extends DJIActivity {
         unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
         timer.cancel();
 
-        unregisterReceiver(mGattUpdateReceiver);
-        unbindService(mServiceConnection);
+//        unregisterReceiver(mGattUpdateReceiver);
+//        unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
 
     }
