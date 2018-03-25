@@ -14,7 +14,7 @@ import com.synseaero.dji.MessageType;
 public class PrepareActivity extends DJIActivity implements View.OnClickListener {
 
     private View ivFlyZone;
-    private View ivModelCheck;
+    //private View ivModelCheck;
     private View ivIMU;
     private View ivCompass;
     private View ivWirelessSignal;
@@ -26,7 +26,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
 
     private TextView tvFlyZone;
     private TextView tvCompass;
-    private TextView tvModelCheck;
+    //private TextView tvModelCheck;
     private TextView tvWirelessSignal;
     private TextView tvFlightMode;
     private TextView tvRCMode;
@@ -51,12 +51,12 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
                     }
                     break;
                 }
-                case MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE: {
-                    String version = bundle.getString("version");
-                    tvModelCheck.setText(version);
-                    ivModelCheck.setEnabled(true);
-                    break;
-                }
+//                case MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE: {
+//                    String version = bundle.getString("version");
+//                    tvModelCheck.setText(version);
+//                    ivModelCheck.setEnabled(true);
+//                    break;
+//                }
                 case MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE: {
                     int percent = bundle.getInt("percent");
                     ivWirelessSignal.setEnabled(percent > 20);
@@ -112,7 +112,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         findViewById(R.id.btn_connect_helmet).setOnClickListener(this);
 
         ivFlyZone = findViewById(R.id.iv_no_fly);
-        ivModelCheck = findViewById(R.id.iv_model_check);
+        //ivModelCheck = findViewById(R.id.iv_model_check);
         ivIMU = findViewById(R.id.iv_imu);
         ivCompass = findViewById(R.id.iv_compass);
         ivWirelessSignal = findViewById(R.id.iv_wireless_signal);
@@ -123,7 +123,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         ivBatteryRemaining = findViewById(R.id.iv_battery_voltage);
 
         tvFlyZone = (TextView) findViewById(R.id.tv_fly_zone);
-        tvModelCheck = (TextView) findViewById(R.id.tv_version);
+        //tvModelCheck = (TextView) findViewById(R.id.tv_version);
         tvWirelessSignal = (TextView) findViewById(R.id.tv_wireless_signal);
         tvFlightMode = (TextView) findViewById(R.id.tv_flight_mode);
         tvRCMode = (TextView) findViewById(R.id.tv_rc_mode);
@@ -141,8 +141,8 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
     protected void onStart() {
         super.onStart();
         registerDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
-        registerDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
-        registerDJIMessenger(MessageType.MSG_GET_DIAGNOSTIS_RESPONSE, messenger);
+        //registerDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_DIAGNOSTICS_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_SDCARD_STATE_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
@@ -154,9 +154,9 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
 
-        Message modelVersionMsg = Message.obtain();
-        modelVersionMsg.what = MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION;
-        sendDJIMessage(modelVersionMsg);
+//        Message modelVersionMsg = Message.obtain();
+//        modelVersionMsg.what = MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION;
+//        sendDJIMessage(modelVersionMsg);
 
         Message fcInfoMsg = Message.obtain();
         fcInfoMsg.what = MessageType.MSG_GET_FC_INFO_STATE;
@@ -171,8 +171,8 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
     protected void onStop() {
         super.onStop();
         unregisterDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
-        unregisterDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
-        unregisterDJIMessenger(MessageType.MSG_GET_DIAGNOSTIS_RESPONSE, messenger);
+        //unregisterDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_DIAGNOSTICS_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_SDCARD_STATE_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_UP_LINK_SIGNAL_QUALITY_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
@@ -196,6 +196,9 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
             case R.id.btn_connect_helmet: {
                 Intent helmetIntent = new Intent(this, BluetoothActivity.class);
                 startActivity(helmetIntent);
+
+//                Intent intent = new Intent(this, FPVActivity.class);
+//                startActivity(intent);
                 finish();
                 break;
             }

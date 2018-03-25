@@ -208,7 +208,8 @@ public class MessageType {
 
     public static final int MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE = 200051;
 
-    public static final int MSG_GET_DIAGNOSTIS_RESPONSE = 200052;
+    public static final int MSG_GET_DIAGNOSTICS_RESPONSE = 200052;
+
 
     public static final int MSG_FORMAT_SDCARD_RESPONSE = 200053;
 

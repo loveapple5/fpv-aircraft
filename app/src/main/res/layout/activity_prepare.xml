@@ -78,44 +78,44 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="45dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginStart="45dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal">-->
 
-                <TextView
-                    android:id="@+id/iv_model_check"
-                    style="@style/SelfCheckIcon"
-                    android:background="@drawable/bg_self_check"
-                    skin:enable="true" />
+                <!--<TextView-->
+                    <!--android:id="@+id/iv_model_check"-->
+                    <!--style="@style/SelfCheckIcon"-->
+                    <!--android:background="@drawable/bg_self_check"-->
+                    <!--skin:enable="true" />-->
 
-                <TextView
-                    style="@style/SelfCheckLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/model_self_check"
-                    android:textColor="@color/gray"
-                    skin:enable="true" />
+                <!--<TextView-->
+                    <!--style="@style/SelfCheckLabel"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/model_self_check"-->
+                    <!--android:textColor="@color/gray"-->
+                    <!--skin:enable="true" />-->
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:orientation="horizontal">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="end|center_vertical"-->
+                    <!--android:orientation="horizontal">-->
 
-                    <TextView
-                        android:id="@+id/tv_version"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:gravity="center"
-                        android:textColor="@color/lightBlue3"
-                        android:textSize="12dp"
-                        skin:enable="true" />
-                </LinearLayout>
-            </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_version"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="20dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@color/lightBlue3"-->
+                        <!--android:textSize="12dp"-->
+                        <!--skin:enable="true" />-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
