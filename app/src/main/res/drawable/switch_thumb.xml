@@ -3,29 +3,30 @@
     <item android:state_checked="true">
         <layer-list>
             <item android:gravity="center">
-                <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
-                    <solid android:color="@color/lightBlue3" />
-                </shape>
-            </item>
-            <item android:gravity="center">
                 <shape android:shape="oval" android:useLevel="false">
                     <solid android:color="@color/colorWhite" />
                     <size android:width="6dp" android:height="6dp" />
                 </shape>
             </item>
+            <item android:gravity="center">
+                <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
+                    <solid android:color="@color/lightBlue3" />
+                </shape>
+            </item>
+
         </layer-list>
     </item>
     <item>
         <layer-list>
             <item android:gravity="center">
-                <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
-                    <solid android:color="@color/lightGray2" />
-                </shape>
-            </item>
-            <item android:gravity="center">
                 <shape android:shape="oval" android:useLevel="false">
                     <solid android:color="@color/colorWhite" />
                     <size android:width="6dp" android:height="6dp" />
+                </shape>
+            </item>
+            <item android:gravity="center">
+                <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
+                    <solid android:color="@color/lightGray2" />
                 </shape>
             </item>
         </layer-list>
