@@ -132,6 +132,9 @@ public class MapActivity extends DJIActivity {
         uiSettings.setScaleControlsEnabled(true);
         uiSettings.setMyLocationButtonEnabled(false);
 
+        FPVApplication app = (FPVApplication) getApplication();
+        app.writeBleValue("FLAG-FPV");
+
 //        final Intent intent = getIntent();
 //        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
 //        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);

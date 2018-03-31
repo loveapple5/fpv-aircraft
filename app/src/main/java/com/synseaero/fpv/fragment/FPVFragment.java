@@ -49,6 +49,7 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.synseaero.dji.MessageType;
 import com.synseaero.fpv.FPVActivity;
+import com.synseaero.fpv.FPVApplication;
 import com.synseaero.fpv.MediaService;
 import com.synseaero.fpv.R;
 import com.synseaero.fpv.model.FlightInformation;
@@ -279,6 +280,7 @@ public class FPVFragment extends BaseFragment {
 
                     LatLng aircraftPosition = new LatLng(latA, longA);
                     LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
+
                     CameraPosition cameraPosition = aMap.getCameraPosition();
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
 
@@ -287,6 +289,7 @@ public class FPVFragment extends BaseFragment {
                     }
                     aircraftMarker = aMap.addMarker(new MarkerOptions().position(transAircraftPosition)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
 
                     break;
                 }
@@ -482,6 +485,8 @@ public class FPVFragment extends BaseFragment {
                 }
                 case (MessageType.MSG_GET_CAMERA_STATUS_RESPONSE): {
 
+                    //Toast.makeText(activity, "camera_callback", Toast.LENGTH_SHORT).show();
+
                     String errDesc = bundle.getString("DJI_DESC", "");
                     if (errDesc.isEmpty()) {
                         boolean isRecording = bundle.getBoolean("isRecording", false);
@@ -674,8 +679,6 @@ public class FPVFragment extends BaseFragment {
             Log.w(TAG, "locationManager null");
         }
 
-        mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
 
         SharedPreferences sp = getContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
         lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", DJIUtils.COMMON_LOW_PERCENT);
@@ -703,44 +706,8 @@ public class FPVFragment extends BaseFragment {
 
         activity.registerDJIMessenger(MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
 
-        //watch camera exposure状态变化
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
-        //watch rc电池状态变化
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
-        //watch飞机电池状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
-        //watch云台状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
-        //watch上行信号强度
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
-        //watch下行信号强度
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
-        //watch sd卡状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
-        //watch camera状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 0);
+        activity.registerDJIMessenger(MessageType.MSG_GET_CAMERA_STATUS_RESPONSE, messenger);
 
-        Message message = Message.obtain();
-        message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION;
-        activity.sendDJIMessage(message);
-
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                Message message = Message.obtain();
-                message.what = MessageType.MSG_GET_FC_STATE;
-
-                activity.sendDJIMessage(message);
-
-                Message message2 = Message.obtain();
-                message2.what = MessageType.MSG_GET_FC_INFO_STATE;
-                activity.sendDJIMessage(message2);
-            }
-        }, 2000, 1000);
-
-        enterTime = System.currentTimeMillis();
     }
 
     public void setHelmetEnergy(int percent) {
@@ -843,9 +810,77 @@ public class FPVFragment extends BaseFragment {
         aMap.addMarker(new MarkerOptions().position(shenzhen).title("Marker in Shenzhen"));
         aMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
 
-        setMode(MODE_TPV);
+        mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
 
+        setMode(MODE_TPV);
+        FPVApplication app = (FPVApplication) activity.getApplication();
+        app.writeBleValue("FLAG-TPV");
+
+        //watch camera exposure状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
+        //watch rc电池状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 0);
+        //watch飞机电池状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+        //watch云台状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
+        //watch上行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
+        //watch下行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 0);
+        //watch sd卡状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
+        //watch camera状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 0);
+
+        Message message = Message.obtain();
+        message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION;
+        activity.sendDJIMessage(message);
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_GET_FC_STATE;
+
+                activity.sendDJIMessage(message);
+
+                Message message2 = Message.obtain();
+                message2.what = MessageType.MSG_GET_FC_INFO_STATE;
+                activity.sendDJIMessage(message2);
+            }
+        }, 2000, 1000);
+
+        enterTime = System.currentTimeMillis();
         return view;
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        mSensorManager.unregisterListener(sensorEventListener);
+
+        //停止watch camera exposure状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
+        //停止watch rc电池状态变化
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 1);
+        //停止watch飞机电池状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+        //停止watch云台状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
+        //停止watch上行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
+        //停止watch下行信号强度
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
+        //停止watch sd卡状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
+        //停止watch camera状态
+        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 1);
+
+        timer.cancel();
     }
 
     @Override
@@ -855,8 +890,6 @@ public class FPVFragment extends BaseFragment {
         mapView.onDestroy();
 
         ivDirection.setImageDrawable(null);
-
-        mSensorManager.unregisterListener(sensorEventListener);
 
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -887,24 +920,8 @@ public class FPVFragment extends BaseFragment {
 
         activity.unregisterDJIMessenger(MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE, messenger);
 
-        //停止watch camera exposure状态变化
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 1);
-        //停止watch rc电池状态变化
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_RC_BATTERY_STATE, 1);
-        //停止watch飞机电池状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
-        //停止watch云台状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
-        //停止watch上行信号强度
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
-        //停止watch下行信号强度
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_DOWN_LINK_SIGNAL_QUALITY, 1);
-        //停止watch sd卡状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
-        //停止watch camera状态
-        activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 1);
+        activity.unregisterDJIMessenger(MessageType.MSG_GET_CAMERA_STATUS_RESPONSE, messenger);
 
-        timer.cancel();
     }
 
     public void onResume() {

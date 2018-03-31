@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.synseaero.dji.MessageType;
 import com.synseaero.dji.Task;
@@ -27,7 +28,11 @@ public class WatchCameraStatus extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            camera.setDJICameraUpdatedSystemStateCallback(callback);
+            if (flag == 0) {
+                camera.setDJICameraUpdatedSystemStateCallback(callback);
+            } else {
+                camera.setDJICameraUpdatedSystemStateCallback(null);
+            }
         }
     }
 
@@ -41,6 +46,9 @@ public class WatchCameraStatus extends Task {
             Bundle bundle = new Bundle();
             bundle.putBoolean("isRecording", isRecording);
             bundle.putInt("recordTime", recordTime);
+
+            Log.d("isRecording", isRecording + "");
+            Log.d("recordTime", recordTime + "");
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_CAMERA_STATUS_RESPONSE;
