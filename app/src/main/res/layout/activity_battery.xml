@@ -239,73 +239,73 @@
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/divider"
-        android:orientation="vertical"
-        android:visibility="gone">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:divider="@drawable/divider"-->
+        <!--android:orientation="vertical"-->
+        <!--android:visibility="gone">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:gravity="center"
-                android:text="@string/discharge_time"
-                android:textSize="16dp"
-                android:textColor="@color/commonText"
-                skin:enable="true" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/discharge_time"-->
+                <!--android:textSize="16dp"-->
+                <!--android:textColor="@color/commonText"-->
+                <!--skin:enable="true" />-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="end|center_vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="end|center_vertical">-->
 
-                <EditText
-                    android:id="@+id/et_discharge_time"
-                    style="@style/SettingValue"
-                    android:background="@drawable/bg_setting_value"
-                    android:text="名称"
-                    android:textColor="@color/lightGray2"
-                    skin:enable="true" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_discharge_time"-->
+                    <!--style="@style/SettingValue"-->
+                    <!--android:background="@drawable/bg_setting_value"-->
+                    <!--android:text="名称"-->
+                    <!--android:textColor="@color/lightGray2"-->
+                    <!--skin:enable="true" />-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
-    <LinearLayout
-        android:id="@+id/ll_battery_history"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_battery_history"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/battery_history_info"
-            android:textSize="16dp"
-            android:textColor="@color/commonText"
-            skin:enable="true" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:text="@string/battery_history_info"-->
+            <!--android:textSize="16dp"-->
+            <!--android:textColor="@color/commonText"-->
+            <!--skin:enable="true" />-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end|center_vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="end|center_vertical">-->
 
-            <ImageView
-                style="@style/SettingArrow"
-                android:src="@drawable/right_arrow"
-                skin:enable="true" />
-        </LinearLayout>
-    </LinearLayout>
+            <!--<ImageView-->
+                <!--style="@style/SettingArrow"-->
+                <!--android:src="@drawable/right_arrow"-->
+                <!--skin:enable="true" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

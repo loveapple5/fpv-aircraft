@@ -92,33 +92,35 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
         tvPhotoResolve = (TextView) findViewById(R.id.tv_photo_resolve);
         tvPhotoFormat = (TextView) findViewById(R.id.tv_photo_format);
         tvWhiteBalance = (TextView) findViewById(R.id.tv_white_balance);
-        tvVideoResolve = (TextView) findViewById(R.id.tv_video_resolve);
-        tvVideoResolve.setTag(R.string.resolution_4k);
-        tvFrameRate = (TextView) findViewById(R.id.tv_frame_rate);
-        tvFrameRate.setTag(R.string.frame_rate_24);
-        tvVideoFormat = (TextView) findViewById(R.id.tv_video_format);
-        tvVideoSelect = (TextView) findViewById(R.id.tv_video_select);
+//        tvVideoResolve = (TextView) findViewById(R.id.tv_video_resolve);
+//        tvVideoResolve.setTag(R.string.resolution_4k);
+//        tvFrameRate = (TextView) findViewById(R.id.tv_frame_rate);
+//        tvFrameRate.setTag(R.string.frame_rate_24);
+//        tvVideoFormat = (TextView) findViewById(R.id.tv_video_format);
+//        tvVideoSelect = (TextView) findViewById(R.id.tv_video_select);
 
-        findViewById(R.id.ll_camera_mode).setOnClickListener(this);
+        //findViewById(R.id.ll_camera_mode).setOnClickListener(this);
         findViewById(R.id.ll_photo_resolve).setOnClickListener(this);
         findViewById(R.id.ll_photo_format).setOnClickListener(this);
         findViewById(R.id.ll_white_balance).setOnClickListener(this);
-        findViewById(R.id.ll_style).setOnClickListener(this);
-        findViewById(R.id.ll_color).setOnClickListener(this);
-        findViewById(R.id.ll_video_resolve).setOnClickListener(this);
-        findViewById(R.id.ll_frame_rate).setOnClickListener(this);
-        findViewById(R.id.ll_video_format).setOnClickListener(this);
-        findViewById(R.id.ll_video_select).setOnClickListener(this);
+        //findViewById(R.id.ll_style).setOnClickListener(this);
+//        findViewById(R.id.ll_color).setOnClickListener(this);
+//        findViewById(R.id.ll_video_resolve).setOnClickListener(this);
+//        findViewById(R.id.ll_frame_rate).setOnClickListener(this);
+//        findViewById(R.id.ll_video_format).setOnClickListener(this);
+//        findViewById(R.id.ll_video_select).setOnClickListener(this);
 
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         if (djiAircraft != null) {
             djiCamera = djiAircraft.getCamera();
-            djiCamera.getPhotoRatio(new PhotoRatioCallback());
-            djiCamera.getPhotoFileFormat(new PhotoFormatCallback());
-            djiCamera.getWhiteBalanceAndColorTemperature(new WhiteBalanceCallback());
-            djiCamera.getVideoResolutionAndFrameRate(new VideoResolutionCallback());
-            djiCamera.getVideoFileFormat(new VideoFormatCallback());
-            djiCamera.getVideoStandard(new VideoStandardCallback());
+            if(djiCamera != null) {
+                djiCamera.getPhotoRatio(new PhotoRatioCallback());
+                djiCamera.getPhotoFileFormat(new PhotoFormatCallback());
+                djiCamera.getWhiteBalanceAndColorTemperature(new WhiteBalanceCallback());
+                djiCamera.getVideoResolutionAndFrameRate(new VideoResolutionCallback());
+                djiCamera.getVideoFileFormat(new VideoFormatCallback());
+                djiCamera.getVideoStandard(new VideoStandardCallback());
+            }
         }
     }
 
@@ -240,9 +242,9 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.ll_camera_mode:
-                //showCameraModeMenu();
-                break;
+//            case R.id.ll_camera_mode:
+//                //showCameraModeMenu();
+//                break;
             case R.id.ll_photo_resolve:
                 showPhotoResolveMenu();
                 break;
@@ -252,24 +254,24 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
             case R.id.ll_white_balance:
                 showWhiteBalanceMenu();
                 break;
-            case R.id.ll_style:
-                //showStyleMenu();
-                break;
-            case R.id.ll_color:
-                //showColorMenu();
-                break;
-            case R.id.ll_video_resolve:
-                showVideoResolveMenu();
-                break;
-            case R.id.ll_frame_rate:
-                showFrameRateMenu();
-                break;
-            case R.id.ll_video_format:
-                showVideoFormatMenu();
-                break;
-            case R.id.ll_video_select:
-                showVideoSelectMenu();
-                break;
+//            case R.id.ll_style:
+//                //showStyleMenu();
+//                break;
+//            case R.id.ll_color:
+//                //showColorMenu();
+//                break;
+//            case R.id.ll_video_resolve:
+//                showVideoResolveMenu();
+//                break;
+//            case R.id.ll_frame_rate:
+//                showFrameRateMenu();
+//                break;
+//            case R.id.ll_video_format:
+//                showVideoFormatMenu();
+//                break;
+//            case R.id.ll_video_select:
+//                showVideoSelectMenu();
+//                break;
         }
     }
 

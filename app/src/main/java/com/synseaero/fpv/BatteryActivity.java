@@ -24,7 +24,7 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
     private TextView tvBatteryCurrentEnergy;
     private TextView tvBatteryTemperature;
     private TextView tvFlightTime;
-    private EditText etDischargeTime;
+    //private EditText etDischargeTime;
     private TextView tvLowEnergy;
     private SeekBar sbLowEnergy;
 
@@ -44,23 +44,23 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
                     tvBatteryTemperature.setText(temperature);
 
                     break;
-                case MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE:
-
-                    if (errDesc.isEmpty()) {
-                        int dischargeDay = bundle.getInt("day", 0);
-                        etDischargeTime.setText(String.valueOf(dischargeDay));
-                    } else {
-                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
-                    }
-
-                    break;
-                case MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE:
-
-                    if (!errDesc.isEmpty()) {
-                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
-                    }
-
-                    break;
+//                case MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE:
+//
+//                    if (errDesc.isEmpty()) {
+//                        int dischargeDay = bundle.getInt("day", 0);
+//                        //etDischargeTime.setText(String.valueOf(dischargeDay));
+//                    } else {
+//                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    break;
+//                case MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE:
+//
+//                    if (!errDesc.isEmpty()) {
+//                        Toast.makeText(BatteryActivity.this, errDesc, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    break;
                 case MessageType.MSG_GET_FC_STATE_RESPONSE:
 
                     int flightTimeSec = bundle.getInt("flightTime", 0);
@@ -79,28 +79,28 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         setContentView(R.layout.activity_battery);
 
         findViewById(R.id.iv_back).setOnClickListener(this);
-        findViewById(R.id.ll_battery_history).setOnClickListener(this);
+        //findViewById(R.id.ll_battery_history).setOnClickListener(this);
 
         tvBatteryCurrentEnergy = (TextView) findViewById(R.id.tv_battery_energy);
         tvBatteryTemperature = (TextView) findViewById(R.id.tv_battery_temperature);
         tvFlightTime = (TextView) findViewById(R.id.tv_flight_time);
-        etDischargeTime = (EditText) findViewById(R.id.et_discharge_time);
-        etDischargeTime.setOnEditorActionListener(etListener);
+//        etDischargeTime = (EditText) findViewById(R.id.et_discharge_time);
+//        etDischargeTime.setOnEditorActionListener(etListener);
 
         tvLowEnergy = (TextView) findViewById(R.id.tv_low_energy_warning);
         sbLowEnergy = (SeekBar) findViewById(R.id.sb_low_energy_warning);
         sbLowEnergy.setOnSeekBarChangeListener(new LowEnergyListener());
 
         registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
-        registerDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
-        registerDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        //registerDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        //registerDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
 
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
 
-        Message getDischargeMsg = Message.obtain();
-        getDischargeMsg.what = MessageType.MSG_GET_BATTERY_DISCHARGE_DAY;
-        sendDJIMessage(getDischargeMsg);
+//        Message getDischargeMsg = Message.obtain();
+//        getDischargeMsg.what = MessageType.MSG_GET_BATTERY_DISCHARGE_DAY;
+//        sendDJIMessage(getDischargeMsg);
 
         Message getFlightStateMsg = Message.obtain();
         getFlightStateMsg.what = MessageType.MSG_GET_FC_STATE;
@@ -115,8 +115,8 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
     public void onDestroy() {
         super.onDestroy();
         unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
-        unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
-        unregisterDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        //unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
+        //unregisterDJIMessenger(MessageType.MSG_SET_BATTERY_DISCHARGE_DAY_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
 
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
@@ -128,34 +128,34 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.ll_battery_history:
-                Intent history = new Intent(this, BatteryHistoryActivity.class);
-                startActivity(history);
-                break;
+//            case R.id.ll_battery_history:
+//                Intent history = new Intent(this, BatteryHistoryActivity.class);
+//                startActivity(history);
+//                break;
         }
     }
 
-    private TextView.OnEditorActionListener etListener = new TextView.OnEditorActionListener() {
-
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            //按下确认的时候进行处理
-            if (EditorInfo.IME_ACTION_DONE == actionId) {
-                int id = v.getId();
-                if (id == R.id.et_discharge_time) {
-                    String time = etDischargeTime.getText().toString();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("day", Integer.valueOf(time));
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_SET_BATTERY_DISCHARGE_DAY;
-                    message.setData(bundle);
-                    sendDJIMessage(message);
-                }
-            }
-            return false;
-        }
-    };
+//    private TextView.OnEditorActionListener etListener = new TextView.OnEditorActionListener() {
+//
+//        @Override
+//        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//            //按下确认的时候进行处理
+//            if (EditorInfo.IME_ACTION_DONE == actionId) {
+//                int id = v.getId();
+//                if (id == R.id.et_discharge_time) {
+//                    String time = etDischargeTime.getText().toString();
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("day", Integer.valueOf(time));
+//                    Message message = Message.obtain();
+//                    message.what = MessageType.MSG_SET_BATTERY_DISCHARGE_DAY;
+//                    message.setData(bundle);
+//                    sendDJIMessage(message);
+//                }
+//            }
+//            return false;
+//        }
+//    };
 
     class LowEnergyListener implements SeekBar.OnSeekBarChangeListener {
 
