@@ -2,6 +2,7 @@ package com.synseaero.fpv;
 
 
 import android.app.Application;
+import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.multidex.MultiDex;
 import android.widget.Toast;
 
 import com.synseaero.dji.DJIService;
+import com.synseaero.fpv.bluetooth.BluetoothLeService;
 import com.synseaero.util.FileUtils;
 
 import java.io.File;
@@ -40,6 +42,11 @@ public class FPVApplication extends Application {
     private static final String SKIN_DIR = "skin";
 
     public static final String ACTION_APP_SKIN_CHANGED = "ACTION_APP_SKIN_CHANGED";
+
+    private BluetoothDevice bleDevice;
+    private BluetoothLeService mBluetoothLeService;
+
+    private ServiceConnection mBleServiceConnection;
 
     @Override
     public void onCreate() {
@@ -127,6 +134,7 @@ public class FPVApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         unbindService(dJIConnection);
+        unBindBleService();
     }
 
     public boolean sendDJIMessage(Message message) {
@@ -194,6 +202,54 @@ public class FPVApplication extends Application {
         String fileName = skinFile.getName();
         int style = Integer.valueOf(fileName.substring(4));
         return style;
+    }
+
+    public void setBluetoothDevice(BluetoothDevice device) {
+        this.bleDevice = device;
+    }
+
+    public void bindBleService() {
+        if(mBleServiceConnection == null) {
+            mBleServiceConnection = new BleServiceConnection();
+            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+            bindService(gattServiceIntent, mBleServiceConnection, BIND_AUTO_CREATE);
+        }
+    }
+
+    public void unBindBleService() {
+        if(mBleServiceConnection != null) {
+            unbindService(mBleServiceConnection);
+            mBleServiceConnection = null;
+        }
+    }
+
+    private final class BleServiceConnection implements ServiceConnection {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+//                Log.e(TAG, "Unable to initialize Bluetooth");
+            }
+            if(bleDevice != null) {
+                boolean result = mBluetoothLeService.connect(bleDevice.getAddress());
+            }
+
+//            Log.e(TAG, "mBluetoothLeService is okay");
+            // Automatically connects to the device upon successful start-up initialization.
+            //mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    }
+
+    public void writeBleValue(String value) {
+        if(mBluetoothLeService != null) {
+            mBluetoothLeService.writeValue(value);
+        }
     }
 
 }

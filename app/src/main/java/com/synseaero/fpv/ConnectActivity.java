@@ -102,7 +102,6 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
         IntentFilter filter = new IntentFilter();
         filter.addAction(FPVApplication.DJI_SERVICE_CONNECTED);
         registerReceiver(mReceiver, filter);
-        //((FPVDemoApplication) getApplication()).notifyStatusChange();
 
         registerDJIMessenger(MessageType.MSG_PRODUCT_CHANGED, messenger);
         registerDJIMessenger(MessageType.MSG_PRODUCT_CONNECTIVITY_CHANGED, messenger);
@@ -154,6 +153,12 @@ public class ConnectActivity extends DJIActivity implements View.OnClickListener
                 break;
             }
         }
+    }
+
+    public void onResume() {
+        super.onResume();
+        FPVApplication app = (FPVApplication) getApplication();
+        app.unBindBleService();
     }
 
     public void onDestroy() {

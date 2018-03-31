@@ -57,10 +57,10 @@ public class FPVActivity extends DJIActivity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-    private BluetoothLeService mBluetoothLeService;
+    //private BluetoothLeService mBluetoothLeService;
 
-    private String mDeviceName;
-    private String mDeviceAddress;
+//    private String mDeviceName;
+//    private String mDeviceAddress;
 
     private Vector<MenuFragment> mMenuFragments = new Vector<>();
 
@@ -90,12 +90,13 @@ public class FPVActivity extends DJIActivity {
                             if (c2UpTime - c2DownTime >= C2BUTTON_PRESS_DURATION && c2DownTime > 0) {
                                 c2DownTime = 0;
                                 int mode = mFPVFragment.getMode();
+                                FPVApplication app = (FPVApplication) getApplication();
                                 //切换模式
                                 if (mode == MODE_FPV) {
-                                    mBluetoothLeService.writeValue("FLAG-TPV");
+                                    app.writeBleValue("FLAG-TPV");
                                     mFPVFragment.setMode(MODE_TPV);
                                 } else {
-                                    mBluetoothLeService.writeValue("FLAG-FPV");
+                                    app.writeBleValue("FLAG-FPV");
                                     mFPVFragment.setMode(MODE_FPV);
                                 }
                             }
@@ -125,12 +126,12 @@ public class FPVActivity extends DJIActivity {
         transaction.replace(R.id.layout_fpv_root, mFPVFragment);
         transaction.commit();
 
-        final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+//        final Intent intent = getIntent();
+//        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+//        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+//
+//        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+//        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
@@ -191,10 +192,10 @@ public class FPVActivity extends DJIActivity {
 //                mBluetoothLeService.writeValue("FLAG-TPV");
 //            }
             //重连
-            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mBluetoothLeService.connect(mDeviceAddress);
-            }
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+//                mBluetoothLeService.connect(mDeviceAddress);
+//            }
+            if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
                     //Log.i(TAG, "EXTRA_DATA:" + data);
@@ -255,26 +256,26 @@ public class FPVActivity extends DJIActivity {
         }
     };
 
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-//                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();
-            }
-            boolean result = mBluetoothLeService.connect(mDeviceAddress);
-//            Log.e(TAG, "mBluetoothLeService is okay");
-            // Automatically connects to the device upon successful start-up initialization.
-            //mBluetoothLeService.connect(mDeviceAddress);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
+//    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder service) {
+//            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+//            if (!mBluetoothLeService.initialize()) {
+////                Log.e(TAG, "Unable to initialize Bluetooth");
+//                finish();
+//            }
+//            boolean result = mBluetoothLeService.connect(mDeviceAddress);
+////            Log.e(TAG, "mBluetoothLeService is okay");
+//            // Automatically connects to the device upon successful start-up initialization.
+//            //mBluetoothLeService.connect(mDeviceAddress);
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//            mBluetoothLeService = null;
+//        }
+//    };
 
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.activity_fpv, menu);
@@ -286,7 +287,7 @@ public class FPVActivity extends DJIActivity {
 
         unregisterReceiver(mGattUpdateReceiver);
         //Log.d(TAG, "onDestroy");
-        unbindService(mServiceConnection);
+        //unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
 
     }
@@ -493,11 +494,11 @@ public class FPVActivity extends DJIActivity {
 
     public void showMenu() {
         if(mMenuFragments.get(0) == mCurMenuFragment) {
-//            Intent mapIntent = new Intent(this, MapActivity.class);
+            Intent mapIntent = new Intent(this, MapActivity.class);
 //            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
 //            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
-//            startActivity(mapIntent);
-//            finish();
+            startActivity(mapIntent);
+            finish();
         } else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.show(mCurMenuFragment).commit();
@@ -508,6 +509,7 @@ public class FPVActivity extends DJIActivity {
         if (hideMenu()) {
             return;
         }
+
         super.onBackPressed();
     }
 

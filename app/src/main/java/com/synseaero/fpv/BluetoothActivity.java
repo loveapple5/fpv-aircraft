@@ -167,14 +167,18 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
         if (device == null) {
             return;
         }
-        String deviceName = device.getName();
-        String deviceAddress = device.getAddress();
-        if (deviceName == null || deviceAddress == null) {
-            return;
-        }
+        FPVApplication app = ((FPVApplication)getApplication());
+        app.setBluetoothDevice(device);
+        app.bindBleService();
+
+//        String deviceName = device.getName();
+//        String deviceAddress = device.getAddress();
+//        if (deviceName == null || deviceAddress == null) {
+//            return;
+//        }
         Intent intent = new Intent(this, FPVActivity.class);
-        intent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, deviceName);
-        intent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, deviceAddress);
+//        intent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, deviceName);
+//        intent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, deviceAddress);
         startActivity(intent);
         finish();
     }

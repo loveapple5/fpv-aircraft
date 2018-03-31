@@ -16,6 +16,7 @@ import android.os.Messenger;
 import android.view.WindowManager;
 
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.CoordinateConverter;
 import com.amap.api.maps2d.MapView;
@@ -33,7 +34,7 @@ import java.util.TimerTask;
 
 public class MapActivity extends DJIActivity {
 
-    //public static final LatLng BEIJING = new LatLng(39.90403, 116.407525);// 北京市经纬度
+    public static final LatLng BEIJING = new LatLng(39.90403, 116.407525);// 北京市经纬度
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -46,10 +47,10 @@ public class MapActivity extends DJIActivity {
 
     private Timer timer;
 
-    private BluetoothLeService mBluetoothLeService;
+    //private BluetoothLeService mBluetoothLeService;
 
-    private String mDeviceName;
-    private String mDeviceAddress;
+//    private String mDeviceName;
+//    private String mDeviceAddress;
 
 //    private LatLng TH = new LatLng(39.926516, 116.389366);
 //    private int index = 0;
@@ -67,9 +68,9 @@ public class MapActivity extends DJIActivity {
                     double latitude = bundle.getDouble("latitude");
                     LatLng home = new LatLng(latitude, longitude);
                     LatLng transHome = convert(home, CoordinateConverter.CoordType.GPS);
-                    //CameraPosition cameraPosition = new CameraPosition.Builder().target(transHome).zoom(18).bearing(0).tilt(0).build();
-                    //CameraUpdate update = CameraUpdateFactory.newCameraPosition(cameraPosition);
-                    //aMap.moveCamera(update);
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(transHome).zoom(18).bearing(0).tilt(0).build();
+                    CameraUpdate update = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    aMap.moveCamera(update);
 
                     //aMap.clear();
                     if (homeMarker != null) {
@@ -131,14 +132,14 @@ public class MapActivity extends DJIActivity {
         uiSettings.setScaleControlsEnabled(true);
         uiSettings.setMyLocationButtonEnabled(false);
 
-        final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-
+//        final Intent intent = getIntent();
+//        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+//        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+//
 //        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 //        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-//
-//        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
         registerDJIMessenger(MessageType.MSG_GET_HOME_LOCATION_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
@@ -178,10 +179,10 @@ public class MapActivity extends DJIActivity {
             final String action = intent.getAction();
 
             //重连
-            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mBluetoothLeService.connect(mDeviceAddress);
-            }
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//            if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+//                mBluetoothLeService.connect(mDeviceAddress);
+//            }
+            if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 if (data != null) {
                     //Log.i(TAG, "EXTRA_DATA:" + data);
@@ -213,26 +214,26 @@ public class MapActivity extends DJIActivity {
         }
     };
 
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-//                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();
-            }
-            boolean result = mBluetoothLeService.connect(mDeviceAddress);
-//            Log.e(TAG, "mBluetoothLeService is okay");
-            // Automatically connects to the device upon successful start-up initialization.
-            //mBluetoothLeService.connect(mDeviceAddress);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
+//    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder service) {
+//            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+//            if (!mBluetoothLeService.initialize()) {
+////                Log.e(TAG, "Unable to initialize Bluetooth");
+//                finish();
+//            }
+//            boolean result = mBluetoothLeService.connect(mDeviceAddress);
+////            Log.e(TAG, "mBluetoothLeService is okay");
+//            // Automatically connects to the device upon successful start-up initialization.
+//            //mBluetoothLeService.connect(mDeviceAddress);
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//            mBluetoothLeService = null;
+//        }
+//    };
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -270,8 +271,8 @@ public class MapActivity extends DJIActivity {
         unregisterDJIMessenger(MessageType.MSG_GET_FC_STATE_RESPONSE, messenger);
         timer.cancel();
 
-//        unregisterReceiver(mGattUpdateReceiver);
-//        unbindService(mServiceConnection);
+        unregisterReceiver(mGattUpdateReceiver);
+        //unbindService(mServiceConnection);
 //        unregisterReceiver(mReceiver);
 
     }
@@ -279,8 +280,8 @@ public class MapActivity extends DJIActivity {
     public void finish() {
         super.finish();
         Intent fpvIntent = new Intent(this, FPVActivity.class);
-        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
-        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
+//        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
+//        fpvIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
         startActivity(fpvIntent);
     }
 
