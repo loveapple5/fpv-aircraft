@@ -13,9 +13,11 @@ import com.synseaero.util.DJIUtils;
 import dji.common.flightcontroller.DJIAircraftRemainingBatteryState;
 import dji.common.flightcontroller.DJIFlightControllerCurrentState;
 import dji.common.flightcontroller.DJIFlightControllerFlightMode;
+import dji.common.flightcontroller.DJIFlightControllerNoFlyStatus;
 import dji.common.flightcontroller.DJIGPSSignalStatus;
 import dji.common.flightcontroller.DJIGoHomeStatus;
 import dji.sdk.base.DJIBaseProduct;
+import dji.sdk.flightcontroller.DJICompass;
 import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.products.DJIAircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -37,6 +39,17 @@ public class GetFCInfoState extends Task {
             DJIFlightController flightController = aircraft.getFlightController();
             DJIFlightControllerCurrentState curState = flightController.getCurrentState();
             //DJIAircraftRemainingBatteryState batteryState = curState.getRemainingBattery();
+
+            boolean compassError = false;
+            DJICompass compass = flightController.getCompass();
+            if(compass != null) {
+                compassError = compass.hasError();
+            }
+
+            DJIFlightControllerNoFlyStatus noFlyStatus = curState.getNoFlyStatus();
+            boolean noFlyError = ( noFlyStatus != DJIFlightControllerNoFlyStatus.FlyingNormally );
+
+            boolean isIMUPreheating = curState.isIMUPreheating();
 
             int gpsSignalStatus = curState.getGpsSignalStatus().value();
             //飞行中
@@ -71,6 +84,9 @@ public class GetFCInfoState extends Task {
             bundle.putBoolean("reachLimitedRadius", reachLimitedRadius);
             bundle.putInt("gpsSignalStatus", gpsSignalStatus);
 
+            bundle.putBoolean("compassError", compassError);
+            bundle.putBoolean("noFlyError", noFlyError);
+            bundle.putBoolean("isIMUPreheating", isIMUPreheating);
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_INFO_STATE_RESPONSE;
