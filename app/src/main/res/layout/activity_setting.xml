@@ -329,41 +329,41 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_common"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_common"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="gone">-->
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/setting_common"
-            skin:enable="true" />
+        <!--<ImageView-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:src="@drawable/setting_common"-->
+            <!--skin:enable="true" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="@string/common_setting"
-            android:textColor="@color/commonText"
-            skin:enable="true" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="16dp"-->
+            <!--android:text="@string/common_setting"-->
+            <!--android:textColor="@color/commonText"-->
+            <!--skin:enable="true" />-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end|center_vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="end|center_vertical">-->
 
-            <ImageView
-                style="@style/SettingArrow"
-                android:src="@drawable/right_arrow"
-                skin:enable="true" />
-        </LinearLayout>
-    </LinearLayout>
+            <!--<ImageView-->
+                <!--style="@style/SettingArrow"-->
+                <!--android:src="@drawable/right_arrow"-->
+                <!--skin:enable="true" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

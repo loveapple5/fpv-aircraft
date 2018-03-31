@@ -24,7 +24,7 @@ public class SettingActivity extends DJIActivity implements View.OnClickListener
         findViewById(R.id.ll_wifi).setOnClickListener(this);
         findViewById(R.id.ll_battery).setOnClickListener(this);
         findViewById(R.id.ll_ui).setOnClickListener(this);
-        findViewById(R.id.ll_common).setOnClickListener(this);
+        //findViewById(R.id.ll_common).setOnClickListener(this);
         findViewById(R.id.ll_camera).setOnClickListener(this);
         findViewById(R.id.ll_compass).setOnClickListener(this);
         findViewById(R.id.ll_rc).setOnClickListener(this);
@@ -62,10 +62,10 @@ public class SettingActivity extends DJIActivity implements View.OnClickListener
                 Intent uiIntent = new Intent(this, HelmetActivity.class);
                 startActivity(uiIntent);
                 break;
-            case R.id.ll_common:
-                Intent commonIntent = new Intent(this, CommonSettingActivity.class);
-                startActivity(commonIntent);
-                break;
+//            case R.id.ll_common:
+//                Intent commonIntent = new Intent(this, CommonSettingActivity.class);
+//                startActivity(commonIntent);
+//                break;
             case R.id.ll_camera:
                 Intent cameraIntent = new Intent(this, CameraActivity.class);
                 startActivity(cameraIntent);
