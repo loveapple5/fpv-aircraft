@@ -278,6 +278,7 @@
     <string name="forbid_flight">No flight</string>              <!--　禁止飞行 -->
 
     <string name="normal">Normal</string>          <!--　正常 -->
+    <string name="abnormal">Abnormal</string>          <!--　异常 -->
 
     <string name="unknown">Unknown</string>          <!--　未知 -->
 

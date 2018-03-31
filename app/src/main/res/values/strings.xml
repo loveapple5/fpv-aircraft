@@ -149,10 +149,10 @@
     <string name="compass_incorrect">指南针异常</string>
     <string name="rc_setting">遥控器设置</string>
     <string name="data_connect_setting">数据连接设置</string>
-    <string name="battery_setting">智能电池设置</string>
+    <string name="battery_setting">电量报警</string>
     <string name="gimbal_setting">云台设置</string>
     <string name="camera_setting">相机设置</string>
-    <string name="ui_setting">UI设置</string>
+    <string name="ui_setting">飞行头盔设置</string>
     <string name="common_setting">通用设置</string>
 
     <string name="flight_limit">飞行限制</string>
@@ -278,6 +278,7 @@
     <string name="forbid_flight">禁止飞行</string>
 
     <string name="normal">正常</string>
+    <string name="abnormal">异常</string>
 
     <string name="unknown">未知</string>
 
