@@ -34,7 +34,7 @@ public class DJIActivity extends BaseFragmentActivity {
 
     public boolean unregisterDJIMessenger(int messageId, Messenger messenger) {
         Bundle bundle = new Bundle();
-        bundle.putInt("registerMessageId", messageId);
+        bundle.putInt("unregisterMessageId", messageId);
         Message message = Message.obtain();
         message.what = MessageType.MSG_UNREGISTER_MESSENGER;
         message.replyTo = messenger;
