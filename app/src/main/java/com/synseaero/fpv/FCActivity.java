@@ -24,7 +24,7 @@ public class FCActivity extends DJIActivity implements View.OnClickListener {
     private EditText etGoHomeAltitude;
     private SwitchButton sbLed;
     private TextView tvFailSafe;
-    private SwitchButton sbVisionPosition;
+    //private SwitchButton sbVisionPosition;
 
     private TextView tvSmartGoHomeEnergy;
     private SeekBar sbSmartGoHomeEnergy;
@@ -79,12 +79,12 @@ public class FCActivity extends DJIActivity implements View.OnClickListener {
                     sbLed.setCheckedNoEvent(enabled);
                     break;
                 }
-                case MessageType.MSG_GET_VP_ENABLED_RESPONSE:
-                case MessageType.MSG_SET_VP_ENABLED_RESPONSE: {
-                    boolean enabled = bundle.getBoolean("enabled");
-                    sbVisionPosition.setCheckedNoEvent(enabled);
-                    break;
-                }
+//                case MessageType.MSG_GET_VP_ENABLED_RESPONSE:
+//                case MessageType.MSG_SET_VP_ENABLED_RESPONSE: {
+//                    boolean enabled = bundle.getBoolean("enabled");
+//                    sbVisionPosition.setCheckedNoEvent(enabled);
+//                    break;
+//                }
             }
         }
     };
@@ -125,20 +125,20 @@ public class FCActivity extends DJIActivity implements View.OnClickListener {
             }
         });
 
-        sbVisionPosition = (SwitchButton) findViewById(R.id.sb_vision_location);
-        sbVisionPosition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("enabled", isChecked);
-
-                Message message = Message.obtain();
-                message.what = MessageType.MSG_SET_VP_ENABLED;
-                message.setData(bundle);
-                sendDJIMessage(message);
-            }
-        });
+//        sbVisionPosition = (SwitchButton) findViewById(R.id.sb_vision_location);
+//        sbVisionPosition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putBoolean("enabled", isChecked);
+//
+//                Message message = Message.obtain();
+//                message.what = MessageType.MSG_SET_VP_ENABLED;
+//                message.setData(bundle);
+//                sendDJIMessage(message);
+//            }
+//        });
 
         tvSmartGoHomeEnergy = (TextView) findViewById(R.id.tv_smart_go_home_energy);
         sbSmartGoHomeEnergy = (SeekBar) findViewById(R.id.sb_smart_go_home_energy);

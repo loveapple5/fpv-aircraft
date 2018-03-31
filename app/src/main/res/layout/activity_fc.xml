@@ -400,46 +400,46 @@
                     skin:enable="true" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:visibility="gone">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center"
-                    android:text="@string/open_vision_positioning"
-                    android:textColor="@color/commonText"
-                    android:textSize="16dp"
-                    skin:enable="true" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="20dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="@string/open_vision_positioning"-->
+                    <!--android:textColor="@color/commonText"-->
+                    <!--android:textSize="16dp"-->
+                    <!--skin:enable="true" />-->
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="end|center_vertical">-->
 
-                    <com.synseaero.view.SwitchButton
-                        android:id="@+id/sb_vision_location"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:textColor="@color/lightGray2"
-                        fpv:kswBackDrawable="@drawable/bg_switch"
-                        fpv:kswThumbDrawable="@drawable/switch_thumb"
-                        fpv:kswThumbHeight="20dp"
-                        fpv:kswThumbMarginBottom="-7dp"
-                        fpv:kswThumbMarginLeft="-2dp"
-                        fpv:kswThumbMarginRight="-2dp"
-                        fpv:kswThumbMarginTop="-7dp"
-                        fpv:kswThumbWidth="20dp"
-                        skin:enable="true" />
-                </LinearLayout>
-            </LinearLayout>
+                    <!--<com.synseaero.view.SwitchButton-->
+                        <!--android:id="@+id/sb_vision_location"-->
+                        <!--android:layout_width="50dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginEnd="20dp"-->
+                        <!--android:textColor="@color/lightGray2"-->
+                        <!--fpv:kswBackDrawable="@drawable/bg_switch"-->
+                        <!--fpv:kswThumbDrawable="@drawable/switch_thumb"-->
+                        <!--fpv:kswThumbHeight="20dp"-->
+                        <!--fpv:kswThumbMarginBottom="-7dp"-->
+                        <!--fpv:kswThumbMarginLeft="-2dp"-->
+                        <!--fpv:kswThumbMarginRight="-2dp"-->
+                        <!--fpv:kswThumbMarginTop="-7dp"-->
+                        <!--fpv:kswThumbWidth="20dp"-->
+                        <!--skin:enable="true" />-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
 
         </LinearLayout>
