@@ -26,6 +26,8 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
 
     private TextView tvFlyZone;
     private TextView tvCompass;
+    private TextView tvIMU;
+    private TextView tvGimbal;
     //private TextView tvModelCheck;
     private TextView tvWirelessSignal;
     private TextView tvFlightMode;
@@ -38,19 +40,19 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
             Bundle bundle = msg.getData();
             String errDesc = bundle.getString("DJI_DESC", "");
             switch (msg.what) {
-                case MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE: {
-                    int status = bundle.getInt("status");
-                    ivFlyZone.setEnabled(status == 0);
-//                    tvFlyZone.setText();
-                    if (status == 0) {
-                        tvFlyZone.setText(R.string.no_restriction_flight);
-                    } else if (status == 2 || status == 3) {
-                        tvFlyZone.setText(R.string.restrict_flight);
-                    } else {
-                        tvFlyZone.setText(R.string.forbid_flight);
-                    }
-                    break;
-                }
+//                case MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE: {
+//                    int status = bundle.getInt("status");
+//                    ivFlyZone.setEnabled(status == 0);
+////                    tvFlyZone.setText();
+//                    if (status == 0) {
+//                        tvFlyZone.setText(R.string.no_restriction_flight);
+//                    } else if (status == 2 || status == 3) {
+//                        tvFlyZone.setText(R.string.restrict_flight);
+//                    } else {
+//                        tvFlyZone.setText(R.string.forbid_flight);
+//                    }
+//                    break;
+//                }
 //                case MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE: {
 //                    String version = bundle.getString("version");
 //                    tvModelCheck.setText(version);
@@ -73,6 +75,18 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
                     String flightModeStr = bundle.getString("flightModeStr", "");
                     tvFlightMode.setText(flightModeStr);
                     ivFlightMode.setEnabled(true);
+
+                    boolean compassError = bundle.getBoolean("compassError", false);
+                    tvCompass.setText(compassError ? R.string.abnormal : R.string.normal);
+                    ivCompass.setEnabled(!compassError);
+
+                    boolean isIMUPreheating = bundle.getBoolean("isIMUPreheating", false);
+                    tvIMU.setText(isIMUPreheating ? R.string.abnormal : R.string.normal);
+                    ivIMU.setEnabled(!isIMUPreheating);
+
+                    boolean noFlyError = bundle.getBoolean("noFlyError", false);
+                    tvFlyZone.setText(noFlyError ? R.string.abnormal : R.string.normal);
+                    ivFlyZone.setEnabled(!noFlyError);
                     break;
                 }
                 case MessageType.MSG_GET_REMOTE_CONTROLLER_MODE_RESPONSE: {
@@ -96,6 +110,12 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
                     int percent = bundle.getInt("remainingPercent", 0);
                     tvBatteryRemaining.setText(percent + "%");
                     ivBatteryRemaining.setEnabled(true);
+                    break;
+                }
+                case MessageType.MSG_GET_GIMBAL_STATE_RESPONSE: {
+                    boolean isMotorOverloaded = bundle.getBoolean("isMotorOverloaded", false);
+                    tvGimbal.setText(isMotorOverloaded ? R.string.abnormal : R.string.normal);
+                    ivGimbal.setEnabled(!isMotorOverloaded);
                     break;
                 }
             }
@@ -130,6 +150,8 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         tvBatteryRemaining = (TextView) findViewById(R.id.tv_battery_voltage);
         tvSDCardRemaining = (TextView) findViewById(R.id.tv_sdcard);
         tvCompass = (TextView) findViewById(R.id.tv_compass);
+        tvIMU = (TextView) findViewById(R.id.tv_imu);
+        tvGimbal = (TextView) findViewById(R.id.tv_gimbal);
 
         tvRCMode.setOnClickListener(this);
         tvCompass.setOnClickListener(this);
@@ -140,7 +162,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
     @Override
     protected void onStart() {
         super.onStart();
-        registerDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
+        //registerDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
         //registerDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_DIAGNOSTICS_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_SDCARD_STATE_RESPONSE, messenger);
@@ -148,11 +170,15 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         registerDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_REMOTE_CONTROLLER_MODE_RESPONSE, messenger);
         registerDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        registerDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, messenger);
 
-        sendWatchDJIMessage(MessageType.MSG_WATCH_FLY_FORBID_STATUS, 0);
+        //sendWatchDJIMessage(MessageType.MSG_WATCH_FLY_FORBID_STATUS, 0);
         sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 0);
         sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 0);
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 0);
+
+        //watch云台状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 0);
 
 //        Message modelVersionMsg = Message.obtain();
 //        modelVersionMsg.what = MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION;
@@ -170,7 +196,7 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
+        //unregisterDJIMessenger(MessageType.MSG_GET_FLY_FORBID_STATUS_RESPONSE, messenger);
         //unregisterDJIMessenger(MessageType.MSG_GET_AIRCRAFT_FIRM_VERSION_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_DIAGNOSTICS_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_SDCARD_STATE_RESPONSE, messenger);
@@ -178,11 +204,15 @@ public class PrepareActivity extends DJIActivity implements View.OnClickListener
         unregisterDJIMessenger(MessageType.MSG_GET_FC_INFO_STATE_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_REMOTE_CONTROLLER_MODE_RESPONSE, messenger);
         unregisterDJIMessenger(MessageType.MSG_GET_BATTERY_STATE_RESPONSE, messenger);
+        unregisterDJIMessenger(MessageType.MSG_GET_GIMBAL_STATE_RESPONSE, messenger);
 
-        sendWatchDJIMessage(MessageType.MSG_WATCH_FLY_FORBID_STATUS, 1);
+        //sendWatchDJIMessage(MessageType.MSG_WATCH_FLY_FORBID_STATUS, 1);
         sendWatchDJIMessage(MessageType.MSG_WATCH_SDCARD_STATE, 1);
         sendWatchDJIMessage(MessageType.MSG_WATCH_UP_LINK_SIGNAL_QUALITY, 1);
         sendWatchDJIMessage(MessageType.MSG_WATCH_BATTERY_STATE, 1);
+
+        //watch云台状态
+        sendWatchDJIMessage(MessageType.MSG_WATCH_GIMBAL_STATE, 1);
     }
 
 
