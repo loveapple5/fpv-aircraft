@@ -766,6 +766,7 @@ public class FPVFragment extends BaseFragment {
 
 
         menuLayout = (CircleMenuLayout) view.findViewById(R.id.menu_tpv);
+        menuLayout.setMenuTextColor(getResources().getColor(android.R.color.black));
         menuLayout.setMenuItemCount(12);
         menuLayout.setMenuItemIcons(mItemImgs);
         String[] itemTexts = new String[mItemsText.length];

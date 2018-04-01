@@ -111,6 +111,7 @@ public class CircleMenuLayout extends ViewGroup {
 
     private Paint mLinePaint = new Paint();
     private Paint mTextPaint = new Paint();
+    private Paint mCenterPaint = new Paint();
 
     public static final float DEFAULT_TEXT_SIZE = 12;
 
@@ -139,11 +140,22 @@ public class CircleMenuLayout extends ViewGroup {
         mTextPaint.setStyle(Paint.Style.FILL);
         mTextPaint.setColor(color);
         mTextPaint.setTextSize(DensityUtil.dip2px(context, DEFAULT_TEXT_SIZE));
+
+        mCenterPaint.setStrokeWidth(2); // 设置圆环的宽度，这个应该是内边距
+        mCenterPaint.setAntiAlias(true); // 消除锯齿
+        mCenterPaint.setStyle(Paint.Style.FILL); // 设置空心
+//        mPaint.setColor(Color.MAGENTA); // 设置圆环的颜色
+        mCenterPaint.setColor(color);
     }
 
     public void setMenuColor(int color) {
         mLinePaint.setColor(color);
-        mLinePaint.setColor(color);mTextPaint.setColor(color);
+        mLinePaint.setColor(color);
+        invalidate();
+    }
+
+    public void setMenuTextColor(int color) {
+        mTextPaint.setColor(color);
         invalidate();
     }
 
@@ -591,7 +603,7 @@ public class CircleMenuLayout extends ViewGroup {
         int radius2 = center - innerMargin * 2 - childSize / 2 - internalSize;
 
         canvas.drawCircle(center, center, radius, mLinePaint); // 画出圆环
-        canvas.drawCircle(center, center, radius2, mLinePaint); // 画出圆环
+        canvas.drawCircle(center, center, radius2, mCenterPaint); // 画出圆环
 
         if(mItemTexts != null && mItemTexts.length > mCurrentIndex) {
             int strLen = mItemTexts[mCurrentIndex].length();
