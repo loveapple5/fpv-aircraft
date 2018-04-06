@@ -65,7 +65,7 @@ public class BluetoothLeService extends Service {
     public BluetoothGattCharacteristic mNotifyCharacteristic;
 
     public void writeValue(String strValue) {
-        if (mNotifyCharacteristic != null) {
+        if (mNotifyCharacteristic != null && mBluetoothGatt != null) {
             Log.d(TAG, "writeValue:" + strValue);
             mNotifyCharacteristic.setValue(strValue.getBytes());
             mBluetoothGatt.writeCharacteristic(mNotifyCharacteristic);
@@ -142,32 +142,32 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-            Log.e(TAG, "OnCharacteristicWrite");
+            Log.d(TAG, "OnCharacteristicWrite");
         }
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            Log.e(TAG, "OnCharacteristicWrite");
+            Log.d(TAG, "OnCharacteristicWrite");
         }
 
         @Override
         public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor bd, int status) {
-            Log.e(TAG, "onDescriptorRead");
+            Log.d(TAG, "onDescriptorRead");
         }
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor bd, int status) {
-            Log.e(TAG, "onDescriptorWrite");
+            Log.d(TAG, "onDescriptorWrite");
         }
 
         @Override
         public void onReadRemoteRssi(BluetoothGatt gatt, int a, int b) {
-            Log.e(TAG, "onReadRemoteRssi");
+            Log.d(TAG, "onReadRemoteRssi");
         }
 
         @Override
         public void onReliableWriteCompleted(BluetoothGatt gatt, int a) {
-            Log.e(TAG, "onReliableWriteCompleted");
+            Log.d(TAG, "onReliableWriteCompleted");
         }
 
     };
