@@ -199,7 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
-            android:max="50"
+            android:max="35"
             android:maxHeight="6dp"
             android:progressDrawable="@drawable/bg_seekbar"
             android:thumb="@drawable/thumb_seekbar"

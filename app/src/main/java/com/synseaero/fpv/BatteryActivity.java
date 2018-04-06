@@ -1,19 +1,16 @@
 package com.synseaero.fpv;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.synseaero.dji.MessageType;
 import com.synseaero.util.DJIUtils;
@@ -27,6 +24,8 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
     //private EditText etDischargeTime;
     private TextView tvLowEnergy;
     private SeekBar sbLowEnergy;
+
+    private final static int MIN_LOW_ENERGY = 15;
 
     private Handler handler = new Handler() {
 
@@ -108,8 +107,11 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
 
         SharedPreferences sp = getApplicationContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
         int lowEnergyWarningThreshold = sp.getInt("lowEnergyWarningThreshold", DJIUtils.COMMON_LOW_PERCENT);
+        if(lowEnergyWarningThreshold < MIN_LOW_ENERGY) {
+            lowEnergyWarningThreshold = MIN_LOW_ENERGY;
+        }
         tvLowEnergy.setText(String.valueOf(lowEnergyWarningThreshold));
-        sbLowEnergy.setProgress(lowEnergyWarningThreshold);
+        sbLowEnergy.setProgress(lowEnergyWarningThreshold - MIN_LOW_ENERGY);
     }
 
     public void onDestroy() {
@@ -164,7 +166,7 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.fromUser = fromUser;
-            tvLowEnergy.setText(String.valueOf(progress));
+            tvLowEnergy.setText(String.valueOf(progress + MIN_LOW_ENERGY));
         }
 
         @Override
@@ -177,9 +179,12 @@ public class BatteryActivity extends DJIActivity implements View.OnClickListener
             if (this.fromUser) {
                 SharedPreferences sp = getApplicationContext().getSharedPreferences("battery", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("lowEnergyWarningThreshold", seekBar.getProgress());
+
+                int progress = seekBar.getProgress() + MIN_LOW_ENERGY;
+
+                editor.putInt("lowEnergyWarningThreshold", progress);
                 editor.apply();
-                tvLowEnergy.setText(String.valueOf(seekBar.getProgress()));
+                tvLowEnergy.setText(String.valueOf(progress));
             }
         }
     }
