@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true">
+    <item>
         <layer-list>
+            <!--<item android:gravity="center">-->
+                <!--<shape android:shape="oval" android:useLevel="false">-->
+                    <!--<solid android:color="@color/colorWhite" />-->
+                    <!--<size android:width="3dp" android:height="3dp" />-->
+                <!--</shape>-->
+            <!--</item>-->
+
             <item android:gravity="center">
-                <shape android:shape="oval" android:useLevel="false">
+                <shape android:innerRadius="0dp" android:shape="ring" android:thickness="3dp" android:useLevel="false">
                     <solid android:color="@color/colorWhite" />
-                    <size android:width="6dp" android:height="6dp" />
                 </shape>
             </item>
+
             <item android:gravity="center">
                 <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
                     <solid android:color="@color/lightBlue3" />
@@ -16,19 +23,19 @@
 
         </layer-list>
     </item>
-    <item>
-        <layer-list>
-            <item android:gravity="center">
-                <shape android:shape="oval" android:useLevel="false">
-                    <solid android:color="@color/colorWhite" />
-                    <size android:width="6dp" android:height="6dp" />
-                </shape>
-            </item>
-            <item android:gravity="center">
-                <shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
-                    <solid android:color="@color/lightGray2" />
-                </shape>
-            </item>
-        </layer-list>
-    </item>
+    <!--<item>-->
+        <!--<layer-list>-->
+            <!--<item android:gravity="center">-->
+                <!--<shape android:shape="oval" android:useLevel="false">-->
+                    <!--<solid android:color="@color/colorWhite" />-->
+                    <!--<size android:width="6dp" android:height="6dp" />-->
+                <!--</shape>-->
+            <!--</item>-->
+            <!--<item android:gravity="center">-->
+                <!--<shape android:innerRadius="3dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">-->
+                    <!--<solid android:color="@color/transBlue2" />-->
+                <!--</shape>-->
+            <!--</item>-->
+        <!--</layer-list>-->
+    <!--</item>-->
 </selector>
