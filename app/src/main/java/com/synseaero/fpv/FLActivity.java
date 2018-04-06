@@ -84,7 +84,7 @@ public class FLActivity extends DJIActivity implements View.OnClickListener {
                 if (isChecked) {
 
                     Bundle bundle = new Bundle();
-                    bundle.putFloat("height", 50);
+                    bundle.putFloat("height", 30);
 
                     Message setHeightMsg = Message.obtain();
                     setHeightMsg.what = MessageType.MSG_SET_MAX_FLIGHT_HEIGHT;
@@ -93,7 +93,7 @@ public class FLActivity extends DJIActivity implements View.OnClickListener {
 
 
                     Bundle bundle2 = new Bundle();
-                    bundle2.putFloat("radius", 50);
+                    bundle2.putFloat("radius", 30);
 
                     Message setRadiusMsg = Message.obtain();
                     setRadiusMsg.what = MessageType.MSG_SET_MAX_FLIGHT_RADIUS;
