@@ -3,14 +3,11 @@ package com.synseaero.fpv;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.FragmentManager;
@@ -34,9 +31,6 @@ import com.synseaero.fpv.model.PhotoFormatMenuItem;
 import com.synseaero.fpv.model.PhotoRatioMenuItem;
 import com.synseaero.fpv.model.ScreenMenuItem;
 import com.synseaero.fpv.model.ShutterMenuItem;
-import com.synseaero.fpv.model.VideoFormatMenuItem;
-import com.synseaero.fpv.model.VideoFrameRateMenuItem;
-import com.synseaero.fpv.model.VideoRatioMenuItem;
 import com.synseaero.fpv.model.VolumeMenuItem;
 import com.synseaero.fpv.model.WhiteBalanceMenuItem;
 
@@ -69,7 +63,6 @@ public class FPVActivity extends DJIActivity {
 
     private long c2DownTime;
     private long c2UpTime;
-
 
     private Handler handler = new Handler() {
 
@@ -310,11 +303,14 @@ public class FPVActivity extends DJIActivity {
                 break;
             }
             case R.id.menu_map: {
-//                Intent intent = new Intent(this, MapActivity.class);
+
+                mFPVFragment.saveViewMode();
+
+                Intent intent = new Intent(this, MapActivity.class);
 //                intent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
 //                intent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);
-//                startActivity(intent);
-//                finish();
+                startActivity(intent);
+                finish();
                 break;
             }
 //            case R.id.menu_style_1: {
@@ -494,6 +490,9 @@ public class FPVActivity extends DJIActivity {
 
     public void showMenu() {
         if(mMenuFragments.get(0) == mCurMenuFragment) {
+
+            mFPVFragment.saveViewMode();
+
             Intent mapIntent = new Intent(this, MapActivity.class);
 //            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_NAME, mDeviceName);
 //            mapIntent.putExtra(FPVActivity.EXTRAS_DEVICE_ADDRESS, mDeviceAddress);

@@ -31,8 +31,6 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_info_left"
-            android:rotation="8"
-            android:rotationY="20"
             skin:enable="true">
 
             <RatingBar
@@ -104,8 +102,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_info_right"
-            android:rotation="-8"
-            android:rotationY="-20"
             skin:enable="true">
 
             <ImageView
@@ -154,6 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/fpvTopInfo"
+            android:textSize="15dp"
             skin:enable="true"/>
     </LinearLayout>
 
@@ -162,8 +159,7 @@
         android:id="@+id/layout_fpv_left"
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:rotationY="20">
+        android:layout_alignParentStart="true">
         <!--camera-->
         <LinearLayout
             android:id="@+id/layout_fpv_camera"
@@ -176,6 +172,7 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:paddingBottom="5dp"
+            android:visibility="gone"
             skin:enable="true">
 
             <TextView
@@ -228,7 +225,6 @@
             android:layout_marginTop="60dp"
             android:background="@drawable/map_bg"
             android:gravity="center"
-            android:visibility="gone"
             skin:enable="true">
 
             <!--<TextureView-->
@@ -326,6 +322,7 @@
             android:layout_marginEnd="16dp"
             android:rotationX="60"
             android:src="@drawable/direction"
+            android:visibility="gone"
             skin:enable="true" />
 
         <com.synseaero.view.CircleMenuLayout
@@ -387,8 +384,18 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:rotationY="-20">
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_flight_time"
+            skin:enable="true"
+            android:textColor="@color/blue"
+            android:text="00:00:00"
+            android:textSize="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/tv_fpv_flight_height"

@@ -23,18 +23,18 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
     private static final int MSG_PHOTO_FORMAT = 2;
     private static final int MSG_WHITE_BALANCE = 3;
     private static final int MSG_VIDEO_RESOLVE_FRAME_RATE = 4;
-    private static final int MSG_VIDEO_FORMAT = 5;
-    private static final int MSG_VIDEO_STANDARD = 6;
+//    private static final int MSG_VIDEO_FORMAT = 5;
+//    private static final int MSG_VIDEO_STANDARD = 6;
 
 
-    private TextView tvPhotoMode;
+    //private TextView tvPhotoMode;
     private TextView tvPhotoResolve;
     private TextView tvPhotoFormat;
     private TextView tvWhiteBalance;
-    private TextView tvVideoResolve;
-    private TextView tvFrameRate;
-    private TextView tvVideoFormat;
-    private TextView tvVideoSelect;
+//    private TextView tvVideoResolve;
+//    private TextView tvFrameRate;
+//    private TextView tvVideoFormat;
+//    private TextView tvVideoSelect;
 
     private DJICamera djiCamera;
 
@@ -43,8 +43,8 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
     private DJICameraSettingsDef.CameraWhiteBalance whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.Auto;
     private DJICameraSettingsDef.CameraVideoFrameRate frameRate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_24FPS;
     private DJICameraSettingsDef.CameraVideoResolution videoResolution = DJICameraSettingsDef.CameraVideoResolution.Resolution_4096x2160;
-    private DJICameraSettingsDef.CameraVideoFileFormat videoFormat = DJICameraSettingsDef.CameraVideoFileFormat.MOV;
-    private DJICameraSettingsDef.CameraVideoStandard videoStandard = DJICameraSettingsDef.CameraVideoStandard.PAL;
+//    private DJICameraSettingsDef.CameraVideoFileFormat videoFormat = DJICameraSettingsDef.CameraVideoFileFormat.MOV;
+//    private DJICameraSettingsDef.CameraVideoStandard videoStandard = DJICameraSettingsDef.CameraVideoStandard.PAL;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -61,21 +61,21 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
                     int whiteBalanceId = DJIUtils.getMapValue(DJIUtils.whiteBalanceMap, whiteBalance);
                     tvWhiteBalance.setText(whiteBalanceId);
                     break;
-                case MSG_VIDEO_RESOLVE_FRAME_RATE:
-                    int resolutionId = DJIUtils.getMapValue(DJIUtils.videoResolutionMap, videoResolution);
-                    tvVideoResolve.setText(getString(resolutionId));
-                    int rateId = DJIUtils.getMapValue(DJIUtils.frameRateMap, frameRate);
-                    tvFrameRate.setText(getString(rateId));
-
-                    break;
-                case MSG_VIDEO_FORMAT:
-                    int videoFormatId = DJIUtils.getMapValue(DJIUtils.videoFormatMap, videoFormat);
-                    tvVideoFormat.setText(videoFormatId);
-                    break;
-                case MSG_VIDEO_STANDARD:
-                    int videoStandardId = DJIUtils.getMapValue(DJIUtils.videoStandardMap, videoStandard);
-                    tvVideoSelect.setText(videoStandardId);
-                    break;
+//                case MSG_VIDEO_RESOLVE_FRAME_RATE:
+//                    int resolutionId = DJIUtils.getMapValue(DJIUtils.videoResolutionMap, videoResolution);
+//                    tvVideoResolve.setText(getString(resolutionId));
+//                    int rateId = DJIUtils.getMapValue(DJIUtils.frameRateMap, frameRate);
+//                    tvFrameRate.setText(getString(rateId));
+//
+//                    break;
+//                case MSG_VIDEO_FORMAT:
+//                    int videoFormatId = DJIUtils.getMapValue(DJIUtils.videoFormatMap, videoFormat);
+//                    tvVideoFormat.setText(videoFormatId);
+//                    break;
+//                case MSG_VIDEO_STANDARD:
+//                    int videoStandardId = DJIUtils.getMapValue(DJIUtils.videoStandardMap, videoStandard);
+//                    tvVideoSelect.setText(videoStandardId);
+//                    break;
             }
         }
     };
@@ -118,8 +118,8 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
                 djiCamera.getPhotoFileFormat(new PhotoFormatCallback());
                 djiCamera.getWhiteBalanceAndColorTemperature(new WhiteBalanceCallback());
                 djiCamera.getVideoResolutionAndFrameRate(new VideoResolutionCallback());
-                djiCamera.getVideoFileFormat(new VideoFormatCallback());
-                djiCamera.getVideoStandard(new VideoStandardCallback());
+//                djiCamera.getVideoFileFormat(new VideoFormatCallback());
+//                djiCamera.getVideoStandard(new VideoStandardCallback());
             }
         }
     }
@@ -200,41 +200,41 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
         }
     }
 
-    class VideoFormatCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraVideoFileFormat> {
-
-        @Override
-        public void onSuccess(DJICameraSettingsDef.CameraVideoFileFormat cameraVideoFileFormat) {
-            if (DJIUtils.videoFormatMap.containsKey(cameraVideoFileFormat)) {
-                videoFormat = cameraVideoFileFormat;
-            }
-            Message msg = Message.obtain();
-            msg.what = MSG_VIDEO_FORMAT;
-            handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    }
-
-    class VideoStandardCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraVideoStandard> {
-
-        @Override
-        public void onSuccess(DJICameraSettingsDef.CameraVideoStandard cameraVideoStandard) {
-            if (DJIUtils.videoStandardMap.containsKey(cameraVideoStandard)) {
-                videoStandard = cameraVideoStandard;
-            }
-            Message msg = Message.obtain();
-            msg.what = MSG_VIDEO_STANDARD;
-            handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onFailure(DJIError djiError) {
-
-        }
-    }
+//    class VideoFormatCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraVideoFileFormat> {
+//
+//        @Override
+//        public void onSuccess(DJICameraSettingsDef.CameraVideoFileFormat cameraVideoFileFormat) {
+//            if (DJIUtils.videoFormatMap.containsKey(cameraVideoFileFormat)) {
+//                videoFormat = cameraVideoFileFormat;
+//            }
+//            Message msg = Message.obtain();
+//            msg.what = MSG_VIDEO_FORMAT;
+//            handler.sendMessage(msg);
+//        }
+//
+//        @Override
+//        public void onFailure(DJIError djiError) {
+//
+//        }
+//    }
+//
+//    class VideoStandardCallback implements DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraVideoStandard> {
+//
+//        @Override
+//        public void onSuccess(DJICameraSettingsDef.CameraVideoStandard cameraVideoStandard) {
+//            if (DJIUtils.videoStandardMap.containsKey(cameraVideoStandard)) {
+//                videoStandard = cameraVideoStandard;
+//            }
+//            Message msg = Message.obtain();
+//            msg.what = MSG_VIDEO_STANDARD;
+//            handler.sendMessage(msg);
+//        }
+//
+//        @Override
+//        public void onFailure(DJIError djiError) {
+//
+//        }
+//    }
 
     @Override
     public void onClick(View v) {
@@ -436,58 +436,58 @@ public class CameraActivity extends DJIActivity implements View.OnClickListener 
                 .addSheetItem(getString(strResIds[2]), ActionSheetDialog.SheetItemColor.Black, listener).show();
     }
 
-    private void showVideoFormatMenu() {
-
-        final int[] strResIds = new int[]{R.string.mov, R.string.mp4};
-
-        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(TextView v, int which) {
-                Object key = DJIUtils.getMapKey(DJIUtils.videoFormatMap, strResIds[which - 1]);
-                if (key instanceof DJICameraSettingsDef.CameraVideoFileFormat) {
-                    DJICameraSettingsDef.CameraVideoFileFormat format = (DJICameraSettingsDef.CameraVideoFileFormat) key;
-                    djiCamera.setVideoFileFormat(format, null);
-
-                    videoFormat = format;
-                    Message msg = Message.obtain();
-                    msg.what = MSG_VIDEO_FORMAT;
-                    handler.sendMessage(msg);
-                }
-            }
-        };
-
-        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
-                .addSheetItem(getString(strResIds[0]), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(strResIds[1]), ActionSheetDialog.SheetItemColor.Black, listener).show();
-    }
-
-    private void showVideoSelectMenu() {
-
-        final int[] strResIds = new int[]{R.string.pal, R.string.ntsc};
-
-        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(TextView v, int which) {
-
-                Object key = DJIUtils.getMapKey(DJIUtils.videoStandardMap, strResIds[which - 1]);
-                if (key instanceof DJICameraSettingsDef.CameraVideoStandard) {
-                    DJICameraSettingsDef.CameraVideoStandard standard = (DJICameraSettingsDef.CameraVideoStandard) key;
-                    djiCamera.setVideoStandard(standard, null);
-
-                    videoStandard = standard;
-                    Message msg = Message.obtain();
-                    msg.what = MSG_VIDEO_STANDARD;
-                    handler.sendMessage(msg);
-                }
-            }
-        };
-
-        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
-                .addSheetItem(getString(strResIds[0]), ActionSheetDialog.SheetItemColor.Black, listener)
-                .addSheetItem(getString(strResIds[1]), ActionSheetDialog.SheetItemColor.Black, listener).show();
-    }
+//    private void showVideoFormatMenu() {
+//
+//        final int[] strResIds = new int[]{R.string.mov, R.string.mp4};
+//
+//        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
+//
+//            @Override
+//            public void onClick(TextView v, int which) {
+//                Object key = DJIUtils.getMapKey(DJIUtils.videoFormatMap, strResIds[which - 1]);
+//                if (key instanceof DJICameraSettingsDef.CameraVideoFileFormat) {
+//                    DJICameraSettingsDef.CameraVideoFileFormat format = (DJICameraSettingsDef.CameraVideoFileFormat) key;
+//                    djiCamera.setVideoFileFormat(format, null);
+//
+//                    videoFormat = format;
+//                    Message msg = Message.obtain();
+//                    msg.what = MSG_VIDEO_FORMAT;
+//                    handler.sendMessage(msg);
+//                }
+//            }
+//        };
+//
+//        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
+//                .addSheetItem(getString(strResIds[0]), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(strResIds[1]), ActionSheetDialog.SheetItemColor.Black, listener).show();
+//    }
+//
+//    private void showVideoSelectMenu() {
+//
+//        final int[] strResIds = new int[]{R.string.pal, R.string.ntsc};
+//
+//        ActionSheetDialog.OnSheetItemClickListener listener = new ActionSheetDialog.OnSheetItemClickListener() {
+//
+//            @Override
+//            public void onClick(TextView v, int which) {
+//
+//                Object key = DJIUtils.getMapKey(DJIUtils.videoStandardMap, strResIds[which - 1]);
+//                if (key instanceof DJICameraSettingsDef.CameraVideoStandard) {
+//                    DJICameraSettingsDef.CameraVideoStandard standard = (DJICameraSettingsDef.CameraVideoStandard) key;
+//                    djiCamera.setVideoStandard(standard, null);
+//
+//                    videoStandard = standard;
+//                    Message msg = Message.obtain();
+//                    msg.what = MSG_VIDEO_STANDARD;
+//                    handler.sendMessage(msg);
+//                }
+//            }
+//        };
+//
+//        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true)
+//                .addSheetItem(getString(strResIds[0]), ActionSheetDialog.SheetItemColor.Black, listener)
+//                .addSheetItem(getString(strResIds[1]), ActionSheetDialog.SheetItemColor.Black, listener).show();
+//    }
 
 
 }

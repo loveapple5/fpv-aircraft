@@ -117,7 +117,7 @@ public class FPVFragment extends BaseFragment {
     private LinearLayout llFpvCamera;
     private RelativeLayout rlTpvCamera;
     private LinearLayout llPreview;
-
+    private TextView tvFlightTime;
 
     private TextureView tvPreview;
     //private TextureView tvTpvPreview;
@@ -140,9 +140,10 @@ public class FPVFragment extends BaseFragment {
     public static final int MODE_FPV = 2;
     public static final int MODE_MENU = 3;
 
-    private int mode = MODE_TPV;
-    private int lastMode = MODE_TPV;
+    private int mode = 0;
+    private int lastMode = 0;
 
+    public static int fpvMode = MODE_TPV;
 
     //综合信息栏信息map
     private TreeMap<Integer, FlightInformation> flightInfoMap = new TreeMap<>();
@@ -183,7 +184,9 @@ public class FPVFragment extends BaseFragment {
     private RatingBar rbRc;
     private RatingBar rbGps;
 
-    private Timer timer;
+    private Timer timer1;
+
+    private Timer timer2;
 
     private long enterTime;
 
@@ -282,7 +285,10 @@ public class FPVFragment extends BaseFragment {
                     LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
 
                     CameraPosition cameraPosition = aMap.getCameraPosition();
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
+                    if(cameraPosition != null) {
+                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
+                    }
+
 
                     if (aircraftMarker != null) {
                         aircraftMarker.remove();
@@ -415,6 +421,11 @@ public class FPVFragment extends BaseFragment {
                     boolean reachLimitedHeight = bundle.getBoolean("reachLimitedHeight", false);
                     boolean reachLimitedRadius = bundle.getBoolean("reachLimitedRadius", false);
 
+                    int flightTime = bundle.getInt("flightTime");
+
+                    String strFlightTime = StringUtils.getTime(flightTime / 10);
+                    tvFlightTime.setText(strFlightTime);
+
                     //记录起飞时间
                     if (FPVFragment.this.isFlying != isFlying) {
                         FPVFragment.this.isFlying = isFlying;
@@ -500,7 +511,7 @@ public class FPVFragment extends BaseFragment {
                             llVideoIndicator.setVisibility(View.GONE);
                             AnimationDrawable animationDrawable = (AnimationDrawable) ivVideoIndicator.getDrawable();
                             animationDrawable.stop();
-                            tvVideoTime.setText(0);
+                            tvVideoTime.setText(StringUtils.secondToTime(0));
                         }
                     }
                     break;
@@ -523,6 +534,9 @@ public class FPVFragment extends BaseFragment {
     private Messenger messenger = new Messenger(mHandler);
 
     public void setMode(int mode) {
+        if(this.mode == mode) {
+            return;
+        }
         this.lastMode = this.mode;
         this.mode = mode;
         if (this.mode == MODE_FPV) {
@@ -804,6 +818,8 @@ public class FPVFragment extends BaseFragment {
 
         tvFlightVerticalSpeed.addTextChangedListener(new VSpeedWatcher());
 
+        tvFlightTime = (TextView) view.findViewById(R.id.tv_flight_time);
+
         mapView.onCreate(savedInstanceState);
         aMap = mapView.getMap();
         //aMap.getUiSettings().setZoomControlsEnabled(false);
@@ -814,9 +830,10 @@ public class FPVFragment extends BaseFragment {
         mSensorManager.registerListener(sensorEventListener, accelerometer, Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(sensorEventListener, magnetic, Sensor.TYPE_MAGNETIC_FIELD);
 
-        setMode(MODE_TPV);
+
+        setMode(fpvMode);
         FPVApplication app = (FPVApplication) activity.getApplication();
-        app.writeBleValue("FLAG-TPV");
+        app.writeBleValue(fpvMode == MODE_TPV ? "FLAG-TPV" : "FLAG-FPV");
 
         //watch camera exposure状态变化
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_EXPOSURE, 0);
@@ -839,21 +856,28 @@ public class FPVFragment extends BaseFragment {
         message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION;
         activity.sendDJIMessage(message);
 
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
+        timer1 = new Timer();
+        timer1.schedule(new TimerTask() {
             @Override
             public void run() {
-
-                Message message = Message.obtain();
-                message.what = MessageType.MSG_GET_FC_STATE;
-
-                activity.sendDJIMessage(message);
 
                 Message message2 = Message.obtain();
                 message2.what = MessageType.MSG_GET_FC_INFO_STATE;
                 activity.sendDJIMessage(message2);
             }
         }, 2000, 1000);
+
+        timer2 = new Timer();
+        timer2.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                Message message = Message.obtain();
+                message.what = MessageType.MSG_GET_FC_STATE;
+                activity.sendDJIMessage(message);
+
+            }
+        }, 2000, 200);
 
         enterTime = System.currentTimeMillis();
         return view;
@@ -881,7 +905,8 @@ public class FPVFragment extends BaseFragment {
         //停止watch camera状态
         activity.sendWatchDJIMessage(MessageType.MSG_WATCH_CAMERA_STATUS, 1);
 
-        timer.cancel();
+        timer1.cancel();
+        timer2.cancel();
     }
 
     @Override
@@ -1207,5 +1232,13 @@ public class FPVFragment extends BaseFragment {
         }
 
 
+    }
+
+    public void saveViewMode() {
+        if(mode != MODE_MENU) {
+            fpvMode = mode;
+        } else {
+            fpvMode = lastMode;
+        }
     }
 }

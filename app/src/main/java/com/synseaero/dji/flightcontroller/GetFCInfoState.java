@@ -71,6 +71,7 @@ public class GetFCInfoState extends Task {
             boolean reachLimitedHeight = curState.isReachLimitedHeight();
             //到达最大飞行距离
             boolean reachLimitedRadius = curState.isReachLimitedRadius();
+            int flightTime = curState.getFlightTime();
 
             Bundle bundle = new Bundle();
             bundle.putBoolean("isFlying", isFlying);
@@ -87,6 +88,7 @@ public class GetFCInfoState extends Task {
             bundle.putBoolean("compassError", compassError);
             bundle.putBoolean("noFlyError", noFlyError);
             bundle.putBoolean("isIMUPreheating", isIMUPreheating);
+            bundle.putInt("flightTime", flightTime);
 
             Message message = Message.obtain();
             message.what = MessageType.MSG_GET_FC_INFO_STATE_RESPONSE;

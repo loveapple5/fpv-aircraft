@@ -89,7 +89,9 @@ public class MapActivity extends DJIActivity {
                     LatLng transAircraftPosition = convert(aircraftPosition, CoordinateConverter.CoordType.GPS);
 
                     CameraPosition cameraPosition = aMap.getCameraPosition();
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
+                    if(cameraPosition != null) {
+                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(transAircraftPosition, cameraPosition.zoom));
+                    }
 
                     if (aircraftMarker != null) {
                         aircraftMarker.remove();
@@ -132,8 +134,8 @@ public class MapActivity extends DJIActivity {
         uiSettings.setScaleControlsEnabled(true);
         uiSettings.setMyLocationButtonEnabled(false);
 
-        FPVApplication app = (FPVApplication) getApplication();
-        app.writeBleValue("FLAG-FPV");
+//        FPVApplication app = (FPVApplication) getApplication();
+//        app.writeBleValue("FLAG-FPV");
 
 //        final Intent intent = getIntent();
 //        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
