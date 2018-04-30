@@ -113,7 +113,7 @@ public class CircleMenuLayout extends ViewGroup {
     private Paint mTextPaint = new Paint();
     private Paint mCenterPaint = new Paint();
 
-    public static final float DEFAULT_TEXT_SIZE = 12;
+    public static final float DEFAULT_TEXT_SIZE = 14;
 
     private HashMap<Integer, Integer> itemImgMap = new HashMap();
 
