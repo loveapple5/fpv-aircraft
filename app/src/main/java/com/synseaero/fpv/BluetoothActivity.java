@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -129,6 +131,14 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
 
     }
 
+    public static boolean isGpsEnable(final Context context) {
+        LocationManager locationManager
+                = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return gps || network;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE_ACCESS_COARSE_LOCATION) {
@@ -136,7 +146,14 @@ public class BluetoothActivity extends DJIActivity implements View.OnClickListen
                 //用户允许改权限，0表示允许，-1表示拒绝 PERMISSION_GRANTED = 0， PERMISSION_DENIED = -1
                 //permission was granted, yay! Do the contacts-related task you need to do.
                 //这里进行授权被允许的处理
-                mLeHandler.sendEmptyMessage(MSG_START_SCAN);
+                //判断gps权限
+                if(isGpsEnable(this)) {
+                    mLeHandler.sendEmptyMessage(MSG_START_SCAN);
+                } else {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(intent,requestCode);
+                }
+
             } else {
                 //permission denied, boo! Disable the functionality that depends on this permission.
                 //这里进行权限被拒绝的处理
