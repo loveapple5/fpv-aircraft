@@ -19,28 +19,30 @@ public class PhotoRatioMenuItem extends MenuItem {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         if (djiAircraft != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
-            djiCamera.getPhotoRatio(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoAspectRatio>() {
+            if(djiCamera !=null) {
+                djiCamera.getPhotoRatio(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoAspectRatio>() {
 
-                @Override
-                public void onSuccess(DJICameraSettingsDef.CameraPhotoAspectRatio cameraPhotoAspectRatio) {
-                    switch(cameraPhotoAspectRatio) {
-                        case AspectRatio_4_3:
-                            curValue = values[0];
-                            break;
-                        case AspectRatio_16_9:
-                            curValue = values[1];
-                            break;
+                    @Override
+                    public void onSuccess(DJICameraSettingsDef.CameraPhotoAspectRatio cameraPhotoAspectRatio) {
+                        switch (cameraPhotoAspectRatio) {
+                            case AspectRatio_4_3:
+                                curValue = values[0];
+                                break;
+                            case AspectRatio_16_9:
+                                curValue = values[1];
+                                break;
+                        }
+                        if (fetchCallback != null) {
+                            fetchCallback.onFetch(PhotoRatioMenuItem.this);
+                        }
                     }
-                    if(fetchCallback != null) {
-                        fetchCallback.onFetch(PhotoRatioMenuItem.this);
+
+                    @Override
+                    public void onFailure(DJIError djiError) {
+
                     }
-                }
-
-                @Override
-                public void onFailure(DJIError djiError) {
-
-                }
-            });
+                });
+            }
         }
     }
 
@@ -48,11 +50,13 @@ public class PhotoRatioMenuItem extends MenuItem {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         if (djiAircraft != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
-            DJICameraSettingsDef.CameraPhotoAspectRatio ratio = DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_4_3;
-            if(curValue.equals(values[1])) {
-                ratio =  DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_16_9;
+            if(djiCamera !=null) {
+                DJICameraSettingsDef.CameraPhotoAspectRatio ratio = DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_4_3;
+                if (curValue.equals(values[1])) {
+                    ratio = DJICameraSettingsDef.CameraPhotoAspectRatio.AspectRatio_16_9;
+                }
+                djiCamera.setPhotoRatio(ratio, null);
             }
-            djiCamera.setPhotoRatio(ratio, null);
         }
     }
 }

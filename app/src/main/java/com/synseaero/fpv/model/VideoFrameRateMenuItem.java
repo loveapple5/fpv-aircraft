@@ -19,7 +19,7 @@ public class VideoFrameRateMenuItem extends MenuItem {
 
     public void fetchCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             djiCamera.getVideoResolutionAndFrameRate(new DJICommonCallbacks.DJICompletionCallbackWithTwoParam<DJICameraSettingsDef.CameraVideoResolution, DJICameraSettingsDef.CameraVideoFrameRate>() {
 
@@ -52,7 +52,7 @@ public class VideoFrameRateMenuItem extends MenuItem {
 
     public void submitCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             DJICameraSettingsDef.CameraVideoFrameRate frameRate = DJICameraSettingsDef.CameraVideoFrameRate.FrameRate_24FPS;
             if (curValue.equals(values[1])) {

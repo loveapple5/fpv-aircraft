@@ -42,7 +42,9 @@ public class WatchExposure extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            camera.setCameraUpdatedCurrentExposureValuesCallback(callback);
+            if(camera != null) {
+                camera.setCameraUpdatedCurrentExposureValuesCallback(callback);
+            }
         }
 
     }

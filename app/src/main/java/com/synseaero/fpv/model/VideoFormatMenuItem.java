@@ -17,7 +17,7 @@ public class VideoFormatMenuItem extends MenuItem {
 
     public void fetchCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             djiCamera.getVideoFileFormat(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraVideoFileFormat>() {
 
@@ -46,7 +46,7 @@ public class VideoFormatMenuItem extends MenuItem {
 
     public void submitCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             DJICameraSettingsDef.CameraVideoFileFormat format = DJICameraSettingsDef.CameraVideoFileFormat.MOV;
             if (curValue.equals(values[1])) {

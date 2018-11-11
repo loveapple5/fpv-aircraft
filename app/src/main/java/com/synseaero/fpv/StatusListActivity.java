@@ -290,7 +290,10 @@ public class StatusListActivity extends FragmentActivity {
 
 
         djiCamera = djiAircraft.getCamera();
-        djiCamera.setDJIUpdateCameraSDCardStateCallBack(new SDCardCallback());
+        if(djiCamera != null ) {
+            djiCamera.setDJIUpdateCameraSDCardStateCallBack(new SDCardCallback());
+        }
+
 
 
 

@@ -17,8 +17,9 @@ public class ShutterMenuItem extends MenuItem {
 
     public void fetchCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
+
             djiCamera.getExposureMode(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraExposureMode>() {
                 @Override
                 public void onSuccess(DJICameraSettingsDef.CameraExposureMode cameraExposureMode) {
@@ -43,7 +44,7 @@ public class ShutterMenuItem extends MenuItem {
 
     public void submitCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             DJICameraSettingsDef.CameraExposureMode curMode = DJICameraSettingsDef.CameraExposureMode.Program;
             if (curValue.equals(values[1])) {

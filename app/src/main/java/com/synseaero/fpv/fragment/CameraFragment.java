@@ -131,7 +131,9 @@ public class CameraFragment extends Fragment {
                         iso = DJICameraSettingsDef.CameraISO.ISO_100;
                         break;
                 }
-                djiCamera.setISO(iso, null);
+                if(djiCamera !=null) {
+                    djiCamera.setISO(iso, null);
+                }
             }
 
             @Override
@@ -212,8 +214,9 @@ public class CameraFragment extends Fragment {
                         compensation = DJICameraSettingsDef.CameraExposureCompensation.N_0_3;
                         break;
                 }
-
-                djiCamera.setExposureCompensation(compensation, null);
+                if(djiCamera !=null) {
+                    djiCamera.setExposureCompensation(compensation, null);
+                }
             }
 
             @Override

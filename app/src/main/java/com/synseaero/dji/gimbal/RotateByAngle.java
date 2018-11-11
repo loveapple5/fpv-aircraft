@@ -58,10 +58,11 @@ public class RotateByAngle extends Task {
                 Log.d("RotateByAngle", "mYawRotation.angle:" + mYawRotation.angle);
             //}
 
-            gimbal.rotateGimbalByAngle(DJIGimbalRotateAngleMode.AbsoluteAngle, mPitchRotation, mRollRotation, mYawRotation,
-                    new DJICommonCallbacks.DJICompletionCallback() {
-                        @Override
-                        public void onResult(DJIError djiError) {
+            if(gimbal != null) {
+                gimbal.rotateGimbalByAngle(DJIGimbalRotateAngleMode.AbsoluteAngle, mPitchRotation, mRollRotation, mYawRotation,
+                        new DJICommonCallbacks.DJICompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
 //                            Message message = Message.obtain();
 //                            message.what = MessageType.MSG_ROTATE_GIMBAL_BY_ANGLE_RESPONSE;
 //                            Bundle bundle = new Bundle();
@@ -74,10 +75,11 @@ public class RotateByAngle extends Task {
 //                            } catch (RemoteException e) {
 //
 //                            }
+                            }
                         }
-                    }
-            );
+                );
 
+            }
         }
     }
 }

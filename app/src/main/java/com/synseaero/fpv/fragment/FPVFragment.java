@@ -963,7 +963,10 @@ public class FPVFragment extends BaseFragment {
         if (product != null && product.isConnected()) {
             DJICamera camera = product.getCamera();
             // Set the callback
-            camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
+            if(camera != null) {
+                camera.setDJICameraReceivedVideoDataCallback(mReceivedVideoDataCallBack);
+            }
+
         }
 
     }
@@ -981,7 +984,10 @@ public class FPVFragment extends BaseFragment {
         if (product != null && product.isConnected()) {
             DJICamera camera = product.getCamera();
             // Reset the callback
-            camera.setDJICameraReceivedVideoDataCallback(null);
+            if(camera != null) {
+                camera.setDJICameraReceivedVideoDataCallback(null);
+            }
+
         }
 
 

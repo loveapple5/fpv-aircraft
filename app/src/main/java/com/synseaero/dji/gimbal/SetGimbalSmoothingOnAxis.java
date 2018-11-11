@@ -32,25 +32,27 @@ public class SetGimbalSmoothingOnAxis extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIGimbal gimbal = aircraft.getGimbal();
-            gimbal.setControllerSmoothingOnAxis(DJIGimbalAxis.Pitch, smoothing, new DJICommonCallbacks.DJICompletionCallback() {
+            if(gimbal != null) {
+                gimbal.setControllerSmoothingOnAxis(DJIGimbalAxis.Pitch, smoothing, new DJICommonCallbacks.DJICompletionCallback() {
 
-                @Override
-                public void onResult(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_SET_SMOOTHING_ON_AXIS_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("smoothing", smoothing);
-                    if (djiError != null) {
-                        bundle.putString("DJI_DESC", djiError.getDescription());
-                    }
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_SET_SMOOTHING_ON_AXIS_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("smoothing", smoothing);
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
+                        }
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
 
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

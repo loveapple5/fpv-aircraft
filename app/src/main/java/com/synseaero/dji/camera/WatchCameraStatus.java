@@ -28,10 +28,12 @@ public class WatchCameraStatus extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            if (flag == 0) {
-                camera.setDJICameraUpdatedSystemStateCallback(callback);
-            } else {
-                camera.setDJICameraUpdatedSystemStateCallback(null);
+            if(camera != null) {
+                if (flag == 0) {
+                    camera.setDJICameraUpdatedSystemStateCallback(callback);
+                } else {
+                    camera.setDJICameraUpdatedSystemStateCallback(null);
+                }
             }
         }
     }

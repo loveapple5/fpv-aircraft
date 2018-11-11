@@ -19,28 +19,30 @@ public class PhotoFormatMenuItem extends MenuItem {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         if (djiAircraft != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
-            djiCamera.getPhotoFileFormat(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoFileFormat>() {
+            if(djiCamera !=null) {
+                djiCamera.getPhotoFileFormat(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoFileFormat>() {
 
-                @Override
-                public void onSuccess(DJICameraSettingsDef.CameraPhotoFileFormat cameraPhotoFileFormat) {
-                    switch (cameraPhotoFileFormat) {
-                        case JPEG:
-                            curValue = values[0];
-                            break;
-                        case RAW:
-                            curValue = values[1];
-                            break;
+                    @Override
+                    public void onSuccess(DJICameraSettingsDef.CameraPhotoFileFormat cameraPhotoFileFormat) {
+                        switch (cameraPhotoFileFormat) {
+                            case JPEG:
+                                curValue = values[0];
+                                break;
+                            case RAW:
+                                curValue = values[1];
+                                break;
+                        }
+                        if (fetchCallback != null) {
+                            fetchCallback.onFetch(PhotoFormatMenuItem.this);
+                        }
                     }
-                    if (fetchCallback != null) {
-                        fetchCallback.onFetch(PhotoFormatMenuItem.this);
+
+                    @Override
+                    public void onFailure(DJIError djiError) {
+
                     }
-                }
-
-                @Override
-                public void onFailure(DJIError djiError) {
-
-                }
-            });
+                });
+            }
         }
     }
 
@@ -48,11 +50,13 @@ public class PhotoFormatMenuItem extends MenuItem {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         if (djiAircraft != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
-            DJICameraSettingsDef.CameraPhotoFileFormat format = DJICameraSettingsDef.CameraPhotoFileFormat.JPEG;
-            if(curValue.equals(values[1])) {
-                format =  DJICameraSettingsDef.CameraPhotoFileFormat.RAW;
+            if(djiCamera !=null) {
+                DJICameraSettingsDef.CameraPhotoFileFormat format = DJICameraSettingsDef.CameraPhotoFileFormat.JPEG;
+                if (curValue.equals(values[1])) {
+                    format = DJICameraSettingsDef.CameraPhotoFileFormat.RAW;
+                }
+                djiCamera.setPhotoFileFormat(format, null);
             }
-            djiCamera.setPhotoFileFormat(format, null);
         }
     }
 }

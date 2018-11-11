@@ -68,7 +68,10 @@ public class CameraVideoFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 DJICameraSettingsDef.CameraVideoFileFormat format = DJICameraSettingsDef.CameraVideoFileFormat.find(i);
-                djiCamera.setVideoFileFormat(format, null);
+                if(djiCamera != null) {
+                    djiCamera.setVideoFileFormat(format, null);
+                }
+
             }
 
             @Override

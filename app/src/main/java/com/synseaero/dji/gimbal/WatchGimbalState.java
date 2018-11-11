@@ -27,12 +27,14 @@ public class WatchGimbalState extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIGimbal gimbal = aircraft.getGimbal();
-
-            if (flag == 0) {
-                gimbal.setGimbalStateUpdateCallback(callback);
-            } else {
-                gimbal.setGimbalStateUpdateCallback(null);
+            if(gimbal != null) {
+                if (flag == 0) {
+                    gimbal.setGimbalStateUpdateCallback(callback);
+                } else {
+                    gimbal.setGimbalStateUpdateCallback(null);
+                }
             }
+
 
         }
     }

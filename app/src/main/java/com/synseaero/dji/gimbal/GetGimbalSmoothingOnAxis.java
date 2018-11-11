@@ -30,36 +30,38 @@ public class GetGimbalSmoothingOnAxis extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIGimbal gimbal = aircraft.getGimbal();
-            gimbal.getControllerSmoothingOnAxis(DJIGimbalAxis.Pitch, new DJICommonCallbacks.DJICompletionCallbackWith<Integer>() {
+            if(gimbal != null) {
+                gimbal.getControllerSmoothingOnAxis(DJIGimbalAxis.Pitch, new DJICommonCallbacks.DJICompletionCallbackWith<Integer>() {
 
-                @Override
-                public void onSuccess(Integer smoothing) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_SMOOTHING_ON_AXIS_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("smoothing", smoothing);
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
+                    @Override
+                    public void onSuccess(Integer smoothing) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_SMOOTHING_ON_AXIS_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("smoothing", smoothing);
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
 
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_SMOOTHING_ON_AXIS_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putString("DJI_DESC", djiError.getDescription());
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
+                    @Override
+                    public void onFailure(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_SMOOTHING_ON_AXIS_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putString("DJI_DESC", djiError.getDescription());
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
 
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

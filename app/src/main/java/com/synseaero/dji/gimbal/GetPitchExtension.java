@@ -29,36 +29,38 @@ public class GetPitchExtension extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIGimbal gimbal = aircraft.getGimbal();
-            gimbal.getPitchRangeExtensionEnabled(new DJICommonCallbacks.DJICompletionCallbackWith<Boolean>() {
+            if(gimbal != null) {
+                gimbal.getPitchRangeExtensionEnabled(new DJICommonCallbacks.DJICompletionCallbackWith<Boolean>() {
 
-                @Override
-                public void onSuccess(Boolean aBoolean) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("pitchExtensionEnable", aBoolean);
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("pitchExtensionEnable", aBoolean);
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
 
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putString("DJI_DESC", djiError.getDescription());
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
+                    @Override
+                    public void onFailure(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_GIMBAL_PITCH_EXTENSION_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putString("DJI_DESC", djiError.getDescription());
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
 
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

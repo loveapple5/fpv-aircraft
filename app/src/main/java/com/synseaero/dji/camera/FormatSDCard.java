@@ -28,24 +28,27 @@ public class FormatSDCard extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            camera.formatSDCard(new DJICommonCallbacks.DJICompletionCallback() {
+            if(camera != null) {
+                camera.formatSDCard(new DJICommonCallbacks.DJICompletionCallback() {
 
-                @Override
-                public void onResult(DJIError djiError) {
-                    Bundle bundle = new Bundle();
-                    if (djiError != null) {
-                        bundle.putString("DJI_DESC", djiError.getDescription());
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        Bundle bundle = new Bundle();
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
+                        }
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_FORMAT_SDCARD_RESPONSE;
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_FORMAT_SDCARD_RESPONSE;
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+                });
+            }
+
         }
     }
 }

@@ -17,7 +17,7 @@ public class WhiteBalanceMenuItem extends MenuItem {
 
     public void fetchCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             djiCamera.getWhiteBalanceAndColorTemperature(new DJICommonCallbacks.DJICompletionCallbackWithTwoParam<DJICameraSettingsDef.CameraWhiteBalance, Integer>() {
 
@@ -49,7 +49,7 @@ public class WhiteBalanceMenuItem extends MenuItem {
 
     public void submitCurValue() {
         DJIAircraft djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
-        if (djiAircraft != null) {
+        if (djiAircraft != null && djiAircraft.getCamera() != null) {
             DJICamera djiCamera = djiAircraft.getCamera();
             DJICameraSettingsDef.CameraWhiteBalance whiteBalance = DJICameraSettingsDef.CameraWhiteBalance.Auto;
             if (curValue.equals(values[1])) {

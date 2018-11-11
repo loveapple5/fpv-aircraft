@@ -33,29 +33,30 @@ public class SetPhotoFormat extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
+            if(camera != null) {
+                DJICameraSettingsDef.CameraPhotoFileFormat format = (DJICameraSettingsDef.CameraPhotoFileFormat) DJIUtils.getMapKey(DJIUtils.photoFormatMap, formatResId);
 
-            DJICameraSettingsDef.CameraPhotoFileFormat format = (DJICameraSettingsDef.CameraPhotoFileFormat) DJIUtils.getMapKey(DJIUtils.photoFormatMap, formatResId);
+                camera.setPhotoFileFormat(format, new DJICommonCallbacks.DJICompletionCallback() {
 
-            camera.setPhotoFileFormat(format, new DJICommonCallbacks.DJICompletionCallback() {
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_SET_PHOTO_FORMAT_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
+                        }
+                        bundle.putInt("formatResId", formatResId);
 
-                @Override
-                public void onResult(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_SET_PHOTO_FORMAT_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    if (djiError != null) {
-                        bundle.putString("DJI_DESC", djiError.getDescription());
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+
+                        }
                     }
-                    bundle.putInt("formatResId", formatResId);
-
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-
-                    }
-                }
-            });
+                });
+            }
         }
     }
 }

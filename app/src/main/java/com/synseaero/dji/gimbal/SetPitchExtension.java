@@ -31,26 +31,28 @@ public class SetPitchExtension extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJIGimbal gimbal = aircraft.getGimbal();
-            gimbal.setPitchRangeExtensionEnabled(pitchExtensionEnable, new DJICommonCallbacks.DJICompletionCallback() {
+            if(gimbal != null) {
+                gimbal.setPitchRangeExtensionEnabled(pitchExtensionEnable, new DJICommonCallbacks.DJICompletionCallback() {
 
-                @Override
-                public void onResult(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("pitchExtensionEnable", pitchExtensionEnable);
-                    if (djiError != null) {
-                        bundle.putString("DJI_DESC", djiError.getDescription());
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_SET_GIMBAL_PITCH_EXTENSION_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("pitchExtensionEnable", pitchExtensionEnable);
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
+                        }
+
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+
+                        }
                     }
-
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-
-                    }
-                }
-            });
+                });
+            }
         }
     }
 }

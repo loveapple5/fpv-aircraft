@@ -33,27 +33,29 @@ public class SetPhotoRatio extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            DJICameraSettingsDef.CameraPhotoAspectRatio ratio = (DJICameraSettingsDef.CameraPhotoAspectRatio) DJIUtils.getMapKey(DJIUtils.photoResolutionMap, ratioResId);
-            camera.setPhotoRatio(ratio, new DJICommonCallbacks.DJICompletionCallback() {
+            if(camera != null) {
+                DJICameraSettingsDef.CameraPhotoAspectRatio ratio = (DJICameraSettingsDef.CameraPhotoAspectRatio) DJIUtils.getMapKey(DJIUtils.photoResolutionMap, ratioResId);
+                camera.setPhotoRatio(ratio, new DJICommonCallbacks.DJICompletionCallback() {
 
-                @Override
-                public void onResult(DJIError djiError) {
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_SET_PHOTO_RATIO_RESPONSE;
-                    Bundle bundle = new Bundle();
-                    if (djiError != null) {
-                        bundle.putString("DJI_DESC", djiError.getDescription());
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_SET_PHOTO_RATIO_RESPONSE;
+                        Bundle bundle = new Bundle();
+                        if (djiError != null) {
+                            bundle.putString("DJI_DESC", djiError.getDescription());
+                        }
+                        bundle.putInt("ratioResId", ratioResId);
+
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+
+                        }
                     }
-                    bundle.putInt("ratioResId", ratioResId);
-
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-
-                    }
-                }
-            });
+                });
+            }
         }
     }
 }

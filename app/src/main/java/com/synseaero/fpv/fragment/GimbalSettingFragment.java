@@ -56,8 +56,10 @@ public class GimbalSettingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         djiAircraft = (DJIAircraft) FPVDemoApplication.getProductInstance();
         djiGimbal = djiAircraft.getGimbal();
+        if(djiGimbal != null) {
 //        djiGimbal.setGimbalWorkMode();工作模式
-        djiGimbal.setGimbalAdvancedSettingsStateUpdateCallback(new djiGimbalAdvancedSettingsStateUpdateCallback());
+            djiGimbal.setGimbalAdvancedSettingsStateUpdateCallback(new djiGimbalAdvancedSettingsStateUpdateCallback());
+        }
 //        djiGimbal.setPitchRangeExtensionEnabled();
 //        djiGimbal.setControllerSmoothingOnAxis();
 //        djiAircraft.getFlightController().

@@ -31,38 +31,40 @@ public class GetPhotoFormat extends Task {
         if (product != null && product instanceof DJIAircraft) {
             DJIAircraft aircraft = (DJIAircraft) product;
             DJICamera camera = aircraft.getCamera();
-            camera.getPhotoFileFormat(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoFileFormat>() {
+            if(camera != null) {
+                camera.getPhotoFileFormat(new DJICommonCallbacks.DJICompletionCallbackWith<DJICameraSettingsDef.CameraPhotoFileFormat>() {
 
-                @Override
-                public void onSuccess(DJICameraSettingsDef.CameraPhotoFileFormat format) {
-                    Bundle bundle = new Bundle();
-                    int formatResId = DJIUtils.getMapValue(DJIUtils.photoFormatMap, format);
-                    bundle.putInt("formatResId", formatResId);
+                    @Override
+                    public void onSuccess(DJICameraSettingsDef.CameraPhotoFileFormat format) {
+                        Bundle bundle = new Bundle();
+                        int formatResId = DJIUtils.getMapValue(DJIUtils.photoFormatMap, format);
+                        bundle.putInt("formatResId", formatResId);
 
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_PHOTO_FORMAT_RESPONSE;
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_PHOTO_FORMAT_RESPONSE;
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(DJIError djiError) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("DJI_DESC", djiError.getDescription());
-                    Message message = Message.obtain();
-                    message.what = MessageType.MSG_GET_PHOTO_FORMAT_RESPONSE;
-                    message.setData(bundle);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
+                    @Override
+                    public void onFailure(DJIError djiError) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("DJI_DESC", djiError.getDescription());
+                        Message message = Message.obtain();
+                        message.what = MessageType.MSG_GET_PHOTO_FORMAT_RESPONSE;
+                        message.setData(bundle);
+                        try {
+                            messenger.send(message);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

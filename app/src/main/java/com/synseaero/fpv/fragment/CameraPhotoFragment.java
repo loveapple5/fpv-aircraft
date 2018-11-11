@@ -79,8 +79,9 @@ public class CameraPhotoFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 DJICameraSettingsDef.CameraPhotoAspectRatio ratio = DJICameraSettingsDef.CameraPhotoAspectRatio.find(i);
-                djiCamera.setPhotoRatio(ratio, null);
-
+                if(djiCamera !=null) {
+                    djiCamera.setPhotoRatio(ratio, null);
+                }
             }
 
             @Override
@@ -107,7 +108,9 @@ public class CameraPhotoFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 DJICameraSettingsDef.CameraPhotoFileFormat format = DJICameraSettingsDef.CameraPhotoFileFormat.find(i);
-                djiCamera.setPhotoFileFormat(format, null);
+                if(djiCamera !=null) {
+                    djiCamera.setPhotoFileFormat(format, null);
+                }
             }
 
             @Override
@@ -191,7 +194,9 @@ public class CameraPhotoFragment extends Fragment {
                         filter = DJICameraSettingsDef.CameraDigitalFilter.Art;
                         break;
                 }
-                djiCamera.setDigitalFilter(filter, null);
+                if(djiCamera !=null) {
+                    djiCamera.setDigitalFilter(filter, null);
+                }
             }
 
             @Override
